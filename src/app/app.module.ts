@@ -4,17 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { CytoscapeComponent } from './cytoscape/cytoscape.component';
+import {WebSocketService} from "./websocket.service";
+import {GraphService} from "./graph.service";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CytoscapeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    WebSocketService,
+    GraphService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

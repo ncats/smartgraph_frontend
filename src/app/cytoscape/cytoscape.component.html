@@ -1,0 +1,17 @@
+<p>
+  cytoscape works!
+</p>
+<div><button (click) = "pushIt()">push</button></div>
+
+
+<div *ngFor="let response of data">{{response}}</div>
+
+<!--
+
+let subject = Observable.webSocket('ws://localhost:8081');
+subject.subscribe(
+(msg) => console.log('message received: ' + msg),
+(err) => console.log(err),
+() => console.log('complete')
+);
+subject.next(JSON.stringify({ op: 'hello' }));-->
