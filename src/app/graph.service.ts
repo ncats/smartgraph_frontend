@@ -5,7 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
 //const DATA_URL = 'ws://localhost:7687';
-const DATA_URL = 'ws://localhost:9000/stream';
+//const DATA_URL = 'ws://localhost:9000/stream';
+const DATA_URL = 'ws://localhost:1337';
 
 /*export interface Message {
   statements: [

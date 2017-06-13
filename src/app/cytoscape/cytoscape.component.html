@@ -3,15 +3,8 @@
 </p>
 <div><button (click) = "pushIt()">push</button></div>
 
+<div id = "cy"></div>
 
-<div *ngFor="let response of data">{{response}}</div>
 
-<!--
+<!--<div *ngFor="let response of data">{{response | json}}</div>-->
 
-let subject = Observable.webSocket('ws://localhost:8081');
-subject.subscribe(
-(msg) => console.log('message received: ' + msg),
-(err) => console.log(err),
-() => console.log('complete')
-);
-subject.next(JSON.stringify({ op: 'hello' }));-->

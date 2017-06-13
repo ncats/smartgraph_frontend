@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+#cy {
+  min-width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 10%;
+}
+
+.bar {
+  background-color: red
+}
+
+.foo {
+  border: solid 1px;
+  border-color: green;
+}
