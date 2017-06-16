@@ -6,6 +6,7 @@
 
     stroke: white;
     stroke-width: 0.25;
+  pointer-events: all;
 }
 
 .node-name {
@@ -13,5 +14,18 @@
   text-anchor: middle;
   alignment-baseline: central;
   font-weight: 300;
-  fill: white;
+  color: #000000;
+  pointer-events: all;
 }
+
+.hovering {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+
+.clicked {
+  stroke: red;
+  stroke-width: 2px;
+}
+

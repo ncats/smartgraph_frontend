@@ -1,10 +1,59 @@
-<h1>
-  {{title}}
-</h1>
-<!--
-<app-cytoscape></app-cytoscape>
--->
-<!--
-<graph [nodes]= nodes [links]= links></graph>
--->
-<graph ></graph>
+<div class="container">
+
+  <div fxLayout="row">
+    <md-toolbar color="primary">
+      <button md-button routerLink="/">
+        <md-icon>home</md-icon>
+        {{title}}</button>
+
+      <!-- This fills the remaining space of the current row -->
+      <span class="fill-remaining-space"></span>
+      <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+        <button md-button routerLink="/products">Products</button>
+        <button md-button routerLink="/dashboard">Dashboard</button>
+      </div>
+      <button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+        <md-icon>menu</md-icon>
+      </button>
+
+    </md-toolbar>
+    <md-menu x-position="before" #menu="mdMenu">
+      <button md-menu-item routerLink="/products">Products</button>
+      <button md-menu-item routerLink="/dashboard">Dashboard</button>
+    </md-menu>
+  </div>
+
+  <div fxLayout="row">
+    <div fxFlex="25" class="sidemenu">
+      <h1>
+        {{title}}
+      </h1>
+      <button md-button color="primary" (click)="pushIt()">push</button>
+    </div>
+
+    <!--
+    <app-cytoscape></app-cytoscape>
+    -->
+
+      <div fxFlex class = "graph-row">
+        <graph [nodes]=nodes [links]=links ></graph>
+      </div>
+  </div>
+  <!--
+  <graph ></graph>
+  -->
+  <div fxLayout="row">
+    <div fxFlex>
+      <h1>Nodes</h1>
+      <li *ngFor="let node of nodes">
+        {{node | json}}
+        <hr>
+      </li>
+      <h1>Links</h1>
+      <li *ngFor="let link of links">
+        {{link | json}}
+        <hr>
+      </li>
+    </div>
+  </div>
+</div>

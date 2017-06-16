@@ -4,6 +4,7 @@ import { Link } from '../../../d3';
 @Component({
   selector: '[linkVisual]',
   template: `
+ <svg:g>
     <svg:line
         class="link"
         [attr.x1]="link.source.x"
@@ -11,6 +12,7 @@ import { Link } from '../../../d3';
         [attr.x2]="link.target.x"
         [attr.y2]="link.target.y"
     ></svg:line>
+      </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']
 })

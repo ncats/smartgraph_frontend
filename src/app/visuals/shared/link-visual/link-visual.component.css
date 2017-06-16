@@ -2,3 +2,18 @@
     stroke-width: 2;
     stroke: rgb(222,237,250);
 }
+.link-name {
+  font-family: 'Lato';
+  font-weight: 300;
+  color: #000000;
+}
+
+.link:hover {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.link:active {
+  stroke: #666;
+  stroke-width: 2px;
+}

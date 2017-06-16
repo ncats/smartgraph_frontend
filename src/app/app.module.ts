@@ -2,13 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialModule} from './material.module';
 
-import { D3Service, D3_DIRECTIVES } from './d3';
+
+import {D3Service, D3_DIRECTIVES, NodeService} from './d3';
 
 import { AppComponent } from './app.component';
 
-import { GraphComponent } from '../../../smartgraph_frontend/src/app/visuals/graph/graph.component';
-import { SHARED_VISUALS } from '../../../smartgraph_frontend/src/app/visuals/shared';
+import { GraphComponent } from './visuals/graph/graph.component';
+import { SHARED_VISUALS } from './visuals/shared';
 
 import { CytoscapeComponent } from './cytoscape/cytoscape.component';
 import {WebSocketService} from "./websocket.service";
@@ -26,13 +30,17 @@ import {DataService} from "../data.service";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MaterialModule
   ],
   providers: [
     WebSocketService,
     GraphService,
     DataService,
-    D3Service
+    D3Service,
+    NodeService
   ],
   bootstrap: [AppComponent]
 })

@@ -13,7 +13,7 @@ export class DataService {
   links: Link[] = [];
   constructor(private graphService : GraphService
   ) {
-    this.graphService.messages.subscribe(msg => {
+ /*   this.graphService.messages.subscribe(msg => {
       console.log(JSON.parse(msg));
       var start = new Node(this.nodes.length, JSON.parse(msg)._fields[0].start);
      // start.linkCount++;
@@ -25,8 +25,8 @@ export class DataService {
       //    this.nodes.push(new Node( JSON.parse(msg)._fields[0].end.labels[0]));
       this.links.push(link);
       console.log(this.nodes);
-      console.log(this.links);
-    });
+      console.log(this.links);*/
+  //  });
   }
   /*Injectable()
 export class GraphService {

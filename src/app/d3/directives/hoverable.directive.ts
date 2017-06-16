@@ -11,7 +11,6 @@ export class HoverableDirective {
     constructor(private d3Service: D3Service, private _element: ElementRef) { }
 
     ngOnInit() {
-      console.log("hoverable");
         this.d3Service.applyHoverableBehaviour(this._element.nativeElement, this.node);
     }
 }

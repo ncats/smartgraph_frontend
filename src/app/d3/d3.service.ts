@@ -1,13 +1,18 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Node, Link, ForceDirectedGraph } from './';
+import {Injectable} from '@angular/core';
+import {Node, Link, ForceDirectedGraph} from './';
 import * as d3 from 'd3';
+import {NodeService} from "./models/node.service";
 
 @Injectable()
 export class D3Service {
   /** This service will provide methods to enable user interaction with elements
-    * while maintaining the d3 simulations physics
-    */
-  constructor() { }
+   * while maintaining the d3 simulations physics
+   */
+ // @Output() nodeClicked: EventEmitter<Node> = new EventEmitter<Node>();
+
+  constructor(
+    private nodeService : NodeService
+  ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
   applyZoomableBehaviour(svgElement, containerElement) {
@@ -19,7 +24,7 @@ export class D3Service {
     zoomed = () => {
       let transform = d3.event.transform;
       container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
-    }
+    };
 
     zoom = d3.zoom().on("zoom", zoomed);
     svg.call(zoom);
@@ -27,7 +32,6 @@ export class D3Service {
 
   /** A method to bind a draggable behaviour to an svg element */
   applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
-    console.log("apply draggable");
     let d3element = d3.select(element);
 
     function started() {
@@ -44,11 +48,11 @@ export class D3Service {
 
       function ended() {
         if (!d3.event.active) {
-       //   graph.simulation.alphaTarget(0);
+          graph.simulation.alphaTarget(0);
         }
 
-      //  node.fx = null;
-      //  node.fy = null;
+       // node.x = null;
+      //  node.y = null;
       }
     }
 
@@ -60,30 +64,32 @@ export class D3Service {
   /** A method to bind hoverable behaviour to an svg element */
   applyHoverableBehaviour(element, node: Node) {
     let d3element = d3.select(element);
-console.log(element);
-      d3element.on("mouseover", function($event, d){
-        console.log(node);
-        console.log(d);
-        console.log($event);
-        console.log(d3);
-       // d3.select(labels[0][d.index]).style("node-name","visible")
-        console.log("mouse on");
-     //   node.fx = null;
-    //    node.fy = null;
-      });
+    d3element.on("mouseover", function (d) {
+      d3element.select("circle").classed("hovering", true);
+    });
 
-      d3element.on("mouseout", function(d) {
-         // d3.select(labels[0][d.index]).style("visibility","hidden")
-          console.log("mouse off");
-    //    node.fx = null;
-     //   node.fy = null;
-        });
+    d3element.on("mouseout", function (d) {
+      d3element.select("circle").classed("hovering", false);
+    });
   }
 
+
+ /** A method to bind click events to an svg element */
+ //just emits the node for other components to listen for
+  applyClickableBehaviour = (element, node: Node) =>  {
+    let d3element = d3.select(element);
+    console.log(d3element);
+    d3element.on("click",function(d) {
+      d3element.select("circle").classed("clicked", true);
+      this.nodeService.changeNode(node);
+    }.bind(this));
+  };
+
+
   /** The interactable graph we will simulate in this article
-  * This method does not interact with the document, purely physical calculations with d3
-  */
-  getForceDirectedGraph(nodes: Node[], links: Link[], options: { width, height }) {
+   * This method does not interact with the document, purely physical calculations with d3
+   */
+  getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
     let sg = new ForceDirectedGraph(nodes, links, options);
     console.log(sg);
     return sg;
