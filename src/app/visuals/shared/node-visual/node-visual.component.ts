@@ -6,8 +6,7 @@ import { Node } from '../../../d3';
   template: `
     <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
       <svg:circle
-          class="node"
-          [attr.fill]="node.color"
+          class="node {{node.labels[0]}}"
           cx="0"
           cy="0"
           [attr.r]="node.r">
@@ -15,7 +14,11 @@ import { Node } from '../../../d3';
       <svg:text
           class="node-name"
           [attr.font-size]="node.fontSize">
-        {{node.data.properties.pref_name}}
+<!--
+        {{node.data.pref_name}}
+-->
+        {{node.linkCount}}
+        {{node.labels[0]}}
       </svg:text>
     </svg:g>
   `,

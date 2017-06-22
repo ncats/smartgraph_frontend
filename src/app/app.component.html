@@ -24,6 +24,14 @@
   </div>
 
   <div fxLayout="row">
+    <div fxFlex = 100>
+      <md-input-container>
+        <input mdInput (keyup)="onKey(search.value)"  (keyup.enter)="onEnter(search.value)" #search placeholder="search"/>
+      </md-input-container><button md-button (click)="search()"><md-icon>search</md-icon></button>
+    </div>
+  </div>
+
+  <div fxLayout="row">
     <div fxFlex="25" class="sidemenu">
       <h1>
         {{title}}
@@ -44,16 +52,8 @@
   -->
   <div fxLayout="row">
     <div fxFlex>
-      <h1>Nodes</h1>
-      <li *ngFor="let node of nodes">
-        {{node | json}}
-        <hr>
-      </li>
-      <h1>Links</h1>
-      <li *ngFor="let link of links">
-        {{link | json}}
-        <hr>
-      </li>
+      <h1>Selected:</h1>
+      {{clickedNode?.properties |json}}
     </div>
   </div>
 </div>

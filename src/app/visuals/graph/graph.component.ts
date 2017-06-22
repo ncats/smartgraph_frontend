@@ -47,6 +47,10 @@ export class GraphComponent {
   ngOnChanges() {
     if (this.graph) {
       //force change detection
+   //   console.log("change?");
+    //  console.log(this.nodes);
+     // console.log(this.links);
+
       this.graph.simulation.nodes(this.nodes);
     }
   }

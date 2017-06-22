@@ -51,8 +51,8 @@ export class D3Service {
           graph.simulation.alphaTarget(0);
         }
 
-       // node.x = null;
-      //  node.y = null;
+        node.fx = null;
+        node.fy = null;
       }
     }
 
@@ -77,11 +77,17 @@ export class D3Service {
  /** A method to bind click events to an svg element */
  //just emits the node for other components to listen for
   applyClickableBehaviour = (element, node: Node) =>  {
+    let clickedNode = {};
     let d3element = d3.select(element);
-    console.log(d3element);
     d3element.on("click",function(d) {
-      d3element.select("circle").classed("clicked", true);
-      this.nodeService.changeNode(node);
+      console.log(clickedNode);
+      if (node == clickedNode) {
+        console.log("already clicked dummy");
+      } else {
+        d3element.select("circle").classed("clicked", true);
+        this.nodeService.changeNode(node);
+        clickedNode = node;
+      }
     }.bind(this));
   };
 

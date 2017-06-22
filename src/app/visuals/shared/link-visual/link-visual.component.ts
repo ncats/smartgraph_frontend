@@ -12,6 +12,14 @@ import { Link } from '../../../d3';
         [attr.x2]="link.target.x"
         [attr.y2]="link.target.y"
     ></svg:line>
+<!--    <svg:text
+          class="link-name"
+        [attr.font-size]= 10
+        [attr.x]="(link.source.x +link.target.x)/2 "
+        [attr.y]="(link.source.y +link.target.y)/2 "
+        >
+        {{link.type}}
+      </svg:text>-->
       </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']

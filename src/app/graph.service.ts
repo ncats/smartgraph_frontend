@@ -24,7 +24,7 @@ export interface Message {
 
 @Injectable()
 export class GraphService {
-  public messages: Subject<string>  = new Subject<string>();
+  public messages: Subject<string> = new Subject<string>();
 
   constructor(private wsService: WebSocketService) {
 

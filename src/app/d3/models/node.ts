@@ -1,4 +1,6 @@
 import APP_CONFIG from '../../app.config';
+import * as uuid from 'uuid'
+
 
 export class Node implements d3.SimulationNodeDatum {
   // optional - defining optional implementation properties - required for relevant typing assistance
@@ -11,13 +13,14 @@ export class Node implements d3.SimulationNodeDatum {
   fy?: number | null;
 
   id: string;
-  data: {};
+  properties: {};
   labels?: string[];
   linkCount: number = 0;
 
-  constructor(id, data, labels) {
+  constructor(id, properties, labels) {
+   // this.id = uuid.v4();
     this.id = id;
-    this.data = data;
+    this.properties = properties;
     this.labels = labels;
   }
 
