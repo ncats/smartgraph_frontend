@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import APP_CONFIG from './app.config';
 import {Node, Link, NodeService} from './d3';
-import {Message, GraphService} from "./graph.service";
+import {Message, DataService} from "./services/data.service";
 import {Subscription} from 'rxjs/Subscription';
+import {SearchService} from "./services/search.service";
+import {Subject} from "rxjs";
+
 
 
 @Component({
@@ -16,20 +19,17 @@ export class AppComponent {
   links: Link[] = [];
   nodeMap: Map<string, Node> = new Map();
   linkMap: Map<string, Link> = new Map();
+  searchTerm$ = new Subject<string>();
   subscription: Subscription;
   clickedNode: Node;
+  results: Object;
   constructor(
-    private graphService : GraphService,
-    private nodeService : NodeService
+    private dataService : DataService,
+    private nodeService : NodeService,
+    private searchService : SearchService
   ) {
-    this.graphService.messages.subscribe(msg => {
-
-      //map - get - update - set
-
-
-    //  console.log(msg);
+    this.dataService.messages.subscribe(msg => {
       let records = JSON.parse(msg)._fields;
-    //  console.log(records);
       for (let r of records) {
         //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
         if(r.start && r.start.identity){
@@ -89,6 +89,7 @@ export class AppComponent {
              }
             }else{
               newLink = new Link(start.id, end.id, r.type, r.properties, id);
+              this.linkMap.set(id, new Link(start.id, end.id, r.type, r.properties, id));5
             }
           //  this.linkMap.set(id, );
            // console.log(id);
@@ -97,91 +98,19 @@ export class AppComponent {
             this.nodeMap.set(r.end.low, end);
           }
         }
-
-
-
-      /*  this.nodes = this.nodes
-          .filter((node, index, self) => self.findIndex((t) => {
-          return t.id === node.id
-        }) === index)
-          .sort((a,b) => {return b.linkCount - a.linkCount});*/
       }
       this.nodes = [...this.nodeMap.values()];
     });
+
+    this.searchService.search(this.searchTerm$)
+      .subscribe(results => {
+        console.log(results);
+        this.results = results;
+      });
   }
 
-  /*this.graphService.messages.subscribe(msg => {
-      console.log(msg);
-      let records = JSON.parse(msg)._fields;
-      console.log(records);
-      for (let r of records) {
-        //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
-        if(r.start && r.start.identity){
-          this.nodes.push(this.makeNode(r.start.identity.low, r.start));
-        }
-        if(r.end && r.end.identity){
-          this.nodes.push(this.makeNode(r.end.identity.low, r.end));
-        }
-        //this covers the relationship itself, and creates the link object
-        if (r.segments) {
-          for (let l of r.segments) {
-            //make link
-            //grab nodes out of the nodes list
-            let start = this.makeNode(r.start.identity.low, r.start);
-            let end = this.makeNode(r.end.identity.low, r.end);
-            start.linkCount++;
-            end.linkCount++;
-          //  this.nodes.
-            //todo make sure link doesn't already exist
-            this.links.push(new Link(start.id, end.id, l.relationship.type, l.properties));
-          }
-        } else {
-          //this covers nodes from a nearest neighbor search
-          if(!r.start && !r.end) {
-            var n = this.makeNode(r.identity.low, r);
-            this.nodes.push(n);
-          }else{
-            //this makes the links from a nearest node search
-            //nodes listed in these links don't have the identity property
-            //once the graph has uuids, this will be much easier
-            //todo: look into return search type from api
-            let start = this.makeNode(r.start.low, r);
-            //this will result in properties being lost
-            let end = this.makeNode(r.end.low, r);
-            start.linkCount++;
-            end.linkCount++;
-            //todo make sure link doesn't already exist
-            this.links.push(new Link(start.id, end.id, r.type, r.properties));
-          }
-        }
-
-
-
-        //TODO will not draw correctly without doing this
-//        console.log(Object.assign({}, this.nodes));
-        let cloned = this.nodes.map(x => Object.assign({}, x));
-console.log(cloned);
-        this.nodes = this.nodes
-          .filter((node, index, self) => self.findIndex((t) => {
-          return t.id === node.id
-        }) === index)
-          .sort((a,b) => {return b.linkCount - a.linkCount});
-        let cloned2 = this.nodes.map(x => Object.assign({}, x));
-        console.log(cloned2);
-      }
-    });
-  }
-
-  */
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
   makeNode(id: string, data: any) : Node{
-    //todo: if a node has nested properties like a start or end node, these are also merged, as is identity
-    //return this.findId(id) ? Object.assign(this.findId(id), data) : new Node(id, data, data.labels);
-    return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data, data.labels);
-  }
-
-  //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
-  updateNode(id: string, data: any) :Node {
     return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data, data.labels);
   }
 
@@ -195,10 +124,9 @@ console.log(cloned);
       .subscribe(node => {
         console.log("changes to t othe graph");
         this.clickedNode = node;
-        let message = this.extractFields();
-       // console.log(this.clickedNode);
-        console.log(JSON.stringify(message));
-        this.graphService.messages.next(node.id);
+        let message = this.createMessage("nodeclick", node.id);
+        this.dataService.messages.next(message);
+        //this.dataService.messages.next(node.id);
       });
   }
 
@@ -207,24 +135,42 @@ console.log(cloned);
     this.subscription.unsubscribe();
   }
 
-  extractFields(){
+  createMessage(type: string, params: any) {
+    let message:string;
+switch(type){
+  case "nodeclick": {
+    message = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+    break;
+  }
+
+  case "search": {
+    message = 'MATCH (n) WHERE name (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+    break;
+  }
+
+  case "chembl": {
+    message = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+    break;
+  }
+
+
+}
+//let ret:Message =};
+return {message : message, params: {qParam: params}};
     //return    'MATCH (n {lychi: \'111J98B1B-B3C9ZWZR7T-BTP3PUK1NGR-BTRUZSDGKSKT\'})-[r*2]-() RETURN r';
    // return    'MATCH (n {pref_name: \'Dihydrofolate reductase\'})-[r*2]-() RETURN r';Message
-    return 'MATCH (n) WHERE id (n) = 0 MATCH (n)-[r]-(b) RETURN n, r, b'
+  //  return 'MATCH (n) WHERE id (n) = 0 MATCH (n)-[r]-(b) RETURN n, r, b'
   }
 
-  findId(id : string) {
-    let ret:Node = this.nodes.find(x => x.id == id);
-   // ret.linkCount++;
-    return ret;
+  findId(id : string):Node {
+    return this.nodes.find(x => x.id == id);
   }
 
-  findIndex(id : string) {
-    let ret:number = this.nodes.findIndex(x => x.id == id);
-    return ret;
+  findIndex(id : string):Number {
+    return this.nodes.findIndex(x => x.id == id);
   }
 
-  getRandomInt(max:number) {
+  getRandomInt(max:number):Number {
   let min = 0;
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
@@ -238,15 +184,20 @@ console.log(cloned);
 
   onKey(term: string){
     console.log(term);
-
+    this.searchTerm$.next(term);
   }
 
   onEnter(term: string){
     console.log(term);
+    let message = this.createMessage("chembl", term);
+    this.nodeMap.clear();
+    this.links = [];
+    this.nodes = [];
+    this.dataService.messages.next(message);
 
   }
 
   pushIt(){
-  //  this.graphService.messages.next('MATCH (n {lychi: \'111J98B1B-B3C9ZWZR7T-BTP3PUK1NGR-BTRUZSDGKSKT\'})-[r*2]-() RETURN r');
+  //  this.dataService.messages.next('MATCH (n {lychi: \'111J98B1B-B3C9ZWZR7T-BTP3PUK1NGR-BTRUZSDGKSKT\'})-[r*2]-() RETURN r');
   }
 }

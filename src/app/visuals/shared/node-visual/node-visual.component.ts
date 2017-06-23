@@ -17,7 +17,7 @@ import { Node } from '../../../d3';
 <!--
         {{node.data.pref_name}}
 -->
-        {{node.linkCount}}
+        {{node.id}}
         {{node.labels[0]}}
       </svg:text>
     </svg:g>

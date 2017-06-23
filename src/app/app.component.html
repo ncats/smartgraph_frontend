@@ -27,7 +27,7 @@
     <div fxFlex = 100>
       <md-input-container>
         <input mdInput (keyup)="onKey(search.value)"  (keyup.enter)="onEnter(search.value)" #search placeholder="search"/>
-      </md-input-container><button md-button (click)="search()"><md-icon>search</md-icon></button>
+      </md-input-container><button md-button (click)="onEnter(search.value)"><md-icon>search</md-icon></button>
     </div>
   </div>
 

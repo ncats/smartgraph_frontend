@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { GraphService } from './graph.service';
+import { GraphService } from './data.service';
 
 describe('GraphService', () => {
   beforeEach(() => {

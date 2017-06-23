@@ -1,7 +1,5 @@
 import {Component, Input, ChangeDetectorRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
 import {D3Service, ForceDirectedGraph, Node, Link} from '../../d3';
-import {GraphService} from '../../graph.service';
-import {DataService} from '../../../data.service';
 
 @Component({
   selector: 'graph',
@@ -28,8 +26,7 @@ export class GraphComponent {
 
   graph: ForceDirectedGraph;
   constructor(private d3Service: D3Service,
-              private ref: ChangeDetectorRef,
-              private graphService: GraphService){}
+              private ref: ChangeDetectorRef){}
 
   ngOnInit() {
     /** Receiving an initialized simulated graph from our custom d3 service */
@@ -44,14 +41,20 @@ export class GraphComponent {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(change) {
+    //todo: are there cases where only 1 node woud return?
     if (this.graph) {
-      //force change detection
-   //   console.log("change?");
-    //  console.log(this.nodes);
-     // console.log(this.links);
-
-      this.graph.simulation.nodes(this.nodes);
+      if(this.links.length > 0){
+        //force change detection
+        this.graph.simulation.nodes(this.nodes);
+      }else{
+        console.log("new graph?");
+   /*     this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
+        this.graph.simulation.nodes(this.nodes);*/
+        //this.graph.initLinks();
+        //this.graph.initNodes();
+        this.graph.connectNodes(this.nodes, this.links);
+      }
     }
   }
 

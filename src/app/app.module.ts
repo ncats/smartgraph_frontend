@@ -14,15 +14,13 @@ import { AppComponent } from './app.component';
 import { GraphComponent } from './visuals/graph/graph.component';
 import { SHARED_VISUALS } from './visuals/shared';
 
-import { CytoscapeComponent } from './cytoscape/cytoscape.component';
-import {WebSocketService} from "./websocket.service";
-import {GraphService} from "./graph.service";
-import {DataService} from "../data.service";
+import {WebSocketService} from "./services/websocket.service";
+import {DataService} from "./services/data.service";
+import {SearchService} from "./services/search.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    CytoscapeComponent,
     GraphComponent,
     ...SHARED_VISUALS,
     ...D3_DIRECTIVES
@@ -37,10 +35,10 @@ import {DataService} from "../data.service";
   ],
   providers: [
     WebSocketService,
-    GraphService,
     DataService,
     D3Service,
-    NodeService
+    NodeService,
+    SearchService
   ],
   bootstrap: [AppComponent]
 })

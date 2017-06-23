@@ -9,7 +9,6 @@ export class WebSocketService {
   constructor() { }
 
   private subject: Subject<MessageEvent>;
- // private subjectData: Subject<number>;
   session : any;
 
   public connect(url: string): Subject<MessageEvent> {
@@ -25,6 +24,7 @@ export class WebSocketService {
 
     let observable = Observable.create(
       (obs: Observer<MessageEvent>) => {
+        console.log(obs);
         ws.onmessage = obs.next.bind(obs);
         ws.onerror   = obs.error.bind(obs);
         ws.onclose   = obs.complete.bind(obs);
@@ -34,7 +34,6 @@ export class WebSocketService {
     let observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
-          console.log("sending");
           ws.send(JSON.stringify(data));
         }
       }
@@ -42,37 +41,5 @@ export class WebSocketService {
 
     return Subject.create(observer, observable);
   }
-
-  // For random numbers
-/*  public connectData(url: string): Subject<number> {
-    if (!this.subjectData) {
-      this.subjectData = this.createData(url);
-    }
-    return this.subjectData;
-  }
-
-  private createData(url: string): Subject<number> {
-    let ws = new WebSocket(url);
-
-    let observable = Observable.create(
-      (obs: Observer<number>) => {
-        ws.onmessage = obs.next.bind(obs);
-        ws.onerror   = obs.error.bind(obs);
-        ws.onclose   = obs.complete.bind(obs);
-
-        return ws.close.bind(ws);
-      });
-
-    let observer = {
-      next: (data: Object) => {
-      //  console.log(data);
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    };
-
-    return Subject.create(observer, observable);
-  }*/
 } // end class WebSocketService
 
