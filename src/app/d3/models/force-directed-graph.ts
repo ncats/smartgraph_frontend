@@ -38,7 +38,6 @@ export class ForceDirectedGraph {
   }
 
   initNodes() {
-    console.log(this.nodes);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
@@ -46,7 +45,6 @@ export class ForceDirectedGraph {
   }
 
   initLinks() {
-    console.log(this);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
@@ -84,7 +82,6 @@ export class ForceDirectedGraph {
 
       this.initNodes();
       this.initLinks();
-      //this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */

@@ -114,7 +114,6 @@ export class AppComponent {
                 //this makes the links from a nearest node search
                 //nodes listed in these links don't have the identity property
                 //once the graph has uuids, this will be much easier
-                //todo: look into return search type from api
                 let start = this.makeNode(r.start.low, r);
                 //this will result in properties being lost
                 let end = this.makeNode(r.end.low, r);
@@ -133,9 +132,6 @@ export class AppComponent {
                   newLink = new Link(start.id, end.id, r.type, r.properties, id);
                   this.linkMap.set(id, newLink);
                 }
-                //  this.linkMap.set(id, );
-                // console.log(id);
-                //   this.links.push(new Link(start.id, end.id, r.type, r.properties, id));
                 this.nodeMap.set(r.start.low, start);
                 this.nodeMap.set(r.end.low, end);
               }
@@ -147,6 +143,7 @@ export class AppComponent {
       }
     });
 
+    //todo move this to the websocket return- a string is alread given, it needs to be sorted and an array returned that can be converted here into classed objects
     //using web workers is an interesting idea- to offload the parsing of the message, but it does not pass full objects, esp ones with methods back
     //the array buffer idea could be used straight from the websocket however to make a first pass at organizing the data
     //the returned data can then be converted to Node or Link classes to have the built in scaling functions
@@ -188,10 +185,8 @@ export class AppComponent {
   ngOnInit() {
     this.subscription = this.nodeService.node$
       .subscribe(node => {
-        console.log("changes to t othe graph");
         this.clickedNode = node;
-        //todo
-        let message = this.createMessage("nodeclick", node.id);
+        let message: Message = this.messageService.getMessage(node.id, "nodeclick");
         this.dataService.messages.next(message);
       });
 
@@ -234,12 +229,10 @@ export class AppComponent {
     switch(type){
       case"target":{
         this.targetSelected = true;
-        console.log(this.targetCtrl.value);
         value = this.targetCtrl.value.value;
         break;
       }
       case"smiles":{
-        console.log(this.patternCtrl.value);
         this.patternSelected = true;
         value = this.patternCtrl.value.value;
         break;
@@ -264,13 +257,11 @@ export class AppComponent {
       this.links = [];
       this.nodes = [];
       let query: Message = this.messageService.getMessage(value, "path");
-      console.log(query);
       this.dataService.messages.next(query);
     }
   }
 
   displayFn(opt: any): string {
-    console.log(opt);
     return opt ? opt.display : opt;
   }
 
@@ -279,59 +270,12 @@ export class AppComponent {
     this.subscription.unsubscribe();
   }
 
-  createMessage(type:string, params:any) {
-    let message:string;
-    switch (type) {
-      case "nodeclick":
-      {
-        message = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params =  {qParam: params};
-        break;
-      }
-
-      case "search":
-      {
-        console.log("app search");
-          message = 'MATCH (n:Target) WHERE n.pref_name==~{qParam2} OR n.chembl_id =~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name UNION MATCH (n:Target) WHERE n.pref_name=~{qParam} OR n.chembl_id =~{qParam} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 50';
-          params = {qParam2: '(?i)'+params+ '.*', qParam: '(?i).*'+params+ '.*'};
-        break;
-      }
-
-      case "chembl":
-      {
-        message = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params =  {qParam: params};
-        break;
-      }
-
-      case "uuid":
-      {
-        message = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params =  {qParam: params};
-        break;
-      }
-
-
-    }
-//let ret:Message =};
-    return {type: type, message: message, params: params};
-    //return    'MATCH (n {lychi: \'111J98B1B-B3C9ZWZR7T-BTP3PUK1NGR-BTRUZSDGKSKT\'})-[r*2]-() RETURN r';
-    // return    'MATCH (n {pref_name: \'Dihydrofolate reductase\'})-[r*2]-() RETURN r';Message
-    //  return 'MATCH (n) WHERE id (n) = 0 MATCH (n)-[r]-(b) RETURN n, r, b'
-  }
-
   findId(id:string):Node {
     return this.nodes.find(x => x.id == id);
   }
 
   findIndex(id:string):Number {
     return this.nodes.findIndex(x => x.id == id);
-  }
-
-  getRandomInt(max:number):Number {
-    let min = 0;
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   private _options:{width, height} = {width: 800, height: 600};

@@ -53,8 +53,6 @@ export class MessageService {
 
       case "path":
       {
-        console.log(term);
-       // msg = 'MATCH (sn:Target) WHERE sn.chembl_id={target} as tar MATCH (en:Pattern) WHERE en.pid = {pattern} as pat, p = shortestPath((tar)-[*]-(pat)) WITH p WHERE length(p)> 1 RETURN p';
         msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Pattern { pid: $pattern }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
         params = {target: term.target.value, pattern: term.pattern.value};
         break;

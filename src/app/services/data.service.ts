@@ -6,17 +6,6 @@ import 'rxjs/add/operator/filter';
 
 const DATA_URL = 'ws://localhost:1337';
 
-/*export interface Message {
-  statements: [
-    {
-      statement: string,
-      "resultDataContents" : [string]
-    }
-    ]
-}*/
-
-
-
 @Injectable()
 export class DataService {
   public messages: Subject<any> = new Subject<any>();
@@ -30,4 +19,4 @@ export class DataService {
       return response.data;
       });
   }
-} // end class GraphService
+} // end class DataService
