@@ -24,11 +24,35 @@
   </div>
 
   <div fxLayout="row">
-    <div fxFlex = 100>
-      <md-input-container>
-        <input mdInput (keyup)="onKey(search.value)"  (keyup.enter)="onEnter(search.value)" #search placeholder="search"/>
-      </md-input-container><button md-button (click)="onEnter(search.value)"><md-icon>search</md-icon></button>
+    <md-input-container fxFlex="80">
+        <input mdInput placeholder="search targets" [mdAutocomplete]="targetAuto" [formControl]="targetCtrl" (keyup.enter)="onEnter('target')">
+    </md-input-container>
+    <md-autocomplete #targetAuto="mdAutocomplete" [displayWith]="displayFn">
+        <md-option *ngFor="let option of autocompleteOptions" [value]="option">
+          {{ option.display}} <i>{{option.value}}</i>
+        </md-option>
+      </md-autocomplete>
+    <button md-button (click)="onEnter()"><md-icon>search</md-icon></button>
     </div>
+
+ <div fxLayout="row">
+   <h2>To:</h2>
+    <md-input-container fxFlex="80">
+        <input mdInput placeholder="search patterns" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('smiles')">
+    </md-input-container>
+    <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
+        <md-option *ngFor="let option of patternAutocompleteOptions" [value]="option">
+          {{ option.display}} <i>{{option.value}}</i>
+        </md-option>
+      </md-autocomplete>
+    <button md-button (click)="onEnter()"><md-icon>search</md-icon></button>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" >
+    <button md-button color="primary" [disabled]="!targetSelected && !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
+      </div>
+    <div fxLayout="row" fxLayoutAlign="center center" >
+    <h5>*must select target and pattern</h5>
   </div>
 
   <div fxLayout="row">
@@ -39,17 +63,12 @@
       <button md-button color="primary" (click)="pushIt()">push</button>
     </div>
 
-    <!--
-    <app-cytoscape></app-cytoscape>
-    -->
 
-      <div fxFlex class = "graph-row">
-        <graph [nodes]=nodes [links]=links ></graph>
-      </div>
+    <div fxFlex class = "graph-row">
+      <graph [nodes]=nodes [links]=links ></graph>
+    </div>
   </div>
-  <!--
-  <graph ></graph>
-  -->
+
   <div fxLayout="row">
     <div fxFlex>
       <h1>Selected:</h1>

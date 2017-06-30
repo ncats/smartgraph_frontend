@@ -24,7 +24,6 @@ export class WebSocketService {
 
     let observable = Observable.create(
       (obs: Observer<MessageEvent>) => {
-        console.log(obs);
         ws.onmessage = obs.next.bind(obs);
         ws.onerror   = obs.error.bind(obs);
         ws.onclose   = obs.complete.bind(obs);
@@ -34,6 +33,7 @@ export class WebSocketService {
     let observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
+          console.log(data);
           ws.send(JSON.stringify(data));
         }
       }

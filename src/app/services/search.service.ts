@@ -8,26 +8,35 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {Subject} from "rxjs";
 import {DataService} from "./data.service";
+import {Message, MessageService} from "./message.service";
 
 
 @Injectable()
 export class SearchService {
 
 
-  constructor(private dataService : DataService) { }
-  search(terms: Observable<string>) {
-    return terms.debounceTime(400)
+  constructor(
+    private dataService : DataService,
+    private messageService: MessageService
+  ) {
+  }
+  search(terms: Observable<any>) {
+    return terms.debounceTime(300)
       .distinctUntilChanged()
       .switchMap(term => this.searchEntries(term));
   }
 
   searchEntries(term) {
+    console.log("service search");
     console.log(term);
-    return term;
-/*    return this.http
-      .get(this.baseUrl + this.queryUrl + term)
-      .map(res => res.json());*/
+    let query: Message = this.messageService.getMessage(term.term, term.type);
+    console.log(query);
+    return Observable.of(query);
   }
 
 }
+
+
+

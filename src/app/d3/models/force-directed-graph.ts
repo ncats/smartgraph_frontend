@@ -38,6 +38,7 @@ export class ForceDirectedGraph {
   }
 
   initNodes() {
+    console.log(this.nodes);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
@@ -45,15 +46,14 @@ export class ForceDirectedGraph {
   }
 
   initLinks() {
+    console.log(this);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
-
     this.simulation.force('link',
       d3.forceLink(this.links)
         .id(d => d['id'])
         .strength(FORCES.LINKS)
-        .distance(5)
     );
   }
 
@@ -84,7 +84,7 @@ export class ForceDirectedGraph {
 
       this.initNodes();
       this.initLinks();
-      this.simulation.stop();
+      //this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */

@@ -42,19 +42,12 @@ export class GraphComponent {
   }
 
   ngOnChanges(change) {
-    //todo: are there cases where only 1 node woud return?
     if (this.graph) {
-      if(this.links.length > 0){
-        //force change detection
-        this.graph.simulation.nodes(this.nodes);
-      }else{
-        console.log("new graph?");
-   /*     this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
-        this.graph.simulation.nodes(this.nodes);*/
-        //this.graph.initLinks();
-        //this.graph.initNodes();
-        this.graph.connectNodes(this.nodes, this.links);
-      }
+      console.log(this.nodes);
+      this.graph.links = this.links;
+      this.graph.simulation.nodes(this.nodes);
+      this.graph.initLinks();
+      this.graph.simulation.restart();
     }
   }
 

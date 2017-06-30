@@ -1,14 +1,14 @@
-import { Cyto3Page } from './app.po';
+import { SmrtgraphPage } from './app.po';
 
-describe('cyto3 App', () => {
-  let page: Cyto3Page;
+describe('smrtgraph App', () => {
+  let page: SmrtgraphPage;
 
   beforeEach(() => {
-    page = new Cyto3Page();
+    page = new SmrtgraphPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Welcome to app!!');
   });
 });

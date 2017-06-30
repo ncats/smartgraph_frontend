@@ -1,6 +1,6 @@
-import { browser, element, by } from 'protractor';
+import { browser, by, element } from 'protractor';
 
-export class Cyto3Page {
+export class SmrtgraphPage {
   navigateTo() {
     return browser.get('/');
   }

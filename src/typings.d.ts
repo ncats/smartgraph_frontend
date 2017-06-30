@@ -1,7 +1,12 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
-declare var cytoscape: any;
 
 interface NodeModule {
   id: string;
 }
+
+declare module 'worker-loader!*' {
+  const content: any;
+  export = content;
+}
+

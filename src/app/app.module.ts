@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from './material.module';
+import {MaterialModule} from './material/material.module';
 
 
 import {D3Service, D3_DIRECTIVES, NodeService} from './d3';
@@ -17,6 +17,8 @@ import { SHARED_VISUALS } from './visuals/shared';
 import {WebSocketService} from "./services/websocket.service";
 import {DataService} from "./services/data.service";
 import {SearchService} from "./services/search.service";
+import {MessageService} from "./services/message.service";
+import {WebWorkerService} from "./services/web-worker.service";
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import {SearchService} from "./services/search.service";
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
@@ -38,7 +41,9 @@ import {SearchService} from "./services/search.service";
     DataService,
     D3Service,
     NodeService,
-    SearchService
+    SearchService,
+    WebWorkerService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

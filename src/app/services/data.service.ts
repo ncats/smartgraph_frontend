@@ -15,10 +15,6 @@ const DATA_URL = 'ws://localhost:1337';
     ]
 }*/
 
-export interface Message {
-     message: string;
-     params: Object;
-}
 
 
 @Injectable()
