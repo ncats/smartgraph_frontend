@@ -19,7 +19,3 @@ body, html {
   flex: 1 1 auto;
 }
 
-.sidemenu {
-  background-color: #f3f3f3;
-  border-right: 1px solid red;
-}

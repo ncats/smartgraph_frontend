@@ -136,9 +136,9 @@ export class AppComponent {
                 this.nodeMap.set(r.end.low, end);
               }
             }
+            this.nodes = [...this.nodeMap.values()];
+            this.links = [...this.linkMap.values()];
           }
-          this.nodes = [...this.nodeMap.values()];
-          this.links = [...this.linkMap.values()];
         }
       }
     });
@@ -276,11 +276,5 @@ export class AppComponent {
 
   findIndex(id:string):Number {
     return this.nodes.findIndex(x => x.id == id);
-  }
-
-  private _options:{width, height} = {width: 800, height: 600};
-
-  get options() {
-    return this._options;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectorRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
 import {D3Service, ForceDirectedGraph, Node, Link} from '../../d3';
 
 @Component({
@@ -26,7 +26,8 @@ export class GraphComponent {
 
   graph: ForceDirectedGraph;
   constructor(private d3Service: D3Service,
-              private ref: ChangeDetectorRef){}
+              private ref: ChangeDetectorRef,
+              private el: ElementRef){}
 
   ngOnInit() {
     /** Receiving an initialized simulated graph from our custom d3 service */
@@ -58,10 +59,12 @@ export class GraphComponent {
   private _options: {width, height} = {width: 800, height: 600};
 
   get options() {
-
+console.log(this);
+    console.log(window);
+    console.log(this.el);
     return this._options = {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: this.el.nativeElement.offsetWidth,
+      height: this.el.nativeElement.offsetHeight *.5
     };
   }
 }

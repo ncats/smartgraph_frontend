@@ -33,8 +33,8 @@ import {WebWorkerService} from "./services/web-worker.service";
     ReactiveFormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ],
   providers: [
     WebSocketService,

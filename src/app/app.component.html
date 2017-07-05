@@ -1,5 +1,4 @@
 <div class="container">
-
   <div fxLayout="row">
     <md-toolbar color="primary">
       <button md-button routerLink="/">
@@ -22,9 +21,13 @@
       <button md-menu-item routerLink="/dashboard">Dashboard</button>
     </md-menu>
   </div>
+</div>
 
+<div class="container">
   <div fxLayout="row">
-    <md-input-container fxFlex="80">
+    <div fxFlex="10"></div>
+    <div fxFlex="80">
+      <md-input-container fxFlex="100">
         <input mdInput placeholder="search targets" [mdAutocomplete]="targetAuto" [formControl]="targetCtrl" (keyup.enter)="onEnter('target')">
     </md-input-container>
     <md-autocomplete #targetAuto="mdAutocomplete" [displayWith]="displayFn">
@@ -34,10 +37,12 @@
       </md-autocomplete>
     <button md-button (click)="onEnter()"><md-icon>search</md-icon></button>
     </div>
+    </div>
 
  <div fxLayout="row">
-   <h2>To:</h2>
-    <md-input-container fxFlex="80">
+   <div fxFlex="10"></div>
+   <div fxFlex="80">
+    <md-input-container fxFlex="100">
         <input mdInput placeholder="search patterns" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('smiles')">
     </md-input-container>
     <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
@@ -46,29 +51,28 @@
         </md-option>
       </md-autocomplete>
     <button md-button (click)="onEnter()"><md-icon>search</md-icon></button>
+   </div>
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center center" >
-    <button md-button color="primary" [disabled]="!targetSelected && !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
+    <button md-button color="primary" [disabled]="!targetSelected || !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
       </div>
     <div fxLayout="row" fxLayoutAlign="center center" >
     <h5>*must select target and pattern</h5>
   </div>
+</div>
 
+<div class="container">
   <div fxLayout="row">
-    <div fxFlex="25" class="sidemenu">
-      <h1>
-        {{title}}
-      </h1>
-      <button md-button color="primary" (click)="pushIt()">push</button>
-    </div>
-
-
-    <div fxFlex class = "graph-row">
+    <div fxFlex="5" fxFlexOrder="1"></div>
+    <div fxFlex="5" fxFlexOrder="3"></div>
+    <div fxFlex="90" fxFlexOrder="2" class = "graph-row">
       <graph [nodes]=nodes [links]=links ></graph>
     </div>
   </div>
+</div>
 
+<div class="container">
   <div fxLayout="row">
     <div fxFlex>
       <h1>Selected:</h1>
