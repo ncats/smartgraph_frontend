@@ -42,3 +42,39 @@ export class Node implements d3.SimulationNodeDatum {
     return APP_CONFIG.SPECTRUM[index];
   }
 }
+
+export class Target extends Node {
+  pref_name: string;
+  species_group_flag: string;
+
+  constructor(obj) {
+    super(obj.id, obj.properties, obj.labels, obj.linkCount);
+    this.pref_name = obj.pref_name;
+    this.species_group_flag = obj.species_group_flag;
+  }
+
+}
+
+export class Pattern extends Node {
+ ring_nr: {};
+ smiles: string;
+  constructor(obj) {
+    super(obj.id, obj.properties, obj.labels, obj.linkCount);
+    this.ring_nr = obj.ring_nr;
+    this.smiles = obj.smiles;
+  }
+
+
+}
+
+export class Lychi extends Node {
+  canonical_smiles: string;
+  lychi: string;
+  constructor(obj) {
+    super(obj.id, obj.properties, obj.labels, obj.linkCount);
+    this.canonical_smiles = obj.canonical_smiles;
+    this.lychi = obj.lychi;
+  }
+
+
+}

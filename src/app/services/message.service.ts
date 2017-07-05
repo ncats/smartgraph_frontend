@@ -13,6 +13,7 @@ export class MessageService {
       case"targetSearch":
       {
         msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} OR n.chembl_id =~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100 UNION MATCH (n:Target) WHERE n.pref_name=~{qParam} OR n.chembl_id =~{qParam} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
+       // msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
         params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
         break;
       }
@@ -39,7 +40,7 @@ export class MessageService {
 
       case "smiles":
       {
-        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 500';
         params =  {qParam: term};
         break;
       }
@@ -57,6 +58,13 @@ export class MessageService {
         params = {target: term.target.value, pattern: term.pattern.value};
         break;
       }
+
+      case "node":{
+        msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} RETURN n';
+        params =  {qParam: term};
+        break;
+      }
+
     }
     let message: Message = {
       type: type,

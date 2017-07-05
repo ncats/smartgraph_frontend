@@ -63,8 +63,8 @@ console.log(this);
     console.log(window);
     console.log(this.el);
     return this._options = {
-      width: this.el.nativeElement.offsetWidth,
-      height: this.el.nativeElement.offsetHeight *.5
+      width: window.outerHeight,
+      height: window.outerHeight*.5
     };
   }
 }

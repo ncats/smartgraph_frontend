@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
-import {Node, Link, NodeService} from './d3';
+import {Node, Target, Pattern, Lychi, Link, NodeService} from './d3';
 import {DataService} from "./services/data.service";
 import {Subscription} from 'rxjs/Subscription';
 import {SearchService} from "./services/search.service";
@@ -51,93 +51,98 @@ export class AppComponent {
   *  all data comes through here, and must be passed on based on the response type
    */
     this.dataService.messages.subscribe(msg => {
+      console.log(msg);
       let response = JSON.parse(msg);
       console.log(response);
       switch (response.type) {
 
-        case "targetSearch":{
+        case "targetSearch": {
           this.autocompleteOptions.push(response.data);
           break;
         }
-        case "patternSearch":{
+        case "patternSearch": {
           this.patternAutocompleteOptions.push(response.data);
           break;
         }
-        default:{
+        default: {
           //  let bytes = encoder.encode(msg);
           // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
           let records = response.data._fields;
-          for (let r of records) {
-            //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
-            if (r.start && r.start.identity) {
-              this.nodeMap.set(r.start.identity.low, this.makeNode(r.start.identity.low, r.start));
-            }
-            if (r.end && r.end.identity) {
-              this.nodeMap.set(r.end.identity.low, this.makeNode(r.end.identity.low, r.end));
-            }
-            //this covers the relationship itself, and creates the link object
-            if (r.segments) {
-              for (let l of r.segments) {
-                //make link
-                let start = this.makeNode(l.start.identity.low, l.start);
-                let end = this.makeNode(l.end.identity.low, l.end);
-                start.linkCount++;
-                end.linkCount++;
-                //  this.nodes.
-                //todo make sure link doesn't already exist
-                let id = start.id.toString().concat(end.id.toString());
-                let newLink = this.linkMap.get(id);
-                if (newLink) {
-                  if (newLink.id == id) {
-                    console.error("they're the same!");
-                    console.log(newLink.type);
-                    console.log(r.type);
-                  }
-                } else {
-                  newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
-                  this.linkMap.set(id, newLink);
-                }
-                /*
-                 newLink = new Link(start.id, end.id, r.type, r.properties, id);
-                 this.links.push(new Link(start.id, end.id, l.relationship.type, l.properties, id));*/
-                // this.updateLink(id, l.relationship.type, l.properties);
-                console.log(l.start.identity.low);
-                console.log(start);
-                this.nodeMap.set(l.start.identity.low, start);
-                this.nodeMap.set(l.end.identity.low, end);
+          if (records.length == 0) {
+console.log(response);
+          } else {
+            for (let r of records) {
+              //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
+              if (r.start && r.start.identity) {
+                this.nodeMap.set(r.start.identity.low, this.makeNode(r.start.identity.low, r.start));
               }
-            } else {
-              //this covers nodes from a nearest neighbor search
-              if (!r.start && !r.end) {
-                this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
+              if (r.end && r.end.identity) {
+                this.nodeMap.set(r.end.identity.low, this.makeNode(r.end.identity.low, r.end));
+              }
+              //this covers the relationship itself, and creates the link object
+              if (r.segments) {
+                for (let l of r.segments) {
+                  //make link
+                  let start = this.makeNode(l.start.identity.low, l.start);
+                  let end = this.makeNode(l.end.identity.low, l.end);
+                  start.linkCount++;
+                  end.linkCount++;
+                  //  this.nodes.
+                  //todo make sure link doesn't already exist
+                  let id = start.id.toString().concat(end.id.toString());
+                  let newLink = this.linkMap.get(id);
+                  if (newLink) {
+                    if (newLink.id == id) {
+                      console.error("they're the same!");
+                      console.log(newLink.type);
+                      console.log(r.type);
+                    }
+                  } else {
+                    newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
+                    this.linkMap.set(id, newLink);
+                  }
+                  /*
+                   newLink = new Link(start.id, end.id, r.type, r.properties, id);
+                   this.links.push(new Link(start.id, end.id, l.relationship.type, l.properties, id));*/
+                  // this.updateLink(id, l.relationship.type, l.properties);
+                  console.log(l.start.identity.low);
+                  console.log(start);
+                  this.nodeMap.set(l.start.identity.low, start);
+                  this.nodeMap.set(l.end.identity.low, end);
+                }
               } else {
-                //this makes the links from a nearest node search
-                //nodes listed in these links don't have the identity property
-                //once the graph has uuids, this will be much easier
-                let start = this.makeNode(r.start.low, r);
-                //this will result in properties being lost
-                let end = this.makeNode(r.end.low, r);
-                start.linkCount++;
-                end.linkCount++;
-                //todo make sure link doesn't already exist
-                let id = start.id.toString().concat(end.id.toString());
-                let newLink = this.linkMap.get(id);
-                if (newLink) {
-                  if (newLink.id == id) {
-                    //      console.error("they're the same!");
-                    //      console.log(newLink.type);
-                    //     console.log(r.type);
-                  }
+                //this covers nodes from a nearest neighbor search
+                if (!r.start && !r.end) {
+                  this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
                 } else {
-                  newLink = new Link(start.id, end.id, r.type, r.properties, id);
-                  this.linkMap.set(id, newLink);
+                  //this makes the links from a nearest node search
+                  //nodes listed in these links don't have the identity property
+                  //once the graph has uuids, this will be much easier
+                  let start = this.makeNode(r.start.low, r);
+                  //this will result in properties being lost
+                  let end = this.makeNode(r.end.low, r);
+                  start.linkCount++;
+                  end.linkCount++;
+                  //todo make sure link doesn't already exist
+                  let id = start.id.toString().concat(end.id.toString());
+                  let newLink = this.linkMap.get(id);
+                  if (newLink) {
+                    if (newLink.id == id) {
+                      //      console.error("they're the same!");
+                      //      console.log(newLink.type);
+                      //     console.log(r.type);
+                    }
+                  } else {
+                    newLink = new Link(start.id, end.id, r.type, r.properties, id);
+                    this.linkMap.set(id, newLink);
+                  }
+                  this.nodeMap.set(r.start.low, start);
+                  this.nodeMap.set(r.end.low, end);
                 }
-                this.nodeMap.set(r.start.low, start);
-                this.nodeMap.set(r.end.low, end);
               }
+              this.nodes = [...this.nodeMap.values()];
+              this.links = [...this.linkMap.values()];
             }
-            this.nodes = [...this.nodeMap.values()];
-            this.links = [...this.linkMap.values()];
           }
         }
       }
@@ -186,6 +191,7 @@ export class AppComponent {
     this.subscription = this.nodeService.node$
       .subscribe(node => {
         this.clickedNode = node;
+        console.log(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");
         this.dataService.messages.next(message);
       });
@@ -214,10 +220,9 @@ export class AppComponent {
         this.onEnter("smiles");
       }else {
         if (value != '') {
-          let result = value.replace(/\(/gi, "\\\\(").replace(/\)/gi, "\\\\)");
           //empty autocomplete options array, otherwise it will never change
-          this.patternAutocompleteOptions = [];
-          this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)"), type: "patternSearch"});
+          //this.patternAutocompleteOptions = [];
+          this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\\\[").replace(/\]/gi, "\\\\]"), type: "patternSearch"});
         }
       }
     });
