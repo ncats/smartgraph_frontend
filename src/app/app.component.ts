@@ -35,6 +35,7 @@ export class AppComponent {
   patternAutocompleteOptions:any[] = [];
   targetSelected: boolean = false;
   patternSelected: boolean = false;
+  imageUrl: string;
 
 
   constructor(private dataService:DataService,
@@ -191,7 +192,7 @@ console.log(response);
     this.subscription = this.nodeService.node$
       .subscribe(node => {
         this.clickedNode = node;
-        console.log(node);
+        this.getSmiles(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");
         this.dataService.messages.next(message);
       });
@@ -227,6 +228,20 @@ console.log(response);
       }
     });
   }
+
+  //getSmiles(node : Pattern| Lychi ): void{
+  getSmiles(node : any): void{
+    if(node.properties && node.properties.smiles) {
+      this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ node.properties.smiles +'&standardize=true&format=svg';
+    }
+      if(node.properties && node.properties.canonical_smiles){
+        this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ node.properties.canonical_smiles +'&standardize=true&format=svg';
+
+      }
+
+    }
+
+
 
   onEnter(type: string) {
     let value: string;

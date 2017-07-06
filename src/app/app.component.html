@@ -76,7 +76,10 @@
   <div fxLayout="row">
     <div fxFlex>
       <h1>Selected:</h1>
-      {{clickedNode?.properties |json}}
+      <div *ngIf="clickedNode && imageUrl">
+      <img [src] = imageUrl>
+      </div>
+        {{clickedNode?.properties |json}}
     </div>
   </div>
 </div>
