@@ -11,12 +11,7 @@ import { Node } from '../../../d3';
           cy="0"
           [attr.r]="node.r">
       </svg:circle>
-      <svg:text
-          class="node-name"
-          [attr.font-size]="node.fontSize">
-        {{node.pref_name}}
-        {{node.id}}
-      </svg:text>
+      <svg [app-tooltip-visual] = "node"></svg>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

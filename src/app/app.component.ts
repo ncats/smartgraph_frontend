@@ -52,9 +52,9 @@ export class AppComponent {
   *  all data comes through here, and must be passed on based on the response type
    */
     this.dataService.messages.subscribe(msg => {
-      console.log(msg);
+      //console.log(msg);
       let response = JSON.parse(msg);
-      console.log(response);
+     // console.log(response);
       switch (response.type) {
 
         case "targetSearch": {
@@ -70,7 +70,7 @@ export class AppComponent {
           // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
           let records = response.data._fields;
           if (records.length == 0) {
-console.log(response);
+            console.error(response);
           } else {
             for (let r of records) {
               //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
@@ -102,12 +102,6 @@ console.log(response);
                     newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
                     this.linkMap.set(id, newLink);
                   }
-                  /*
-                   newLink = new Link(start.id, end.id, r.type, r.properties, id);
-                   this.links.push(new Link(start.id, end.id, l.relationship.type, l.properties, id));*/
-                  // this.updateLink(id, l.relationship.type, l.properties);
-                  console.log(l.start.identity.low);
-                  console.log(start);
                   this.nodeMap.set(l.start.identity.low, start);
                   this.nodeMap.set(l.end.identity.low, end);
                 }
@@ -117,11 +111,9 @@ console.log(response);
                   this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
                 } else {
                   //this makes the links from a nearest node search
-                  //nodes listed in these links don't have the identity property
                   //once the graph has uuids, this will be much easier
-                  let start = this.makeNode(r.start.low, r);
-                  //this will result in properties being lost
-                  let end = this.makeNode(r.end.low, r);
+                  let start = this.makeNode(r.start.low, {});
+                  let end = this.makeNode(r.end.low, {});
                   start.linkCount++;
                   end.linkCount++;
                   //todo make sure link doesn't already exist
@@ -191,6 +183,7 @@ console.log(response);
   ngOnInit() {
     this.subscription = this.nodeService.node$
       .subscribe(node => {
+        console.log(node);
         this.clickedNode = node;
         this.getSmiles(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");

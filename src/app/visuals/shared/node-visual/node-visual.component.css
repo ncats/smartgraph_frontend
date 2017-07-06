@@ -14,7 +14,7 @@
   text-anchor: middle;
   alignment-baseline: central;
   font-weight: 300;
-  color: #000000;
+  /*color: #000000;*/
   pointer-events: all;
 }
 
@@ -29,22 +29,23 @@
   stroke-width: 2px;
 }
 
-/*.node {
+.node {
   diameter: 50px;
   color: #A5ABB6;
   border-color: #9AA1AC;
   border-width: 2px;
   text-color-internal: #FFFFFF;
   font-size: 10px;
-}*/
+  z-index: 666;
+}
 
 .relationship {
   color: #A5ABB6;
   shaft-width: 1px;
   font-size: 8px;
   padding: 3px;
-  text-color-external: #000000;
-  text-color-internal: #FFFFFF;
+  /*text-color-external: #000000;*/
+  /*text-color-internal: #FFFFFF;*/
   caption: '<type>';
 }
 

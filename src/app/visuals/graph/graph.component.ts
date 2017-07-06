@@ -9,7 +9,8 @@ import {D3Service, ForceDirectedGraph, Node, Link} from '../../d3';
       <g [zoomableOf]="svg">
         <g [linkVisual]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes"
-            [draggableNode]="node" [hoverableNode]="node" [clickableNode]="node" [draggableInGraph]="graph"></g>
+            [draggableNode]="node" [hoverableNode]="node" [clickableNode]="node" [draggableInGraph]="graph">
+</g>
       </g>
     </svg>
   `,
@@ -44,7 +45,6 @@ export class GraphComponent {
 
   ngOnChanges(change) {
     if (this.graph) {
-      console.log(this.nodes);
       this.graph.links = this.links;
       this.graph.simulation.nodes(this.nodes);
       this.graph.initLinks();
@@ -63,7 +63,7 @@ console.log(this);
     console.log(window);
     console.log(this.el);
     return this._options = {
-      width: window.outerHeight,
+      width: window.outerHeight*.958,
       height: window.outerHeight*.5
     };
   }

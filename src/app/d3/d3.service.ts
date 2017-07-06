@@ -65,11 +65,27 @@ export class D3Service {
   applyHoverableBehaviour(element, node: Node) {
     let d3element = d3.select(element);
     d3element.on("mouseover", function (d) {
+    //  console.log(d3element);
+      console.log(d);
       d3element.select("circle").classed("hovering", true);
+      node.hovered = true;
+      //todo: get connected nodes/links to apply classes to
+      d3element.selectAll(".tooltip").transition().duration(200)
+        .style("opacity", .9).attr('z-index', 666);
+
+      //todo: probably need to pass this to a service that can get access to the links
+      var links = this.links.filter(function(e) {
+        return node.id === e.source.id || e.name == e.target.id; //connected nodes
+      }).style('stroke', 'red')
+        .attr('r', 15);
+      console.log(links);
     });
 
     d3element.on("mouseout", function (d) {
       d3element.select("circle").classed("hovering", false);
+      node.hovered = false;
+      d3element.select(".tooltip").transition().duration(500)
+        .style("opacity", 0);
     });
   }
 

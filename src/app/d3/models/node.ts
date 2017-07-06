@@ -16,6 +16,7 @@ export class Node implements d3.SimulationNodeDatum {
   properties: {};
   labels?: string[];
   linkCount: number = 0;
+  hovered?: boolean = false;
 
   constructor(id, properties, labels, linkCount?) {
    // this.id = uuid.v4();
