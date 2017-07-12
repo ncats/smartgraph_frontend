@@ -32,7 +32,7 @@ export class AppComponent {
   subscription:Subscription;
   clickedNode:Node;
   autocompleteOptions:any[] = [];
-  patternAutocompleteOptions:any[] = [];
+  lychiAutocompleteOptions:any[] = [];
   targetSelected: boolean = false;
   patternSelected: boolean = false;
   imageUrl: string;
@@ -61,11 +61,13 @@ export class AppComponent {
           this.autocompleteOptions.push(response.data);
           break;
         }
-        case "patternSearch": {
-          this.patternAutocompleteOptions.push(response.data);
+        case "lychiSearch": {
+          console.log(response.data);
+          this.lychiAutocompleteOptions.push(response.data);
           break;
         }
         default: {
+          console.log(response.data._fields);
           //  let bytes = encoder.encode(msg);
           // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
           let records = response.data._fields;
@@ -170,7 +172,8 @@ export class AppComponent {
       .subscribe(results => {
         //empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
-        this.patternAutocompleteOptions=[];
+        this.lychiAutocompleteOptions=[];
+        console.log(results);
         this.dataService.messages.next(results);
       });
   }
@@ -186,12 +189,18 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.subscription = this.nodeService.node$
+    this.subscription = this.nodeService.clickednode$
       .subscribe(node => {
-        this.clickedNode = node;
+       // this.clickedNode = node;
         this.getSmiles(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");
         this.dataService.messages.next(message);
+      });
+
+this.subscription = this.nodeService.hoverednode$
+      .subscribe(node => {
+        this.clickedNode = node;
+        this.getSmiles(node);
       });
 
     this.targetCtrl.valueChanges.subscribe(value => {
@@ -210,15 +219,18 @@ export class AppComponent {
     });
 
     this.patternCtrl.valueChanges.subscribe(value => {
+      console.log(value);
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
-        this.onEnter("smiles");
+        this.onEnter("lychi");
       }else {
         if (value != '') {
           //empty autocomplete options array, otherwise it will never change
-          //this.patternAutocompleteOptions = [];
-          this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\\\[").replace(/\]/gi, "\\\\]"), type: "patternSearch"});
+          //this.lychiAutocompleteOptions = [];
+
+         // this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
+          this.searchTerm$.next({term: value, type: "lychiSearch"});
         }
       }
     });
@@ -246,9 +258,10 @@ export class AppComponent {
         value = this.targetCtrl.value.value;
         break;
       }
-      case"smiles":{
+      case"lychi":{
         this.patternSelected = true;
-        value = this.patternCtrl.value.value;
+        console.log(this.patternCtrl.value);
+        value = this.patternCtrl.value.display;
         break;
       }
     }
@@ -257,6 +270,7 @@ export class AppComponent {
     this.links = [];
     this.nodes = [];
     let query: Message = this.messageService.getMessage(value, type);
+    console.log(query);
     this.dataService.messages.next(query);
   }
 
@@ -264,13 +278,15 @@ export class AppComponent {
     if(this.targetCtrl && this.patternCtrl){
       let value = {
         target:this.targetCtrl.value,
-        pattern: this.patternCtrl.value
+        lychi: this.patternCtrl.value
       };
+      console.log(value);
       this.nodeMap.clear();
       this.linkMap.clear();
       this.links = [];
       this.nodes = [];
       let query: Message = this.messageService.getMessage(value, "path");
+      console.log(query);
       this.dataService.messages.next(query);
     }
   }

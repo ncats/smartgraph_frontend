@@ -19,13 +19,15 @@ import {DataService} from "./services/data.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
 import {WebWorkerService} from "./services/web-worker.service";
+import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GraphComponent,
     ...SHARED_VISUALS,
-    ...D3_DIRECTIVES
+    ...D3_DIRECTIVES,
+    NodeDetailsVisualComponent
   ],
   imports: [
     BrowserModule,

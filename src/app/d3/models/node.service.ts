@@ -9,17 +9,20 @@ import {Subject} from "rxjs";
 @Injectable()
 export class NodeService {
   // Observable navItem source
-  private _navItemSource = new Subject<Node>();
+  private _clickedNodeSource = new Subject<Node>();
+  private _hoveredNodeSource = new Subject<Node>();
   // Observable navItem stream
-  node$ = this._navItemSource.asObservable();
- 
+  clickednode$ = this._clickedNodeSource.asObservable();
+  hoverednode$ = this._hoveredNodeSource.asObservable();
+
   // service command
   changeNode(node:Node) {
   //  console.log(node);
-    this._navItemSource.next(node);
+    this._clickedNodeSource.next(node);
   }
-  
-  getLinks(node:Node){
-    
+
+  hoveredNode(node:Node){
+    this._hoveredNodeSource.next(node);
+
   }
 }

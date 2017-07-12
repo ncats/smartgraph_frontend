@@ -4,15 +4,17 @@ import {Component, OnInit, Input} from '@angular/core';
   selector: '[app-tooltip-visual]',
   //templateUrl: './tooltip-visual.component.html',
   template:`
-<svg
-  class="tooltip node-name"
-  [attr.fill]="white"
-  [attr.font-size]="node.fontSize">
+<svg:g
+  class="tooltip node-name">
+  <image *ngIf ="node.hovered" attr.href="{{imageUrl}}" height="200px" width="200px" >
+  </image>
+  <svg:text [attr.font-size]="node.fontSize">
   {{node.pref_name}}
   {{node.id}}
-<image *ngIf ="node.hovered" attr.href="{{imageUrl}}" height="100px" width="100px" >
-  </image>
-</svg>
+  yo
+  </svg:text>
+
+</svg:g>
 `,
 
   styleUrls: ['./tooltip-visual.component.css']
@@ -40,7 +42,8 @@ export class TooltipVisualComponent implements OnInit {
   }
 
   parseSmiles(smiles: string): string {
-    let parsed = smiles.replace(/[;]/g,'%3B')
+    let parsed = smiles
+      .replace(/[;]/g,'%3B')
       .replace(/[#]/g,'%23')
       .replace(/[+]/g,'%2B')
       .replace(/[\\]/g,'%5C')

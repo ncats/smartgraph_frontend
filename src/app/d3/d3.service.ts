@@ -38,6 +38,8 @@ export class D3Service {
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
+      d3element.select('.tooltip').transition().duration(50)
+        .style("opacity", 0);
 
       d3.event.on("drag", dragged).on("end", ended);
 
@@ -138,6 +140,7 @@ export class D3Service {
 
 
     let mouseOverFunction = ():void => {
+      this.nodeService.hoveredNode(node);
       decorateLinks();
       decorateNodes();
     };
@@ -175,7 +178,6 @@ export class D3Service {
    * This method does not interact with the document, purely physical calculations with d3
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
-    let sg = new ForceDirectedGraph(nodes, links, options);
-    return sg;
+    return new ForceDirectedGraph(nodes, links, options);
   }
 }

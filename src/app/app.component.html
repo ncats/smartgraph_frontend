@@ -43,14 +43,14 @@
    <div fxFlex="10"></div>
    <div fxFlex="80">
     <md-input-container fxFlex="100">
-        <input mdInput placeholder="search patterns" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('smiles')">
+        <input mdInput placeholder="search lychi" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('lychi')">
     </md-input-container>
     <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
-        <md-option *ngFor="let option of patternAutocompleteOptions" [value]="option">
-          {{ option.display}} <i>{{option.value}}</i>
+        <md-option *ngFor="let option of lychiAutocompleteOptions" [value]="option">
+          {{ option.display}} <i>{{option.value.low}}</i>
         </md-option>
       </md-autocomplete>
-    <button md-button (click)="onEnter('smiles')"><md-icon>search</md-icon></button>
+    <button md-button (click)="onEnter('lychi')"><md-icon>search</md-icon></button>
    </div>
     </div>
 
@@ -76,6 +76,7 @@
   <div fxLayout="row">
     <div fxFlex>
       <h1>Selected:</h1>
+      <h2>{{clickedNode?.labels[0]}}</h2>
       <div *ngIf="clickedNode && imageUrl">
       <img [src] = imageUrl>
       </div>

@@ -1,9 +1,10 @@
 import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
-import {D3Service, ForceDirectedGraph, Node, Link} from '../../d3';
+import {D3Service, ForceDirectedGraph, Node, NodeService} from '../../d3';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'graph',
- // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg">
@@ -24,11 +25,13 @@ export class GraphComponent {
   onResize(event) {
     this.graph.initSimulation(this.options);
   }
-
+  subscription: Subscription;
+  hoveredNode: Node;
   graph: ForceDirectedGraph;
   constructor(private d3Service: D3Service,
               private ref: ChangeDetectorRef,
-              private el: ElementRef){}
+              private el: ElementRef,
+              private nodeService: NodeService){}
 
   ngOnInit() {
     /** Receiving an initialized simulated graph from our custom d3 service */
@@ -41,6 +44,10 @@ export class GraphComponent {
     this.graph.ticker.subscribe((d) => {
       this.ref.markForCheck();
     });
+    this.subscription = this.nodeService.hoverednode$
+      .subscribe(node => {
+        this.hoveredNode = node;
+      });
   }
 
   ngOnChanges(change) {

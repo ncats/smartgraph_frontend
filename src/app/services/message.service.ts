@@ -19,7 +19,15 @@ export class MessageService {
       }
       case"patternSearch":
       {
-        msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
+        //msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
+        msg = 'MATCH (n:Lychi) WHERE n.lychi=~{qParam} RETURN n.lychi, n.pid ORDER BY n.lychi LIMIT 50';
+        params = {qParam: term + '.*'};
+        break;
+      }
+      case"lychiSearch":
+      {
+        //msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
+        msg = 'MATCH (n:Lychi) WHERE n.lychi=~{qParam} RETURN n.lychi, n.lid ORDER BY n.lychi LIMIT 50';
         params = {qParam: term + '.*'};
         break;
       }
@@ -33,14 +41,21 @@ export class MessageService {
       case "chembl":
       case "target":
       {
-        msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 500';
+        msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
         params =  {qParam: term};
         break;
       }
 
       case "smiles":
       {
-        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 500';
+        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        params =  {qParam: term};
+        break;
+      }
+
+      case "lychi":
+      {
+        msg = 'MATCH (n:Lychi) WHERE n.lychi= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
         params =  {qParam: term};
         break;
       }
@@ -54,8 +69,9 @@ export class MessageService {
 
       case "path":
       {
-        msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Pattern { pid: $pattern }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
-        params = {target: term.target.value, pattern: term.pattern.value};
+        console.log(term);
+        msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
+        params = {target: term.target.value, lychi: term.lychi.display};
         break;
       }
 
