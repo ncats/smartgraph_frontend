@@ -12,9 +12,14 @@ export class NodeService {
   private _navItemSource = new Subject<Node>();
   // Observable navItem stream
   node$ = this._navItemSource.asObservable();
+ 
   // service command
   changeNode(node:Node) {
   //  console.log(node);
     this._navItemSource.next(node);
+  }
+  
+  getLinks(node:Node){
+    
   }
 }

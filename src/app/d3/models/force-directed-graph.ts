@@ -18,23 +18,7 @@ export class ForceDirectedGraph {
   constructor(nodes, links, options: {width, height}) {
     this.nodes = nodes;
     this.links = links;
-
     this.initSimulation(options);
-  }
-
-  connectNodes(source, target, type?, properties?) {
-    let link;
-
-    if (!this.nodes[source] || !this.nodes[target]) {
-      throw new Error('One of the nodes does not exist');
-    }
-
-    link = new Link(source, target, type, properties);
-    this.simulation.stop();
-    this.links.push(link);
-    this.simulation.alphaTarget(0.3).restart();
-
-    this.initLinks();
   }
 
   initNodes() {
@@ -53,6 +37,8 @@ export class ForceDirectedGraph {
         .id(d => d['id'])
         .strength(FORCES.LINKS)
     );
+    //this is necessary to bind the link data to the graph. The node is attached by the hover directive
+    this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
   }
 
   initSimulation(options) {
@@ -71,7 +57,7 @@ export class ForceDirectedGraph {
         .force("collide",
           d3.forceCollide()
             .strength(FORCES.COLLISION)
-            .radius(d => d['r'] + 5).iterations(2)
+            .radius(d => d['r'] + 5)
         )
       ;
 

@@ -133,7 +133,16 @@ export class AppComponent {
                   this.nodeMap.set(r.end.low, end);
                 }
               }
-              this.nodes = [...this.nodeMap.values()];
+
+              let newNodes = [...this.nodeMap.values()];
+              const diff = {
+                removed: this.nodes.filter(node => newNodes.indexOf(node) === -1),
+                added: newNodes.filter(node => this.nodes.indexOf(node) === -1)
+              };
+
+              diff.removed.forEach(node => this.nodes.splice(this.nodes.indexOf(node), 1));
+              diff.added.forEach(node => this.nodes.push(node));
+
               this.links = [...this.linkMap.values()];
             }
           }
@@ -159,15 +168,11 @@ export class AppComponent {
     * */
     this.searchService.search(this.searchTerm$)
       .subscribe(results => {
-        console.log(results);
         //empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
         this.patternAutocompleteOptions=[];
         this.dataService.messages.next(results);
       });
-
-
-
   }
 
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
@@ -183,7 +188,6 @@ export class AppComponent {
   ngOnInit() {
     this.subscription = this.nodeService.node$
       .subscribe(node => {
-        console.log(node);
         this.clickedNode = node;
         this.getSmiles(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");
@@ -191,7 +195,6 @@ export class AppComponent {
       });
 
     this.targetCtrl.valueChanges.subscribe(value => {
-      console.log(value);
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
@@ -207,7 +210,6 @@ export class AppComponent {
     });
 
     this.patternCtrl.valueChanges.subscribe(value => {
-      console.log(value);
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
@@ -238,7 +240,6 @@ export class AppComponent {
 
   onEnter(type: string) {
     let value: string;
-    console.log(type);
     switch(type){
       case"target":{
         this.targetSelected = true;

@@ -62,31 +62,94 @@ export class D3Service {
 
 
   /** A method to bind hoverable behaviour to an svg element */
-  applyHoverableBehaviour(element, node: Node) {
+  applyHoverableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     let d3element = d3.select(element);
-    d3element.on("mouseover", function (d) {
-    //  console.log(d3element);
-      console.log(d);
-      d3element.select("circle").classed("hovering", true);
+    let connectedLinks;
+    let maximalLinks: any[] = [];
+     let decorateNodes = ():void =>{
+      d3element.select('circle').classed('hovering', true);
       node.hovered = true;
-      //todo: get connected nodes/links to apply classes to
-      d3element.selectAll(".tooltip").transition().duration(200)
+      d3element.selectAll('.tooltip').transition().duration(200)
         .style("opacity", .9).attr('z-index', 666);
+      d3.selectAll('circle')
+         .data(graph.nodes)
+         .filter(getNeighborNodes) //this will pass each node in the graph to the function
+         .classed('connected', true)
+    };
 
-      //todo: probably need to pass this to a service that can get access to the links
-      var links = this.links.filter(function(e) {
-        return node.id === e.source.id || e.name == e.target.id; //connected nodes
-      }).style('stroke', 'red')
-        .attr('r', 15);
-      console.log(links);
-    });
+     let decorateLinks = ():void =>{
+      connectedLinks = d3.selectAll('line')
+        .data(graph.links)
+        .filter(getNeighborLinks)
+         .classed('connected', true);
 
-    d3element.on("mouseout", function (d) {
-      d3element.select("circle").classed("hovering", false);
+       let connectedNodes = d3.selectAll('circle')
+         .data(graph.nodes)
+         .filter(getNeighborNodes)
+         .classed('connected', true);
+
+         connectedLinks.filter(findMaximalLinks)
+         .classed('maximal', true);
+
+       connectedNodes.filter(findMaximalNodes)
+         .classed('maximal', true);
+     };
+
+    let clearNodes = (): void =>{
+      d3element.select('circle').classed('hovering', false);
       node.hovered = false;
-      d3element.select(".tooltip").transition().duration(500)
+      d3element.select('.tooltip').transition().duration(500)
         .style("opacity", 0);
-    });
+    };
+
+    let clearLinks= ():void => {
+      d3.selectAll('line')
+        .classed('connected', false)
+        .classed('maximal', false);
+      d3.selectAll('circle')
+        .classed('connected', false)
+        .classed('maximal', false);
+
+    };
+
+    let getNeighborLinks = (e:any):boolean => {
+        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+    };
+
+    let getNeighborNodes = (e:any): boolean => {
+      const sources = connectedLinks.data().map(link => link.source.id);
+      const targets = connectedLinks.data().map(link=> link.target.id);
+      let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+      return nodesList.indexOf(e.id) > -1;
+    };
+
+   let findMaximalLinks = (e:any):boolean => {
+     if(e.properties && e.properties.maximal && e.properties.maximal == "t"){
+       maximalLinks= maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+       return true;
+     }else{
+       return false;
+     }
+     };
+
+    let findMaximalNodes = (e:any):boolean =>{
+      return maximalLinks.indexOf(e.id) > -1;
+    };
+
+
+    let mouseOverFunction = ():void => {
+      decorateLinks();
+      decorateNodes();
+    };
+
+     let mouseOutFunction = ():void =>{
+      clearNodes();
+      clearLinks();
+    };
+
+    d3element.on("mouseover", mouseOverFunction);
+    d3element.on("mouseout", mouseOutFunction);
+
   }
 
 
@@ -113,7 +176,6 @@ export class D3Service {
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
     let sg = new ForceDirectedGraph(nodes, links, options);
-    console.log(sg);
     return sg;
   }
 }

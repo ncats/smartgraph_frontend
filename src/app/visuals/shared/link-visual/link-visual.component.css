@@ -1,9 +1,9 @@
 .link {
-    stroke-width: .5;
+    stroke-width: .75;
     /*
     stroke: rgb(222,237,250);
     */
-  stroke: #A5ABB6;
+  stroke: #A5A5A5;
 }
 .link-name {
   font-family: 'Lato';
@@ -16,7 +16,16 @@
   stroke-width: 2px;
 }
 
-.link:active {
-  stroke: #666;
-  stroke-width: 2px;
+.link-node{
+  stroke: red;
+}
+
+.connected{
+  stroke-width: 1;
+  stroke: #595959;
+}
+
+ .maximal{
+  stroke-width: 2;
+  stroke: red;
 }

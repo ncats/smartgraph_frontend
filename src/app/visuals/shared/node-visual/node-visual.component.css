@@ -60,3 +60,13 @@ circle.node.Pattern {
 circle.node.Target {
   fill: #FF756E;
 }
+
+.connected{
+  stroke-width: 1;
+  stroke: #595959;
+}
+
+.maximal{
+  stroke-width: 2;
+  stroke: red;
+}

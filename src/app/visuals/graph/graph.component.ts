@@ -3,7 +3,7 @@ import {D3Service, ForceDirectedGraph, Node, Link} from '../../d3';
 
 @Component({
   selector: 'graph',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+ // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg">
@@ -59,9 +59,6 @@ export class GraphComponent {
   private _options: {width, height} = {width: 800, height: 600};
 
   get options() {
-console.log(this);
-    console.log(window);
-    console.log(this.el);
     return this._options = {
       width: window.outerHeight*.958,
       height: window.outerHeight*.5
