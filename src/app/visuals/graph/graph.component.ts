@@ -67,7 +67,7 @@ export class GraphComponent {
 
   get options() {
     return this._options = {
-      width: window.outerHeight*.958,
+      width: this.el.nativeElement.parentElement.offsetWidth,
       height: window.outerHeight*.5
     };
   }

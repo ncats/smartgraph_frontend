@@ -1,3 +1,8 @@
+<h2>{{hoveredNode?.labels[0]}}</h2>
+<h3><i>{{hoveredNode?.properties?.pref_name}}</i></h3>
+<div *ngIf="hoveredNode && imageUrl">
+  <img [src] = imageUrl>
+</div>
 <p>
-  node-details-visual works!
+  {{hoveredNode?.properties |json}}
 </p>

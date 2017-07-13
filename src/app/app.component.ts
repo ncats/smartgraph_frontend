@@ -35,7 +35,6 @@ export class AppComponent {
   lychiAutocompleteOptions:any[] = [];
   targetSelected: boolean = false;
   patternSelected: boolean = false;
-  imageUrl: string;
 
 
   constructor(private dataService:DataService,
@@ -62,12 +61,10 @@ export class AppComponent {
           break;
         }
         case "lychiSearch": {
-          console.log(response.data);
           this.lychiAutocompleteOptions.push(response.data);
           break;
         }
         default: {
-          console.log(response.data._fields);
           //  let bytes = encoder.encode(msg);
           // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
           let records = response.data._fields;
@@ -192,15 +189,9 @@ export class AppComponent {
     this.subscription = this.nodeService.clickednode$
       .subscribe(node => {
        // this.clickedNode = node;
-        this.getSmiles(node);
+       // this.getSmiles(node);
         let message: Message = this.messageService.getMessage(node.id, "nodeclick");
         this.dataService.messages.next(message);
-      });
-
-this.subscription = this.nodeService.hoverednode$
-      .subscribe(node => {
-        this.clickedNode = node;
-        this.getSmiles(node);
       });
 
     this.targetCtrl.valueChanges.subscribe(value => {
@@ -236,17 +227,6 @@ this.subscription = this.nodeService.hoverednode$
     });
   }
 
-  //getSmiles(node : Pattern| Lychi ): void{
-  getSmiles(node : any): void{
-    if(node.properties && node.properties.smiles) {
-      this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ node.properties.smiles +'&standardize=true&format=svg';
-    }
-      if(node.properties && node.properties.canonical_smiles){
-        this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ node.properties.canonical_smiles +'&standardize=true&format=svg';
-
-      }
-
-    }
 
 
 

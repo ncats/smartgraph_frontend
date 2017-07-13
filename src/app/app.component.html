@@ -64,23 +64,13 @@
 
 <div class="container">
   <div fxLayout="row">
-    <div fxFlex="5" fxFlexOrder="1"></div>
-    <div fxFlex="90" fxFlexOrder="2" class = "graph-row">
-      <graph [nodes]=nodes [links]=links ></graph>
-      <div fxFlex="5" fxFlexOrder="3"></div>
+    <div fxFlex="20">
+      <app-node-details-visual></app-node-details-visual>
     </div>
+    <div fxFlex="75" class = "graph-row">
+      <graph [nodes]=nodes [links]=links ></graph>
+    </div>
+    <span class="fill-remaining-space"></span>
   </div>
 </div>
 
-<div class="container">
-  <div fxLayout="row">
-    <div fxFlex>
-      <h1>Selected:</h1>
-      <h2>{{clickedNode?.labels[0]}}</h2>
-      <div *ngIf="clickedNode && imageUrl">
-      <img [src] = imageUrl>
-      </div>
-        {{clickedNode?.properties |json}}
-    </div>
-  </div>
-</div>
