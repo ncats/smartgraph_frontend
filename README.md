@@ -29,6 +29,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Running with neo4j
 1. Start neo4j instance with correct graph
-2. In a separate terminal execute <code>node backend.ts</code>
-3. Run `ng serve'
-3. 
+2. In a separate terminal execute `node backend.ts`
+3. Run `ng serve`
