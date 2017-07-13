@@ -8,12 +8,6 @@ import {Component, OnInit, Input} from '@angular/core';
   class="tooltip node-name">
   <image *ngIf ="node.hovered" attr.href="{{imageUrl}}" height="200px" width="200px" >
   </image>
-  <svg:text [attr.font-size]="node.fontSize">
-  {{node.pref_name}}
-  {{node.id}}
-  yo
-  </svg:text>
-
 </svg:g>
 `,
 
