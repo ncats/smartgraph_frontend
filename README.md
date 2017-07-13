@@ -26,3 +26,9 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Running with neo4j
+1. Start neo4j instance with correct graph
+2. In a separate terminal execute <code>node backend.ts</code>
+3. Run `ng serve'
+3. 
