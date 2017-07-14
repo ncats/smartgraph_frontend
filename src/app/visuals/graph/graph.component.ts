@@ -1,6 +1,8 @@
 import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
 import {D3Service, ForceDirectedGraph, Node, NodeService} from '../../d3';
 import {Subscription} from "rxjs";
+import * as d3 from 'd3';
+
 
 @Component({
   selector: 'graph',
@@ -48,6 +50,23 @@ export class GraphComponent {
       .subscribe(node => {
         this.hoveredNode = node;
       });
+
+    let svg = d3.select('svg');
+    console.log(svg);
+    svg.append("defs").append("marker")
+      .attr("id", "arrow")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 40)
+      .attr("refY", 0)
+      .attr("markerWidth", 4)
+      .attr("markerHeight", 4)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("fill", "#A5A5A5")
+      .attr("stroke", "#A5A5A5")
+      .attr("d", "M0,-5L10,0L0,5");
+
+    console.log(svg);
   }
 
   ngOnChanges(change) {

@@ -1,27 +1,32 @@
 .link {
     stroke-width: .75;
-    /*
-    stroke: rgb(222,237,250);
-    */
   stroke: #A5A5A5;
 }
+
+.arrow {
+  stroke-width: 2;
+  stroke: #A5A5A5;
+  fill: #A5A5A5;
+  marker-end: url(#arrow);
+}
+
 .link-name {
   font-family: 'Lato';
   font-weight: 300;
   color: #000000;
 }
 
-.link:hover {
+/*.link:hover {
   stroke: #000;
   stroke-width: 2px;
-}
+}*/
 
 .link-node{
   stroke: red;
 }
 
 .connected{
-  stroke-width: 1;
+  stroke-width: 2;
   stroke: #595959;
 }
 
@@ -29,3 +34,8 @@
   stroke-width: 2;
   stroke: red;
 }
+
+/*#arrow{
+  stroke-width: 2;
+  stroke: #A5A5A5;
+}*/

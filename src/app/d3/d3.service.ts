@@ -38,8 +38,7 @@ export class D3Service {
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
-      d3element.select('.tooltip').transition().duration(50)
-        .style("opacity", 0);
+      d3element.select('.tooltip').style("opacity", 0);
 
       d3.event.on("drag", dragged).on("end", ended);
 
@@ -79,11 +78,11 @@ export class D3Service {
          .classed('connected', true)
     };
 
-     let decorateLinks = ():void =>{
+    let decorateLinks = ():void =>{
       connectedLinks = d3.selectAll('line')
         .data(graph.links)
         .filter(getNeighborLinks)
-         .classed('connected', true);
+        .classed('connected', true);
 
        let connectedNodes = d3.selectAll('circle')
          .data(graph.nodes)
