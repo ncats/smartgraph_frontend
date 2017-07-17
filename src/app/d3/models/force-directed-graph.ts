@@ -68,6 +68,7 @@ export class ForceDirectedGraph {
 
       this.initNodes();
       this.initLinks();
+      this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */

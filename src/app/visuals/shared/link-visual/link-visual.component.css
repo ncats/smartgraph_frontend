@@ -16,11 +16,6 @@
   color: #000000;
 }
 
-/*.link:hover {
-  stroke: #000;
-  stroke-width: 2px;
-}*/
-
 .link-node{
   stroke: red;
 }
@@ -28,6 +23,7 @@
 .connected{
   stroke-width: 2;
   stroke: #595959;
+  marker-end: url(#hoverarrow);
 }
 
  .maximal{

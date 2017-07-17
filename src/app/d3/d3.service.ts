@@ -52,8 +52,9 @@ export class D3Service {
           graph.simulation.alphaTarget(0);
         }
 
-        node.fx = null;
-        node.fy = null;
+        //by not resetting these, the node stays where it is dragged
+      /*  node.fx = null;
+        node.fy = null;*/
       }
     }
 
@@ -163,6 +164,7 @@ export class D3Service {
     d3element.on("click",function(d) {
       console.log(clickedNode);
       if (node == clickedNode) {
+        //todo: collapse nodes
         console.log("already clicked dummy");
       } else {
         d3element.select("circle").classed("clicked", true);
