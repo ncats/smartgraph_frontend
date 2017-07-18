@@ -33,7 +33,7 @@ export class MessageService {
       }
       case "nodeclick":
       {
-        msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 500';
+        msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 100';
         params =  {qParam: term};
         break;
       }

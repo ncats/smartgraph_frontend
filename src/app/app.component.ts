@@ -133,17 +133,17 @@ export class AppComponent {
                 }
               }
 
-              let newNodes = [...this.nodeMap.values()];
-              const diff = {
-                removed: this.nodes.filter(node => newNodes.indexOf(node) === -1),
-                added: newNodes.filter(node => this.nodes.indexOf(node) === -1)
-              };
-
-              diff.removed.forEach(node => this.nodes.splice(this.nodes.indexOf(node), 1));
-              diff.added.forEach(node => this.nodes.push(node));
-
-              this.links = [...this.linkMap.values()];
             }
+            let newNodes = [...this.nodeMap.values()];
+            const diff = {
+              removed: this.nodes.filter(node => newNodes.indexOf(node) === -1),
+              added: newNodes.filter(node => this.nodes.indexOf(node) === -1)
+            };
+
+            diff.removed.forEach(node => this.nodes.splice(this.nodes.indexOf(node), 1));
+            diff.added.forEach(node => this.nodes.push(node));
+
+            this.links = [...this.linkMap.values()];
           }
         }
       }

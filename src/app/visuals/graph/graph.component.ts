@@ -10,7 +10,7 @@ import * as d3 from 'd3';
   template: `
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg">
-        <g [linkVisual]="link" *ngFor="let link of links"></g>
+              <g [linkVisual]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes"
             [draggableNode]="node" [hoverableNode]="node" [clickableNode]="node" [draggableInGraph]="graph">
 </g>
@@ -55,28 +55,28 @@ export class GraphComponent {
     svg.append("defs").append("marker")
       .attr("id", "arrow")
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 40)
+      .attr("refX", 8.75)
       .attr("refY", 0)
       .attr("markerWidth", 4)
       .attr("markerHeight", 4)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#A5A5A5")
-      .attr("stroke", "#A5A5A5")
+      .attr("stroke", "#FFFFFF")
       .attr("d", "M0,-5L10,0L0,5");
 
 svg.append("defs").append("marker")
       .attr("id", "hoverarrow")
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 40)
+  .attr("refX", 8.75)
       .attr("refY", 0)
       .attr("markerWidth", 4)
       .attr("markerHeight", 4)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#595959")
-      .attr("stroke", "#595959")
-      .attr("d", "M0,-5L10,0L0,5");
+      .attr("stroke", "#FFFFFF")
+  .attr("d", "M0,-5L10,0L0,5");
   }
 
   ngOnChanges(change) {
