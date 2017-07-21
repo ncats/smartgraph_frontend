@@ -188,10 +188,10 @@ export class AppComponent {
   ngOnInit() {
     this.subscription = this.nodeService.clickednode$
       .subscribe(node => {
-       // this.clickedNode = node;
+        this.clickedNode = node;
        // this.getSmiles(node);
-        let message: Message = this.messageService.getMessage(node.id, "nodeclick");
-        this.dataService.messages.next(message);
+       // let message: Message = this.messageService.getMessage(node.id, "nodeclick");
+       // this.dataService.messages.next(message);
       });
 
     this.targetCtrl.valueChanges.subscribe(value => {

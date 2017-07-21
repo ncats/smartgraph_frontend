@@ -14,6 +14,7 @@ import * as d3 from 'd3';
         <g [nodeVisual]="node" *ngFor="let node of nodes"
             [draggableNode]="node" [hoverableNode]="node" [clickableNode]="node" [draggableInGraph]="graph">
 </g>
+      <svg:g nodeMenu ></svg:g>
       </g>
     </svg>
   `,

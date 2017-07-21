@@ -71,7 +71,7 @@ export class D3Service {
 
      let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
-       addMenu();
+      // /node.hovered=true;
       d3element.selectAll('.tooltip').transition().duration(200)
         .style("opacity", .9).attr('z-index', 666);
       d3.selectAll('circle')
@@ -80,33 +80,7 @@ export class D3Service {
          .classed('connected', true)
     };
 
-    let addMenu = ():void =>{
-      console.log(node.hovered);
-      if(!node.hovered) {
-        var fo = d3element.append('foreignObject')
-          .attr('x', node.x)
-          .attr('y', node.y)
-          .attr('width', foWidth)
-          .attr('class', 'svg-tooltip');
-        var div = fo.append('xhtml:div')
-          .append('div')
-          .attr('class', 'tooltip');
-        div.append('p')
-          .attr('class', 'lead')
-          .html('<a>Holmes was certainly not a difficult man to live with.</a>');
-        div.append('p')
-          .html('He was quiet in his ways, and his habits were regular. It was rare for him to be up after ten at night, and he had invariably breakfasted and gone out before I rose in the morning.');
-        /* var foHeight = div[0][0].getBoundingClientRect().height;
-         fo.attr('height', foHeight);
-         d3element.insert('polygon', '.svg-tooltip')
-         .attr('points',"0,0 0," + foHeight + " " + foWidth + "," + foHeight + " " + foWidth + ",0 " + (t) + ",0 " + tip.w + "," + (-tip.h) + " " + (t/2) + ",0")
-         .attr('height', foHeight + tip.h)
-         .attr('width', foWidth)
-         .attr('fill', '#D8D8D8')
-         .attr('opacity', 0.75)
-         .attr('transform', 'translate(' + node.fx + ',' + node.fy + ')');*/
-      }
-    };
+
 
     let decorateLinks = ():void =>{
       connectedLinks = d3.selectAll('line')
@@ -128,7 +102,7 @@ export class D3Service {
 
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
-      //node.hovered = false;
+      node.hovered = false;
       d3element.select('.tooltip').transition().duration(500)
         .style("opacity", 0);
     };
@@ -167,9 +141,9 @@ export class D3Service {
       return maximalLinks.indexOf(e.id) > -1;
     };
 
-    let test = (e:any):void =>{
+   function testT(){
 console.log("test")
-    };
+    }
 
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
     var width = 800 - margin.left - margin.right;
@@ -202,20 +176,54 @@ console.log("test")
  /** A method to bind click events to an svg element */
  //just emits the node for other components to listen for
   applyClickableBehaviour = (element, node: Node) =>  {
-    let clickedNode = {};
     let d3element = d3.select(element);
+/*
+    let testT =() => {
+      console.log("clicked);");
+    };*/
+
+    function testT(){
+      console.log("test")
+    };
+
+    let addMenu = ():void =>{
+      console.log(node.hovered);
+    //  if(!node.hovered) {
+       /* var fo = d3.select('.node-menu');
+        console.log(fo);
+        fo
+          .attr('x', node.x)
+          .attr('y', node.y)
+          .attr('width', '100%')
+        var div = fo.append('xhtml:div')
+          .html('<ul class="custom-menu"><li data-action = "first">First thing</li><li data-action = "second">Second thing</li><li data-action = "third">Third thing</li></ul>');
+*/               /* var foHeight = div[0][0].getBoundingClientRect().height;
+         fo.attr('height', foHeight);
+         d3element.insert('polygon', '.svg-tooltip')
+         .attr('points',"0,0 0," + foHeight + " " + foWidth + "," + foHeight + " " + foWidth + ",0 " + (t) + ",0 " + tip.w + "," + (-tip.h) + " " + (t/2) + ",0")
+         .attr('height', foHeight + tip.h)
+         .attr('width', foWidth)
+         .attr('fill', '#D8D8D8')
+         .attr('opacity', 0.75)
+         .attr('transform', 'translate(' + node.fx + ',' + node.fy + ')');*/
+  //    }
+    };
+
+    let clickedNode = {};
     d3element.on("click",function(d) {
       console.log(clickedNode);
       if (node == clickedNode) {
         //todo: collapse nodes
         console.log("already clicked dummy");
+        //todo: probably want to clear this on mouseout of the menu
+         d3element.selectAll('.svg-tooltip').remove();
       } else {
         d3element.select("circle").classed("clicked", true);
-        this.nodeService.changeNode(node);
+         this.nodeService.changeNode(node);
+        addMenu();
         clickedNode = node;
       }
-      //todo: probably want to clear this on mouseout of the menu
-      d3element.selectAll('.svg-tooltip').remove();
+
     }.bind(this));
   };
 

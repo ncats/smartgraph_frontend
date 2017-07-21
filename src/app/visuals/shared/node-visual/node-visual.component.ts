@@ -12,7 +12,9 @@ import { Node } from '../../../d3';
           [attr.r]="node.r">
       </svg:circle>
        <svg:text>{{node.properties.chembl_id}}</svg:text>
-      <svg [app-tooltip-visual] = "node"></svg>
+<!--
+      <svg:tooltip-visual class="tooltip" [app-tooltip-visual] = "node"></svg:tooltip-visual>
+-->
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

@@ -1,14 +1,10 @@
 import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
-  selector: '[app-tooltip-visual]',
+  selector: 'tooltip-visual',
   //templateUrl: './tooltip-visual.component.html',
   template:`
-<svg:g
-  class="tooltip node-name">
-  <image *ngIf ="node.hovered" attr.href="{{imageUrl}}" height="200px" width="200px" >
-  </image>
-</svg:g>
+<svg:text class="tooltip">does this work?</svg:text>
 `,
 
   styleUrls: ['./tooltip-visual.component.css']

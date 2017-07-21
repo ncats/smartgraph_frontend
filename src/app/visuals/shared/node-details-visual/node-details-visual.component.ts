@@ -21,7 +21,6 @@ export class NodeDetailsVisualComponent implements OnInit {
       .subscribe(node => {
         this.hoveredNode = node;
         this.getSmiles(node);
-        console.log(this.hoveredNode)
       });
   }
   getSmiles(node : any): void{
