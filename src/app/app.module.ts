@@ -20,6 +20,7 @@ import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
 import {WebWorkerService} from "./services/web-worker.service";
 import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
+import { NodeMenuComponent } from './visuals/shared/node-menu/node-menu.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual
     GraphComponent,
     ...SHARED_VISUALS,
     ...D3_DIRECTIVES,
-    NodeDetailsVisualComponent
+    NodeDetailsVisualComponent,
+    NodeMenuComponent
   ],
   imports: [
     BrowserModule,
