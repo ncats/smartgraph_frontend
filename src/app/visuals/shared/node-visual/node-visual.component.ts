@@ -11,9 +11,8 @@ import { Node } from '../../../d3';
           cy="0"
           [attr.r]="node.r">
       </svg:circle>
-       <svg:text>{{node.properties.chembl_id}}</svg:text>
 <!--
-      <svg:tooltip-visual class="tooltip" [app-tooltip-visual] = "node"></svg:tooltip-visual>
+       <svg:text>{{node.properties.chembl_id}}</svg:text>
 -->
     </svg:g>
   `,

@@ -6,7 +6,7 @@ export class MessageService {
   constructor() {
   }
 
-  getMessage(term:any, type:string):Message {
+  getMessage(term:any, type:string, properties?:string):Message {
     let msg: string;
     let params: {};
     switch (type) {
@@ -32,8 +32,26 @@ export class MessageService {
         break;
       }
       case "nodeclick":
+        switch(properties){
+          //todo: switch to parameterized  constraints for 'n'
+          case "Target": {
+            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Target) RETURN n, r, b LIMIT 100';
+            break;
+          }
+          case "Compound": {
+            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Lychi) RETURN n, r, b LIMIT 100';
+            break;
+          }
+          case "Pattern": {
+            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Pattern) RETURN n, r, b LIMIT 100';
+            break;
+          }
+          case "All": {
+            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 100';
+            break;
+          }
+        }
       {
-        msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 100';
         params =  {qParam: term};
         break;
       }
@@ -80,6 +98,13 @@ export class MessageService {
 
       case "node":{
         msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} RETURN n';
+        params =  {qParam: term};
+        break;
+      }
+      //todo: this isn't paramaterized cypher doesn't support labels as parameters
+            //todo: may need to just write separate calls based on origin node label
+      case "counts":{
+        msg = ' MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
         params =  {qParam: term};
         break;
       }

@@ -1,48 +1,89 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ViewContainerRef} from '@angular/core';
 import {NodeService} from "../../../d3/models/node.service";
 import {Subscription} from "rxjs";
+import {Message, MessageService} from "../../../services/message.service";
+import {DataService} from "../../../services/data.service";
+import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
 
 @Component({
   selector: '[nodeMenu]',
   template: `
- <svg:foreignObject class="node" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="100" height="100"
- [attr.transform]="'translate(' + clickedNode.x + ',' + clickedNode.y + ')'">
- <xhtml:div>
- <xhtml:ul class="custom-menu">
- <li (click) = "test()">{{clickedNode.id}} thing</li>
- <li data-action = "second">Second thing</li>
- <li data-action = "third">Third thing</li>
- </xhtml:ul>
- </xhtml:div>
- </svg:foreignObject>
-<!--
-<svg class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y"></svg>
--->
+ <svg:g menu-list></svg:g>
 `,
   styleUrls: ['./node-menu.component.css']
 })
-export class NodeMenuComponent implements OnInit {
+export class NodeMenuHolderComponent{}
 
+@Component({
+  selector: '[menu-list]',
+  template: `
+<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
+ <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
+ <md-list class="node-menu">
+<button  md-menu-item [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
+ <button md-menu-item (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+ <button md-menu-item (click)="expand('Compound')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>
+ <button md-menu-item (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+ <button md-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
+ <button md-menu-item (click)="addToPath()">Add to Path</button>
+</md-list>
+ 
+</xhtml:div>
+ </svg:foreignObject>
+`,
+  styleUrls: ['./node-menu.component.css']
+})
+export class NodeMenuComponent{
   clickedNode: any ={x:0, y:0};
   subscription:Subscription;
-  constructor(private nodeService:NodeService,
-  ) { }
+  menuSubscription:Subscription;
+  menuToggle:boolean= false;
+  counts: any ={total:0};
+
+ constructor(
+   private nodeService:NodeService,
+  private dataService:DataService,
+  private messageService: MessageService,
+   private nodeMenuController : NodeMenuControllerService
+ ) {
+   this.subscription = this.nodeService.clickednode$
+     .subscribe(node => {
+       this.clickedNode = node;
+       if(this.clickedNode.id) {
+         this.counts={total:0};
+         console.log(this.clickedNode);
+         let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts");
+         this.dataService.messages.next(message);
+
+         // this.getSmiles(node);
+       }
+     });
+
+   this.dataService.messages.subscribe(msg => {
+     let response = JSON.parse(msg);
+     if(this.clickedNode.id && response.type =="counts") {
+       this.counts[response.data._fields[0][0].toLowerCase()] = response.data._fields[1].low;
+       this.counts.total = this.counts.total + response.data._fields[1].low;
+     }
+   });
+
+   this.menuSubscription = this.nodeMenuController.clickedmenu$.subscribe(res =>{
+     console.log(res);
+     this.menuToggle = res;
+   })
+ }
+
 
   ngOnInit() {
-    console.log("menu created");
-    console.log(this.clickedNode);
-    this.subscription = this.nodeService.clickednode$
-      .subscribe(node => {
-        console.log(node);
-         this.clickedNode = node;
-
-        // this.getSmiles(node);
-
-      });
-
+console.log(this);
   }
 
-  test(){
-    console.log("test");
+  expand(type){
+    let message: Message = this.messageService.getMessage(this.clickedNode.id, "nodeclick", type);
+    this.dataService.messages.next(message);
+  }
+
+  addToPath(){
+    console.log("add to path");
   }
 }

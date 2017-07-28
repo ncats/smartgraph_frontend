@@ -19,10 +19,10 @@ import * as d3 from 'd3';
         
         <svg:line
         class="link arrow"
-      [attr.x1]="endpointLessRadius(link, 'x1')"
-    [attr.y1]="endpointLessRadius(link, 'y1')"
-    [attr.x2]="endpointLessRadius(link, 'x2')"
-    [attr.y2]="endpointLessRadius(link, 'y2')"
+      [attr.x1]="endpointLessRadius(link, 'x1') || 0"
+    [attr.y1]="endpointLessRadius(link, 'y1') || 0"
+    [attr.x2]="endpointLessRadius(link, 'x2') || 0"
+    [attr.y2]="endpointLessRadius(link, 'y2') || 0"
         ></svg:line>
 <!--    <svg:text
           class="link-name"
@@ -46,7 +46,7 @@ export class LinkVisualComponent  {
 
 
 
-  endpointLessRadius(link, attr_name) { // subtract radius away from line ends
+  endpointLessRadius(link, attr_name) { // subtract radius away from line end
   let x1 = link.source.x;
   let y1 = link.source.y;
   let x2 = link.target.x;

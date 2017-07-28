@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Node, Link, ForceDirectedGraph} from './';
 import * as d3 from 'd3';
 import {NodeService} from "./models/node.service";
+import {NodeMenuControllerService} from "../services/node-menu-controller.service";
+import {HistoryService} from "../services/history.service";
 
 @Injectable()
 export class D3Service {
@@ -11,7 +13,9 @@ export class D3Service {
  // @Output() nodeClicked: EventEmitter<Node> = new EventEmitter<Node>();
 
   constructor(
-    private nodeService : NodeService
+    private nodeService : NodeService,
+    private historyService : HistoryService,
+    private nodeMenuController : NodeMenuControllerService
   ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
@@ -72,8 +76,8 @@ export class D3Service {
      let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
       // /node.hovered=true;
-      d3element.selectAll('.tooltip').transition().duration(200)
-        .style("opacity", .9).attr('z-index', 666);
+     /* d3element.selectAll('.tooltip').transition().duration(200)
+        .style("opacity", .9).attr('z-index', 666);*/
       d3.selectAll('circle')
          .data(graph.nodes)
          .filter(getNeighborNodes) //this will pass each node in the graph to the function
@@ -103,8 +107,8 @@ export class D3Service {
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
       node.hovered = false;
-      d3element.select('.tooltip').transition().duration(500)
-        .style("opacity", 0);
+     /* d3element.select('.tooltip').transition().duration(500)
+        .style("opacity", 0);*/
     };
 
     let clearLinks= ():void => {
@@ -141,18 +145,6 @@ export class D3Service {
       return maximalLinks.indexOf(e.id) > -1;
     };
 
-   function testT(){
-console.log("test")
-    }
-
-    var margin = {top: 20, right: 10, bottom: 20, left: 10};
-    var width = 800 - margin.left - margin.right;
-    var height = 480 - margin.top - margin.bottom;
-    var foWidth = 300;
-    var anchor = {'w': width/3, 'h': height/3};
-    var t = 50, k = 15;
-    var tip = {'w': (3/4 * t), 'h': k};
-
     let mouseOverFunction = ():void => {
       this.nodeService.hoveredNode(node);
       decorateLinks();
@@ -162,9 +154,6 @@ console.log("test")
      let mouseOutFunction = ():void =>{
       clearNodes();
       clearLinks();
-
-/*       //todo: probably want to clear this on mouseout of the menu
-       d3element.selectAll('.svg-tooltip').remove();*/
     };
 
     d3element.on("mouseover", mouseOverFunction);
@@ -175,56 +164,48 @@ console.log("test")
 
  /** A method to bind click events to an svg element */
  //just emits the node for other components to listen for
-  applyClickableBehaviour = (element, node: Node) =>  {
+  applyClickableBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     let d3element = d3.select(element);
-/*
-    let testT =() => {
-      console.log("clicked);");
-    };*/
-
-    function testT(){
-      console.log("test")
+    let svg = d3.select('svg');
+    let toggleMenu = ():void =>{
+      console.log(node);
+if(node['menu']==true) {
+  console.log(node['menu']);
+  this.nodeMenuController.toggleVisible(false);
+  node['menu'] = false;
+}else {
+  this.nodeMenuController.toggleVisible(true);
+  graph.nodes.map(node => node['menu'] = false);
+  node['menu'] = true;
+}
     };
 
-    let addMenu = ():void =>{
-      console.log(node.hovered);
-    //  if(!node.hovered) {
-       /* var fo = d3.select('.node-menu');
-        console.log(fo);
-        fo
-          .attr('x', node.x)
-          .attr('y', node.y)
-          .attr('width', '100%')
-        var div = fo.append('xhtml:div')
-          .html('<ul class="custom-menu"><li data-action = "first">First thing</li><li data-action = "second">Second thing</li><li data-action = "third">Third thing</li></ul>');
-*/               /* var foHeight = div[0][0].getBoundingClientRect().height;
-         fo.attr('height', foHeight);
-         d3element.insert('polygon', '.svg-tooltip')
-         .attr('points',"0,0 0," + foHeight + " " + foWidth + "," + foHeight + " " + foWidth + ",0 " + (t) + ",0 " + tip.w + "," + (-tip.h) + " " + (t/2) + ",0")
-         .attr('height', foHeight + tip.h)
-         .attr('width', foWidth)
-         .attr('fill', '#D8D8D8')
-         .attr('opacity', 0.75)
-         .attr('transform', 'translate(' + node.fx + ',' + node.fy + ')');*/
-  //    }
+    let decorateNodes = ():void =>{
+   /*   d3.selectAll('circle')
+        .data(graph.nodes)
+        .filter(getNeighborNodes) //this will pass each node in the graph to the function
+        .classed('connected', true);
+
+      //sets click coloring on current node
+      d3element.select("circle").classed("clicked", false);*/
     };
 
-    let clickedNode = {};
-    d3element.on("click",function(d) {
-      console.log(clickedNode);
-      if (node == clickedNode) {
-        //todo: collapse nodes
-        console.log("already clicked dummy");
-        //todo: probably want to clear this on mouseout of the menu
-         d3element.selectAll('.svg-tooltip').remove();
-      } else {
-        d3element.select("circle").classed("clicked", true);
-         this.nodeService.changeNode(node);
-        addMenu();
-        clickedNode = node;
-      }
+    let clickFunction = ():void => {
 
-    }.bind(this));
+      this.nodeService.changeNode(node);
+      toggleMenu();
+//todo: this may be less necessary with the menu opening
+      //decorateNodes();
+      d3.event.stopPropagation();
+    };
+
+    let clearMenu =():void =>{
+      graph.nodes.map(node => node['menu'] = false);
+      this.nodeMenuController.toggleVisible(false);
+    };
+
+    svg.on("click",clearMenu);
+    d3element.on("click",clickFunction);
   };
 
 

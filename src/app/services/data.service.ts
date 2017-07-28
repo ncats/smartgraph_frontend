@@ -17,6 +17,6 @@ export class DataService {
       .connect(DATA_URL)
       .map((response: MessageEvent): string => {
       return response.data;
-      });
+      }).share();
   }
 } // end class DataService

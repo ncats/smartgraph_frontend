@@ -6,10 +6,12 @@ import { D3Service, Node, ForceDirectedGraph } from '../';
 })
 export class ClickableDirective {
     @Input('clickableNode') node: Node;
+  @Input('draggableInGraph') graph: ForceDirectedGraph;
 
-    constructor(private d3Service: D3Service, private _element: ElementRef) { }
+
+  constructor(private d3Service: D3Service, private _element: ElementRef) { }
 
     ngOnInit() {
-        this.d3Service.applyClickableBehaviour(this._element.nativeElement, this.node);
+        this.d3Service.applyClickableBehaviour(this._element.nativeElement, this.node, this.graph);
     }
 }

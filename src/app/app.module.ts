@@ -20,7 +20,9 @@ import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
 import {WebWorkerService} from "./services/web-worker.service";
 import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
-import { NodeMenuComponent } from './visuals/shared/node-menu/node-menu.component';
+import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
+import {NodeMenuControllerService} from "./services/node-menu-controller.service";
+import {HistoryService} from "./services/history.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { NodeMenuComponent } from './visuals/shared/node-menu/node-menu.componen
     ...SHARED_VISUALS,
     ...D3_DIRECTIVES,
     NodeDetailsVisualComponent,
-    NodeMenuComponent
+    NodeMenuComponent,
+    NodeMenuHolderComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,9 @@ import { NodeMenuComponent } from './visuals/shared/node-menu/node-menu.componen
     NodeService,
     SearchService,
     WebWorkerService,
-    MessageService
+    MessageService,
+    HistoryService,
+    NodeMenuControllerService
   ],
   bootstrap: [AppComponent]
 })

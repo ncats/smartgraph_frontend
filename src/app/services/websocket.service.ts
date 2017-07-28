@@ -33,7 +33,6 @@ export class WebSocketService {
     let observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
-          console.log(data);
           ws.send(JSON.stringify(data));
         }
       }

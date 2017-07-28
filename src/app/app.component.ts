@@ -20,6 +20,7 @@ import * as TextEncoder from 'text-encoding';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   targetCtrl: FormControl;
   patternCtrl: FormControl;
@@ -37,10 +38,11 @@ export class AppComponent {
   patternSelected: boolean = false;
 
 
-  constructor(private dataService:DataService,
-              private nodeService:NodeService,
-              private searchService:SearchService,
-              private messageService: MessageService
+  constructor(
+    private dataService:DataService,
+    private nodeService:NodeService,
+    private searchService:SearchService,
+    private messageService: MessageService
   ) {
     this.targetCtrl = new FormControl();
     this.patternCtrl = new FormControl();
@@ -62,6 +64,9 @@ export class AppComponent {
         }
         case "lychiSearch": {
           this.lychiAutocompleteOptions.push(response.data);
+          break;
+        }
+        case "counts": {
           break;
         }
         default: {
@@ -186,13 +191,12 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.subscription = this.nodeService.clickednode$
+ /*   this.subscription = this.nodeService.clickednode$
       .subscribe(node => {
         this.clickedNode = node;
        // this.getSmiles(node);
-       // let message: Message = this.messageService.getMessage(node.id, "nodeclick");
-       // this.dataService.messages.next(message);
-      });
+
+      });*/
 
     this.targetCtrl.valueChanges.subscribe(value => {
       //forces selected option
