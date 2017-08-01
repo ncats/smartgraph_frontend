@@ -18,17 +18,10 @@ export class ForceDirectedGraph {
 
   public nodes: Node[] = [];
   public links: Link[] = [];
-  private historyService = new HistoryService();
 
   constructor(nodes, links, options: {width, height}) {
     this.nodes = nodes;
     this.links = links;
-    console.log("graph");
-/*    this.historyService.graphhistory$.subscribe(res =>{
-      console.log(res);
-      this.nodes = res.nodes;
-      this.links=res.links;
-    });*/
     this.initSimulation(options);
   }
 

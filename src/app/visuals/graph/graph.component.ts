@@ -45,22 +45,17 @@ public linksSubscription = Subscription;
               private historyService: HistoryService){ }
 
   ngOnInit() {
-    this.historyService.nodehistory$.subscribe(res =>{
-      console.log(res);
+    this.historyService.graphhistory$.subscribe(res =>{
       this.nodes = res.nodes;
+      this.links = res.links;
       if (this.graph) {
         this.graph.simulation.nodes(this.nodes);
+        this.graph.links = this.links;
+        this.graph.initLinks();
         this.graph.simulation.restart();
       }
     });
-    this.historyService.linkhistory$.subscribe(res =>{
-      console.log(res);
-      this.links = res.links;
-       if (this.graph) {
-       this.graph.links = this.links;
-       this.graph.initLinks();
-       }
-    });
+
     /** Receiving an initialized simulated graph from our custom d3 service */
     this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
     /** Binding change detection check on each tick
@@ -102,17 +97,6 @@ svg.append("defs").append("marker")
       .attr("fill", "#595959")
       .attr("stroke", "#FFFFFF")
   .attr("d", "M0,-5L10,0L0,5");
-  }
-
-  ngOnChanges(change) {
-    console.log("chanigni");
-   /* if (this.graph) {
-      this.graph.links = this.links;
-      this.graph.simulation.nodes(this.nodes);
-      this.graph.initLinks();
-      this.graph.simulation.restart();
-    }*/
-    this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
   }
 
   ngAfterViewInit() {

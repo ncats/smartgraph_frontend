@@ -28,8 +28,7 @@ export class AppComponent {
   title = 'smrtgraph';
   nodes:Node[] = [];
   links:Link[] = [];
-  nodeMap:Map<string, Node> = new Map();
-  linkMap:Map<string, Link> = new Map();
+
   searchTerm$ = new Subject<any>();
   subscription:Subscription;
   clickedNode:Node;
@@ -54,6 +53,10 @@ export class AppComponent {
   *  this is the main subscription pipeline that reads the websocket data
   *  all data comes through here, and must be passed on based on the response type
    */
+
+
+  //todo: fix above description
+    //todo: set all subscriptions to be variable to close on destroy
     this.dataService.messages.subscribe(msg => {
       //console.log(msg);
       let response = JSON.parse(msg);
@@ -78,92 +81,7 @@ export class AppComponent {
           if (records.length == 0) {
             console.error(response);
           } else {
-            for (let r of records) {
-              //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
-              if (r.start && r.start.identity) {
-                this.nodeMap.set(r.start.identity.low, this.makeNode(r.start.identity.low, r.start));
-              }
-              if (r.end && r.end.identity) {
-                this.nodeMap.set(r.end.identity.low, this.makeNode(r.end.identity.low, r.end));
-              }
-              //this covers the relationship itself, and creates the link object
-              if (r.segments) {
-                for (let l of r.segments) {
-                  //make link
-                  let start = this.makeNode(l.start.identity.low, l.start);
-                  let end = this.makeNode(l.end.identity.low, l.end);
-                  start.linkCount++;
-                  end.linkCount++;
-                  //  this.nodes.
-                  //todo make sure link doesn't already exist
-                  let id = start.id.toString().concat(end.id.toString());
-                  let newLink = this.linkMap.get(id);
-                  if (newLink) {
-                    if (newLink.id == id) {
-                      console.error("they're the same!");
-                      console.log(newLink.type);
-                      console.log(r.type);
-                    }
-                  } else {
-                    newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
-                    this.linkMap.set(id, newLink);
-                  }
-                  this.nodeMap.set(l.start.identity.low, start);
-                  this.nodeMap.set(l.end.identity.low, end);
-                }
-              } else {
-                //this covers nodes from a nearest neighbor search
-                if (!r.start && !r.end) {
-                  this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
-                } else {
-                  //this makes the links from a nearest node search
-                  //once the graph has uuids, this will be much easier
-                  let start = this.makeNode(r.start.low, {});
-                  let end = this.makeNode(r.end.low, {});
-                  start.linkCount++;
-                  end.linkCount++;
-                  //todo make sure link doesn't already exist
-                  let id = start.id.toString().concat(end.id.toString());
-                  let newLink = this.linkMap.get(id);
-                  if (newLink) {
-                    if (newLink.id == id) {
-                      //      console.error("they're the same!");
-                      //      console.log(newLink.type);
-                      //     console.log(r.type);
-                    }
-                  } else {
-                    newLink = new Link(start.id, end.id, r.type, r.properties, id);
-                    this.linkMap.set(id, newLink);
-                  }
-                  this.nodeMap.set(r.start.low, start);
-                  this.nodeMap.set(r.end.low, end);
-                }
-              }
-
-            }
-            let newNodes = [...this.nodeMap.values()].sort((n1,n2) => {
-              if (n1.linkCount > n2.linkCount) {
-                return 1;
-              }
-
-              if (n1.linkCount < n2.linkCount) {
-                return -1;
-              }
-
-              return 0;
-            });
-
-            const diff = {
-              removed: this.nodes.filter(node => newNodes.indexOf(node) === -1),
-              added: newNodes.filter(node => this.nodes.indexOf(node) === -1)
-            };
-
-            diff.removed.forEach(node => this.nodes.splice(this.nodes.indexOf(node), 1));
-            diff.added.forEach(node => this.nodes.push(node));
-
-            this.links = [...this.linkMap.values()];
-            this.historyService.setNodes(this.nodes);
-            this.historyService.setLinks(this.links);
+            this.historyService.changeGraph(records, response.type);
           }
         }
       }
@@ -193,11 +111,6 @@ export class AppComponent {
         console.log(results);
         this.dataService.messages.next(results);
       });
-  }
-
-  //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
-  makeNode(id:string, data:any):Node {
-    return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data, data.labels);
   }
 
   //searches to see if a link exists. if it does, it returns the link with the sent data merged, if it doesn't exist, it makes a new link with the data
@@ -264,10 +177,7 @@ export class AppComponent {
         break;
       }
     }
-    this.nodeMap.clear();
-    this.linkMap.clear();
-    this.links = [];
-    this.nodes = [];
+    this.historyService.clearGraph();
     let query: Message = this.messageService.getMessage(value, type);
     console.log(query);
     this.dataService.messages.next(query);
@@ -280,10 +190,7 @@ export class AppComponent {
         lychi: this.patternCtrl.value
       };
       console.log(value);
-      this.nodeMap.clear();
-      this.linkMap.clear();
-      this.links = [];
-      this.nodes = [];
+      this.historyService.clearGraph();
       let query: Message = this.messageService.getMessage(value, "path");
       console.log(query);
       this.dataService.messages.next(query);
@@ -296,7 +203,7 @@ export class AppComponent {
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-    this.subscription.unsubscribe();
+   // this.subscription.unsubscribe();
   }
 
   findId(id:string):Node {

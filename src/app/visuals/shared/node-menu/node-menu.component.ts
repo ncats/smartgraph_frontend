@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {Message, MessageService} from "../../../services/message.service";
 import {DataService} from "../../../services/data.service";
 import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
+import {HistoryService} from "../../../services/history.service";
 
 @Component({
   selector: '[nodeMenu]',
@@ -49,7 +50,8 @@ export class NodeMenuComponent{
    private nodeService:NodeService,
   private dataService:DataService,
   private messageService: MessageService,
-   private nodeMenuController : NodeMenuControllerService
+   private nodeMenuController : NodeMenuControllerService,
+   private historyService: HistoryService
  ) {
    this.subscription = this.nodeService.clickednode$
      .subscribe(node => {
@@ -82,14 +84,15 @@ export class NodeMenuComponent{
   ngOnInit() {
   }
 
-  expand(type){
-    let message: Message = this.messageService.getMessage(this.clickedNode.id, "nodeclick", type);
+  expand(label){
+    let message: Message = this.messageService.getMessage(this.clickedNode.id, "nodeclick", label);
     this.dataService.messages.next(message);
-    this.expanded[type.toLowerCase()]= true;
+    this.expanded[label.toLowerCase()]= true;
   }
 
-  collapse(type){
-    console.log(type);
-    this.expanded[type.toLowerCase()]= false;
+  collapse(label){
+    console.log(label);
+    this.historyService.nodeCollapse(this.clickedNode, label);
+    this.expanded[label.toLowerCase()]= false;
   }
 }
