@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 
 import {Subject} from "rxjs";
 import * as TextEncoder from 'text-encoding';
+import {HistoryService} from "./services/history.service";
 
 
 @Component({
@@ -42,7 +43,8 @@ export class AppComponent {
     private dataService:DataService,
     private nodeService:NodeService,
     private searchService:SearchService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private historyService: HistoryService
   ) {
     this.targetCtrl = new FormControl();
     this.patternCtrl = new FormControl();
@@ -139,7 +141,18 @@ export class AppComponent {
               }
 
             }
-            let newNodes = [...this.nodeMap.values()];
+            let newNodes = [...this.nodeMap.values()].sort((n1,n2) => {
+              if (n1.linkCount > n2.linkCount) {
+                return 1;
+              }
+
+              if (n1.linkCount < n2.linkCount) {
+                return -1;
+              }
+
+              return 0;
+            });
+
             const diff = {
               removed: this.nodes.filter(node => newNodes.indexOf(node) === -1),
               added: newNodes.filter(node => this.nodes.indexOf(node) === -1)
@@ -149,6 +162,8 @@ export class AppComponent {
             diff.added.forEach(node => this.nodes.push(node));
 
             this.links = [...this.linkMap.values()];
+            this.historyService.setNodes(this.nodes);
+            this.historyService.setLinks(this.links);
           }
         }
       }

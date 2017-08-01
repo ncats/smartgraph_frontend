@@ -1,10 +1,14 @@
 import {EventEmitter} from '@angular/core';
 import {Link, Node} from './';
 import * as d3 from 'd3';
+import {count} from "rxjs/operator/count";
+import {HistoryService} from "../../services/history.service";
 
 const FORCES = {
-  LINKS: 1 / 50,
+  LINKS: 1 / 5,
+  //gets rid of overlap [0,1]
   COLLISION: .5,
+  // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
   CHARGE: -.5
 };
 
@@ -14,10 +18,17 @@ export class ForceDirectedGraph {
 
   public nodes: Node[] = [];
   public links: Link[] = [];
+  private historyService = new HistoryService();
 
   constructor(nodes, links, options: {width, height}) {
     this.nodes = nodes;
     this.links = links;
+    console.log("graph");
+/*    this.historyService.graphhistory$.subscribe(res =>{
+      console.log(res);
+      this.nodes = res.nodes;
+      this.links=res.links;
+    });*/
     this.initSimulation(options);
   }
 
@@ -35,7 +46,8 @@ export class ForceDirectedGraph {
     this.simulation.force('link',
       d3.forceLink(this.links)
         .id(d => d['id'])
-        .strength(FORCES.LINKS)
+        //.strength(FORCES.LINKS)
+        .distance(155)
     );
     //this is necessary to bind the link data to the graph. The node is attached by the hover directive
     this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
@@ -52,6 +64,7 @@ export class ForceDirectedGraph {
       this.simulation = d3.forceSimulation()
         .force("charge",
           d3.forceManyBody()
+            // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
             .strength(d => FORCES.CHARGE * d['r'])
         )
         .force("collide",
@@ -68,7 +81,7 @@ export class ForceDirectedGraph {
 
       this.initNodes();
       this.initLinks();
-      this.simulation.stop();
+    //  this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */

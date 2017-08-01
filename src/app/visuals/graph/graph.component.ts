@@ -1,7 +1,8 @@
 import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
-import {D3Service, ForceDirectedGraph, Node, NodeService} from '../../d3';
+import {D3Service, ForceDirectedGraph, Node, NodeService, Link} from '../../d3';
 import {Subscription} from "rxjs";
 import * as d3 from 'd3';
+import {HistoryService} from "../../services/history.service";
 
 
 @Component({
@@ -22,8 +23,13 @@ import * as d3 from 'd3';
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent {
-  @Input('nodes') nodes;
-  @Input('links') links;
+/*  @Input('nodes') nodes;
+  @Input('links') links;*/
+public nodesSubscription = Subscription;
+public linksSubscription = Subscription;
+  public nodes: Node[] = [];
+  public links: Link[] = [];
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -35,9 +41,26 @@ export class GraphComponent {
   constructor(private d3Service: D3Service,
               private ref: ChangeDetectorRef,
               private el: ElementRef,
-              private nodeService: NodeService){}
+              private nodeService: NodeService,
+              private historyService: HistoryService){ }
 
   ngOnInit() {
+    this.historyService.nodehistory$.subscribe(res =>{
+      console.log(res);
+      this.nodes = res.nodes;
+      if (this.graph) {
+        this.graph.simulation.nodes(this.nodes);
+        this.graph.simulation.restart();
+      }
+    });
+    this.historyService.linkhistory$.subscribe(res =>{
+      console.log(res);
+      this.links = res.links;
+       if (this.graph) {
+       this.graph.links = this.links;
+       this.graph.initLinks();
+       }
+    });
     /** Receiving an initialized simulated graph from our custom d3 service */
     this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
     /** Binding change detection check on each tick
@@ -82,12 +105,14 @@ svg.append("defs").append("marker")
   }
 
   ngOnChanges(change) {
-    if (this.graph) {
+    console.log("chanigni");
+   /* if (this.graph) {
       this.graph.links = this.links;
       this.graph.simulation.nodes(this.nodes);
       this.graph.initLinks();
       this.graph.simulation.restart();
-    }
+    }*/
+    this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
   }
 
   ngAfterViewInit() {

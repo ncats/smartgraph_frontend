@@ -20,12 +20,12 @@ export class NodeMenuHolderComponent{}
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
  <md-list class="node-menu">
-<button  md-menu-item [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
- <button md-menu-item (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+<button  md-menu-item *ngIf="clickedNode.properties?.chembl_id" [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
+ <button md-menu-item *ngIf="!expanded.target"(click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+ <button md-menu-item *ngIf="expanded.target"(click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
  <button md-menu-item (click)="expand('Compound')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>
  <button md-menu-item (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
  <button md-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
- <button md-menu-item (click)="addToPath()">Add to Path</button>
 </md-list>
  
 </xhtml:div>
@@ -39,6 +39,11 @@ export class NodeMenuComponent{
   menuSubscription:Subscription;
   menuToggle:boolean= false;
   counts: any ={total:0};
+  expanded: Object ={
+    target:false,
+  lychi: false,
+  pattern: false
+  };
 
  constructor(
    private nodeService:NodeService,
@@ -68,22 +73,23 @@ export class NodeMenuComponent{
    });
 
    this.menuSubscription = this.nodeMenuController.clickedmenu$.subscribe(res =>{
-     console.log(res);
+     console.log(this);
      this.menuToggle = res;
    })
  }
 
 
   ngOnInit() {
-console.log(this);
   }
 
   expand(type){
     let message: Message = this.messageService.getMessage(this.clickedNode.id, "nodeclick", type);
     this.dataService.messages.next(message);
+    this.expanded[type.toLowerCase()]= true;
   }
 
-  addToPath(){
-    console.log("add to path");
+  collapse(type){
+    console.log(type);
+    this.expanded[type.toLowerCase()]= false;
   }
 }
