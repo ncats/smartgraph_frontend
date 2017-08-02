@@ -15,14 +15,14 @@ import { GraphComponent } from './visuals/graph/graph.component';
 import { SHARED_VISUALS } from './visuals/shared';
 
 import {WebSocketService} from "./services/websocket.service";
-import {DataService} from "./services/data.service";
+import {DataConnectionService} from "./services/data-connection.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
 import {WebWorkerService} from "./services/web-worker.service";
 import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
 import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
-import {HistoryService} from "./services/history.service";
+import {GraphDataService} from "./services/graph-data.service";
 
 @NgModule({
   declarations: [
@@ -45,13 +45,13 @@ import {HistoryService} from "./services/history.service";
   ],
   providers: [
     WebSocketService,
-    DataService,
+    DataConnectionService,
     D3Service,
     NodeService,
     SearchService,
     WebWorkerService,
     MessageService,
-    HistoryService,
+    GraphDataService,
     NodeMenuControllerService
   ],
   bootstrap: [AppComponent]

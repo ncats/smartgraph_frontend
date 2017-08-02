@@ -2,7 +2,7 @@ import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDet
 import {D3Service, ForceDirectedGraph, Node, NodeService, Link} from '../../d3';
 import {Subscription} from "rxjs";
 import * as d3 from 'd3';
-import {HistoryService} from "../../services/history.service";
+import {GraphDataService} from "../../services/graph-data.service";
 
 
 @Component({
@@ -42,10 +42,10 @@ public linksSubscription = Subscription;
               private ref: ChangeDetectorRef,
               private el: ElementRef,
               private nodeService: NodeService,
-              private historyService: HistoryService){ }
+              private graphDataService: GraphDataService){ }
 
   ngOnInit() {
-    this.historyService.graphhistory$.subscribe(res =>{
+    this.graphDataService.graphhistory$.subscribe(res =>{
       this.nodes = res.nodes;
       this.links = res.links;
       if (this.graph) {

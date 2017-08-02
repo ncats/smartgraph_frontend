@@ -1,8 +1,6 @@
 import {EventEmitter} from '@angular/core';
 import {Link, Node} from './';
 import * as d3 from 'd3';
-import {count} from "rxjs/operator/count";
-import {HistoryService} from "../../services/history.service";
 
 const FORCES = {
   LINKS: 1 / 5,

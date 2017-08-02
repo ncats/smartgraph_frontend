@@ -31,7 +31,7 @@ export class MessageService {
         params = {qParam: term + '.*'};
         break;
       }
-      case "nodeclick":
+      case "expand":
         switch(properties){
           //todo: switch to parameterized  constraints for 'n'
           case "Target": {

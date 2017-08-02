@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
-import {Node, Target, Pattern, Lychi, Link, NodeService} from './d3';
-import {DataService} from "./services/data.service";
+import {Node, Link, NodeService} from './d3';
+import {DataConnectionService} from "./services/data-connection.service";
 import {Subscription} from 'rxjs/Subscription';
 import {SearchService} from "./services/search.service";
 import {WebWorkerService} from "./services/web-worker.service";
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 
 import {Subject} from "rxjs";
 import * as TextEncoder from 'text-encoding';
-import {HistoryService} from "./services/history.service";
+import { GraphDataService} from "./services/graph-data.service";
 
 
 @Component({
@@ -39,11 +39,11 @@ export class AppComponent {
 
 
   constructor(
-    private dataService:DataService,
+    private dataConnectionService:DataConnectionService,
     private nodeService:NodeService,
     private searchService:SearchService,
     private messageService: MessageService,
-    private historyService: HistoryService
+    private graphDataService: GraphDataService
   ) {
     this.targetCtrl = new FormControl();
     this.patternCtrl = new FormControl();
@@ -57,7 +57,7 @@ export class AppComponent {
 
   //todo: fix above description
     //todo: set all subscriptions to be variable to close on destroy
-    this.dataService.messages.subscribe(msg => {
+    this.dataConnectionService.messages.subscribe(msg => {
       //console.log(msg);
       let response = JSON.parse(msg);
      // console.log(response);
@@ -74,16 +74,7 @@ export class AppComponent {
         case "counts": {
           break;
         }
-        default: {
-          //  let bytes = encoder.encode(msg);
-          // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
-          let records = response.data._fields;
-          if (records.length == 0) {
-            console.error(response);
-          } else {
-            this.historyService.changeGraph(records, response.type);
-          }
-        }
+
       }
     });
 
@@ -109,7 +100,7 @@ export class AppComponent {
         this.autocompleteOptions=[];
         this.lychiAutocompleteOptions=[];
         console.log(results);
-        this.dataService.messages.next(results);
+        this.dataConnectionService.messages.next(results);
       });
   }
 
@@ -177,10 +168,10 @@ export class AppComponent {
         break;
       }
     }
-    this.historyService.clearGraph();
+    this.graphDataService.clearGraph();
     let query: Message = this.messageService.getMessage(value, type);
     console.log(query);
-    this.dataService.messages.next(query);
+    this.dataConnectionService.messages.next(query);
   }
 
   shortestPath(){
@@ -190,10 +181,10 @@ export class AppComponent {
         lychi: this.patternCtrl.value
       };
       console.log(value);
-      this.historyService.clearGraph();
+      this.graphDataService.clearGraph();
       let query: Message = this.messageService.getMessage(value, "path");
       console.log(query);
-      this.dataService.messages.next(query);
+      this.dataConnectionService.messages.next(query);
     }
   }
 

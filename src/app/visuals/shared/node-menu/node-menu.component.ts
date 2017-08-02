@@ -2,9 +2,9 @@ import {Component, OnInit, Input, ViewChild, ViewContainerRef} from '@angular/co
 import {NodeService} from "../../../d3/models/node.service";
 import {Subscription} from "rxjs";
 import {Message, MessageService} from "../../../services/message.service";
-import {DataService} from "../../../services/data.service";
+import {DataConnectionService} from "../../../services/data-connection.service";
 import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
-import {HistoryService} from "../../../services/history.service";
+import {GraphDataService} from "../../../services/graph-data.service";
 
 @Component({
   selector: '[nodeMenu]',
@@ -48,25 +48,24 @@ export class NodeMenuComponent{
 
  constructor(
    private nodeService:NodeService,
-  private dataService:DataService,
+  private dataConnectionService:DataConnectionService,
   private messageService: MessageService,
    private nodeMenuController : NodeMenuControllerService,
-   private historyService: HistoryService
+   private graphDataService: GraphDataService
  ) {
    this.subscription = this.nodeService.clickednode$
      .subscribe(node => {
        this.clickedNode = node;
        if(this.clickedNode.id) {
          this.counts={total:0};
-         console.log(this.clickedNode);
          let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts");
-         this.dataService.messages.next(message);
+         this.dataConnectionService.messages.next(message);
 
          // this.getSmiles(node);
        }
      });
 
-   this.dataService.messages.subscribe(msg => {
+   this.dataConnectionService.messages.subscribe(msg => {
      let response = JSON.parse(msg);
      if(this.clickedNode.id && response.type =="counts") {
        this.counts[response.data._fields[0][0].toLowerCase()] = response.data._fields[1].low;
@@ -75,7 +74,6 @@ export class NodeMenuComponent{
    });
 
    this.menuSubscription = this.nodeMenuController.clickedmenu$.subscribe(res =>{
-     console.log(this);
      this.menuToggle = res;
    })
  }
@@ -84,15 +82,15 @@ export class NodeMenuComponent{
   ngOnInit() {
   }
 
-  expand(label){
-    let message: Message = this.messageService.getMessage(this.clickedNode.id, "nodeclick", label);
-    this.dataService.messages.next(message);
+  expand(label):void{
+   this.graphDataService.nodeExpand(this.clickedNode.id, label);
+//todo: this option is not node specific -- change to map
     this.expanded[label.toLowerCase()]= true;
   }
 
-  collapse(label){
-    console.log(label);
-    this.historyService.nodeCollapse(this.clickedNode, label);
+  collapse(label):void{
+    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.id});
+//todo: this option is not node specific -- change to map
     this.expanded[label.toLowerCase()]= false;
   }
 }

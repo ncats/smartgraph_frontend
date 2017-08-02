@@ -3,7 +3,6 @@ import {Node, Link, ForceDirectedGraph} from './';
 import * as d3 from 'd3';
 import {NodeService} from "./models/node.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
-import {HistoryService} from "../services/history.service";
 
 @Injectable()
 export class D3Service {
@@ -14,7 +13,6 @@ export class D3Service {
 
   constructor(
     private nodeService : NodeService,
-    private historyService : HistoryService,
     private nodeMenuController : NodeMenuControllerService
   ) {  }
 

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/filter';
 const DATA_URL = 'ws://localhost:1337';
 
 @Injectable()
-export class DataService {
+export class DataConnectionService {
   public messages: Subject<any> = new Subject<any>();
 
   constructor(private wsService: WebSocketService) {
