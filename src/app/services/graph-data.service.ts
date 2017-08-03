@@ -138,9 +138,13 @@ constructor(
       return 0;
     });
 
+    let newLinks = [...this.linkMap.values()];
+
     const diff = {
-      removed: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
-      added: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1)
+      removedNodes: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
+      addedNodes: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1),
+      removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
+      addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
 
     if(this.histData){
@@ -150,8 +154,10 @@ constructor(
           //todo: this should always exist since the histData.event object is initialized with an empty diff object
           if(eventHistory){
             //push added or removed nodes
-            this.histData.event.diff.added = this.histData.event.diff.added.concat(diff.added);
-            this.histData.event.diff.removed = this.histData.event.diff.removed.concat(diff.removed);
+            this.histData.event.diff.addedNodes = this.histData.event.diff.addedNodes.concat(diff.addedNodes);
+            this.histData.event.diff.removedNodes = this.histData.event.diff.removedNodes.concat(diff.removedNodes);
+            this.histData.event.diff.addedLinks = this.histData.event.diff.addedLinks.concat(diff.addedLinks);
+            this.histData.event.diff.removedLinks = this.histData.event.diff.removedLinks.concat(diff.removedLinks);
           }
       }else{
         let events = new Map();
@@ -160,10 +166,12 @@ constructor(
       }
 
     }
-    diff.removed.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
-    diff.added.forEach(node => this.graph.nodes.push(node));
+    diff.removedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
+    diff.addedNodes.forEach(node => this.graph.nodes.push(node));
+    diff.removedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
+    diff.addedLinks.forEach(link => this.graph.links.push(link));
 
-    this.graph.links = [...this.linkMap.values()];
+   // this.graph.links = newLinks;
   //  this.historyService.setNodes(this.nodes);
    // this.historyService.setLinks(this.links);
 
@@ -210,8 +218,11 @@ constructor(
     let event: Event = {
       type: "expand",
       label: properties,
-      diff: {added:[],
-              removed:[]}
+      diff: {addedNodes:[],
+              removedNodes:[],
+              addedLinks:[],
+              removedLinks:[]
+      }
     };
     this.histData= {node:id, event: event};
     this.dataConnectionService.messages.next(message);
@@ -224,17 +235,16 @@ constructor(
 //get the expand object to delete the nodes added
     let diff = this.historyMap.get(node.id).get('expand-' + node.labels[0]);
     console.log(diff);
-    diff.added.forEach(node => {
-      this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-      let removedLinks = this.graph.links.filter(link => link.source.id == node.id || link.target.id == node.id);
-      removedLinks.forEach(link => {
-        console.log(link);
-        this.graph.links.splice(this.graph.links.indexOf(link), 1);
-      });
-      });
+    diff.addedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
+    diff.addedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
     //diff.added.forEach(node => this.graph.links.splice(this.graph.links.indexOf(node), 1));
     this._graphHistorySource.next(this.graph);
 
+/*    let removedLinks = this.graph.links.filter(link => link.source.id == node.id || link.target.id == node.id);
+    removedLinks.forEach(link => {
+      console.log(link);
+      this.graph.links.splice(this.graph.links.indexOf(link), 1);
+    });*/
     /*    const diff = {
           removedLinks: this.graph.links.filter(link => link.source.id == node.id || link.target.id == node.id),
         };*/
