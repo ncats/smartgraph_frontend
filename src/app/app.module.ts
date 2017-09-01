@@ -23,6 +23,9 @@ import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual
 import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
 import {GraphDataService} from "./services/graph-data.service";
+import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
+import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import {GraphDataService} from "./services/graph-data.service";
     ...D3_DIRECTIVES,
     NodeDetailsVisualComponent,
     NodeMenuComponent,
-    NodeMenuHolderComponent
+    NodeMenuHolderComponent,
+    SmrtgraphMenuComponent,
+    SmrtgraphSearchComponent
   ],
   imports: [
     BrowserModule,

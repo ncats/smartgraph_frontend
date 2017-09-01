@@ -46,8 +46,11 @@ constructor(
 
   this.dataConnectionService.messages.subscribe(msg => {
   let response = JSON.parse(msg);
+    console.log(response);
   switch(response.type) {
     case 'expand':
+    case 'targets':
+    case 'path':
     case 'load': {
       //  let bytes = encoder.encode(msg);
       // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
