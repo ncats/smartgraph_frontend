@@ -6,24 +6,26 @@
       </md-input-container>
       <div fxFlex="30">
         <label>Max Distance</label>
-        <md-slider fxLayoutAlign="center center"
+        <md-slider mdInput fxLayoutAlign="center center"
                    class="example-margin"
                    aria-label = "max distance"
                    [max]="10"
-                   [min]="0"
+                   [min]="1"
                    [step]="1"
                    [thumb-label]="true"
+                   [formControl]="distanceCtrl"
                    [value]="5">
         </md-slider>
         <br>
         <label>Confidence Level</label>
-        <md-slider fxLayoutAlign="center center"
+        <md-slider mdInput fxLayoutAlign="center center"
                    aria-label="confidence level"
                    class="example-margin"
                    [max]="100"
-                   [min]="0"
+                   [min]="1"
                    [step]="1"
                    [thumb-label]="true"
+                   [formControl]="confidenceCtrl"
                    [value]="50">
         </md-slider>
         <br>

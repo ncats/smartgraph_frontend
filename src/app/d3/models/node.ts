@@ -12,14 +12,24 @@ export class Node implements d3.SimulationNodeDatum {
   fx?: number | null;
   fy?: number | null;
 
+  uuid: string;
   id: string;
   properties: {};
   labels?: string[];
   linkCount: number = 0;
+  expanded: Object ={
+    target:false,
+    lychi: false,
+    pattern: false
+  }
+
+  //Todo: may not want so many extraneous properties to set styles
   hovered?: boolean = false;
+  startNode?: boolean = false;
+  endNode?: boolean = false;
 
   constructor(id, properties, labels, linkCount?) {
-   // this.id = uuid.v4();
+    this.uuid = uuid.v4();
     this.id = id;
     this.properties = properties;
     this.labels = labels;

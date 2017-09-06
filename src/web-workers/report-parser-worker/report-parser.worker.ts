@@ -29,6 +29,7 @@ try {
 
 // Worker API
 onmessage = function ( event: any ) {
+  console.log(event);
   workerProcessor(event, ( _result: any ) => {
 
   //  const result: string = ( typeof _result !== 'string') ? JSON.stringify(_result) : _result;

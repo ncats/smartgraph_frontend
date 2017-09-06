@@ -103,20 +103,7 @@ export class AppComponent {
         this.dataConnectionService.messages.next(results);
       });
   }
-
-  //searches to see if a link exists. if it does, it returns the link with the sent data merged, if it doesn't exist, it makes a new link with the data
-  updateLink(id:string, type:any, properties:any) {
-    //  return this.linkMap.get(id) ? Object.assign(this.linkMap.get(id), data) : new Link(id, data, data.labels);
-  }
-
   ngOnInit() {
- /*   this.subscription = this.nodeService.clickednode$
-      .subscribe(node => {
-        this.clickedNode = node;
-       // this.getSmiles(node);
-
-      });*/
-
     this.targetCtrl.valueChanges.subscribe(value => {
       //forces selected option
       //todo: this doesn't seem very efficient
@@ -174,34 +161,8 @@ export class AppComponent {
     this.dataConnectionService.messages.next(query);
   }
 
-  shortestPath(){
-    if(this.targetCtrl && this.patternCtrl){
-      let value = {
-        target:this.targetCtrl.value,
-        lychi: this.patternCtrl.value
-      };
-      console.log(value);
-      this.graphDataService.clearGraph();
-      let query: Message = this.messageService.getMessage(value, "path");
-      console.log(query);
-      this.dataConnectionService.messages.next(query);
-    }
-  }
-
-  displayFn(opt: any): string {
-    return opt ? opt.display : opt;
-  }
-
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
    // this.subscription.unsubscribe();
-  }
-
-  findId(id:string):Node {
-    return this.nodes.find(x => x.id == id);
-  }
-
-  findIndex(id:string):Number {
-    return this.nodes.findIndex(x => x.id == id);
   }
 }

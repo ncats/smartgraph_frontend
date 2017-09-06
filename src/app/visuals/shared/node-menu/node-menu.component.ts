@@ -22,11 +22,17 @@ export class NodeMenuHolderComponent{}
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
  <md-list class="node-menu">
 <button  md-menu-item *ngIf="clickedNode.properties?.chembl_id" [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
- <button md-menu-item *ngIf="!expanded.target"(click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
- <button md-menu-item *ngIf="expanded.target"(click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
- <button md-menu-item (click)="expand('Compound')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>
- <button md-menu-item (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+ <button md-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+ <button md-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
+ <button md-menu-item *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>
+  <button md-menu-item *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
+ <button md-menu-item *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+  <button md-menu-item *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
  <button md-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
+<!--
+//todo: collapse all show/hide logic
+ <button md-menu-item (click)="collapse('All')">Collapse All</button>
+-->
 </md-list>
  
 </xhtml:div>
@@ -40,11 +46,6 @@ export class NodeMenuComponent{
   menuSubscription:Subscription;
   menuToggle:boolean= false;
   counts: any ={total:0};
-  expanded: Object ={
-    target:false,
-  lychi: false,
-  pattern: false
-  };
 
  constructor(
    private nodeService:NodeService,
@@ -85,12 +86,12 @@ export class NodeMenuComponent{
   expand(label):void{
    this.graphDataService.nodeExpand(this.clickedNode.id, label);
 //todo: this option is not node specific -- change to map
-    this.expanded[label.toLowerCase()]= true;
+    this.clickedNode.expanded[label.toLowerCase()]= true;
   }
 
   collapse(label):void{
     this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.id});
 //todo: this option is not node specific -- change to map
-    this.expanded[label.toLowerCase()]= false;
+    this.clickedNode.expanded[label.toLowerCase()]= false;
   }
 }

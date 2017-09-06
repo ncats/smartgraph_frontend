@@ -165,6 +165,7 @@ export class D3Service {
   applyClickableBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     let d3element = d3.select(element);
     let svg = d3.select('svg');
+
     let toggleMenu = ():void =>{
       console.log(node);
 if(node['menu']==true) {
@@ -176,6 +177,7 @@ if(node['menu']==true) {
   graph.nodes.map(node => node['menu'] = false);
   node['menu'] = true;
 }
+      d3.event.stopPropagation();
     };
 
     let decorateNodes = ():void =>{
@@ -189,17 +191,24 @@ if(node['menu']==true) {
     };
 
     let clickFunction = ():void => {
+      console.log("click");
+      console.log(node);
+
+
+      //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
+
 
       this.nodeService.changeNode(node);
       toggleMenu();
 //todo: this may be less necessary with the menu opening
       //decorateNodes();
-      d3.event.stopPropagation();
     };
 
     let clearMenu =():void =>{
+      console.log("click on svg");
       graph.nodes.map(node => node['menu'] = false);
       this.nodeMenuController.toggleVisible(false);
+      d3.event.stopPropagation();
     };
 
     svg.on("click",clearMenu);

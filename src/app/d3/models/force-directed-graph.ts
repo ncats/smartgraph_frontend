@@ -3,11 +3,11 @@ import {Link, Node} from './';
 import * as d3 from 'd3';
 
 const FORCES = {
-  LINKS: 1 / 5,
+  LINKS: 1 / 50,
   //gets rid of overlap [0,1]
-  COLLISION: .5,
+  COLLISION: 1,
   // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
-  CHARGE: -.5
+  CHARGE: -2
 };
 
 export class ForceDirectedGraph {

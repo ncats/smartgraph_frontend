@@ -6,7 +6,7 @@ export class MessageService {
   constructor() {
   }
 
-  getMessage(term:any, type:string, properties?:string):Message {
+  getMessage(term:any, type:string, properties?:any):Message {
     let msg: string;
     let params: {};
     switch (type) {
@@ -94,7 +94,7 @@ export class MessageService {
       case "path":
       {
         console.log(term);
-        let levels = 10;
+        let levels = properties.distance;
         //msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
 
         msg = 'MATCH p=shortestPath((t)-[r:REGULATES*..'+levels+']->(q:Target)) WHERE t.chembl_id IN {start} AND q.chembl_id IN {end} AND q.chembl_id <> t.chembl_id return p';

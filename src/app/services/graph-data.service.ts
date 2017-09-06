@@ -3,9 +3,13 @@ import {Subject} from "rxjs";
 import {Node, Link} from '../d3';
 import {Message, MessageService} from "./message.service";
 import {DataConnectionService} from "./data-connection.service";
+/*
+import {WebWorkerService} from "./services/web-worker.service";
+*/
+
 
 export interface Event {
-  type:string;
+//  type:string;
   label:string;
   diff:Object;
 }
@@ -18,7 +22,7 @@ graph ={
   links:[]
 };
 
-histData:any;
+eventData:any;
 
 history =[];
   // Observable navItem source
@@ -28,30 +32,39 @@ history =[];
   nodeMap:Map<string, Node> = new Map();
   linkMap:Map<string, Link> = new Map();
   historyMap:Map<string, any> = new Map();
-  eventMap:Map<string, any> = new Map();
-  // Observable navItem stream
-  nodehistory$ = this._nodeHistorySource.asObservable();
-  linkhistory$ = this._linkHistorySource.asObservable();
   graphhistory$ = this._graphHistorySource.asObservable();
-/*
-  // service command
-  nodeClick(node:String) {
-    this.nodeHistory.push(node);
-      this._nodeHistorySource.next(this.nodeHistory);
-  }*/
+  originalEvent: string;
+
+
 constructor(
   private dataConnectionService:DataConnectionService,
-  private messageService: MessageService
+  private messageService: MessageService,
+ // private webWorkerService: WebWorkerService
 ){
+
+ //  let decoder = new TextDecoder();
+
+  //todo move this to the websocket return- a string is alread given, it needs to be sorted and an array returned that can be converted here into classed objects
+  //using web workers is an interesting idea- to offload the parsing of the message, but it does not pass full objects, esp ones with methods back
+  //the array buffer idea could be used straight from the websocket however to make a first pass at organizing the data
+  //the returned data can then be converted to Node or Link classes to have the built in scaling functions
+  //also note that the link object seems to work better with Node classes, rather than Node ids
+  //todo: this returns a string, will need to be converted to objects, from here, the diff needs to be created, saved in history and passed to the graph
+/*  this.webWorkerService.reportParser.onmessage = (message) => {
+    //todo: this kind of sucks --- see if it is any faster than the above version
+    this.nodes = JSON.parse(decoder.decode(message.data)).nodes.map(item => new Node(item.id, item.properties, item.labels, item.linkCount));
+    this.links = JSON.parse(decoder.decode(message.data)).links.map(item => new Link(item.source, item.target, item.properties));
+  };*/
 
   this.dataConnectionService.messages.subscribe(msg => {
   let response = JSON.parse(msg);
-    console.log(response);
-  switch(response.type) {
+  //  console.log(response);
+    switch(response.type) {
     case 'expand':
     case 'targets':
     case 'path':
     case 'load': {
+      this.originalEvent = response.type;
       //  let bytes = encoder.encode(msg);
       // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
       let records = response.data._fields;
@@ -62,10 +75,16 @@ constructor(
       }
       break;
     }
+    case 'done':{
+      console.log("done");
+      this.makeGraph(response.type);
+    }
 }
 });
 }
-  parseRecords(records, event:any){
+  parseRecords(records, event:any) {
+  //  console.log(event);
+    //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
     for (let r of records) {
       //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
       if (r.start && r.start.identity) {
@@ -82,7 +101,7 @@ constructor(
           let end = this.makeNode(l.end.identity.low, l.end);
           start.linkCount++;
           end.linkCount++;
-          //  this.nodes.
+
           //todo make sure link doesn't already exist
           let id = start.id.toString().concat(end.id.toString());
           let newLink = this.linkMap.get(id);
@@ -127,61 +146,111 @@ constructor(
           this.nodeMap.set(r.end.low, end);
         }
       }
-
     }
-    let newNodes = [...this.nodeMap.values()].sort((n1,n2) => {
+  }
+
+  makeGraph(eventType: string):void {
+    let eventMap:Map<string, Event> = new Map();
+
+    //flatten maps
+    let newNodes = [...this.nodeMap.values()].sort((n1, n2) => {
       if (n1.linkCount > n2.linkCount) {
         return 1;
       }
-
       if (n1.linkCount < n2.linkCount) {
         return -1;
       }
 
       return 0;
     });
-
     let newLinks = [...this.linkMap.values()];
+/*    console.log(newNodes);
+    console.log(newLinks);
+    console.log(this.graph);*/
 
-    const diff = {
+    //create diff from maps
+    let diff = {
       removedNodes: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
       addedNodes: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1),
-      removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
+      removedLinks: this.graph.links.filter(link => {
+        //    console.log(link);
+        //    console.log(newLinks.indexOf(link));
+        return newLinks.indexOf(link) === -1;
+      }),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
+  //  console.log(this.originalEvent);
 
-    if(this.histData){
+
+    if(this.eventData){
+    //  console.log(diff);
+      this.eventData.event.diff = diff;
+    ////  console.log(this.eventData);
+      let eventList = this.historyMap.get("expand");
+    if(eventList){
+    //  eventList.push(eventMap);
+      eventList.set(this.eventData.id, this.eventData.event);
+      this.historyMap.set("expand", eventList);
+    }else{
+      eventMap.set(this.eventData.id, this.eventData.event);
+      this.historyMap.set("expand", eventMap);
+    }
+    }
+console.log(this.historyMap);
+
+    //todo setting the history for load events probably isn't necessary
+    if(this.originalEvent !='load'){
+      this.historyMap.get(this.originalEvent);
+    }
+
+    //push to event history
+    //histData right now only comes from node expansion
+/*    if (this.histData) {
+      console.log(this.histData);
+   //   let eventMap:Map<string, any> = this.historyMap.get(this.originalEvent);
+   //   console.log(eventMap);
       let nodeHistory = this.historyMap.get(this.histData.node);
-      if(nodeHistory){
-        let eventHistory = nodeHistory.get(this.histData.event.type +'-'+this.histData.event.label);
-          //todo: this should always exist since the histData.event object is initialized with an empty diff object
-          if(eventHistory){
-            //push added or removed nodes
-            this.histData.event.diff.addedNodes = this.histData.event.diff.addedNodes.concat(diff.addedNodes);
-            this.histData.event.diff.removedNodes = this.histData.event.diff.removedNodes.concat(diff.removedNodes);
-            this.histData.event.diff.addedLinks = this.histData.event.diff.addedLinks.concat(diff.addedLinks);
-            this.histData.event.diff.removedLinks = this.histData.event.diff.removedLinks.concat(diff.removedLinks);
-          }
-      }else{
+      if (nodeHistory) {
+        let eventHistory = nodeHistory.get(this.histData.event.type + '-' + this.histData.event.label);
+        //todo: this should always exist since the histData.event object is initialized with an empty diff object
+        if (eventHistory) {
+          //push added or removed nodes
+          this.histData.event.diff.addedNodes = this.histData.event.diff.addedNodes.concat(diff.addedNodes);
+          this.histData.event.diff.removedNodes = this.histData.event.diff.removedNodes.concat(diff.removedNodes);
+          this.histData.event.diff.addedLinks = this.histData.event.diff.addedLinks.concat(diff.addedLinks);
+          this.histData.event.diff.removedLinks = this.histData.event.diff.removedLinks.concat(diff.removedLinks);
+        }
+      } else {
         let events = new Map();
-        events.set(this.histData.event.type +'-'+this.histData.event.label, this.histData.event.diff );
+        events.set(this.histData.event.type + '-' + this.histData.event.label, this.histData.event.diff);
         this.historyMap.set(this.histData.node, events);
       }
 
-    }
+    }*/
+
+    //apply diff to current graph
     diff.removedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
     diff.removedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
     diff.addedLinks.forEach(link => this.graph.links.push(link));
 
-   // this.graph.links = newLinks;
-  //  this.historyService.setNodes(this.nodes);
-   // this.historyService.setLinks(this.links);
+    // this.graph.links = newLinks;
+    //  this.historyService.setNodes(this.nodes);
+    // this.historyService.setLinks(this.links);
 
 
-   // this.graph.push({graph, event});
+    // this.graph.push({graph, event});
+    //    console.log(this.graph);
+
+    //update graph
     this._graphHistorySource.next(this.graph);
+
+
+
   }
+
+
+
 
 
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
@@ -218,16 +287,22 @@ constructor(
 
   nodeExpand(id:string, properties: any):void {
     let message: Message = this.messageService.getMessage(id, "expand", properties);
+
+    //right now this is only creating a skeleton map object without the diff
+    //this happens here because node id and label is needed for tracking.
+    // todo pushing it to the history map isn't useful, because the makeGraph() function doesn't know about the originating node
+
     let event: Event = {
-      type: "expand",
+      //  type: "expand",
       label: properties,
-      diff: {addedNodes:[],
-              removedNodes:[],
-              addedLinks:[],
-              removedLinks:[]
+      diff: {
+        addedNodes:[],
+        removedNodes:[],
+        addedLinks:[],
+        removedLinks:[]
       }
     };
-    this.histData= {node:id, event: event};
+  this.eventData ={id:id, event: event};
     this.dataConnectionService.messages.next(message);
   }
 
@@ -236,7 +311,7 @@ constructor(
     console.log(label);
     console.log(this.historyMap);
 //get the expand object to delete the nodes added
-    let diff = this.historyMap.get(node.id).get('expand-' + node.labels[0]);
+    let diff = this.historyMap.get('expand').get(node.id);
     console.log(diff);
     diff.addedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
     diff.addedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));

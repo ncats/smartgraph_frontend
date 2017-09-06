@@ -5,6 +5,7 @@ import {DataConnectionService} from "../services/data-connection.service";
 import {SearchService} from "../services/search.service";
 import {Message, MessageService} from "../services/message.service";
 import { GraphDataService} from "../services/graph-data.service";
+import {MdSliderChange} from "@angular/material";
 
 
 
@@ -16,6 +17,8 @@ import { GraphDataService} from "../services/graph-data.service";
 export class SmrtgraphSearchComponent implements OnInit {
   startNodesCtrl: FormControl;
   endNodesCtrl: FormControl;
+  distanceCtrl: FormControl;
+  confidenceCtrl: FormControl;
 
   searchTerm$ = new Subject<any>();
   autocompleteOptions:any[] = [];
@@ -31,6 +34,8 @@ export class SmrtgraphSearchComponent implements OnInit {
   ) {
     this.startNodesCtrl = new FormControl();
     this.endNodesCtrl = new FormControl();
+    this.distanceCtrl = new FormControl();
+    this.confidenceCtrl = new FormControl();
   }
 
   ngOnInit() {
@@ -58,42 +63,44 @@ export class SmrtgraphSearchComponent implements OnInit {
     });
 
     this.startNodesCtrl.valueChanges.subscribe(value => {
-      console.log(value.split(/[\s,;]+/));
       let valArr =value.split(/[\s,;]+/);
       if(!this.endNodes) {
         this.graphDataService.clearGraph();
       }
       let query: Message = this.messageService.getMessage(valArr, 'targets');
-        console.log(query);
         this.dataConnectionService.messages.next(query);
       this.startNodes = true;
-      //forces selected option
-      //todo: this doesn't seem very efficient
-/*      if(value.value){
-        console.log(value.value);
-        console.log("element clicked");
-        this.onEnter("target");
-      }else {
-        if (value != '') {
-          //empty autocomplete options array, otherwise it will never change
-          this.autocompleteOptions = [];
-          this.searchTerm$.next({term: value, type: "targetSearch"});
-        }
-      }*/
-    //  this.onEnter("target");
-
+      this.graphDataService.graphhistory$.subscribe(res =>{
+        res.nodes.filter(node => {
+          let id = node.properties.chembl_id || node.properties.properties.chembl_id;
+          if(valArr.includes(id)){
+            node.startNode = true;
+          }
+        });
+      });
     });
 
     this.endNodesCtrl.valueChanges.subscribe(value => {
-      console.log(value.split(/[\s,;]+/));
       let valArr =value.split(/[\s,;]+/);
       if(!this.startNodes) {
         this.graphDataService.clearGraph();
       }
       let query: Message = this.messageService.getMessage(valArr, 'targets');
-        console.log(query);
         this.dataConnectionService.messages.next(query);
       this.endNodes = true;
+      this.graphDataService.graphhistory$.subscribe(res =>{
+       res.nodes.filter(node => {
+          let id = node.properties.chembl_id || node.properties.properties.chembl_id;
+          if(valArr.includes(id)){
+            node.endNode = true;
+          }
+        });
+      });
+    });
+
+    this.distanceCtrl.valueChanges.subscribe(value => {
+//console.log(value);
+  this.shortestPath();
     });
 
    /* this.patternCtrl.valueChanges.subscribe(value => {
@@ -152,15 +159,21 @@ export class SmrtgraphSearchComponent implements OnInit {
   }*/
 
   shortestPath(){
-    if(this.startNodesCtrl && this.endNodesCtrl){
-      let value = {
+    console.log(this);
+    if(this.startNodesCtrl.value && this.endNodesCtrl.value){
+      let value:{} = {
         start:this.startNodesCtrl.value.split(/[\s,;]+/),
         end: this.endNodesCtrl.value.split(/[\s,;]+/)
       };
-      console.log(value);
-      this.graphDataService.clearGraph();
-      let query: Message = this.messageService.getMessage(value, "path");
-      console.log(query);
+      let params:{} ={
+        distance:this.distanceCtrl.value || 5,
+        confidence:this.confidenceCtrl.value || 50
+      };
+/*      console.log(value);
+      console.log(params);*/
+     // this.graphDataService.clearGraph();
+      let query: Message = this.messageService.getMessage(value, "path", params);
+   //   console.log(query);
       this.dataConnectionService.messages.next(query);
     }
   }

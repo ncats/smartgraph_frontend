@@ -45,6 +45,7 @@ public linksSubscription = Subscription;
               private graphDataService: GraphDataService){ }
 
   ngOnInit() {
+
     this.graphDataService.graphhistory$.subscribe(res =>{
       this.nodes = res.nodes;
       this.links = res.links;
@@ -77,8 +78,8 @@ public linksSubscription = Subscription;
       .attr("viewBox", "0 -5 10 10")
       .attr("refX", 8.75)
       .attr("refY", 0)
-      .attr("markerWidth", 4)
-      .attr("markerHeight", 4)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#A5A5A5")
@@ -90,8 +91,8 @@ svg.append("defs").append("marker")
       .attr("viewBox", "0 -5 10 10")
   .attr("refX", 8.75)
       .attr("refY", 0)
-      .attr("markerWidth", 4)
-      .attr("markerHeight", 4)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#595959")
