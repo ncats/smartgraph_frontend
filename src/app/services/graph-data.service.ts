@@ -58,7 +58,7 @@ constructor(
 
   this.dataConnectionService.messages.subscribe(msg => {
   let response = JSON.parse(msg);
-  //  console.log(response);
+    console.log(response);
     switch(response.type) {
     case 'expand':
     case 'targets':
@@ -77,7 +77,9 @@ constructor(
     }
     case 'done':{
       console.log("done");
+      console.log(this.originalEvent);
       this.makeGraph(response.type);
+      break;
     }
 }
 });
@@ -172,29 +174,26 @@ constructor(
     let diff = {
       removedNodes: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
       addedNodes: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1),
-      removedLinks: this.graph.links.filter(link => {
-        //    console.log(link);
-        //    console.log(newLinks.indexOf(link));
-        return newLinks.indexOf(link) === -1;
-      }),
+      removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
   //  console.log(this.originalEvent);
 
 
     if(this.eventData){
-    //  console.log(diff);
+      console.log(diff);
       this.eventData.event.diff = diff;
-    ////  console.log(this.eventData);
-      let eventList = this.historyMap.get("expand");
+      console.log(this.eventData);
+      let eventList = this.historyMap.get("expand") ? this.historyMap.get("expand") : new Map();
     if(eventList){
     //  eventList.push(eventMap);
       eventList.set(this.eventData.id, this.eventData.event);
+      console.log(eventList);
       this.historyMap.set("expand", eventList);
-    }else{
+/*    }else{
       eventMap.set(this.eventData.id, this.eventData.event);
       this.historyMap.set("expand", eventMap);
-    }
+    */}
     }
 console.log(this.historyMap);
 
@@ -311,38 +310,13 @@ console.log(this.historyMap);
     console.log(label);
     console.log(this.historyMap);
 //get the expand object to delete the nodes added
-    let diff = this.historyMap.get('expand').get(node.id);
+    let diff = this.historyMap.get('expand').get(node.id).diff;
     console.log(diff);
     diff.addedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
     diff.addedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
     //diff.added.forEach(node => this.graph.links.splice(this.graph.links.indexOf(node), 1));
     this._graphHistorySource.next(this.graph);
-
-/*    let removedLinks = this.graph.links.filter(link => link.source.id == node.id || link.target.id == node.id);
-    removedLinks.forEach(link => {
-      console.log(link);
-      this.graph.links.splice(this.graph.links.indexOf(link), 1);
-    });*/
-    /*    const diff = {
-          removedLinks: this.graph.links.filter(link => link.source.id == node.id || link.target.id == node.id),
-        };*/
-/*
-    diff.added.forEach(node => this.nodes.push(node));*/
-/*console.log(diff);
-    diff.removedLinks.forEach(link => {
-      console.log(link);
-      this.graph.links.splice(this.graph.links.indexOf(link), 1);
-      /!*if(link.source !== node) {
-        console.log(link.source);
-        this.graph.nodes.splice(this.graph.nodes.indexOf(link.source), 1);
-      }
-      if(link.target !== node) {
-        console.log(link.target);
-        this.graph.nodes.splice(this.graph.nodes.indexOf(link.target), 1);
-      }*!/
       //todo need to redraw each node, because the link count will change
-    });
-*/
-    //should be watched by graph service and pushed into from app;
+
   }
 }

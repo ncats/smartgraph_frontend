@@ -74,7 +74,7 @@ export class SmrtgraphSearchComponent implements OnInit {
         res.nodes.filter(node => {
           let id = node.properties.chembl_id || node.properties.properties.chembl_id;
           if(valArr.includes(id)){
-            node.startNode = true;
+            node.params.startNode = true;
           }
         });
       });
@@ -92,7 +92,7 @@ export class SmrtgraphSearchComponent implements OnInit {
        res.nodes.filter(node => {
           let id = node.properties.chembl_id || node.properties.properties.chembl_id;
           if(valArr.includes(id)){
-            node.endNode = true;
+            node.params.endNode = true;
           }
         });
       });

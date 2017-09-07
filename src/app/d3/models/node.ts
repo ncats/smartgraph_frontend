@@ -1,6 +1,14 @@
 import APP_CONFIG from '../../app.config';
 import * as uuid from 'uuid'
 
+export class Params {
+  hovered: boolean = false;
+  startNode: boolean = false;
+  endNode: boolean= false;
+  menu: boolean = false;
+
+  constructor() {}
+}
 
 export class Node implements d3.SimulationNodeDatum {
   // optional - defining optional implementation properties - required for relevant typing assistance
@@ -21,12 +29,9 @@ export class Node implements d3.SimulationNodeDatum {
     target:false,
     lychi: false,
     pattern: false
-  }
+  };
 
-  //Todo: may not want so many extraneous properties to set styles
-  hovered?: boolean = false;
-  startNode?: boolean = false;
-  endNode?: boolean = false;
+  params: Params;
 
   constructor(id, properties, labels, linkCount?) {
     this.uuid = uuid.v4();
@@ -34,6 +39,7 @@ export class Node implements d3.SimulationNodeDatum {
     this.properties = properties;
     this.labels = labels;
     this.linkCount = linkCount || 0;
+    this.params = new Params();
   }
 
   normal = () => {
@@ -54,38 +60,3 @@ export class Node implements d3.SimulationNodeDatum {
   }
 }
 
-export class Target extends Node {
-  pref_name: string;
-  species_group_flag: string;
-
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.pref_name = obj.pref_name;
-    this.species_group_flag = obj.species_group_flag;
-  }
-
-}
-
-export class Pattern extends Node {
- ring_nr: {};
- smiles: string;
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.ring_nr = obj.ring_nr;
-    this.smiles = obj.smiles;
-  }
-
-
-}
-
-export class Lychi extends Node {
-  canonical_smiles: string;
-  lychi: string;
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.canonical_smiles = obj.canonical_smiles;
-    this.lychi = obj.lychi;
-  }
-
-
-}

@@ -7,7 +7,7 @@ import { Node } from '../../../d3';
     <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
       <svg:circle
           class="node {{node.labels[0]}}"
-          [ngClass]="{startNode: node.startNode, endNode: node.endNode}"
+          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode}"
           cx="0"
           cy="0"
           [attr.r]="node.r">

@@ -45,13 +45,24 @@ public linksSubscription = Subscription;
               private graphDataService: GraphDataService){ }
 
   ngOnInit() {
-
     this.graphDataService.graphhistory$.subscribe(res =>{
       this.nodes = res.nodes;
       this.links = res.links;
       if (this.graph) {
         this.graph.simulation.nodes(this.nodes);
         this.graph.links = this.links;
+        this.graph.nodes = this.nodes;
+
+        this.graph.links.forEach(function(link){
+          console.log(link.source);
+/* link.source["linkCount"] = 0;
+link.target["linkCount"] = 0;
+
+          // count it up
+          link.source["linkCount"]++;
+          link.target["linkCount"]++;*/
+        });
+
         this.graph.initLinks();
         this.graph.simulation.restart();
       }

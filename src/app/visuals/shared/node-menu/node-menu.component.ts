@@ -54,6 +54,7 @@ export class NodeMenuComponent{
    private nodeMenuController : NodeMenuControllerService,
    private graphDataService: GraphDataService
  ) {
+   //this only gets the count of the nodes
    this.subscription = this.nodeService.clickednode$
      .subscribe(node => {
        this.clickedNode = node;
@@ -61,7 +62,6 @@ export class NodeMenuComponent{
          this.counts={total:0};
          let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts");
          this.dataConnectionService.messages.next(message);
-
          // this.getSmiles(node);
        }
      });

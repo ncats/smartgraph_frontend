@@ -104,7 +104,7 @@ export class D3Service {
 
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
-      node.hovered = false;
+      node.params.hovered = false;
      /* d3element.select('.tooltip').transition().duration(500)
         .style("opacity", 0);*/
     };
@@ -166,20 +166,19 @@ export class D3Service {
     let d3element = d3.select(element);
     let svg = d3.select('svg');
 
-    let toggleMenu = ():void =>{
-      console.log(node);
-if(node['menu']==true) {
-  console.log(node['menu']);
-  this.nodeMenuController.toggleVisible(false);
-  node['menu'] = false;
-}else {
-  this.nodeMenuController.toggleVisible(true);
-  graph.nodes.map(node => node['menu'] = false);
-  node['menu'] = true;
-}
-      d3.event.stopPropagation();
+    let toggleMenu = ():void => {
+      //if menu is open, close it
+      if (node.params.menu) {
+        this.nodeMenuController.toggleVisible(false);
+      }
+//if menu is closed, open it
+      else {
+        console.log("changing node");
+        this.nodeService.changeNode(node);
+        this.nodeMenuController.toggleVisible(true);
+        node.params.menu = true;
+      }
     };
-
     let decorateNodes = ():void =>{
    /*   d3.selectAll('circle')
         .data(graph.nodes)
@@ -192,22 +191,19 @@ if(node['menu']==true) {
 
     let clickFunction = ():void => {
       console.log("click");
-      console.log(node);
-
-
+      graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
-
-
-      this.nodeService.changeNode(node);
       toggleMenu();
 //todo: this may be less necessary with the menu opening
       //decorateNodes();
+      d3.event.stopPropagation();
     };
 
     let clearMenu =():void =>{
+      //this just closes out the menu and sets the menu tracking variable to be false for each node
       console.log("click on svg");
-      graph.nodes.map(node => node['menu'] = false);
       this.nodeMenuController.toggleVisible(false);
+      graph.nodes.map(node => node.params.menu = false);
       d3.event.stopPropagation();
     };
 

@@ -12,12 +12,12 @@ export class NodeService {
   private _clickedNodeSource = new Subject<Node>();
   private _hoveredNodeSource = new Subject<Node>();
   // Observable navItem stream
+  lastNode = {};
   clickednode$ = this._clickedNodeSource.asObservable();
   hoverednode$ = this._hoveredNodeSource.asObservable();
 
   // service command
   changeNode(node:Node) {
-  //  console.log(node);
     this._clickedNodeSource.next(node);
   }
 
