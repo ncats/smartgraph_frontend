@@ -54,7 +54,7 @@ public linksSubscription = Subscription;
         this.graph.nodes = this.nodes;
 
         this.graph.links.forEach(function(link){
-          console.log(link.source);
+       //   console.log(link.source);
 /* link.source["linkCount"] = 0;
 link.target["linkCount"] = 0;
 

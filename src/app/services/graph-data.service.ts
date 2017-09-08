@@ -58,7 +58,7 @@ constructor(
 
   this.dataConnectionService.messages.subscribe(msg => {
   let response = JSON.parse(msg);
-    console.log(response);
+ //   console.log(response);
     switch(response.type) {
     case 'expand':
     case 'targets':
@@ -76,8 +76,8 @@ constructor(
       break;
     }
     case 'done':{
-      console.log("done");
-      console.log(this.originalEvent);
+      //console.log("done");
+   //   console.log(this.originalEvent);
       this.makeGraph(response.type);
       break;
     }
@@ -110,8 +110,8 @@ constructor(
           if (newLink) {
             if (newLink.id == id) {
               console.error("they're the same!");
-              console.log(newLink.type);
-              console.log(r.type);
+/*              console.log(newLink.type);
+              console.log(r.type);*/
             }
           } else {
             newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
@@ -171,12 +171,44 @@ constructor(
     console.log(this.graph);*/
 
     //create diff from maps
+    let diff2 ={
+      removedNodes:[],
+      addedNodes:[],
+      removedLinks:[],
+      addedLinks:[]
+    };
+
+    newNodes.filter(node => {
+      if(this.graph.nodes.indexOf(node) === -1) {
+        diff2.addedNodes.push(node);
+      }else{
+        diff2.removedNodes.push(node);
+      }
+      });
+
+    newLinks.filter(link => {
+      if(this.graph.links.indexOf(link) === -1) {
+        diff2.addedLinks.push(link);
+      }else{
+        diff2.removedLinks.push(link);
+      }
+      });
+
     let diff = {
-      removedNodes: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
-      addedNodes: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1),
+      removedNodes: this.graph.nodes.filter(node => {
+       console.log(node);
+        console.log(newNodes);
+        console.log(newNodes.indexOf(node));
+        if(newNodes.indexOf(node) === -1){
+          console.log(node);
+        }
+       return newNodes.indexOf(node) === -1
+      }),
+      addedNodes: newNodes.filter(node =>this.graph.nodes.indexOf(node) === -1),
       removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
+
   //  console.log(this.originalEvent);
 
 
@@ -226,6 +258,7 @@ console.log(this.historyMap);
       }
 
     }*/
+console.log(diff);
 
     //apply diff to current graph
     diff.removedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
@@ -289,8 +322,8 @@ console.log(this.historyMap);
 
     //right now this is only creating a skeleton map object without the diff
     //this happens here because node id and label is needed for tracking.
-    // todo pushing it to the history map isn't useful, because the makeGraph() function doesn't know about the originating node
 
+    //todo if a node is expanded, then collapsed, and another node is expanded, the first node expands as well
     let event: Event = {
       //  type: "expand",
       label: properties,

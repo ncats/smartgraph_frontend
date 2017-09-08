@@ -99,6 +99,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     });
 
     this.distanceCtrl.valueChanges.subscribe(value => {
+      //this.graphDataService.clearGraph();
 //console.log(value);
   this.shortestPath();
     });
