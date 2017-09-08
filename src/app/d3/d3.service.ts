@@ -191,6 +191,7 @@ export class D3Service {
 
     let clickFunction = ():void => {
       console.log("click");
+      console.log(node);
       graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();

@@ -33,12 +33,12 @@ export class Node implements d3.SimulationNodeDatum {
 
   params: Params;
 
-  constructor(id, properties, labels, linkCount?) {
+  constructor(id, properties) {
     this.uuid = uuid.v4();
     this.id = id;
-    this.properties = properties;
-    this.labels = labels;
-    this.linkCount = linkCount || 0;
+    this.properties = properties.properties;
+    this.labels = properties.labels;
+    this.linkCount = 1;
     this.params = new Params();
   }
 

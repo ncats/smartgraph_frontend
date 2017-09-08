@@ -85,71 +85,37 @@ constructor(
 });
 }
   parseRecords(records, event:any) {
-  //  console.log(event);
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
     for (let r of records) {
-      //r.start and r.end are the nodes if an object is a relationship -- this saves them as nodes
-      if (r.start && r.start.identity) {
-        this.nodeMap.set(r.start.identity.low, this.makeNode(r.start.identity.low, r.start));
-      }
-      if (r.end && r.end.identity) {
-        this.nodeMap.set(r.end.identity.low, this.makeNode(r.end.identity.low, r.end));
-      }
-      //this covers the relationship itself, and creates the link object
       if (r.segments) {
         for (let l of r.segments) {
-          //make link
           let start = this.makeNode(l.start.identity.low, l.start);
           let end = this.makeNode(l.end.identity.low, l.end);
-          start.linkCount++;
-          end.linkCount++;
-
-          //todo make sure link doesn't already exist
+       //   start.linkCount++;
+      //    end.linkCount++;
           let id = start.id.toString().concat(end.id.toString());
-          let newLink = this.linkMap.get(id);
-          if (newLink) {
-            if (newLink.id == id) {
-              console.error("they're the same!");
-/*              console.log(newLink.type);
-              console.log(r.type);*/
-            }
-          } else {
-            newLink = new Link(start.id, end.id, l.relationship.type, l.properties, id);
-            this.linkMap.set(id, newLink);
-          }
-          this.nodeMap.set(l.start.identity.low, start);
-          this.nodeMap.set(l.end.identity.low, end);
+          this.linkMap.set( id, new Link(start.id, end.id, l.relationship.type, l.properties, id));
+          this.nodeMap.set(start.id, start);
+          this.nodeMap.set(end.id, end);
         }
       } else {
-        //this covers nodes from a nearest neighbor search
         if (!r.start && !r.end) {
           this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
         } else {
-          //this makes the links from a nearest node search
-          //once the graph has uuids, this will be much easier
           let start = this.makeNode(r.start.low, {});
           let end = this.makeNode(r.end.low, {});
-          start.linkCount++;
-          end.linkCount++;
-          //todo make sure link doesn't already exist
+        //  start.linkCount++;
+        //  end.linkCount++;
           let id = start.id.toString().concat(end.id.toString());
-          let newLink = this.linkMap.get(id);
-          if (newLink) {
-            if (newLink.id == id) {
-              //      console.error("they're the same!");
-              //      console.log(newLink.type);
-              //     console.log(r.type);
-            }
-          } else {
-            newLink = new Link(start.id, end.id, r.type, r.properties, id);
-            this.linkMap.set(id, newLink);
-          }
-          this.nodeMap.set(r.start.low, start);
-          this.nodeMap.set(r.end.low, end);
+          this.linkMap.set(id, new Link(start.id, end.id, r.type, r.properties, id));
+          this.nodeMap.set(start.id, start);
+          this.nodeMap.set(end.id, end);
         }
       }
     }
   }
+
+
 
   makeGraph(eventType: string):void {
     let eventMap:Map<string, Event> = new Map();
@@ -166,44 +132,9 @@ constructor(
       return 0;
     });
     let newLinks = [...this.linkMap.values()];
-/*    console.log(newNodes);
-    console.log(newLinks);
-    console.log(this.graph);*/
-
-    //create diff from maps
-    let diff2 ={
-      removedNodes:[],
-      addedNodes:[],
-      removedLinks:[],
-      addedLinks:[]
-    };
-
-    newNodes.filter(node => {
-      if(this.graph.nodes.indexOf(node) === -1) {
-        diff2.addedNodes.push(node);
-      }else{
-        diff2.removedNodes.push(node);
-      }
-      });
-
-    newLinks.filter(link => {
-      if(this.graph.links.indexOf(link) === -1) {
-        diff2.addedLinks.push(link);
-      }else{
-        diff2.removedLinks.push(link);
-      }
-      });
 
     let diff = {
-      removedNodes: this.graph.nodes.filter(node => {
-       console.log(node);
-        console.log(newNodes);
-        console.log(newNodes.indexOf(node));
-        if(newNodes.indexOf(node) === -1){
-          console.log(node);
-        }
-       return newNodes.indexOf(node) === -1
-      }),
+      removedNodes: this.graph.nodes.filter(node =>newNodes.indexOf(node) === -1),
       addedNodes: newNodes.filter(node =>this.graph.nodes.indexOf(node) === -1),
       removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
@@ -233,47 +164,25 @@ console.log(this.historyMap);
     if(this.originalEvent !='load'){
       this.historyMap.get(this.originalEvent);
     }
-
-    //push to event history
-    //histData right now only comes from node expansion
-/*    if (this.histData) {
-      console.log(this.histData);
-   //   let eventMap:Map<string, any> = this.historyMap.get(this.originalEvent);
-   //   console.log(eventMap);
-      let nodeHistory = this.historyMap.get(this.histData.node);
-      if (nodeHistory) {
-        let eventHistory = nodeHistory.get(this.histData.event.type + '-' + this.histData.event.label);
-        //todo: this should always exist since the histData.event object is initialized with an empty diff object
-        if (eventHistory) {
-          //push added or removed nodes
-          this.histData.event.diff.addedNodes = this.histData.event.diff.addedNodes.concat(diff.addedNodes);
-          this.histData.event.diff.removedNodes = this.histData.event.diff.removedNodes.concat(diff.removedNodes);
-          this.histData.event.diff.addedLinks = this.histData.event.diff.addedLinks.concat(diff.addedLinks);
-          this.histData.event.diff.removedLinks = this.histData.event.diff.removedLinks.concat(diff.removedLinks);
-        }
-      } else {
-        let events = new Map();
-        events.set(this.histData.event.type + '-' + this.histData.event.label, this.histData.event.diff);
-        this.historyMap.set(this.histData.node, events);
-      }
-
-    }*/
 console.log(diff);
 
     //apply diff to current graph
-    diff.removedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
+    diff.removedNodes.forEach(node => {
+      this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
+        this.nodeMap.delete(node.id);
+    });
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
-    diff.removedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
-    diff.addedLinks.forEach(link => this.graph.links.push(link));
 
-    // this.graph.links = newLinks;
-    //  this.historyService.setNodes(this.nodes);
-    // this.historyService.setLinks(this.links);
+    diff.removedLinks.forEach(link => {
+      this.graph.links.splice(this.graph.links.indexOf(link), 1);
+      this.linkMap.delete(link.id);
+    });
+    diff.addedLinks.forEach(link => {
+      this.graph.links.push(link);
+      this.linkMap.set(link.id, link);
+    });
 
-
-    // this.graph.push({graph, event});
-    //    console.log(this.graph);
-
+    this.countLinks();
     //update graph
     this._graphHistorySource.next(this.graph);
 
@@ -281,22 +190,26 @@ console.log(diff);
 
   }
 
-
+countLinks():void{
+    console.log(this.graph);
+    this.graph.nodes.forEach(node => node.linkCount =1);
+  for (let l of this.graph.links) {
+    console.log(l);
+    let source:Node =  this.nodeMap.get(l.source.id ? l.source.id : l.source);
+    console.log(source);
+    source.linkCount ++;
+    this.nodeMap.set(l.source.id, source);
+    let target:Node =  this.nodeMap.get(l.target.id ? l.target.id : l.target);
+    target.linkCount ++;
+    this.nodeMap.set(l.target.id, target);
+  }
+}
 
 
 
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
   makeNode(id:string, data:any):Node {
-    return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data, data.labels);
-  }
-
-  graphRevert(){
-    this._graphHistorySource.next(this.graph);
-  }
-
-  setGraph(nodes:[Node], links:[Link]){
-    this.graph = {nodes: nodes, links: links};
-    this._graphHistorySource.next(this.graph);
+    return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data);
   }
 
   clearGraph():void{
@@ -305,6 +218,17 @@ console.log(diff);
     this.graph.links = [];
     this.graph.nodes = [];
   }
+
+/*  graphRevert(){
+    this._graphHistorySource.next(this.graph);
+  }
+
+  setGraph(nodes:[Node], links:[Link]){
+    this.graph = {nodes: nodes, links: links};
+    this._graphHistorySource.next(this.graph);
+  }
+
+
 
   setNodes(nodes:Node[]):void{
     //these are set on node click as well, but there is no way to track the origin
@@ -315,15 +239,13 @@ console.log(diff);
   setLinks(links:Link[]):void{
     this.graph.links= links;
     this._graphHistorySource.next(this.graph);
-  }
+  }*/
 
   nodeExpand(id:string, properties: any):void {
     let message: Message = this.messageService.getMessage(id, "expand", properties);
 
     //right now this is only creating a skeleton map object without the diff
     //this happens here because node id and label is needed for tracking.
-
-    //todo if a node is expanded, then collapsed, and another node is expanded, the first node expands as well
     let event: Event = {
       //  type: "expand",
       label: properties,
@@ -345,11 +267,23 @@ console.log(diff);
 //get the expand object to delete the nodes added
     let diff = this.historyMap.get('expand').get(node.id).diff;
     console.log(diff);
-    diff.addedLinks.forEach(link => this.graph.links.splice(this.graph.links.indexOf(link), 1));
-    diff.addedNodes.forEach(node => this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1));
-    //diff.added.forEach(node => this.graph.links.splice(this.graph.links.indexOf(node), 1));
+    diff.addedLinks.forEach(link => {
+      this.graph.links.splice(this.graph.links.indexOf(link), 1);
+      this.linkMap.delete(link.id);
+    });
+    diff.addedNodes.forEach(node => {
+      this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
+      this.nodeMap.delete(node.id);
+    });
+
+    diff.removedLinks.forEach(link =>{
+      this.graph.links.push(link);
+      this.linkMap.set(link.id, link);
+    });
+
+    //todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
+    this.countLinks();
     this._graphHistorySource.next(this.graph);
-      //todo need to redraw each node, because the link count will change
 
   }
 }
