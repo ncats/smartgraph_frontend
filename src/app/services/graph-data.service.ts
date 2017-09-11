@@ -29,12 +29,16 @@ history =[];
   private _nodeHistorySource = new Subject<any>();
   private _linkHistorySource = new Subject<any>();
   private _graphHistorySource = new Subject<any>();
+  masterNodeMap:Map<string, Node> = new Map();
+  masterLinkMap:Map<string, Link> = new Map();
   nodeMap:Map<string, Node> = new Map();
   linkMap:Map<string, Link> = new Map();
   historyMap:Map<string, any> = new Map();
   graphhistory$ = this._graphHistorySource.asObservable();
   originalEvent: string;
-
+responses: any = [];
+nodeList: any = [];
+linkList: any = [];
 
 constructor(
   private dataConnectionService:DataConnectionService,
@@ -94,22 +98,34 @@ constructor(
        //   start.linkCount++;
       //    end.linkCount++;
           let id = start.id.toString().concat(end.id.toString());
-          this.linkMap.set( id, new Link(start.id, end.id, l.relationship.type, l.properties, id));
-          this.nodeMap.set(start.id, start);
-          this.nodeMap.set(end.id, end);
+          let nodes = [start,end];
+          this.nodeList.push(...nodes);
+          let link = new Link(start.id, end.id, l.relationship.type, l.properties, id);
+          this.linkList.push(link);
+          this.masterNodeMap.set(start.id, start);
+          this.masterNodeMap.set(end.id, end);
+          this.masterLinkMap.set( id, link);
+        //  this.linkMap.set( id, new Link(start.id, end.id, l.relationship.type, l.properties, id));
         }
       } else {
         if (!r.start && !r.end) {
-          this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
+        //  this.nodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
+          this.nodeList.push(this.makeNode(r.identity.low, r));
+          this.masterNodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
         } else {
           let start = this.makeNode(r.start.low, {});
           let end = this.makeNode(r.end.low, {});
-        //  start.linkCount++;
+          let nodes = [start,end];
+          //  start.linkCount++;
         //  end.linkCount++;
           let id = start.id.toString().concat(end.id.toString());
-          this.linkMap.set(id, new Link(start.id, end.id, r.type, r.properties, id));
-          this.nodeMap.set(start.id, start);
-          this.nodeMap.set(end.id, end);
+          this.nodeList.push(...nodes);
+          let link = new Link(start.id, end.id, r.type, r.properties, id);
+          this.linkList.push(link);
+          this.masterNodeMap.set(start.id, start);
+          this.masterNodeMap.set(end.id, end);
+          this.masterLinkMap.set(id, link);
+         // this.linkMap.set(id, new Link(start.id, end.id, r.type, r.properties, id));
         }
       }
     }
@@ -118,10 +134,15 @@ constructor(
 
 
   makeGraph(eventType: string):void {
-    let eventMap:Map<string, Event> = new Map();
 
     //flatten maps
-    let newNodes = [...this.nodeMap.values()].sort((n1, n2) => {
+
+    /*
+    * node map tracks all nodes that are made. if a node already exists in a new search ie shorter distance, no new node is created.
+    * newNodes is a flattening of all of the created nodes, so new nodes are filtered out, but deleted ones are not.
+    * There needs to be a third list to trach the ids of the current response
+    * */
+ /*   let newNodes:Node[] = [...this.nodeMap.values()].sort((n1, n2) => {
       if (n1.linkCount > n2.linkCount) {
         return 1;
       }
@@ -130,11 +151,21 @@ constructor(
       }
 
       return 0;
-    });
-    let newLinks = [...this.linkMap.values()];
+    });*/
+ console.log(this.nodeList);
+   let newNodes = this.nodeList;
+   let newLinks = this.linkList;
+   console.log(newNodes);
+/*
+    let newLinks:Link[] = [...this.linkMap.values()];
+*/
 
     let diff = {
-      removedNodes: this.graph.nodes.filter(node =>newNodes.indexOf(node) === -1),
+      removedNodes: this.graph.nodes.filter(node =>{
+       console.log(newNodes.indexOf(node));
+        return newNodes.indexOf(node) === -1
+
+      }),
       addedNodes: newNodes.filter(node =>this.graph.nodes.indexOf(node) === -1),
       removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
@@ -169,7 +200,7 @@ console.log(diff);
     //apply diff to current graph
     diff.removedNodes.forEach(node => {
       this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-        this.nodeMap.delete(node.id);
+  //      this.nodeMap.delete(node.id);
     });
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
 
@@ -184,8 +215,9 @@ console.log(diff);
 
     this.countLinks();
     //update graph
-    this._graphHistorySource.next(this.graph);
-
+    console.log(this.graph);
+   this._graphHistorySource.next(this.graph);
+    this.nodeList = [];
 
 
   }
@@ -194,14 +226,14 @@ countLinks():void{
     console.log(this.graph);
     this.graph.nodes.forEach(node => node.linkCount =1);
   for (let l of this.graph.links) {
-    console.log(l);
-    let source:Node =  this.nodeMap.get(l.source.id ? l.source.id : l.source);
-    console.log(source);
+  //  console.log(l);
+    let source:Node =  this.masterNodeMap.get(l.source.id ? l.source.id : l.source);
+   // console.log(source);
     source.linkCount ++;
-    this.nodeMap.set(l.source.id, source);
-    let target:Node =  this.nodeMap.get(l.target.id ? l.target.id : l.target);
+    this.masterNodeMap.set(l.source.id, source);
+    let target:Node =  this.masterNodeMap.get(l.target.id ? l.target.id : l.target);
     target.linkCount ++;
-    this.nodeMap.set(l.target.id, target);
+    this.masterNodeMap.set(l.target.id, target);
   }
 }
 
@@ -209,7 +241,7 @@ countLinks():void{
 
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
   makeNode(id:string, data:any):Node {
-    return this.nodeMap.get(id) ? Object.assign(this.nodeMap.get(id), data) : new Node(id, data);
+    return this.masterNodeMap.get(id) ? Object.assign(this.masterNodeMap.get(id), data) : new Node(id, data);
   }
 
   clearGraph():void{
@@ -273,7 +305,7 @@ countLinks():void{
     });
     diff.addedNodes.forEach(node => {
       this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-      this.nodeMap.delete(node.id);
+     // this.nodeMap.delete(node.id);
     });
 
     diff.removedLinks.forEach(link =>{
