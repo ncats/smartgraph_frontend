@@ -46,29 +46,29 @@ constructor(
 ){
 
   this.dataConnectionService.messages.subscribe(msg => {
-  let response = JSON.parse(msg);
+    let response = JSON.parse(msg);
     switch(response.type) {
-    case 'expand':
-    case 'targets':
-    case 'path':
-    case 'load': {
-      this.originalEvent = response.type;
-      //  let bytes = encoder.encode(msg);
-      // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
-      let records = response.data._fields;
-      if (records.length == 0) {
-        console.error(response);
-      } else {
-        this.parseRecords(records, response.type);
+      case 'targets':
+      case 'expand':
+      case 'path':
+      case 'load': {
+        this.originalEvent = response.type;
+        //  let bytes = encoder.encode(msg);
+        // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
+        let records = response.data._fields;
+        if (records.length == 0) {
+          console.error(response);
+        } else {
+          this.parseRecords(records, response.type);
+        }
+        break;
       }
-      break;
+      case 'done':{
+        this.makeGraph(response.type);
+        break;
+      }
     }
-    case 'done':{
-      this.makeGraph(response.type);
-      break;
-    }
-}
-});
+  });
 }
   parseRecords(records, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
@@ -159,10 +159,8 @@ constructor(
     this.countLinks();
     //update graph
    this._graphHistorySource.next(this.graph);
-    this.nodeList = [];
-    this.linkList = [];
-
-
+     this.nodeList = [];
+     this.linkList = [];
   }
 
 countLinks():void{

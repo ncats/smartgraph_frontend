@@ -7,7 +7,7 @@ const FORCES = {
   //gets rid of overlap [0,1]
   COLLISION: 1,
   // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
-  CHARGE: 2
+  CHARGE: -1
 };
 
 export class ForceDirectedGraph {
@@ -37,8 +37,7 @@ export class ForceDirectedGraph {
     this.simulation.force('link',
       d3.forceLink(this.links)
         .id(d => d['id'])
-        //.strength(FORCES.LINKS)
-        .distance(155)
+        .strength(FORCES.LINKS)
     );
     //this is necessary to bind the link data to the graph. The node is attached by the hover directive
     this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
@@ -61,7 +60,7 @@ export class ForceDirectedGraph {
         .force("collide",
           d3.forceCollide()
             .strength(FORCES.COLLISION)
-            .radius(d => d['r'] + 5)
+            .radius(d => d['r'] + 5).iterations(2)
         )
       ;
 
@@ -72,7 +71,7 @@ export class ForceDirectedGraph {
 
       this.initNodes();
       this.initLinks();
-    //  this.simulation.stop();
+  //    this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */
