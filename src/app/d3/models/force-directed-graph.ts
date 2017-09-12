@@ -7,7 +7,7 @@ const FORCES = {
   //gets rid of overlap [0,1]
   COLLISION: 1,
   // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
-  CHARGE: -2
+  CHARGE: 2
 };
 
 export class ForceDirectedGraph {

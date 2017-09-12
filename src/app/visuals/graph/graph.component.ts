@@ -48,23 +48,16 @@ public linksSubscription = Subscription;
     this.graphDataService.graphhistory$.subscribe(res =>{
       this.nodes = res.nodes;
       this.links = res.links;
+      let cloned3 = this.nodes.map(x => Object.assign([], x));
+      console.log(cloned3);
       if (this.graph) {
         this.graph.simulation.nodes(this.nodes);
         this.graph.links = this.links;
         this.graph.nodes = this.nodes;
-
-        this.graph.links.forEach(function(link){
-       //   console.log(link.source);
-/* link.source["linkCount"] = 0;
-link.target["linkCount"] = 0;
-
-          // count it up
-          link.source["linkCount"]++;
-          link.target["linkCount"]++;*/
-        });
-
         this.graph.initLinks();
         this.graph.simulation.restart();
+        let cloned3 = this.nodes.map(x => Object.assign([], x));
+        console.log(cloned3);
       }
     });
 
@@ -112,6 +105,8 @@ svg.append("defs").append("marker")
   }
 
   ngAfterViewInit() {
+    let cloned3 = this.nodes.map(x => Object.assign([], x));
+    console.log(cloned3);
     this.graph.initSimulation(this.options);
   }
 

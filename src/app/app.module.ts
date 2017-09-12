@@ -18,7 +18,6 @@ import {WebSocketService} from "./services/websocket.service";
 import {DataConnectionService} from "./services/data-connection.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
-import {WebWorkerService} from "./services/web-worker.service";
 import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
 import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
@@ -54,7 +53,6 @@ import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.componen
     D3Service,
     NodeService,
     SearchService,
-    WebWorkerService,
     MessageService,
     GraphDataService,
     NodeMenuControllerService
