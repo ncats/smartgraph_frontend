@@ -93,6 +93,7 @@ export class SmrtgraphSearchComponent implements OnInit {
           let id = node.properties.chembl_id || node.properties.properties.chembl_id;
           if(valArr.includes(id)){
             node.params.endNode = true;
+
           }
         });
       });

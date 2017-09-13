@@ -23,14 +23,30 @@ export class ForceDirectedGraph {
     this.initSimulation(options);
   }
 
-  initNodes() {
+  initNodes(options) {
+    console.log(options.width/4);
+    console.log(options.width/2);
+    console.log(3*options.width/4);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
     this.simulation.nodes(this.nodes);
+    this.simulation.force("x",
+      d3.forceX(function(d:Node){
+        console.log(d.params);
+        if(d.params.endNode==true){
+          return 3*options.width/4
+        } else if (d.params.startNode == true){
+          console.log(d);
+          console.log(options.width/3);
+          return options.width/4
+        } else {
+          return options.width/2
+        }
+      }));
   }
 
-  initLinks() {
+  initLinks(options) {
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
@@ -38,7 +54,20 @@ export class ForceDirectedGraph {
       d3.forceLink(this.links)
         .id(d => d['id'])
         .strength(FORCES.LINKS)
-    );
+    )
+    .force("y",
+      d3.forceY(function(d:Node){
+        console.log(d.params);
+        if(d.params.endNode==true){
+          return 3*options.height/4
+        } else if (d.params.startNode == true){
+          console.log(d);
+          console.log(options.height/3);
+          return options.height/4
+        } else {
+          return options.height/2
+        }
+      }));
     //this is necessary to bind the link data to the graph. The node is attached by the hover directive
     this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
   }
@@ -50,27 +79,26 @@ export class ForceDirectedGraph {
 
     /** Creating the simulation */
     if (!this.simulation) {
-      const ticker = this.ticker;
       this.simulation = d3.forceSimulation()
-        .force("charge",
-          d3.forceManyBody()
-            // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
-            .strength(d => FORCES.CHARGE * d['r'])
-        )
         .force("collide",
           d3.forceCollide()
             .strength(FORCES.COLLISION)
             .radius(d => d['r'] + 5).iterations(2)
         )
-      ;
+        .force("charge",
+          d3.forceManyBody()
+          // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
+          .strength(d => FORCES.CHARGE * d['r'])
+        );
+      const ticker = this.ticker;
 
       // Connecting the d3 ticker to an angular event emitter
       this.simulation.on('tick', function () {
         ticker.emit(this);
       });
 
-      this.initNodes();
-      this.initLinks();
+      this.initNodes(options);
+      this.initLinks(options);
   //    this.simulation.stop();
     }
 
