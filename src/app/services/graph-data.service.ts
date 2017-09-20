@@ -3,6 +3,7 @@ import {Subject} from "rxjs";
 import {Node, Link} from '../d3';
 import {Message, MessageService} from "./message.service";
 import {DataConnectionService} from "./data-connection.service";
+import {NodeService} from "../d3/models/node.service";
 /*
 import {WebWorkerService} from "./services/web-worker.service";
 */
@@ -42,8 +43,11 @@ linkList: any = [];
 
 constructor(
   private dataConnectionService:DataConnectionService,
-  private messageService: MessageService
+  private messageService: MessageService,
+  private nodeService: NodeService,
 ){
+
+  this.masterNodeMap = this.nodeService.getNodes();
 
   this.dataConnectionService.messages.subscribe(msg => {
     let response = JSON.parse(msg);
@@ -75,31 +79,38 @@ constructor(
     for (let r of records) {
       if (r.segments) {
         for (let l of r.segments) {
-          let start = this.makeNode(l.start.identity.low, l.start);
-          let end = this.makeNode(l.end.identity.low, l.end);
+          console.log(l);
+          let start = this.nodeService.makeNode(l.start.identity.low, l.start);
+          let end = this.nodeService.makeNode(l.end.identity.low, l.end);
           let id = start.id.toString().concat(end.id.toString());
           let nodes = [start,end];
           this.nodeList.push(...nodes);
-          let link = new Link(start.id, end.id, l.relationship.type, l.properties, id);
+          let link = new Link(start.id, end.id, l.relationship.type, l.relationship.properties, id);
           this.linkList.push(link);
-          this.masterNodeMap.set(start.id, start);
-          this.masterNodeMap.set(end.id, end);
+          this.nodeService.setNode(start);
+          this.nodeService.setNode(end);
+      //    this.masterNodeMap.set(start.id, start);
+       //   this.masterNodeMap.set(end.id, end);
           this.masterLinkMap.set( id, link);
         }
       } else {
         if (!r.start && !r.end) {
-          this.nodeList.push(this.makeNode(r.identity.low, r));
-          this.masterNodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
+          this.nodeList.push(this.nodeService.makeNode(r.identity.low, r));
+          this.nodeService.setNode(this.nodeService.makeNode(r.identity.low, r));
+        //  this.masterNodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
         } else {
-          let start = this.makeNode(r.start.low, {});
-          let end = this.makeNode(r.end.low, {});
+          let start = this.nodeService.makeNode(r.start.low, {});
+          let end = this.nodeService.makeNode(r.end.low, {});
           let nodes = [start,end];
           let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
+          console.log(r);
           let link = new Link(start.id, end.id, r.type, r.properties, id);
           this.linkList.push(link);
-          this.masterNodeMap.set(start.id, start);
-          this.masterNodeMap.set(end.id, end);
+          //this.masterNodeMap.set(start.id, start);
+          //this.masterNodeMap.set(end.id, end);
+          this.nodeService.setNode(start);
+          this.nodeService.setNode(end);
           this.masterLinkMap.set(id, link);
         }
       }

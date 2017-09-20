@@ -24,14 +24,14 @@ import * as d3 from 'd3';
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"
     [attr.y2]="endpointLessRadius(link, 'y2') || 0"
         ></svg:line>
-<!--    <svg:text
+    <svg:text
           class="link-name"
         [attr.font-size]= 10
         [attr.x]="(link.source.x +link.target.x)/2 "
         [attr.y]="(link.source.y +link.target.y)/2 "
         >
-        {{link.type}}
-      </svg:text>-->
+        {{link.properties?.median_p_activity || link.properties?.effect}}
+      </svg:text>
       </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']

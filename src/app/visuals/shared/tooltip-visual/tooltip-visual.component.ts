@@ -5,13 +5,13 @@ import {Component, OnInit, Input} from '@angular/core';
   selector: 'tooltip-visual',
   //templateUrl: './tooltip-visual.component.html',
   template:`
-<svg:text class="tooltip">does this work?</svg:text>
+<img [src] = imageUrl>
 `,
 
   styleUrls: ['./tooltip-visual.component.css']
 })
 export class TooltipVisualComponent implements OnInit {
-  @Input('app-tooltip-visual') node: Node;
+  @Input() node: Node;
 
   imageUrl:string;
   constructor() { }

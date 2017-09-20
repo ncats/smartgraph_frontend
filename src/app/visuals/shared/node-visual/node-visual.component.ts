@@ -12,13 +12,21 @@ import { Node } from '../../../d3';
           cy="0"
           [attr.r]="node.r">
       </svg:circle>
+     <!-- 
+               *ngIf='node.labels[0] != "Pattern"'
+
+     <svg:circle *ngIf='node.labels[0] === "Pattern"'>
+      <svg:foreignObject  width='100' height='100' [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
+ <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
+<tooltip-visual [node]="node"></tooltip-visual> 
+</xhtml:div>
+      </svg:foreignObject>
+      </svg:circle>-->
+       <svg:text>{{node.properties?.chembl_id}}</svg:text>
+       
 <!--
-       <svg:text>{{node.properties.chembl_id}}</svg:text>
--->
-<!--
-       <svg:text>{{node.id}}</svg:text>
--->
        <svg:text>{{node.properties.pref_name}}</svg:text>
+-->
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

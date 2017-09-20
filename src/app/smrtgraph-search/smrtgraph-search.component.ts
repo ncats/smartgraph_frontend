@@ -6,6 +6,7 @@ import {SearchService} from "../services/search.service";
 import {Message, MessageService} from "../services/message.service";
 import { GraphDataService} from "../services/graph-data.service";
 import {MdSliderChange} from "@angular/material";
+import {NodeService} from "../d3/models/node.service";
 
 
 
@@ -29,6 +30,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   constructor(
     private searchService:SearchService,
     private messageService: MessageService,
+    private nodeService: NodeService,
     private dataConnectionService: DataConnectionService,
     private graphDataService: GraphDataService
   ) {
@@ -63,7 +65,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     });
 
     this.startNodesCtrl.valueChanges.subscribe(value => {
-      let valArr =value.split(/[\s,;]+/);
+      let valArr =value.trim().split(/[\s,;]+/);
       if(!this.endNodes) {
         this.graphDataService.clearGraph();
       }
@@ -74,14 +76,17 @@ export class SmrtgraphSearchComponent implements OnInit {
         res.nodes.filter(node => {
           let id = node.properties.chembl_id || node.properties.properties.chembl_id;
           if(valArr.includes(id)){
+            console.log(node.id);
+            //todo: this doesn't clear the parameters, just passes them.
             node.params.startNode = true;
+            this.nodeService.setNode(node);
           }
         });
       });
     });
 
     this.endNodesCtrl.valueChanges.subscribe(value => {
-      let valArr =value.split(/[\s,;]+/);
+      let valArr =value.trim().split(/[\s,;]+/);
       if(!this.startNodes) {
         this.graphDataService.clearGraph();
       }
@@ -92,8 +97,9 @@ export class SmrtgraphSearchComponent implements OnInit {
        res.nodes.filter(node => {
           let id = node.properties.chembl_id || node.properties.properties.chembl_id;
           if(valArr.includes(id)){
+          console.log(node.id);
             node.params.endNode = true;
-
+            this.nodeService.setNode(node);
           }
         });
       });
@@ -164,8 +170,8 @@ export class SmrtgraphSearchComponent implements OnInit {
     console.log(this);
     if(this.startNodesCtrl.value && this.endNodesCtrl.value){
       let value:{} = {
-        start:this.startNodesCtrl.value.split(/[\s,;]+/),
-        end: this.endNodesCtrl.value.split(/[\s,;]+/)
+        start:this.startNodesCtrl.value.trim().split(/[\s,;]+/),
+        end: this.endNodesCtrl.value.trim().split(/[\s,;]+/)
       };
       let params:{} ={
         distance:this.distanceCtrl.value || 5,
