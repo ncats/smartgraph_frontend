@@ -15,7 +15,10 @@ import { Node } from '../../../d3';
 <!--
        <svg:text>{{node.properties.chembl_id}}</svg:text>
 -->
+<!--
        <svg:text>{{node.id}}</svg:text>
+-->
+       <svg:text>{{node.properties.pref_name}}</svg:text>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

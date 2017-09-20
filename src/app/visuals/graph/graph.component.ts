@@ -49,11 +49,12 @@ public linksSubscription = Subscription;
       this.nodes = res.nodes;
       this.links = res.links;
       if (this.graph) {
-        this.graph.simulation.nodes(this.nodes);
+/*        this.graph.simulation.nodes(this.nodes);
         this.graph.links = this.links;
         this.graph.nodes = this.nodes;
         this.graph.initLinks(this.options);
-        this.graph.simulation.restart();
+        this.graph.simulation.restart();*/
+        this.graph.update(res, this.options);
       }
     });
 

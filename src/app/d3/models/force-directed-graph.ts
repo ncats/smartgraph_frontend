@@ -23,27 +23,37 @@ export class ForceDirectedGraph {
     this.initSimulation(options);
   }
 
-  initNodes(options) {
-    console.log(options.width/4);
-    console.log(options.width/2);
-    console.log(3*options.width/4);
+  update(graph, options){
+   // let cloned = this.simulation.nodes.map(x => Object.assign({}, x));
+   // console.log(cloned);
+    let cloned2 = graph.nodes.map(x => Object.assign({}, x));
+    console.log(cloned2);
+
+
+    console.log(graph);
+    this.nodes= graph.nodes;
+    this.links = graph.links;
+    this.simulation.nodes(this.nodes)
+    .force('link',
+      d3.forceLink(this.links).id(d => d['id']));
+    // this.initSimulation(options);
+  //  this.initLinks(options);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
-    this.simulation.nodes(this.nodes);
-    this.simulation.force("x",
-      d3.forceX(function(d:Node){
-        console.log(d.params);
-        if(d.params.endNode==true){
-          return 3*options.width/4
-        } else if (d.params.startNode == true){
-          console.log(d);
-          console.log(options.width/3);
-          return options.width/4
-        } else {
-          return options.width/2
-        }
-      }));
+   // this.simulation.tick();
+      this.simulation.restart();
+   // this.simulation.alpha(0.3).restart();
+
+  }
+
+  initNodes(options) {
+    if (!this.simulation) {
+      throw new Error('simulation was not initialized yet');
+    }
+    this.simulation.nodes(this.nodes)
+
+
   }
 
   initLinks(options) {
@@ -53,57 +63,76 @@ export class ForceDirectedGraph {
     this.simulation.force('link',
       d3.forceLink(this.links)
         .id(d => d['id'])
-        .strength(FORCES.LINKS)
+       // .strength(FORCES.LINKS)
+        .distance(100)
     )
-    .force("y",
-      d3.forceY(function(d:Node){
-        console.log(d.params);
-        if(d.params.endNode==true){
-          return 3*options.height/4
-        } else if (d.params.startNode == true){
-          console.log(d);
-          console.log(options.height/3);
-          return options.height/4
-        } else {
-          return options.height/2
-        }
-      }));
     //this is necessary to bind the link data to the graph. The node is attached by the hover directive
-    this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
+  //  this.simulation.force<d3.ForceLink<any, any>>('link').links(this.links);
   }
 
   initSimulation(options) {
+    console.log("init simulation");
     if (!options || !options.width || !options.height) {
       throw new Error('missing options when initializing simulation');
     }
 
     /** Creating the simulation */
     if (!this.simulation) {
+      console.log("simulation exists")
       this.simulation = d3.forceSimulation()
-        .force("collide",
-          d3.forceCollide()
-            .strength(FORCES.COLLISION)
-            .radius(d => d['r'] + 5).iterations(2)
-        )
-        .force("charge",
-          d3.forceManyBody()
-          // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
-          .strength(d => FORCES.CHARGE * d['r'])
-        );
+        .force('link',
+          d3.forceLink(this.links)
+            .id(d => d['id'])
+            // .strength(FORCES.LINKS)
+            .distance(100))
+            .force("charge",
+              d3.forceManyBody()
+               // .strength(d => FORCES.CHARGE * d['r']))
+            )
+        .force("x",
+          d3.forceX(function(d:Node){
+            let cloned2 =  Object.assign({}, d);
+            console.log(cloned2);
+            console.log(d.params.startNode);
+           if (d.index < 10){
+              console.log(d);
+              console.log(options.width/3);
+console.log("setting x to: " + options.width/3);
+             return options.width/3;
+            } else {
+              console.log(options.width);
+              return options.width/2
+            }
+          }))
+        .force("y", d3.forceY(10))
+        .force("center", d3.forceCenter(options.width / 2, options.height / 2));
+
+
+      /* .force("collide",
+         d3.forceCollide()
+           .strength(FORCES.COLLISION)
+           .radius(d => d['r'] + 5).iterations(2)
+       )
+       */
+
+        // A positive value causes nodes to attract each other, similar to gravity, while a negative value causes nodes to repel each other, similar to electrostatic charge.
+
+          // .strength(FORCES.LINKS)
+
+
       const ticker = this.ticker;
 
       // Connecting the d3 ticker to an angular event emitter
       this.simulation.on('tick', function () {
         ticker.emit(this);
       });
-
-      this.initNodes(options);
-      this.initLinks(options);
+   //   this.initLinks(options);
+   //   this.initNodes(options);
   //    this.simulation.stop();
     }
 
     /** Updating the central force of the simulation */
-    this.simulation.force("center", d3.forceCenter(options.width / 2, options.height / 2));
+ //   this.simulation.force("center", d3.forceCenter(options.width / 2, options.height / 2));
 
     /** Restarting the simulation internal timer */
     this.simulation.restart();
