@@ -14,7 +14,6 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   id: string;
 
   constructor(source, target, type?, properties?, id?) {
-    console.log(properties);
     this.source = source;
     this.target = target;
     this.type = type || "";

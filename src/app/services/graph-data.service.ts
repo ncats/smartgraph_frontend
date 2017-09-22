@@ -51,6 +51,7 @@ constructor(
 
   this.dataConnectionService.messages.subscribe(msg => {
     let response = JSON.parse(msg);
+    console.log(response.type);
     switch(response.type) {
       case 'targets':
       case 'expand':
@@ -79,7 +80,6 @@ constructor(
     for (let r of records) {
       if (r.segments) {
         for (let l of r.segments) {
-          console.log(l);
           let start = this.nodeService.makeNode(l.start.identity.low, l.start);
           let end = this.nodeService.makeNode(l.end.identity.low, l.end);
           let id = start.id.toString().concat(end.id.toString());
@@ -97,14 +97,12 @@ constructor(
         if (!r.start && !r.end) {
           this.nodeList.push(this.nodeService.makeNode(r.identity.low, r));
           this.nodeService.setNode(this.nodeService.makeNode(r.identity.low, r));
-        //  this.masterNodeMap.set(r.identity.low, this.makeNode(r.identity.low, r));
         } else {
           let start = this.nodeService.makeNode(r.start.low, {});
           let end = this.nodeService.makeNode(r.end.low, {});
           let nodes = [start,end];
           let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
-          console.log(r);
           let link = new Link(start.id, end.id, r.type, r.properties, id);
           this.linkList.push(link);
           //this.masterNodeMap.set(start.id, start);
@@ -120,12 +118,16 @@ constructor(
 
 
   makeGraph(eventType: string):void {
+    console.log(eventType);
     let newNodes =this.nodeList.filter((elem, pos, arr) => {
         return arr.indexOf(elem) == pos;
       });
    let newLinks = this.linkList.filter((elem, pos, arr) => {
      return arr.indexOf(elem) == pos;
    });
+
+    //todo: by not flitering, the expand/collapse node history is preserved, the start and end nodes are left in place
+    //todo: however, if filtered, the distance search doesn't work, because the removed nodes aren't discovered
 
     let diff = {
       removedNodes: this.graph.nodes.filter(node =>newNodes.indexOf(node) === -1),
@@ -150,18 +152,25 @@ constructor(
     if(this.originalEvent !='load'){
       this.historyMap.get(this.originalEvent);
     }
-
+console.log(diff);
     //apply diff to current graph
-    diff.removedNodes.forEach(node => {
+
+    //todo: by not flitering, the expand/collapse node history is preserved, the start and end nodes are left in place
+    //todo: however, if filtered, the distance search doesn't work, because the removed nodes aren't discovered
+
+
+   /* diff.removedNodes.forEach(node => {
       this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
   //      this.nodeMap.delete(node.id);
-    });
+    });*/
+
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
 
-    diff.removedLinks.forEach(link => {
+    /*diff.removedLinks.forEach(link => {
       this.graph.links.splice(this.graph.links.indexOf(link), 1);
    //   this.linkMap.delete(link.id);
-    });
+    });*/
+
     diff.addedLinks.forEach(link => {
       this.graph.links.push(link);
    //   this.linkMap.set(link.id, link);
@@ -177,19 +186,14 @@ constructor(
 countLinks():void{
     this.graph.nodes.forEach(node => node.linkCount =1);
   for (let l of this.graph.links) {
-    let source:Node =  this.masterNodeMap.get(l.source.id ? l.source.id : l.source);
+    let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
     source.linkCount ++;
-    this.masterNodeMap.set(l.source.id, source);
-    let target:Node =  this.masterNodeMap.get(l.target.id ? l.target.id : l.target);
+    this.nodeService.setNode(source);
+    let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
     target.linkCount ++;
-    this.masterNodeMap.set(l.target.id, target);
+    this.nodeService.setNode(target);
   }
 }
-
-  //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
-  makeNode(id:string, data:any):Node {
-return this.masterNodeMap.get(id) ? Object.assign(this.masterNodeMap.get(id), data) : new Node(id, data);
-  }
 
   clearGraph():void{
     this.nodeMap.clear();
@@ -236,6 +240,10 @@ return this.masterNodeMap.get(id) ? Object.assign(this.masterNodeMap.get(id), da
     diff.removedLinks.forEach(link =>{
       this.graph.links.push(link);
       this.linkMap.set(link.id, link);
+    });
+
+    diff.removedNodes.forEach(node =>{
+      this.graph.nodes.push(node);
     });
 
     //todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible

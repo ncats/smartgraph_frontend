@@ -38,7 +38,7 @@ export class MessageService {
             msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Target) RETURN n, r, b LIMIT 100';
             break;
           }
-          case "Compound": {
+          case "Lychi": {
             msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Lychi) RETURN n, r, b LIMIT 100';
             break;
           }

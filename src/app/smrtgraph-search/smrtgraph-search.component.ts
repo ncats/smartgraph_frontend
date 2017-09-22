@@ -40,9 +40,23 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.confidenceCtrl = new FormControl();
   }
 
+  /*
+  * Todo: this needs to be re-worked a bit-- the queries that are the result of the search inputs changing directly modify nodes
+  * todo: while they do this thorugh a service, they subscribe to all graph change events, which is not optimal
+  * todo: there is also no function to remove the startNode and endNode parameters
+  *
+  *
+  *
+  * */
+
+
+
+
+
+
   ngOnInit() {
     //todo: fix above description
-    //todo: set all subscriptions to be variable to close on destroy
+    //todo: set all subscriptions to be variables to close on destroy
     this.dataConnectionService.messages.subscribe(msg => {
       //console.log(msg);
       let response = JSON.parse(msg);
@@ -73,13 +87,23 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.dataConnectionService.messages.next(query);
       this.startNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
+        console.log(res);
+        //todo: add validation rules: cannot be both start and end node
+        //todo: add validation rules: must have chembl_id (for now)
+        //todo: this is going to happen on any change, so i need to filter by response type
         res.nodes.filter(node => {
-          let id = node.properties.chembl_id || node.properties.properties.chembl_id;
-          if(valArr.includes(id)){
-            console.log(node.id);
-            //todo: this doesn't clear the parameters, just passes them.
-            node.params.startNode = true;
-            this.nodeService.setNode(node);
+          if(node.properties && node.properties.chembl_id) {
+            let id = node.properties.chembl_id;
+            if (valArr.includes(id)) {
+              console.log(node.id);
+              //todo: this doesn't clear the parameters, just passes them.
+              node.params.endNode = false;
+              node.params.startNode = true;
+              this.nodeService.setNode(node);
+            } else {
+              node.params.startNode = false;
+              this.nodeService.setNode(node);
+            }
           }
         });
       });
@@ -94,12 +118,19 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.dataConnectionService.messages.next(query);
       this.endNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
-       res.nodes.filter(node => {
-          let id = node.properties.chembl_id || node.properties.properties.chembl_id;
-          if(valArr.includes(id)){
-          console.log(node.id);
-            node.params.endNode = true;
-            this.nodeService.setNode(node);
+          //todo: add validation rules: cannot be both start and end node
+        res.nodes.filter(node => {
+          if(node.properties && node.properties.chembl_id) {
+            let id = node.properties.chembl_id || node.properties.properties.chembl_id;
+            if (valArr.includes(id)) {
+              console.log(node.id);
+              node.params.startNode = false;
+              node.params.endNode = true;
+              this.nodeService.setNode(node);
+            } else {
+              node.params.endNode = false;
+              this.nodeService.setNode(node);
+            }
           }
         });
       });
@@ -177,11 +208,7 @@ export class SmrtgraphSearchComponent implements OnInit {
         distance:this.distanceCtrl.value || 5,
         confidence:this.confidenceCtrl.value || 50
       };
-/*      console.log(value);
-      console.log(params);*/
-     // this.graphDataService.clearGraph();
       let query: Message = this.messageService.getMessage(value, "path", params);
-   //   console.log(query);
       this.dataConnectionService.messages.next(query);
     }
   }

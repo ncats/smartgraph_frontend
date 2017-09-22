@@ -32,6 +32,10 @@ export class NodeService {
     return this.masterNodeMap;
   }
 
+  getById(id): Node{
+    return this.masterNodeMap.get(id);
+  }
+
   setNode(node:Node):void{
    this.masterNodeMap.set(node.id,node);
   }

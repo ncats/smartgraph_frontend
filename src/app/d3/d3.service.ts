@@ -40,6 +40,7 @@ export class D3Service {
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
+      //hides tooltip if active
      // d3element.select('.tooltip').style("opacity", 0);
 
       d3.event.on("drag", dragged).on("end", ended);
@@ -73,7 +74,6 @@ export class D3Service {
 
      let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
-      // /node.hovered=true;
      /* d3element.selectAll('.tooltip').transition().duration(200)
         .style("opacity", .9).attr('z-index', 666);*/
       d3.selectAll('circle')
@@ -144,7 +144,6 @@ export class D3Service {
     };
 
     let mouseOverFunction = ():void => {
-      console.log(node);
       this.nodeService.hoveredNode(node);
       decorateLinks();
       decorateNodes();
@@ -168,6 +167,7 @@ export class D3Service {
     let svg = d3.select('svg');
 
     let toggleMenu = ():void => {
+      console.log(node);
       //if menu is open, close it
       if (node.params.menu) {
         this.nodeMenuController.toggleVisible(false);
@@ -214,7 +214,7 @@ export class D3Service {
   };
 
 
-  /** The interactable graph we will simulate in this article
+  /** The interactable graph we will return
    * This method does not interact with the document, purely physical calculations with d3
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
