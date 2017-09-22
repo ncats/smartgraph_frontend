@@ -24,6 +24,7 @@ import {NodeMenuControllerService} from "./services/node-menu-controller.service
 import {GraphDataService} from "./services/graph-data.service";
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
 import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
+import { DownloadButtonComponent } from './download-button/download-button.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.componen
     NodeMenuComponent,
     NodeMenuHolderComponent,
     SmrtgraphMenuComponent,
-    SmrtgraphSearchComponent
+    SmrtgraphSearchComponent,
+    DownloadButtonComponent
   ],
   imports: [
     BrowserModule,

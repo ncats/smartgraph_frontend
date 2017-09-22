@@ -27,17 +27,12 @@ eventData:any;
 
 history =[];
   // Observable navItem source
-  private _nodeHistorySource = new Subject<any>();
-  private _linkHistorySource = new Subject<any>();
   private _graphHistorySource = new Subject<any>();
-  masterNodeMap:Map<string, Node> = new Map();
   masterLinkMap:Map<string, Link> = new Map();
-  nodeMap:Map<string, Node> = new Map();
-  linkMap:Map<string, Link> = new Map();
   historyMap:Map<string, any> = new Map();
   graphhistory$ = this._graphHistorySource.asObservable();
   originalEvent: string;
-responses: any = [];
+  filter: boolean = false;
 nodeList: any = [];
 linkList: any = [];
 
@@ -47,15 +42,13 @@ constructor(
   private nodeService: NodeService,
 ){
 
-  this.masterNodeMap = this.nodeService.getNodes();
 
   this.dataConnectionService.messages.subscribe(msg => {
     let response = JSON.parse(msg);
-    console.log(response.type);
     switch(response.type) {
+      case 'path':
       case 'targets':
       case 'expand':
-      case 'path':
       case 'load': {
         this.originalEvent = response.type;
         //  let bytes = encoder.encode(msg);
@@ -89,8 +82,6 @@ constructor(
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
-      //    this.masterNodeMap.set(start.id, start);
-       //   this.masterNodeMap.set(end.id, end);
           this.masterLinkMap.set( id, link);
         }
       } else {
@@ -105,8 +96,6 @@ constructor(
           this.nodeList.push(...nodes);
           let link = new Link(start.id, end.id, r.type, r.properties, id);
           this.linkList.push(link);
-          //this.masterNodeMap.set(start.id, start);
-          //this.masterNodeMap.set(end.id, end);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
           this.masterLinkMap.set(id, link);
@@ -157,23 +146,17 @@ console.log(diff);
 
     //todo: by not flitering, the expand/collapse node history is preserved, the start and end nodes are left in place
     //todo: however, if filtered, the distance search doesn't work, because the removed nodes aren't discovered
-
-
-   /* diff.removedNodes.forEach(node => {
-      this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-  //      this.nodeMap.delete(node.id);
-    });*/
+      diff.removedNodes.forEach(node => {
+        this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
+      });
+      diff.removedLinks.forEach(link => {
+        this.graph.links.splice(this.graph.links.indexOf(link), 1);
+      });
 
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
 
-    /*diff.removedLinks.forEach(link => {
-      this.graph.links.splice(this.graph.links.indexOf(link), 1);
-   //   this.linkMap.delete(link.id);
-    });*/
-
     diff.addedLinks.forEach(link => {
       this.graph.links.push(link);
-   //   this.linkMap.set(link.id, link);
     });
 
     this.countLinks();
@@ -188,16 +171,20 @@ countLinks():void{
   for (let l of this.graph.links) {
     let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
     source.linkCount ++;
+    if(source.labels[0] =="Lychi"){
+      console.log(source);
+    }
     this.nodeService.setNode(source);
     let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
     target.linkCount ++;
+    if(target.labels[0] =="Lychi"){
+      console.log(target);
+    }
     this.nodeService.setNode(target);
   }
 }
 
   clearGraph():void{
-    this.nodeMap.clear();
-    this.linkMap.clear();
     this.graph.links = [];
     this.graph.nodes = [];
   }
@@ -218,6 +205,7 @@ countLinks():void{
       }
     };
   this.eventData ={id:id, event: event};
+    console.log(this.historyMap);
     this.dataConnectionService.messages.next(message);
   }
 
@@ -230,16 +218,13 @@ countLinks():void{
     console.log(diff);
     diff.addedLinks.forEach(link => {
       this.graph.links.splice(this.graph.links.indexOf(link), 1);
-      this.linkMap.delete(link.id);
     });
     diff.addedNodes.forEach(node => {
       this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-     // this.nodeMap.delete(node.id);
     });
 
     diff.removedLinks.forEach(link =>{
       this.graph.links.push(link);
-      this.linkMap.set(link.id, link);
     });
 
     diff.removedNodes.forEach(node =>{

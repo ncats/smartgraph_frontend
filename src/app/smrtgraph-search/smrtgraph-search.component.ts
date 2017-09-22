@@ -78,11 +78,10 @@ export class SmrtgraphSearchComponent implements OnInit {
       }
     });
 
+    //todo: needs to get chenbl(uniprot)id or inchii/lychi and get a list of uuids to pass to the path message
+
     this.startNodesCtrl.valueChanges.subscribe(value => {
       let valArr =value.trim().split(/[\s,;]+/);
-      if(!this.endNodes) {
-        this.graphDataService.clearGraph();
-      }
       let query: Message = this.messageService.getMessage(valArr, 'targets');
         this.dataConnectionService.messages.next(query);
       this.startNodes = true;
@@ -95,7 +94,6 @@ export class SmrtgraphSearchComponent implements OnInit {
           if(node.properties && node.properties.chembl_id) {
             let id = node.properties.chembl_id;
             if (valArr.includes(id)) {
-              console.log(node.id);
               //todo: this doesn't clear the parameters, just passes them.
               node.params.endNode = false;
               node.params.startNode = true;
@@ -111,9 +109,6 @@ export class SmrtgraphSearchComponent implements OnInit {
 
     this.endNodesCtrl.valueChanges.subscribe(value => {
       let valArr =value.trim().split(/[\s,;]+/);
-      if(!this.startNodes) {
-        this.graphDataService.clearGraph();
-      }
       let query: Message = this.messageService.getMessage(valArr, 'targets');
         this.dataConnectionService.messages.next(query);
       this.endNodes = true;
@@ -123,7 +118,6 @@ export class SmrtgraphSearchComponent implements OnInit {
           if(node.properties && node.properties.chembl_id) {
             let id = node.properties.chembl_id || node.properties.properties.chembl_id;
             if (valArr.includes(id)) {
-              console.log(node.id);
               node.params.startNode = false;
               node.params.endNode = true;
               this.nodeService.setNode(node);
@@ -172,6 +166,8 @@ export class SmrtgraphSearchComponent implements OnInit {
         console.log(results);
         this.dataConnectionService.messages.next(results);
       });
+    this.startNodesCtrl.setValue('CHEMBL2111336, CHEMBL203');
+    this.endNodesCtrl.setValue('CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862');
   }
 
 

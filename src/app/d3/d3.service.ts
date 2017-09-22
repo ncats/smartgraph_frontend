@@ -120,14 +120,15 @@ export class D3Service {
     };
 
     let getNeighborLinks = (e:any):boolean => {
-        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+     //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
     };
 
     let getNeighborNodes = (e:any): boolean => {
-      const sources = connectedLinks.data().map(link => link.source.id);
+     // const sources = connectedLinks.data().map(link => link.source.id);
       const targets = connectedLinks.data().map(link=> link.target.id);
-      let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-      return nodesList.indexOf(e.id) > -1;
+     // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+      return targets.indexOf(e.id) > -1;
     };
 
    let findMaximalLinks = (e:any):boolean => {
@@ -167,14 +168,12 @@ export class D3Service {
     let svg = d3.select('svg');
 
     let toggleMenu = ():void => {
-      console.log(node);
       //if menu is open, close it
       if (node.params.menu) {
         this.nodeMenuController.toggleVisible(false);
       }
 //if menu is closed, open it
       else {
-        console.log("changing node");
         this.nodeService.changeNode(node);
         this.nodeMenuController.toggleVisible(true);
         node.params.menu = true;
@@ -191,8 +190,6 @@ export class D3Service {
     };
 
     let clickFunction = ():void => {
-      console.log("click");
-      console.log(node);
       graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
@@ -203,7 +200,6 @@ export class D3Service {
 
     let clearMenu =():void =>{
       //this just closes out the menu and sets the menu tracking variable to be false for each node
-      console.log("click on svg");
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);
       d3.event.stopPropagation();

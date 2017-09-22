@@ -29,6 +29,7 @@ export class NodeService {
   }
 
   getNodes():Map<string, Node>{
+    console.log(this.masterNodeMap.size);
     return this.masterNodeMap;
   }
 

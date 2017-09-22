@@ -93,7 +93,6 @@ export class MessageService {
 
       case "path":
       {
-        console.log(term);
         let levels = properties.distance;
         //msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
 

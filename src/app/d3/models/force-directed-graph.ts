@@ -59,7 +59,8 @@ export class ForceDirectedGraph {
         .force("collide", d3.forceCollide()
           .radius(d => d['r'] + 5).iterations(2)
           .strength(FORCES.COLLISION))
-        //   .force("y", d3.forceY(options.height/2))
+        .force("y", d3.forceY().y(function(){return Math.random()*((3 * options.height / 4)-(options.height / 4)+1)+(options.height / 4)
+        }))
         /*manually sets the x position of nodes based on if they are start or end nodes*/
         .force("x", d3.forceX().x(function (d:Node) {
           if (d.params.startNode == true) {

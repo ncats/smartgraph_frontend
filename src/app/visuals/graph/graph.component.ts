@@ -1,8 +1,12 @@
-import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
+import {
+  Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy,
+  ViewChild
+} from '@angular/core';
 import {D3Service, ForceDirectedGraph, Node, NodeService, Link} from '../../d3';
 import {Subscription} from "rxjs";
 import * as d3 from 'd3';
 import {GraphDataService} from "../../services/graph-data.service";
+import {DownloadButtonComponent} from "../../download-button/download-button.component";
 
 
 @Component({
@@ -19,12 +23,15 @@ import {GraphDataService} from "../../services/graph-data.service";
       <svg:g nodeMenu></svg:g>
       </g>
     </svg>
+          <download-button (click)=" downloadGraph()"></download-button>
   `,
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent {
-/*  @Input('nodes') nodes;
-  @Input('links') links;*/
+  @ViewChild(DownloadButtonComponent)
+  private downloader: DownloadButtonComponent;
+  /*  @Input('nodes') nodes;
+    @Input('links') links;*/
 public nodesSubscription = Subscription;
 public linksSubscription = Subscription;
   public nodes: Node[] = [];
@@ -99,10 +106,15 @@ svg.append("defs").append("marker")
       .attr("fill", "#595959")
       .attr("stroke", "#FFFFFF")
   .attr("d", "M0,-5L10,0L0,5");
+
   }
 
   ngAfterViewInit() {
     this.graph.initSimulation(this.options);
+  }
+
+  downloadGraph():void{
+    this.downloader.downloadFile(d3.select('svg'));
   }
 
   private _options: {width, height} = {width: 800, height: 600};
