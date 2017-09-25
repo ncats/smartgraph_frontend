@@ -10,7 +10,7 @@ import {Subject} from "rxjs";
 export class NodeService {
   // Observable navItem source
   private _clickedNodeSource = new Subject<Node>();
-  private _hoveredNodeSource = new Subject<Node>();
+  private _hoveredNodeSource = new Subject<any>();
   private  masterNodeMap:Map<string, Node> = new Map();
 
   // Observable navItem stream
@@ -23,7 +23,8 @@ export class NodeService {
     this._clickedNodeSource.next(node);
   }
 
-  hoveredNode(node:Node){
+  hoveredNode(node:any){
+    console.log(node);
     this._hoveredNodeSource.next(node);
 
   }

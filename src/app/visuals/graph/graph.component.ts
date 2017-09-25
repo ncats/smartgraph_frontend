@@ -75,10 +75,10 @@ public linksSubscription = Subscription;
     this.graph.ticker.subscribe((d) => {
       this.ref.markForCheck();
     });
-    this.subscription = this.nodeService.hoverednode$
+/*    this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
         this.hoveredNode = node;
-      });
+      });*/
 
     let svg = d3.select('svg');
     svg.append("defs").append("marker")

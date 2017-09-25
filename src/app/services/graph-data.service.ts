@@ -68,17 +68,18 @@ constructor(
     }
   });
 }
-  parseRecords(records, event:any) {
+  parseRecords(path, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
-    for (let r of records) {
+    for (let r of path) {
       if (r.segments) {
         for (let l of r.segments) {
+          //this ignores the initial start and end nodes, but they are added in the segments of the path
           let start = this.nodeService.makeNode(l.start.identity.low, l.start);
           let end = this.nodeService.makeNode(l.end.identity.low, l.end);
           let id = start.id.toString().concat(end.id.toString());
           let nodes = [start,end];
           this.nodeList.push(...nodes);
-          let link = new Link(start.id, end.id, l.relationship.type, l.relationship.properties, id);
+          let link = new Link(start, end, l.relationship.type, l.relationship.properties, id);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
@@ -86,6 +87,7 @@ constructor(
         }
       } else {
         if (!r.start && !r.end) {
+          //this is for node groups that aren't a path
           this.nodeList.push(this.nodeService.makeNode(r.identity.low, r));
           this.nodeService.setNode(this.nodeService.makeNode(r.identity.low, r));
         } else {
@@ -94,13 +96,14 @@ constructor(
           let nodes = [start,end];
           let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
-          let link = new Link(start.id, end.id, r.type, r.properties, id);
+          let link = new Link(start, end, r.type, r.properties, id);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
           this.masterLinkMap.set(id, link);
         }
       }
+
     }
   }
 

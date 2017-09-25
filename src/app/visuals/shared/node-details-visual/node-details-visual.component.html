@@ -1,7 +1,49 @@
 <h2>{{hoveredNode?.labels[0]}}</h2>
 <h3><i>{{hoveredNode?.properties?.pref_name}}</i></h3>
+
+
 <div *ngIf="hoveredNode && imageUrl">
   <img [src] = imageUrl>
+</div>
+
+
+
+
+<div *ngIf="downstreamLinks?.length>0">
+
+
+
+<h3>Regulates: </h3>
+<div *ngFor="let link of downstreamLinks">
+  <div [ngSwitch]="link?.type">
+    <div    *ngSwitchCase="'REGULATES'">
+      {{link.properties?.effect}}: {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}})
+    </div>
+    <div    *ngSwitchCase="'TESTED_ON'"> {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}}) Median Activity: {{link.properties.median_p_activity}}</div>
+    <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal">maximal</span> pattern of: {{link.target.properties?.chembl_id}}
+      ({{link.target.properties?.pref_name}}) {{link.properties | json}}
+      <div *ngIf="link.target.properties.canonical_smiles">
+<!--
+        <img [src] = getSmiles(link.target)>
+-->
+      </div>
+    </div>
+    <div    *ngSwitchCase="'POTENT_PATTERN_OF'">poternt pattern of : {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}}) </div>
+    <!--    <div    *ngSwitchCase="'REGULATES'"></div>
+        <div    *ngSwitchCase="'REGULATES'"></div>-->
+    <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>
+  </div>
+
+<hr>
+</div>
+</div>
+
+<div *ngIf="upstreamLinks?.length>0">
+<h3>Regulated by: </h3>
+<div *ngFor="let link of upstreamLinks">
+  {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}}) : {{link.properties?.effect}}
+  <hr>
+</div>
 </div>
 <p>
 <!--

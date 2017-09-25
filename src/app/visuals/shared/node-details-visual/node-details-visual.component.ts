@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Node, NodeService} from '../../../d3';
 import {Subscription} from "rxjs";
+import {Link} from "../../../d3/models/link";
 
 @Component({
   selector: 'app-node-details-visual',
@@ -11,6 +12,8 @@ export class NodeDetailsVisualComponent implements OnInit {
   subscription: Subscription;
   hoveredNode: Node;
   imageUrl: string;
+  downstreamLinks: Link[];
+  upstreamLinks: Link[];
 
 
   constructor(private nodeService: NodeService) {
@@ -19,8 +22,11 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
-        this.hoveredNode = node;
-        this.getSmiles(node);
+console.log(node.node);
+        this.hoveredNode = node.node;
+        this.getSmiles(node.node);
+        this.downstreamLinks = node.down;
+        this.upstreamLinks = node.up;
       });
   }
   getSmiles(node : any): void{
