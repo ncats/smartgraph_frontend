@@ -25,6 +25,7 @@ import {GraphDataService} from "./services/graph-data.service";
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
 import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
 import { DownloadButtonComponent } from './download-button/download-button.component';
+import { LinkDetailsVisualComponent } from './visuals/shared/link-details-visual/link-details-visual.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { DownloadButtonComponent } from './download-button/download-button.compo
     NodeMenuHolderComponent,
     SmrtgraphMenuComponent,
     SmrtgraphSearchComponent,
-    DownloadButtonComponent
+    DownloadButtonComponent,
+    LinkDetailsVisualComponent
   ],
   imports: [
     BrowserModule,

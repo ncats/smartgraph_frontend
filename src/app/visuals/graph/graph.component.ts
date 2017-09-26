@@ -114,7 +114,7 @@ svg.append("defs").append("marker")
   }
 
   downloadGraph():void{
-    this.downloader.downloadFile(d3.select('svg'));
+    this.downloader.downloadFile(d3.select('svg'), this.options);
   }
 
   private _options: {width, height} = {width: 800, height: 600};
@@ -122,7 +122,8 @@ svg.append("defs").append("marker")
   get options() {
     return this._options = {
       width: this.el.nativeElement.parentElement.offsetWidth,
-      height: window.outerHeight*.5
+     // height: window.outerHeight*.5
+      height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };
   }
 }

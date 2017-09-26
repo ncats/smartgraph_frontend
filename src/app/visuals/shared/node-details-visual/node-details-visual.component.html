@@ -1,52 +1,61 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+<div fxFlex="92">
+
 <h2>{{hoveredNode?.labels[0]}}</h2>
 <h3><i>{{hoveredNode?.properties?.pref_name}}</i></h3>
 
 
-<div *ngIf="hoveredNode && imageUrl">
-  <img [src] = imageUrl>
+<div *ngIf="hoveredNode && (hoveredNode.properties?.canonical_smiles || hoveredNode.properties?.smiles)">
+  <img [src] = getSmiles(hoveredNode)>
 </div>
-
-
-
-
 <div *ngIf="downstreamLinks?.length>0">
-
-
-
-<h3>Regulates: </h3>
-<div *ngFor="let link of downstreamLinks">
-  <div [ngSwitch]="link?.type">
-    <div    *ngSwitchCase="'REGULATES'">
-      {{link.properties?.effect}}: {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}})
-    </div>
-    <div    *ngSwitchCase="'TESTED_ON'"> {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}}) Median Activity: {{link.properties.median_p_activity}}</div>
-    <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal">maximal</span> pattern of: {{link.target.properties?.chembl_id}}
-      ({{link.target.properties?.pref_name}}) {{link.properties | json}}
-      <div *ngIf="link.target.properties.canonical_smiles">
-<!--
-        <img [src] = getSmiles(link.target)>
--->
-      </div>
-    </div>
-    <div    *ngSwitchCase="'POTENT_PATTERN_OF'">poternt pattern of : {{link.target.properties?.chembl_id}} ({{link.target.properties?.pref_name}}) </div>
-    <!--    <div    *ngSwitchCase="'REGULATES'"></div>
-        <div    *ngSwitchCase="'REGULATES'"></div>-->
-    <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>
+  <hr>
+  <md-grid-list cols="2" rowHeight="1:1">
+  <md-grid-tile-header><h2>Downstream: </h2></md-grid-tile-header>
+  <div *ngFor="let link of downstreamLinks">
+    <md-grid-tile><link-details-visual [link] = link [node] = link.target></link-details-visual></md-grid-tile>
   </div>
-
-<hr>
-</div>
+  </md-grid-list>
 </div>
 
 <div *ngIf="upstreamLinks?.length>0">
+  <hr>
+  <md-grid-list cols="2" rowHeight="1:1">
+    <md-grid-tile-header><h2>Upstream: </h2></md-grid-tile-header>
+  <div *ngFor="let link of upstreamLinks">
+    <md-grid-tile><link-details-visual [link] = link [node] = link.source></link-details-visual></md-grid-tile>
+  </div>
+  </md-grid-list>
+</div>
+</div>
+<!--
+<div *ngIf="upstreamLinks?.length>0">
 <h3>Regulated by: </h3>
-<div *ngFor="let link of upstreamLinks">
-  {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}}) : {{link.properties?.effect}}
+<div *ngFor="let link of upstreamLinks" (mouseenter)="link.source.params.hovered = true;" (mouseenter)="link.source.params.hovered = false;">
+  <div [ngSwitch]="link?.type">
+    <div    *ngSwitchCase="'REGULATES'">
+      {{link.properties?.effect}}: {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}})
+    </div>
+    <div    *ngSwitchCase="'TESTED_ON'"> {{link.source.properties?.chembl_id}}
+      <span *ngIf="link.source.properties?.pref_name">({{link.source.properties?.pref_name}})</span>
+      <div *ngIf="link.source.properties?.canonical_smiles || link.source.properties?.smiles">
+        <img [src] = getSmiles(link.source)>
+        <br>
+      </div>
+      Median Activity: {{link.properties.median_p_activity}}</div>
+    <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{link.source.properties?.chembl_id}}
+      ({{link.source.properties?.pref_name}}) {{link.properties | json}}
+      <div *ngIf="link.source.properties?.canonical_smiles || link.source.properties?.smiles">
+        <img [src] = getSmiles(link.source)>
+      </div>
+    </div>
+    <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of : {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}}) </div>
+    &lt;!&ndash;    <div    *ngSwitchCase="'REGULATES'"></div>
+        <div    *ngSwitchCase="'REGULATES'"></div>&ndash;&gt;
+    <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>
+  </div>
   <hr>
 </div>
 </div>
-<p>
-<!--
-  {{hoveredNode?.properties |json}}
 -->
-</p>
+
