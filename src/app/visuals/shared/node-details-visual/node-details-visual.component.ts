@@ -21,7 +21,6 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
-console.log(node.node);
         this.hoveredNode = node.node;
         this.getSmiles(node.node);
         this.downstreamLinks = node.down;

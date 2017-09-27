@@ -159,8 +159,6 @@ export class D3Service {
       this.nodeService.hoveredNode({node: node , up:upstreamNeighbors, down: downstreamNeighbors});
       decorateLinks();
       decorateNodes();
-      console.log(upstreamNeighbors);
-      console.log(downstreamNeighbors);
     };
 
      let mouseOutFunction = ():void =>{

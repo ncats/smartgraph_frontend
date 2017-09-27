@@ -23,10 +23,10 @@ import { Node } from '../../../d3';
       </svg:foreignObject>
       </svg:circle>-->
 <!--
-       <svg:text>{{node.properties?.chembl_id}}</svg:text>
+       <svg:text>{{node.properties?.uniprot_id}}</svg:text>
 -->
        
-       <svg:text>{{node.id}}</svg:text>
+       <svg:text>{{node.properties?.uniprot_id}}</svg:text>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

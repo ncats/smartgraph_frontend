@@ -17,6 +17,7 @@ import * as d3 from 'd3';
         [attr.font-size]= 10
         [attr.x]="(link.source.x +link.target.x)/2 "
         [attr.y]="(link.source.y +link.target.y)/2 ">
+        {{link.id}}
         {{link.properties?.median_p_activity || link.properties?.effect}}
       </svg:text>
       </svg:g>

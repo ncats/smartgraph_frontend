@@ -35,6 +35,7 @@ history =[];
   filter: boolean = false;
 nodeList: any = [];
 linkList: any = [];
+nodes: any  =[];
 
 constructor(
   private dataConnectionService:DataConnectionService,
@@ -46,7 +47,10 @@ constructor(
   this.dataConnectionService.messages.subscribe(msg => {
     let response = JSON.parse(msg);
     switch(response.type) {
-      case 'path':
+      case 'path':{
+        this.filter = true;
+        //intention absence of break to allow fall through
+      }
       case 'targets':
       case 'expand':
       case 'load': {
@@ -62,7 +66,7 @@ constructor(
         break;
       }
       case 'done':{
-        this.makeGraph(response.type);
+        this.makeGraph();
         break;
       }
     }
@@ -70,56 +74,55 @@ constructor(
 }
   parseRecords(path, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
+    console.log(path);
+    this.nodes.push(path);
     for (let r of path) {
       if (r.segments) {
         for (let l of r.segments) {
+          console.log(l);
           //this ignores the initial start and end nodes, but they are added in the segments of the path
-          let start = this.nodeService.makeNode(l.start.identity.low, l.start);
-          let end = this.nodeService.makeNode(l.end.identity.low, l.end);
-          let id = start.id.toString().concat(end.id.toString());
+          let start = this.nodeService.makeNode(l.start.properties.uuid, l.start);
+          let end = this.nodeService.makeNode(l.end.properties.uuid, l.end);
+         // let id = start.id.toString().concat(end.id.toString());
           let nodes = [start,end];
           this.nodeList.push(...nodes);
-          let link = new Link(start, end, l.relationship.type, l.relationship.properties, id);
+          let link = new Link(start, end, l.relationship.type, l.relationship.properties, l.relationship.properties.uuid);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
-          this.masterLinkMap.set( id, link);
+          this.masterLinkMap.set( l.relationship.properties.uuid, link);
         }
       } else {
         if (!r.start && !r.end) {
           //this is for node groups that aren't a path
-          this.nodeList.push(this.nodeService.makeNode(r.identity.low, r));
-          this.nodeService.setNode(this.nodeService.makeNode(r.identity.low, r));
+          this.nodeList.push(this.nodeService.makeNode(r.properties.uuid, r));
+          this.nodeService.setNode(this.nodeService.makeNode(r.properties.uuid, r));
         } else {
-          let start = this.nodeService.makeNode(r.start.low, {});
-          let end = this.nodeService.makeNode(r.end.low, {});
+          let start = this.nodeService.makeNode(r.properties.uuid, {});
+          let end = this.nodeService.makeNode(r.properties.uuid, {});
           let nodes = [start,end];
-          let id = start.id.toString().concat(end.id.toString());
+       //   let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
-          let link = new Link(start, end, r.type, r.properties, id);
+          let link = new Link(start, end, r.type, r.properties, r.properties.uuid);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
-          this.masterLinkMap.set(id, link);
+          this.masterLinkMap.set(r.properties.uuid, link);
         }
       }
 
     }
   }
 
-
-
-  makeGraph(eventType: string):void {
-    console.log(eventType);
+  makeGraph():void {
+    console.log(this.masterLinkMap);
+    console.log(this.nodes);
     let newNodes =this.nodeList.filter((elem, pos, arr) => {
         return arr.indexOf(elem) == pos;
       });
    let newLinks = this.linkList.filter((elem, pos, arr) => {
      return arr.indexOf(elem) == pos;
    });
-
-    //todo: by not flitering, the expand/collapse node history is preserved, the start and end nodes are left in place
-    //todo: however, if filtered, the distance search doesn't work, because the removed nodes aren't discovered
 
     let diff = {
       removedNodes: this.graph.nodes.filter(node =>newNodes.indexOf(node) === -1),
@@ -146,40 +149,46 @@ constructor(
     }
 console.log(diff);
     //apply diff to current graph
+    this.applyDiff(diff);
+    this.countLinks();
+    //update graph
+   this._graphHistorySource.next(this.graph);
+     this.nodeList = [];
+     this.linkList = [];
+     this.filter = false;
+  }
 
-    //todo: by not flitering, the expand/collapse node history is preserved, the start and end nodes are left in place
-    //todo: however, if filtered, the distance search doesn't work, because the removed nodes aren't discovered
+  applyDiff(diff:any):void{
+    //todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
+    //todo: need to iterate over remaining nodes and links and remove them
+    if(this.filter == true) {
       diff.removedNodes.forEach(node => {
         this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
       });
       diff.removedLinks.forEach(link => {
         this.graph.links.splice(this.graph.links.indexOf(link), 1);
       });
-
+    }
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
 
     diff.addedLinks.forEach(link => {
       this.graph.links.push(link);
     });
-
-    this.countLinks();
-    //update graph
-   this._graphHistorySource.next(this.graph);
-     this.nodeList = [];
-     this.linkList = [];
   }
 
 countLinks():void{
-    this.graph.nodes.forEach(node => node.linkCount =1);
+    this.graph.nodes.forEach(node => node.linkCount = 1);
   for (let l of this.graph.links) {
     let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
     source.linkCount ++;
+    //todo: not sure why this was put here...
     if(source.labels[0] =="Lychi"){
-      console.log(source);
+      //console.log(source);
     }
     this.nodeService.setNode(source);
     let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
     target.linkCount ++;
+    //todo: not sure why this was put here...
     if(target.labels[0] =="Lychi"){
       console.log(target);
     }
@@ -208,35 +217,25 @@ countLinks():void{
       }
     };
   this.eventData ={id:id, event: event};
-    console.log(this.historyMap);
     this.dataConnectionService.messages.next(message);
   }
 
   nodeCollapse(node:Node, label:any ):void{
-    console.log(node);
-    console.log(label);
-    console.log(this.historyMap);
+    this.filter = true;
 //get the expand object to delete the nodes added
     let diff = this.historyMap.get('expand').get(node.id).diff;
-    console.log(diff);
-    diff.addedLinks.forEach(link => {
-      this.graph.links.splice(this.graph.links.indexOf(link), 1);
-    });
-    diff.addedNodes.forEach(node => {
-      this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
-    });
 
-    diff.removedLinks.forEach(link =>{
-      this.graph.links.push(link);
-    });
+    let undoDiff = {
+      addedNodes: [],
+      removedNodes: diff.addedNodes,
+      addedLinks: [],
+      removedLinks: diff.addedLinks
+    };
 
-    diff.removedNodes.forEach(node =>{
-      this.graph.nodes.push(node);
-    });
+    this.applyDiff(undoDiff);
 
-    //todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
     this.countLinks();
     this._graphHistorySource.next(this.graph);
-
+    this.filter = false;
   }
 }

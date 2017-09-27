@@ -21,7 +21,7 @@ export class NodeMenuHolderComponent{}
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
  <md-list class="node-menu">
-<button  md-menu-item *ngIf="clickedNode.properties?.chembl_id" [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
+<button  md-menu-item *ngIf="clickedNode.properties?.uniprot_id" [disabled] = "true"><b>{{clickedNode.properties?.uniprot_id}}</b></button>
  <button md-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
  <button md-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
  <button md-menu-item *ngIf="!clickedNode.expanded.lychi" (click)="expand('Lychi')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>

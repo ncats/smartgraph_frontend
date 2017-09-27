@@ -24,7 +24,6 @@ export class NodeService {
   }
 
   hoveredNode(node:any){
-    console.log(node);
     this._hoveredNodeSource.next(node);
 
   }
@@ -39,7 +38,7 @@ export class NodeService {
   }
 
   setNode(node:Node):void{
-   this.masterNodeMap.set(node.id,node);
+   this.masterNodeMap.set(node.id, node);
   }
 
   //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data

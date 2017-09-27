@@ -3,7 +3,7 @@
 
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
       <md-input-container fxFlex="95">
-        <textarea mdInput mdTextareaAutosize placeholder="Start Nodes" [formControl]="startNodesCtrl" (keyup.enter)="onEnter('target')">CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862</textarea>
+        <textarea mdInput mdTextareaAutosize placeholder="Start Nodes" [formControl]="startNodesCtrl" (keyup.enter)="onEnter('target')"></textarea>
       </md-input-container>
   </div>
 
@@ -34,6 +34,7 @@
                  [min]="1"
                  [step]="1"
                  [thumb-label]="true"
+                 disabled="true"
                  [formControl]="confidenceCtrl"
                  [value]="50">
       </md-slider>

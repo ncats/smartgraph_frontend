@@ -2,7 +2,7 @@
 <div fxFlex="92">
 
 <h2>{{hoveredNode?.labels[0]}}</h2>
-<h3><i>{{hoveredNode?.properties?.pref_name}}</i></h3>
+<h3><i>{{hoveredNode?.properties?.name}}</i></h3>
 
 
 <div *ngIf="hoveredNode && (hoveredNode.properties?.canonical_smiles || hoveredNode.properties?.smiles)">
@@ -34,22 +34,22 @@
 <div *ngFor="let link of upstreamLinks" (mouseenter)="link.source.params.hovered = true;" (mouseenter)="link.source.params.hovered = false;">
   <div [ngSwitch]="link?.type">
     <div    *ngSwitchCase="'REGULATES'">
-      {{link.properties?.effect}}: {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}})
+      {{link.properties?.effect}}: {{link.source.properties?.uniprot_id}} ({{link.source.properties?.name}})
     </div>
-    <div    *ngSwitchCase="'TESTED_ON'"> {{link.source.properties?.chembl_id}}
-      <span *ngIf="link.source.properties?.pref_name">({{link.source.properties?.pref_name}})</span>
+    <div    *ngSwitchCase="'TESTED_ON'"> {{link.source.properties?.uniprot_id}}
+      <span *ngIf="link.source.properties?.name">({{link.source.properties?.name}})</span>
       <div *ngIf="link.source.properties?.canonical_smiles || link.source.properties?.smiles">
         <img [src] = getSmiles(link.source)>
         <br>
       </div>
       Median Activity: {{link.properties.median_p_activity}}</div>
-    <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{link.source.properties?.chembl_id}}
-      ({{link.source.properties?.pref_name}}) {{link.properties | json}}
+    <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{link.source.properties?.uniprot_id}}
+      ({{link.source.properties?.name}}) {{link.properties | json}}
       <div *ngIf="link.source.properties?.canonical_smiles || link.source.properties?.smiles">
         <img [src] = getSmiles(link.source)>
       </div>
     </div>
-    <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of : {{link.source.properties?.chembl_id}} ({{link.source.properties?.pref_name}}) </div>
+    <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of : {{link.source.properties?.uniprot_id}} ({{link.source.properties?.name}}) </div>
     &lt;!&ndash;    <div    *ngSwitchCase="'REGULATES'"></div>
         <div    *ngSwitchCase="'REGULATES'"></div>&ndash;&gt;
     <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>

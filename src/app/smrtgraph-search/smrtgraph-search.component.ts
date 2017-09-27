@@ -86,13 +86,12 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.dataConnectionService.messages.next(query);
       this.startNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
-        console.log(res);
         //todo: add validation rules: cannot be both start and end node
-        //todo: add validation rules: must have chembl_id (for now)
+        //todo: add validation rules: must have uniprot_id (for now)
         //todo: this is going to happen on any change, so i need to filter by response type
         res.nodes.filter(node => {
-          if(node.properties && node.properties.chembl_id) {
-            let id = node.properties.chembl_id;
+          if(node.properties && node.properties.uniprot_id) {
+            let id = node.properties.uniprot_id;
             if (valArr.includes(id)) {
               //todo: this doesn't clear the parameters, just passes them.
               node.params.endNode = false;
@@ -115,8 +114,8 @@ export class SmrtgraphSearchComponent implements OnInit {
       this.graphDataService.graphhistory$.subscribe(res =>{
           //todo: add validation rules: cannot be both start and end node
         res.nodes.filter(node => {
-          if(node.properties && node.properties.chembl_id) {
-            let id = node.properties.chembl_id || node.properties.properties.chembl_id;
+          if(node.properties && node.properties.uniprot_id) {
+            let id = node.properties.uniprot_id || node.properties.properties.uniprot_id;
             if (valArr.includes(id)) {
               node.params.startNode = false;
               node.params.endNode = true;
@@ -166,8 +165,11 @@ export class SmrtgraphSearchComponent implements OnInit {
         console.log(results);
         this.dataConnectionService.messages.next(results);
       });
-    this.startNodesCtrl.setValue('CHEMBL2111336, CHEMBL203');
-    this.endNodesCtrl.setValue('CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862');
+    //this.startNodesCtrl.setValue('CHEMBL2111336, CHEMBL203');
+    //this.endNodesCtrl.setValue('CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862');
+
+    this.startNodesCtrl.setValue('P35968, P12931, P00533','AHLNGYPZYMUEFB-UHFFFAOYSA-N');
+    this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
   }
 
 

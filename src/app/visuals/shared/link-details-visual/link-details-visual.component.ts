@@ -13,7 +13,6 @@ export class LinkDetailsVisualComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.link);
   }
 
   getSmiles(node : any): string{

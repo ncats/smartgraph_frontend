@@ -1,16 +1,16 @@
 
 <div [ngSwitch]="link?.type" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
   <div    *ngSwitchCase="'REGULATES'">
-    {{link.properties?.effect}}: {{node.properties?.chembl_id}} ({{node.properties?.pref_name}})
+    {{link.properties?.effect}}: {{node.properties?.uniprot_id}} ({{node.properties?.name}})
   </div>
-  <div    *ngSwitchCase="'TESTED_ON'"> {{node.properties?.chembl_id}} ({{node.properties?.pref_name}}) Median Activity: {{link.properties.median_p_activity}}</div>
-  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{node.properties?.chembl_id}}
-    ({{node.properties?.pref_name}}) {{link.properties | json}}
+  <div    *ngSwitchCase="'TESTED_ON'"> {{node.properties?.uniprot_id}} ({{node.properties?.name}}) Median Activity: {{link.properties.median_p_activity}}</div>
+  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{node.properties?.uniprot_id}}
+    ({{node.properties?.name}}) {{link.properties | json}}
     <div *ngIf="node.properties?.canonical_smiles || node.properties?.smiles">
       <img [src] = getSmiles(node)>
     </div>
   </div>
-  <div    *ngSwitchCase="'POTENT_PATTERN_OF'">poternt pattern of : {{node.properties?.chembl_id}} ({{node.properties?.pref_name}}) </div>
+  <div    *ngSwitchCase="'POTENT_PATTERN_OF'">poternt pattern of : {{node.properties?.uniprot_id}} ({{node.properties?.name}}) </div>
   <!--    <div    *ngSwitchCase="'REGULATES'"></div>
       <div    *ngSwitchCase="'REGULATES'"></div>-->
   <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>

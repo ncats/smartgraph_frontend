@@ -139,19 +139,19 @@ export class DownloadButtonComponent implements OnInit {
       canvas.height = height;
 
       var image = new Image();
-      image.onload = function () {
-        context.clearRect(0, 0, width, height);
-        context.drawImage(image, 0, 0, width, height);
+       image.src = imgsrc;
+       image.onload = function () {
+         context.clearRect(0, 0, width, height);
 
+
+        context.drawImage(image, 0, 0, width, height);
+console.log(context);
 
       //    console.log(blob);
       //  });
-
-
       };
-       var blob = new Blob([canvas],  "image/png");
 
-      image.src = imgsrc;
+       let blob = new Blob([image], {type: 'image/png;charset=utf-8'});
       console.log(canvas);
       console.log(blob);
       console.log(image);

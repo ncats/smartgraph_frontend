@@ -10,7 +10,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   target: Node | string | number;
   type?: string;
   properties?: {};
-  uuid: string;
+  //uuid: string;
   id: string;
 
   constructor(source, target, type?, properties?, id?) {
@@ -18,7 +18,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
     this.target = target;
     this.type = type || "";
     this.properties = properties;
-    this.uuid = uuid.v4();
+   // this.uuid = uuid.v4();
     this.id = id;
   }
 }
