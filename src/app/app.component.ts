@@ -31,7 +31,7 @@ export class AppComponent {
   subscription:Subscription;
   clickedNode:Node;
   autocompleteOptions:any[] = [];
-  lychiAutocompleteOptions:any[] = [];
+  compoundAutocompleteOptions:any[] = [];
   targetSelected: boolean = false;
   patternSelected: boolean = false;
 
@@ -63,8 +63,8 @@ export class AppComponent {
           this.autocompleteOptions.push(response.data);
           break;
         }
-        case "lychiSearch": {
-          this.lychiAutocompleteOptions.push(response.data);
+        case "compoundSearch": {
+          this.compoundAutocompleteOptions.push(response.data);
           break;
         }
         case "counts": {
@@ -83,7 +83,7 @@ export class AppComponent {
       .subscribe(results => {
         //empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
-        this.lychiAutocompleteOptions=[];
+        this.compoundAutocompleteOptions=[];
         console.log(results);
         this.dataConnectionService.messages.next(results);
       });
@@ -109,14 +109,14 @@ export class AppComponent {
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
-        this.onEnter("lychi");
+        this.onEnter("compound");
       }else {
         if (value != '') {
           //empty autocomplete options array, otherwise it will never change
-          //this.lychiAutocompleteOptions = [];
+          //this.compoundAutocompleteOptions = [];
 
          // this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
-          this.searchTerm$.next({term: value, type: "lychiSearch"});
+          this.searchTerm$.next({term: value, type: "compoundSearch"});
         }
       }
     });
@@ -133,7 +133,7 @@ export class AppComponent {
         value = this.targetCtrl.value.value;
         break;
       }
-      case"lychi":{
+      case"compound":{
         this.patternSelected = true;
         console.log(this.patternCtrl.value);
         value = this.patternCtrl.value.display;

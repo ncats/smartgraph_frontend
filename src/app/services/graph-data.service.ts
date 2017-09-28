@@ -4,6 +4,7 @@ import {Node, Link} from '../d3';
 import {Message, MessageService} from "./message.service";
 import {DataConnectionService} from "./data-connection.service";
 import {NodeService} from "../d3/models/node.service";
+import {LinkService} from "../d3/models/link.service";
 /*
 import {WebWorkerService} from "./services/web-worker.service";
 */
@@ -41,6 +42,7 @@ constructor(
   private dataConnectionService:DataConnectionService,
   private messageService: MessageService,
   private nodeService: NodeService,
+  private linkService: LinkService
 ){
 
 
@@ -74,40 +76,45 @@ constructor(
 }
   parseRecords(path, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
-    console.log(path);
-    this.nodes.push(path);
     for (let r of path) {
       if (r.segments) {
         for (let l of r.segments) {
-          console.log(l);
           //this ignores the initial start and end nodes, but they are added in the segments of the path
-          let start = this.nodeService.makeNode(l.start.properties.uuid, l.start);
-          let end = this.nodeService.makeNode(l.end.properties.uuid, l.end);
+          let start:Node = this.nodeService.makeNode(l.start.properties.uuid, l.start);
+          let end:Node = this.nodeService.makeNode(l.end.properties.uuid, l.end);
          // let id = start.id.toString().concat(end.id.toString());
-          let nodes = [start,end];
-          this.nodeList.push(...nodes);
-          let link = new Link(start, end, l.relationship.type, l.relationship.properties, l.relationship.properties.uuid);
+         // let nodes:Node[] = ;
+          this.nodeList.push(...[start,end]);
+          let link:Link = this.linkService.makeLink(l.relationship.properties.uuid, start, end, l.relationship);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
-          this.masterLinkMap.set( l.relationship.properties.uuid, link);
+          this.linkService.setLink( link);
         }
       } else {
+        console.error(r);
         if (!r.start && !r.end) {
+          console.error(r);
           //this is for node groups that aren't a path
-          this.nodeList.push(this.nodeService.makeNode(r.properties.uuid, r));
-          this.nodeService.setNode(this.nodeService.makeNode(r.properties.uuid, r));
+          let n:Node = this.nodeService.makeNode(r.properties.uuid, r);
+          console.log(n);
+          this.nodeList.push(n);
+          this.nodeService.setNode(n);
         } else {
+          //this is the separate path for expanding nodes -- this does not have a uuid associated with the start or end nodes, so neo4j's id needs to be used to create the nodes
+          console.log(r);
           let start = this.nodeService.makeNode(r.properties.uuid, {});
           let end = this.nodeService.makeNode(r.properties.uuid, {});
           let nodes = [start,end];
        //   let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
-          let link = new Link(start, end, r.type, r.properties, r.properties.uuid);
-          this.linkList.push(link);
+          let link = this.linkService.makeLink(r.properties.uuid, start, end, r);
+          //   let link = new Link(start, end, r.type, r.properties, r.properties.uuid);
+       //   this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
-          this.masterLinkMap.set(r.properties.uuid, link);
+          this.linkService.setLink( link);
+          //    this.masterLinkMap.set(r.properties.uuid, link);
         }
       }
 
@@ -115,8 +122,6 @@ constructor(
   }
 
   makeGraph():void {
-    console.log(this.masterLinkMap);
-    console.log(this.nodes);
     let newNodes =this.nodeList.filter((elem, pos, arr) => {
         return arr.indexOf(elem) == pos;
       });
@@ -152,8 +157,8 @@ console.log(diff);
     this.applyDiff(diff);
     this.countLinks();
     //update graph
-   this._graphHistorySource.next(this.graph);
-     this.nodeList = [];
+    this._graphHistorySource.next(this.graph);
+    this.nodeList = [];
      this.linkList = [];
      this.filter = false;
   }
@@ -170,7 +175,6 @@ console.log(diff);
       });
     }
     diff.addedNodes.forEach(node => this.graph.nodes.push(node));
-
     diff.addedLinks.forEach(link => {
       this.graph.links.push(link);
     });
@@ -182,14 +186,14 @@ countLinks():void{
     let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
     source.linkCount ++;
     //todo: not sure why this was put here...
-    if(source.labels[0] =="Lychi"){
+    if(source.labels[0] =="Compound"){
       //console.log(source);
     }
     this.nodeService.setNode(source);
     let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
-    target.linkCount ++;
     //todo: not sure why this was put here...
-    if(target.labels[0] =="Lychi"){
+    target.linkCount ++;
+    if(target.labels[0] =="Compound"){
       console.log(target);
     }
     this.nodeService.setNode(target);

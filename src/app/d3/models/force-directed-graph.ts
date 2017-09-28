@@ -37,8 +37,8 @@ export class ForceDirectedGraph {
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
-    //   this.simulation.restart();
-    this.simulation.alpha(0.8).restart();
+      // this.simulation.restart();
+    this.simulation.alphaTarget(0.5).restart();
 
   }
 

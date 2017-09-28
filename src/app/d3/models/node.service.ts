@@ -38,12 +38,17 @@ export class NodeService {
   }
 
   setNode(node:Node):void{
-   this.masterNodeMap.set(node.id, node);
+   this.masterNodeMap.set(node.uuid, node);
   }
 
-  //searches to see if a node exists. if it does, it returns the node with the sent data merged, if it doesn't exist, it makes a new node with the data
+  //searches to see if a node exists. if it does, it returns the node, if it doesn't exist, it makes a new node with the data
   makeNode(id:string, data:any):Node {
-    return this.masterNodeMap.get(id) ? Object.assign(this.masterNodeMap.get(id), data) : new Node(id, data);
+    let n:Node = this.masterNodeMap.get(id);
+    if(!n){
+      n = new Node(id, data);
+    }
+    return n;
+    //return this.masterNodeMap.get(id) ? this.masterNodeMap.get(id) : new Node(id, data);
   }
 
 

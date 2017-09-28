@@ -20,7 +20,7 @@ export class TooltipVisualComponent implements OnInit {
     this.getSmiles(this.node);
   }
 
-  //getSmiles(node : Pattern| Lychi ): void{
+  //getSmiles(node : Pattern| Compound ): void{
   getSmiles(node : any): void{
     if(node.properties && node.properties.smiles) {
       this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
