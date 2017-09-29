@@ -26,6 +26,8 @@ import {Link, Node} from '../../../d3';
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;
 
+  source:Node;
+  target:Node;
   constructor() {
   }
 
@@ -34,16 +36,16 @@ export class LinkVisualComponent {
 
 
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
-    let source:Node = link.source;
-    let target:Node = link.target;
-    let x1 = source.x;
-    let y1 = source.y;
-    let x2 = target.x;
-    let y2 = target.y;
+    this.source = link.source;
+    this.target = link.target;
+    let x1 =  this.source.x;
+    let y1 =  this.source.y;
+    let x2 =  this.target.x;
+    let y2 =  this.target.y;
 
     let distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    let radius1 = source.r || 0;
-    let radius2 = target.r || 0;
+    let radius1 =  this.source.r || 0;
+    let radius2 =  this.target.r || 0;
 
     if (attr_name === 'x1') return x1 + (x2 - x1) * radius1 / distance;
     if (attr_name === 'y1') return y1 + (y2 - y1) * radius1 / distance;
