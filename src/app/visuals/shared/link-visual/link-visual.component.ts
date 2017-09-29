@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Link} from '../../../d3';
-import * as d3 from 'd3';
+import {Link, Node} from '../../../d3';
 
 
 @Component({
@@ -15,8 +14,8 @@ import * as d3 from 'd3';
 </svg:line>
     <svg:text class="link-name"
         [attr.font-size]= 10
-        [attr.x]="(link.source.x +link.target.x)/2 "
-        [attr.y]="(link.source.y +link.target.y)/2 ">
+        [attr.x]="(source.x +target.x)/2 "
+        [attr.y]="(source.y +target.y)/2 ">
         {{link.id}}
         {{link.properties?.median_p_activity || link.properties?.effect}}
       </svg:text>
@@ -35,14 +34,16 @@ export class LinkVisualComponent {
 
 
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
-    let x1 = link.source.x;
-    let y1 = link.source.y;
-    let x2 = link.target.x;
-    let y2 = link.target.y;
+    let source:Node = link.source;
+    let target:Node = link.target;
+    let x1 = source.x;
+    let y1 = source.y;
+    let x2 = target.x;
+    let y2 = target.y;
 
     let distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    let radius1 = link.source.r || 0;
-    let radius2 = link.target.r || 0;
+    let radius1 = source.r || 0;
+    let radius2 = target.r || 0;
 
     if (attr_name === 'x1') return x1 + (x2 - x1) * radius1 / distance;
     if (attr_name === 'y1') return y1 + (y2 - y1) * radius1 / distance;

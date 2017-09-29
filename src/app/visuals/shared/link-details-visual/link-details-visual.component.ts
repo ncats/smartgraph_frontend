@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Link} from "../../../d3/models/link";
+import {Link, Node} from '../../../d3';
+
 
 @Component({
   selector: 'link-details-visual',
@@ -15,7 +16,7 @@ export class LinkDetailsVisualComponent implements OnInit {
   ngOnInit() {
   }
 
-  getSmiles(node : any): string{
+  getSmiles(node : Node): string{
     if(node.properties && node.properties.smiles) {
       return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ LinkDetailsVisualComponent.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
     }else if(node.properties && node.properties.canonical_smiles){

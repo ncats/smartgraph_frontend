@@ -53,7 +53,8 @@ constructor(
         this.filter = true;
         //intention absence of break to allow fall through
       }
-      case 'targets':
+      case 'startNodeSearch':
+      case 'endNodeSearch':
       case 'expand':
       case 'load': {
         this.originalEvent = response.type;

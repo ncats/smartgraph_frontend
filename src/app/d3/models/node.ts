@@ -22,7 +22,7 @@ export class Node implements d3.SimulationNodeDatum {
 
   uuid: string;
   id: string;
-  properties: {};
+  properties: any;
   labels?: string[];
   linkCount: number = 0;
   expanded: Object ={

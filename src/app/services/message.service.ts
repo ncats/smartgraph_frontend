@@ -65,13 +65,20 @@ export class MessageService {
         params = {qParam: term};
         break;
       }
-      case "targets": {
+/*      case "targets": {
         console.log(term);
         msg = 'MATCH (n:Target) WHERE n.uuid IN {qParam} RETURN n';
         params = {qParam: term};
         break;
+      }*/
+            case "endNodeSearch":
+      case "startNodeSearch": {
+        console.log(term);
+        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.hash IN {qParam} RETURN c AS data';
+        //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
+        params = {qParam: term};
+        break;
       }
-
       case "smiles": {
         msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
         params = {qParam: term};
@@ -89,22 +96,11 @@ export class MessageService {
         params = {qParam: term};
         break;
       }
-      case "targetUUID": {
-        console.log(term);
-        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n.uuid AS data UNION MATCH (c:Compound) WHERE c.hash IN {qParam} RETURN c.uuid AS data';
-      //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
-        params = {qParam: term};
-        break;
-      }
-      case "compoundUuid": {
-        msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params = {qParam: term};
-        break;
-      }
 
       case "path": {
+        console.log(term);
         let levels = properties.distance;
-        msg = 'MATCH p=shortestPath((t)-[r:REGULATES*..' + levels + ']->(q:Target)) WHERE t.uniprot_id IN {start} AND q.uniprot_id IN {end} AND q.uniprot_id <> t.uniprot_id return p';
+        msg = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
                params = {start: term.start, end: term.end};
         break;
       }
