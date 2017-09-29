@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Node, Link, ForceDirectedGraph} from './';
+import {Node, Link, ForceDirectedGraph, NodeService} from './models';
 import * as d3 from 'd3';
-import {NodeService} from "./models/node.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
 
 @Injectable()

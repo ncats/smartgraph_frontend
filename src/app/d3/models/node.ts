@@ -1,5 +1,4 @@
 import APP_CONFIG from '../../app.config';
-import * as uuid from 'uuid'
 
 export class Params {
   hovered: boolean = false;

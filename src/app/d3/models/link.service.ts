@@ -3,8 +3,8 @@
  */
 import {Injectable}      from '@angular/core'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Link} from './';
 import {Subject} from "rxjs";
+import {Link} from "./link";
 
 @Injectable()
 export class LinkService {

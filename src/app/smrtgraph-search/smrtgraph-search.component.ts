@@ -62,7 +62,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.dataConnectionService.messages.subscribe(msg => {
       //console.log(msg);
       let response = JSON.parse(msg);
-       console.log(response.type);
+    //   console.log(response.type);
       switch (response.type) {
 
         case "targetSearch": {

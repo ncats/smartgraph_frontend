@@ -3,7 +3,8 @@
  */
 import {Injectable}      from '@angular/core'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Node} from './';
+import {Node} from "./node";
+
 import {Subject} from "rxjs";
 
 @Injectable()

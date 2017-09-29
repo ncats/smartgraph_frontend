@@ -17,7 +17,6 @@ import {Link, Node} from '../../../d3';
         [attr.x]="(source.x +target.x)/2 "
         [attr.y]="(source.y +target.y)/2 ">
         {{link.id}}
-        {{link.properties?.median_p_activity || link.properties?.effect}}
       </svg:text>
       </svg:g>
   `,
