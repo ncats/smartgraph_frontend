@@ -66,7 +66,8 @@ export class MessageService {
         break;
       }
       case "targets": {
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n';
+        console.log(term);
+        msg = 'MATCH (n:Target) WHERE n.uuid IN {qParam} RETURN n';
         params = {qParam: term};
         break;
       }
@@ -84,6 +85,18 @@ export class MessageService {
       }
 
       case "uuid": {
+        msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+        params = {qParam: term};
+        break;
+      }
+      case "targetUUID": {
+        console.log(term);
+        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n.uuid AS data UNION MATCH (c:Compound) WHERE c.hash IN {qParam} RETURN c.uuid AS data';
+      //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
+        params = {qParam: term};
+        break;
+      }
+      case "compoundUuid": {
         msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
         params = {qParam: term};
         break;

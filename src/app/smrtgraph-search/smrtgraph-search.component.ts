@@ -24,6 +24,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   searchTerm$ = new Subject<any>();
   autocompleteOptions:any[] = [];
   compoundAutocompleteOptions:any[] = [];
+  uuidList:any[] = [];
   startNodes: boolean = false;
   endNodes: boolean = false;
 
@@ -55,12 +56,13 @@ export class SmrtgraphSearchComponent implements OnInit {
 
 
   ngOnInit() {
+    this.graphDataService.clearGraph();
     //todo: fix above description
     //todo: set all subscriptions to be variables to close on destroy
     this.dataConnectionService.messages.subscribe(msg => {
       //console.log(msg);
       let response = JSON.parse(msg);
-      // console.log(response);
+       console.log(response.type);
       switch (response.type) {
 
         case "targetSearch": {
@@ -69,6 +71,10 @@ export class SmrtgraphSearchComponent implements OnInit {
         }
         case "compoundSearch": {
           this.compoundAutocompleteOptions.push(response.data);
+          break;
+        }
+        case "targetUUID": {
+          this.uuidList.push(response.data);
           break;
         }
         case "counts": {
@@ -82,7 +88,11 @@ export class SmrtgraphSearchComponent implements OnInit {
 
     this.startNodesCtrl.valueChanges.subscribe(value => {
       let valArr =value.trim().split(/[\s,;]+/);
-      let query: Message = this.messageService.getMessage(valArr, 'targets');
+      let query2: Message = this.messageService.getMessage(valArr, 'targetUUID');
+        this.dataConnectionService.messages.next(query2);
+
+      let query: Message = this.messageService.getMessage(this.uuidList, 'targets');
+      console.log(query);
         this.dataConnectionService.messages.next(query);
       this.startNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
