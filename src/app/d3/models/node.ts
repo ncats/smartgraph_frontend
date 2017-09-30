@@ -1,6 +1,14 @@
 import APP_CONFIG from '../../app.config';
 import * as uuid from 'uuid'
 
+export class Params {
+  hovered: boolean = false;
+  startNode: boolean = false;
+  endNode: boolean= false;
+  menu: boolean = false;
+
+  constructor() {}
+}
 
 export class Node implements d3.SimulationNodeDatum {
   // optional - defining optional implementation properties - required for relevant typing assistance
@@ -12,18 +20,26 @@ export class Node implements d3.SimulationNodeDatum {
   fx?: number | null;
   fy?: number | null;
 
+  uuid: string;
   id: string;
   properties: {};
   labels?: string[];
   linkCount: number = 0;
-  hovered?: boolean = false;
+  expanded: Object ={
+    target:false,
+    lychi: false,
+    pattern: false
+  };
 
-  constructor(id, properties, labels, linkCount?) {
-   // this.id = uuid.v4();
+  params: Params;
+
+  constructor(id, properties) {
+    this.uuid = uuid.v4();
     this.id = id;
-    this.properties = properties;
-    this.labels = labels;
-    this.linkCount = linkCount || 0;
+    this.properties = properties.properties;
+    this.labels = properties.labels;
+    this.linkCount = 1;
+    this.params = new Params();
   }
 
   normal = () => {
@@ -44,38 +60,3 @@ export class Node implements d3.SimulationNodeDatum {
   }
 }
 
-export class Target extends Node {
-  pref_name: string;
-  species_group_flag: string;
-
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.pref_name = obj.pref_name;
-    this.species_group_flag = obj.species_group_flag;
-  }
-
-}
-
-export class Pattern extends Node {
- ring_nr: {};
- smiles: string;
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.ring_nr = obj.ring_nr;
-    this.smiles = obj.smiles;
-  }
-
-
-}
-
-export class Lychi extends Node {
-  canonical_smiles: string;
-  lychi: string;
-  constructor(obj) {
-    super(obj.id, obj.properties, obj.labels, obj.linkCount);
-    this.canonical_smiles = obj.canonical_smiles;
-    this.lychi = obj.lychi;
-  }
-
-
-}

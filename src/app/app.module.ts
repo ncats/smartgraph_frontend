@@ -18,11 +18,14 @@ import {WebSocketService} from "./services/websocket.service";
 import {DataConnectionService} from "./services/data-connection.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
-import {WebWorkerService} from "./services/web-worker.service";
 import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
 import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
 import {GraphDataService} from "./services/graph-data.service";
+import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
+import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
+import { DownloadButtonComponent } from './download-button/download-button.component';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import {GraphDataService} from "./services/graph-data.service";
     ...D3_DIRECTIVES,
     NodeDetailsVisualComponent,
     NodeMenuComponent,
-    NodeMenuHolderComponent
+    NodeMenuHolderComponent,
+    SmrtgraphMenuComponent,
+    SmrtgraphSearchComponent,
+    DownloadButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +55,6 @@ import {GraphDataService} from "./services/graph-data.service";
     D3Service,
     NodeService,
     SearchService,
-    WebWorkerService,
     MessageService,
     GraphDataService,
     NodeMenuControllerService

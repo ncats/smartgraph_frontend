@@ -40,6 +40,7 @@ export class D3Service {
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
+      //hides tooltip if active
      // d3element.select('.tooltip').style("opacity", 0);
 
       d3.event.on("drag", dragged).on("end", ended);
@@ -73,7 +74,6 @@ export class D3Service {
 
      let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
-      // /node.hovered=true;
      /* d3element.selectAll('.tooltip').transition().duration(200)
         .style("opacity", .9).attr('z-index', 666);*/
       d3.selectAll('circle')
@@ -104,7 +104,7 @@ export class D3Service {
 
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
-      node.hovered = false;
+      node.params.hovered = false;
      /* d3element.select('.tooltip').transition().duration(500)
         .style("opacity", 0);*/
     };
@@ -120,14 +120,15 @@ export class D3Service {
     };
 
     let getNeighborLinks = (e:any):boolean => {
-        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+     //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
     };
 
     let getNeighborNodes = (e:any): boolean => {
-      const sources = connectedLinks.data().map(link => link.source.id);
+     // const sources = connectedLinks.data().map(link => link.source.id);
       const targets = connectedLinks.data().map(link=> link.target.id);
-      let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-      return nodesList.indexOf(e.id) > -1;
+     // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+      return targets.indexOf(e.id) > -1;
     };
 
    let findMaximalLinks = (e:any):boolean => {
@@ -165,19 +166,19 @@ export class D3Service {
   applyClickableBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     let d3element = d3.select(element);
     let svg = d3.select('svg');
-    let toggleMenu = ():void =>{
-      console.log(node);
-if(node['menu']==true) {
-  console.log(node['menu']);
-  this.nodeMenuController.toggleVisible(false);
-  node['menu'] = false;
-}else {
-  this.nodeMenuController.toggleVisible(true);
-  graph.nodes.map(node => node['menu'] = false);
-  node['menu'] = true;
-}
-    };
 
+    let toggleMenu = ():void => {
+      //if menu is open, close it
+      if (node.params.menu) {
+        this.nodeMenuController.toggleVisible(false);
+      }
+//if menu is closed, open it
+      else {
+        this.nodeService.changeNode(node);
+        this.nodeMenuController.toggleVisible(true);
+        node.params.menu = true;
+      }
+    };
     let decorateNodes = ():void =>{
    /*   d3.selectAll('circle')
         .data(graph.nodes)
@@ -189,8 +190,8 @@ if(node['menu']==true) {
     };
 
     let clickFunction = ():void => {
-
-      this.nodeService.changeNode(node);
+      graph.nodes.map(node => node.params.menu = false);
+      //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
 //todo: this may be less necessary with the menu opening
       //decorateNodes();
@@ -198,8 +199,10 @@ if(node['menu']==true) {
     };
 
     let clearMenu =():void =>{
-      graph.nodes.map(node => node['menu'] = false);
+      //this just closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
+      graph.nodes.map(node => node.params.menu = false);
+      d3.event.stopPropagation();
     };
 
     svg.on("click",clearMenu);
@@ -207,7 +210,7 @@ if(node['menu']==true) {
   };
 
 
-  /** The interactable graph we will simulate in this article
+  /** The interactable graph we will return
    * This method does not interact with the document, purely physical calculations with d3
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {

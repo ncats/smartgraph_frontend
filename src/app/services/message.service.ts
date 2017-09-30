@@ -6,14 +6,14 @@ export class MessageService {
   constructor() {
   }
 
-  getMessage(term:any, type:string, properties?:string):Message {
+  getMessage(term:any, type:string, properties?:any):Message {
     let msg: string;
     let params: {};
     switch (type) {
       case"targetSearch":
       {
         msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} OR n.chembl_id =~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100 UNION MATCH (n:Target) WHERE n.pref_name=~{qParam} OR n.chembl_id =~{qParam} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
-       // msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
+        // msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
         params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
         break;
       }
@@ -38,7 +38,7 @@ export class MessageService {
             msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Target) RETURN n, r, b LIMIT 100';
             break;
           }
-          case "Compound": {
+          case "Lychi": {
             msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Lychi) RETURN n, r, b LIMIT 100';
             break;
           }
@@ -60,7 +60,13 @@ export class MessageService {
       case "target":
       {
         msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
-        params =  {qParam: term};
+        params = {qParam: term};
+        break;
+      }
+      case "targets":{
+        console.log(term);
+        msg = 'MATCH (n:Target) WHERE n.chembl_id IN {qParam} RETURN n';
+        params = {qParam: term};
         break;
       }
 
@@ -87,12 +93,17 @@ export class MessageService {
 
       case "path":
       {
-        console.log(term);
-        let levels = 10;
+        let levels = properties.distance;
         //msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
-        msg = 'MATCH p=((l:Lychi {lychi: $lychi} )-[r:TESTED_ON]->(t:Target)) MATCH s=shortestPath((t)-[:REGULATES*..'+levels +']->(q:Target {chembl_id: $target})) where q.chembl_id<>t.chembl_id return p, s';
-      //  msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
-        params = {target: term.target.value, lychi: term.lychi.display};
+
+        msg = 'MATCH p=shortestPath((t)-[r:REGULATES*..'+levels+']->(q:Target)) WHERE t.chembl_id IN {start} AND q.chembl_id IN {end} AND q.chembl_id <> t.chembl_id return p';
+        //msg = 'MATCH (n:Target) WHERE n.chembl_id IN {start} (n)-[r:TESTED_ON]->(t:Target)) MATCH s=shortestPath((t)-[:REGULATES*..'+levels +']->(q:Target)) WHERE q.chembl_id IN {end} q.chembl_id<>t.chembl_id AND return p, s';
+
+        //working 1 to 1 shortest path
+        //msg = 'MATCH p=((l:Lychi {lychi: $lychi} )-[r:TESTED_ON]->(t:Target)) MATCH s=shortestPath((t)-[:REGULATES*..'+levels +']->(q:Target {chembl_id: $target})) where q.chembl_id<>t.chembl_id return p, s';
+
+        //  msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
+        params = {start: term.start, end: term.end};
         break;
       }
 
@@ -102,7 +113,7 @@ export class MessageService {
         break;
       }
       //todo: this isn't paramaterized cypher doesn't support labels as parameters
-            //todo: may need to just write separate calls based on origin node label
+      //todo: may need to just write separate calls based on origin node label
       case "counts":{
         msg = ' MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
         params =  {qParam: term};

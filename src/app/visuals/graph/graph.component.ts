@@ -1,8 +1,12 @@
-import {Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy} from '@angular/core';
+import {
+  Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy,
+  ViewChild
+} from '@angular/core';
 import {D3Service, ForceDirectedGraph, Node, NodeService, Link} from '../../d3';
 import {Subscription} from "rxjs";
 import * as d3 from 'd3';
 import {GraphDataService} from "../../services/graph-data.service";
+import {DownloadButtonComponent} from "../../download-button/download-button.component";
 
 
 @Component({
@@ -19,12 +23,15 @@ import {GraphDataService} from "../../services/graph-data.service";
       <svg:g nodeMenu></svg:g>
       </g>
     </svg>
+          <download-button (click)=" downloadGraph()"></download-button>
   `,
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent {
-/*  @Input('nodes') nodes;
-  @Input('links') links;*/
+  @ViewChild(DownloadButtonComponent)
+  private downloader: DownloadButtonComponent;
+  /*  @Input('nodes') nodes;
+    @Input('links') links;*/
 public nodesSubscription = Subscription;
 public linksSubscription = Subscription;
   public nodes: Node[] = [];
@@ -49,10 +56,12 @@ public linksSubscription = Subscription;
       this.nodes = res.nodes;
       this.links = res.links;
       if (this.graph) {
-        this.graph.simulation.nodes(this.nodes);
+/*        this.graph.simulation.nodes(this.nodes);
         this.graph.links = this.links;
-        this.graph.initLinks();
-        this.graph.simulation.restart();
+        this.graph.nodes = this.nodes;
+        this.graph.initLinks(this.options);
+        this.graph.simulation.restart();*/
+        this.graph.update(res, this.options);
       }
     });
 
@@ -77,8 +86,8 @@ public linksSubscription = Subscription;
       .attr("viewBox", "0 -5 10 10")
       .attr("refX", 8.75)
       .attr("refY", 0)
-      .attr("markerWidth", 4)
-      .attr("markerHeight", 4)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#A5A5A5")
@@ -90,17 +99,22 @@ svg.append("defs").append("marker")
       .attr("viewBox", "0 -5 10 10")
   .attr("refX", 8.75)
       .attr("refY", 0)
-      .attr("markerWidth", 4)
-      .attr("markerHeight", 4)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#595959")
       .attr("stroke", "#FFFFFF")
   .attr("d", "M0,-5L10,0L0,5");
+
   }
 
   ngAfterViewInit() {
     this.graph.initSimulation(this.options);
+  }
+
+  downloadGraph():void{
+    this.downloader.downloadFile(d3.select('svg'));
   }
 
   private _options: {width, height} = {width: 800, height: 600};

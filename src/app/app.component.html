@@ -1,113 +1,18 @@
-<div class="container">
-  <div fxLayout="row">
-    <md-toolbar color="primary">
-      <button md-button routerLink="/">
-        <md-icon>home</md-icon>
-        {{title}}</button>
 
-      <!-- This fills the remaining space of the current row -->
-      <span class="fill-remaining-space"></span>
-      <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <button md-button routerLink="/products">Products</button>
-        <button md-button routerLink="/dashboard">Dashboard</button>
-      </div>
-      <button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
-        <md-icon>menu</md-icon>
-      </button>
 
-    </md-toolbar>
-    <md-menu x-position="before" #menu="mdMenu">
-      <button md-menu-item routerLink="/products">Products</button>
-      <button md-menu-item routerLink="/dashboard">Dashboard</button>
-    </md-menu>
-  </div>
-</div>
 
-<div class="container">
-  <br>
-  <div fxLayout="row">
-    <div fxFlex="100">
-      <md-input-container fxFlex="35">
-         <textarea mdInput mdTextareaAutosize placeholder="Start Nodes"></textarea>
-    </md-input-container>
-      <div fxFlex="30">
-        <label>Max Distance</label>
-        <md-slider fxLayoutAlign="center center"
-          class="example-margin"
-                   aria-label = "max distance"
-          [max]="10"
-          [min]="0"
-          [step]="1"
-          [thumb-label]="true"
-          [value]="5">
-        </md-slider>
-        <br>
-        <label>Confidence Level</label>
-        <md-slider fxLayoutAlign="center center"
-                   aria-label="confidence level"
-          class="example-margin"
-          [max]="100"
-          [min]="0"
-          [step]="1"
-          [thumb-label]="true"
-          [value]="50">
-        </md-slider>
-        <br>
-        <div fxLayout="row" fxLayoutAlign="center center" >
-          <button md-button color="primary" [disabled]="!targetSelected || !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
-        </div>
-      </div>
+<smrtgraph-menu></smrtgraph-menu>
+<smrtgraph-search></smrtgraph-search>
 
-      <md-input-container fxFlex="35">
-         <textarea mdInput mdTextareaAutosize placeholder="End Nodes"></textarea>
-    </md-input-container>
-<!--
-      <md-input-container fxFlex="100">
-        <input mdInput placeholder="search targets" [mdAutocomplete]="targetAuto" [formControl]="targetCtrl" (keyup.enter)="onEnter('target')">
-    </md-input-container>
-    <md-autocomplete #targetAuto="mdAutocomplete" [displayWith]="displayFn">
-        <md-option *ngFor="let option of autocompleteOptions" [value]="option">
-          {{ option.display}} <i>{{option.value}}</i>
-        </md-option>
-      </md-autocomplete>-->
-<!--
-    <button md-button (click)="onEnter('target')"><md-icon>search</md-icon></button>
--->
-    </div>
-    </div>
-
- <!--<div fxLayout="row">
-   <div fxFlex="10"></div>
-   <div fxFlex="80">
-    <md-input-container fxFlex="100">
-        <input mdInput placeholder="search lychi" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('lychi')">
-    </md-input-container>
-    <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
-        <md-option *ngFor="let option of lychiAutocompleteOptions" [value]="option">
-          {{ option.display}} <i>{{option.value.low}}</i>
-        </md-option>
-      </md-autocomplete>
-    <button md-button (click)="onEnter('lychi')"><md-icon>search</md-icon></button>
-   </div>
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="center center" >
-    <button md-button color="primary" [disabled]="!targetSelected || !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
-      </div>
-    <div fxLayout="row" fxLayoutAlign="center center" >
-    <h5>*must select target and pattern</h5>
-  </div>
-</div>
--->
 <div class="container">
   <div fxLayout="row">
     <div fxFlex="20">
       <app-node-details-visual></app-node-details-visual>
     </div>
     <div fxFlex="75" class = "graph-row">
-<!--
-      <graph [nodes]=nodes [links]=links ></graph>
--->
+      <!--
+            <graph [nodes]=nodes [links]=links ></graph>
+      -->
       <graph></graph>
 
     </div>
