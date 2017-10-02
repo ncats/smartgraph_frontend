@@ -60,9 +60,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     //todo: fix above description
     //todo: set all subscriptions to be variables to close on destroy
     this.dataConnectionService.messages.subscribe(msg => {
-      //console.log(msg);
       let response = JSON.parse(msg);
-    //   console.log(response.type);
       switch (response.type) {
 
         case "targetSearch": {
@@ -74,7 +72,6 @@ export class SmrtgraphSearchComponent implements OnInit {
           break;
         }
         case "startNodeSearch": {
-          console.log(response.data);
           this.startUUIDList.push(response.data._fields[0].properties.uuid);
           break;
         }
@@ -94,15 +91,15 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.startNodesCtrl.valueChanges.subscribe(value => {
       let valArr =value.trim().split(/[\s,;]+/);
       let query: Message = this.messageService.getMessage(valArr, 'startNodeSearch');
-        this.dataConnectionService.messages.next(query);
+      setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+//      this.dataConnectionService.messages.next(query);
       this.startNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
         //todo: add validation rules: must have uniprot_id (for now)
         //todo: this is going to happen on any change, so i need to filter by response type
         res.nodes.filter(node => {
-          if(node.properties && node.properties.uniprot_id) {
             let id = node.properties.uniprot_id;
-            if (valArr.includes(id)) {
+            if (this.startUUIDList.includes(node.uuid)) {
               //todo: this doesn't clear the parameters, just passes them.
               node.params.endNode = false;
               node.params.startNode = true;
@@ -111,7 +108,6 @@ export class SmrtgraphSearchComponent implements OnInit {
               node.params.startNode = false;
               this.nodeService.setNode(node);
             }
-          }
         });
       });
     });
@@ -119,14 +115,15 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.endNodesCtrl.valueChanges.subscribe(value => {
       let valArr =value.trim().split(/[\s,;]+/);
       let query: Message = this.messageService.getMessage(valArr, 'endNodeSearch');
-        this.dataConnectionService.messages.next(query);
+      setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+
+//      this.dataConnectionService.messages.next(query);
       this.endNodes = true;
       this.graphDataService.graphhistory$.subscribe(res =>{
           //todo: add validation rules: cannot be both start and end node
         res.nodes.filter(node => {
-          if(node.properties && node.properties.uniprot_id) {
-            let id = node.properties.uniprot_id || node.properties.properties.uniprot_id;
-            if (valArr.includes(id)) {
+          let id = node.properties.uniprot_id;
+          if (this.endUUIDList.includes(node.uuid)) {
               node.params.startNode = false;
               node.params.endNode = true;
               this.nodeService.setNode(node);
@@ -134,13 +131,13 @@ export class SmrtgraphSearchComponent implements OnInit {
               node.params.endNode = false;
               this.nodeService.setNode(node);
             }
-          }
         });
       });
     });
 
+
     this.distanceCtrl.valueChanges.subscribe(value => {
-  this.shortestPath();
+      this.shortestPath();
     });
     /*
      * This provides an interface to handle the mapping of search input
@@ -152,11 +149,8 @@ export class SmrtgraphSearchComponent implements OnInit {
         //empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
         this.compoundAutocompleteOptions=[];
-        console.log(results);
         this.dataConnectionService.messages.next(results);
       });
-    //this.startNodesCtrl.setValue('CHEMBL2111336, CHEMBL203');
-    //this.endNodesCtrl.setValue('CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862');
 
     this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
     this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
@@ -174,7 +168,7 @@ export class SmrtgraphSearchComponent implements OnInit {
         confidence:this.confidenceCtrl.value || 50
       };
       let query: Message = this.messageService.getMessage(value, "path", params);
-      this.dataConnectionService.messages.next(query);
+     this.dataConnectionService.messages.next(query);
     }
   }
 }

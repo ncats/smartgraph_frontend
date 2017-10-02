@@ -25,7 +25,7 @@
                  [formControl]="distanceCtrl"
                  [value]="5">
       </md-slider>
-      <br>
+      <!--<br>
       <label>Confidence Level</label>
       <md-slider mdInput fxLayoutAlign="center center"
                  aria-label="confidence level"
@@ -37,48 +37,12 @@
                  disabled="true"
                  [formControl]="confidenceCtrl"
                  [value]="50">
-      </md-slider>
+      </md-slider>-->
       <br>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center center" >
     <button md-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
   </div>
-
-  <!--
-        <md-input-container fxFlex="100">
-          <input mdInput placeholder="search targets" [mdAutocomplete]="targetAuto" [formControl]="targetCtrl" (keyup.enter)="onEnter('target')">
-      </md-input-container>
-      <md-autocomplete #targetAuto="mdAutocomplete" [displayWith]="displayFn">
-          <md-option *ngFor="let option of autocompleteOptions" [value]="option">
-            {{ option.display}} <i>{{option.value}}</i>
-          </md-option>
-        </md-autocomplete>-->
-      <!--
-          <button md-button (click)="onEnter('target')"><md-icon>search</md-icon></button>
-      -->
   </div>
 
-  <!--<div fxLayout="row">
-    <div fxFlex="10"></div>
-    <div fxFlex="80">
-     <md-input-container fxFlex="100">
-         <input mdInput placeholder="search lychi" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('lychi')">
-     </md-input-container>
-     <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
-         <md-option *ngFor="let option of lychiAutocompleteOptions" [value]="option">
-           {{ option.display}} <i>{{option.value.low}}</i>
-         </md-option>
-       </md-autocomplete>
-     <button md-button (click)="onEnter('lychi')"><md-icon>search</md-icon></button>
-    </div>
-     </div>
-
-     <div fxLayout="row" fxLayoutAlign="center center" >
-     <button md-button color="primary" [disabled]="!targetSelected || !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
-       </div>
-     <div fxLayout="row" fxLayoutAlign="center center" >
-     <h5>*must select target and pattern</h5>
-   </div>
- </div>
- -->
