@@ -94,12 +94,11 @@ constructor(
           this.linkService.setLink( link);
         }
       } else {
-        console.error(r);
+      //  console.error(r);
         if (!r.start && !r.end) {
           console.error(r);
           //this is for node groups that aren't a path
           let n:Node = this.nodeService.makeNode(r.properties.uuid, r);
-          console.log(n);
           this.nodeList.push(n);
           this.nodeService.setNode(n);
         } else {

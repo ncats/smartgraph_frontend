@@ -60,7 +60,7 @@ export class NodeMenuComponent{
        this.clickedNode = node;
        if(this.clickedNode.id) {
          this.counts={total:0};
-         let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts");
+         let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts", this.clickedNode.labels[0]);
          this.dataConnectionService.messages.next(message);
          // this.getSmiles(node);
        }
