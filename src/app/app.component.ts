@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
-import {Node, Link, NodeService} from './d3';
+import {Node} from './d3/models/node';
+import {Link} from './d3/models/link';
+import {NodeService} from './d3/models/node.service';
 import {DataConnectionService} from "./services/data-connection.service";
 import {Subscription} from 'rxjs/Subscription';
 import {SearchService} from "./services/search.service";

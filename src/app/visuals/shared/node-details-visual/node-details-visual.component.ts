@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Node, NodeService} from '../../../d3';
+import {Node} from '../../../d3/models/node';
+import {NodeService} from '../../../d3/models/node.service';
 import {Subscription} from "rxjs";
 import {Link} from "../../../d3/models/link";
 

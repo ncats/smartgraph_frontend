@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs";
-import {Node, Link} from '../d3';
+import {Link} from '../d3/models/link';
+import {Node} from '../d3/models/node';
 import {Message, MessageService} from "./message.service";
 import {DataConnectionService} from "./data-connection.service";
 import {NodeService} from "../d3/models/node.service";

@@ -8,7 +8,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   source: Node | string | number;
   target: Node | string | number;
   type?: string;
-  properties?: {};
+  properties?: any;
   uuid: string;
   id: string;
 

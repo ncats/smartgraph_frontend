@@ -1,18 +1,18 @@
 import { Directive, Input, ElementRef } from '@angular/core';
 import { D3Service } from '../d3.service';
-import {Node} from "../models/node";
+import {Link} from "../models/link";
 import {ForceDirectedGraph} from "../models/force-directed-graph";
 
 @Directive({
-    selector: '[hoverableNode]'
+    selector: '[hoverableLink]'
 })
-export class HoverableDirective {
-    @Input('hoverableNode') node: Node;
+export class HoverableLinkDirective {
+    @Input('hoverableLink') link: Link;
     @Input('draggableInGraph') graph: ForceDirectedGraph;
 
     constructor(private d3Service: D3Service, private _element: ElementRef) { }
 
     ngOnInit() {
-        this.d3Service.applyHoverableBehaviour(this._element.nativeElement, this.node, this.graph);
+        this.d3Service.applyHoverableLinkBehaviour(this._element.nativeElement, this.link, this.graph);
     }
 }

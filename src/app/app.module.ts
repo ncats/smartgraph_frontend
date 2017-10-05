@@ -7,12 +7,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material/material.module';
 
 
-import {D3Service, D3_DIRECTIVES, NodeService} from './d3';
+import {D3Service} from './d3/d3.service';
+import {NodeService} from './d3/models/node.service';
 
 import { AppComponent } from './app.component';
 
 import { GraphComponent } from './visuals/graph/graph.component';
-import { SHARED_VISUALS } from './visuals/shared';
+import { NodeVisualComponent } from './visuals/shared/node-visual/node-visual.component';
+import { LinkVisualComponent } from './visuals/shared/link-visual/link-visual.component';
 
 import {WebSocketService} from "./services/websocket.service";
 import {DataConnectionService} from "./services/data-connection.service";
@@ -27,21 +29,31 @@ import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.componen
 import { DownloadButtonComponent } from './download-button/download-button.component';
 import { LinkDetailsVisualComponent } from './visuals/shared/link-details-visual/link-details-visual.component';
 import {LinkService} from "./d3/models/link.service";
+import {ZoomableDirective} from "./d3/directives/zoomable.directive";
+import {HoverableLinkDirective} from "./d3/directives/hoverable-link.directive";
+import {HoverableNodeDirective} from "./d3/directives/hoverable-node.directive";
+import {DraggableDirective} from "./d3/directives/draggable.directive";
+import {ClickableDirective} from "./d3/directives/clickable.directive";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     GraphComponent,
-    ...SHARED_VISUALS,
-    ...D3_DIRECTIVES,
     NodeDetailsVisualComponent,
     NodeMenuComponent,
     NodeMenuHolderComponent,
     SmrtgraphMenuComponent,
     SmrtgraphSearchComponent,
     DownloadButtonComponent,
-    LinkDetailsVisualComponent
+    LinkDetailsVisualComponent,
+    NodeVisualComponent,
+    LinkVisualComponent,
+    ZoomableDirective,
+    HoverableLinkDirective,
+    HoverableNodeDirective,
+    DraggableDirective,
+    ClickableDirective
   ],
   imports: [
     BrowserModule,

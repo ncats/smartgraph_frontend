@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Link, Node} from '../../../d3';
+import {Link} from '../../../d3/models/link';
+import {Node} from '../../../d3/models/node';
 
 
 @Component({

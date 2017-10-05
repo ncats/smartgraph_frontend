@@ -2,7 +2,11 @@ import {
   Component, Input, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy,
   ViewChild
 } from '@angular/core';
-import {D3Service, ForceDirectedGraph, Node, NodeService, Link} from '../../d3';
+import {D3Service} from '../../d3/d3.service';
+import {ForceDirectedGraph} from '../../d3/models/force-directed-graph';
+import {Node} from '../../d3/models/node';
+import {Link} from '../../d3/models/link';
+import {NodeService} from '../../d3/models/node.service'
 import {Subscription} from "rxjs";
 import * as d3 from 'd3';
 import {GraphDataService} from "../../services/graph-data.service";
@@ -17,7 +21,7 @@ import {DownloadButtonComponent} from "../../download-button/download-button.com
       <g [zoomableOf]="svg">
               <g [linkVisual]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes"
-            [draggableNode]="node" [hoverableNode]="node" [clickableNode]="node" [draggableInGraph]="graph">
+            [hoverableNode]="node" [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
 </g>
 <svg:g nodeDetails></svg:g>
       <svg:g nodeMenu></svg:g>
