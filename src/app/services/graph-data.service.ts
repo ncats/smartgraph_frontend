@@ -75,6 +75,11 @@ constructor(
     }
   });
 }
+  
+  setFilter(filter:boolean):void{
+  this.filter=filter;  
+  };
+  
   parseRecords(path, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
     for (let r of path) {
