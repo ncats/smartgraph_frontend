@@ -1,5 +1,7 @@
 import {EventEmitter} from '@angular/core';
-import {Link, Node} from './';
+import {Link} from "./link";
+import {Node} from "./node";
+
 import * as d3 from 'd3';
 
 const FORCES = {
@@ -37,8 +39,8 @@ export class ForceDirectedGraph {
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
-    //   this.simulation.restart();
-    this.simulation.alpha(0.8).restart();
+      // this.simulation.restart();
+    this.simulation.alphaTarget(0.5).restart();
 
   }
 

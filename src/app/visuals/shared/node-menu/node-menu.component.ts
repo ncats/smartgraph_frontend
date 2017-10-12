@@ -21,11 +21,11 @@ export class NodeMenuHolderComponent{}
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
  <md-list class="node-menu">
-<button  md-menu-item *ngIf="clickedNode.properties?.chembl_id" [disabled] = "true"><b>{{clickedNode.properties?.chembl_id}}</b></button>
+<button  md-menu-item *ngIf="clickedNode.properties?.uniprot_id" [disabled] = "true"><b>{{clickedNode.properties?.uniprot_id}}</b></button>
  <button md-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
  <button md-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
- <button md-menu-item *ngIf="!clickedNode.expanded.lychi" (click)="expand('Lychi')" [disabled]="!counts.lychi">Expand Compounds {{counts?.lychi}}</button>
-  <button md-menu-item *ngIf="clickedNode.expanded.lychi" (click)="collapse('Lychi')" [disabled]="!counts.lychi">Collapse Compounds {{counts?.lychi}}</button>
+ <button md-menu-item *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
+  <button md-menu-item *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
  <button md-menu-item *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
   <button md-menu-item *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
  <button md-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
@@ -60,7 +60,7 @@ export class NodeMenuComponent{
        this.clickedNode = node;
        if(this.clickedNode.id) {
          this.counts={total:0};
-         let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts");
+         let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts", this.clickedNode.labels[0]);
          this.dataConnectionService.messages.next(message);
          // this.getSmiles(node);
        }
@@ -84,7 +84,11 @@ export class NodeMenuComponent{
   }
 
   expand(label):void{
-   this.graphDataService.nodeExpand(this.clickedNode.id, label);
+   let params = {
+     "origin": this.clickedNode.labels[0],
+     "target": label
+   };
+   this.graphDataService.nodeExpand(this.clickedNode.id, params);
 //todo: this option is not node specific -- change to map
     this.clickedNode.expanded[label.toLowerCase()]= true;
   }

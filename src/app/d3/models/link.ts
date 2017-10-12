@@ -1,5 +1,4 @@
-import { Node } from './';
-import * as uuid from 'uuid'
+import {Node} from "./node";
 
 export class Link implements d3.SimulationLinkDatum<Node> {
   // optional - defining optional implementation properties - required for relevant typing assistance
@@ -13,13 +12,12 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   uuid: string;
   id: string;
 
-  constructor(source, target, type?, properties?, id?) {
+  constructor(source, target, properties) {
     this.source = source;
     this.target = target;
-    this.type = type || "";
-    this.properties = properties;
-    this.uuid = uuid.v4();
-    this.id = id;
+    this.type = properties.type || "";
+    this.properties = properties.properties;
+    this.uuid = properties.properties.uuid;
   }
 }
 

@@ -23,7 +23,9 @@ import {DownloadButtonComponent} from "../../download-button/download-button.com
       <svg:g nodeMenu></svg:g>
       </g>
     </svg>
+<!--
           <download-button (click)=" downloadGraph()"></download-button>
+-->
   `,
   styleUrls: ['./graph.component.css']
 })
@@ -75,10 +77,10 @@ public linksSubscription = Subscription;
     this.graph.ticker.subscribe((d) => {
       this.ref.markForCheck();
     });
-    this.subscription = this.nodeService.hoverednode$
+/*    this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
         this.hoveredNode = node;
-      });
+      });*/
 
     let svg = d3.select('svg');
     svg.append("defs").append("marker")
@@ -91,7 +93,7 @@ public linksSubscription = Subscription;
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#A5A5A5")
-      .attr("stroke", "#FFFFFF")
+      .attr("stroke", "#A5A5A5")
       .attr("d", "M0,-5L10,0L0,5");
 
 svg.append("defs").append("marker")
@@ -104,8 +106,35 @@ svg.append("defs").append("marker")
       .attr("orient", "auto")
       .append("svg:path")
       .attr("fill", "#595959")
-      .attr("stroke", "#FFFFFF")
+      .attr("stroke", "#595959")
   .attr("d", "M0,-5L10,0L0,5");
+
+svg.append("defs").append("marker")
+      .attr("id", "flatarrow")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 8.75)
+      .attr("refY", 0)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("fill", "#A5A5A5")
+      .attr("stroke", "#A5A5A5")
+      .attr("stroke-width", "2px")
+      .attr("d", "M 8,-8 L 8, 8 ");
+
+svg.append("defs").append("marker")
+      .attr("id", "hoverflatarrow")
+      .attr("viewBox", "0 -5 10 10")
+  .attr("refX", 8.75)
+      .attr("refY", 0)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("fill", "#595959")
+      .attr("stroke", "#595959")
+  .attr("d", "M 8,-8 L 8, 8 ");
 
   }
 
@@ -114,7 +143,7 @@ svg.append("defs").append("marker")
   }
 
   downloadGraph():void{
-    this.downloader.downloadFile(d3.select('svg'));
+    this.downloader.downloadFile(d3.select('svg'), this.options);
   }
 
   private _options: {width, height} = {width: 800, height: 600};
@@ -122,7 +151,8 @@ svg.append("defs").append("marker")
   get options() {
     return this._options = {
       width: this.el.nativeElement.parentElement.offsetWidth,
-      height: window.outerHeight*.5
+     // height: window.outerHeight*.5
+      height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };
   }
 }

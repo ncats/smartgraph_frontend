@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./smrtgraph-menu.component.css']
 })
 export class SmrtgraphMenuComponent implements OnInit {
-
+title:string = "smrtgraph";
   constructor() { }
 
   ngOnInit() {

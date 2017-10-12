@@ -1,77 +1,48 @@
 <div class="container">
   <br>
 
-  <div fxLayout="row" fxLayoutGap="10px">
-      <md-input-container fxFlex="35">
-        <textarea mdInput mdTextareaAutosize placeholder="Start Nodes" [formControl]="startNodesCtrl" (keyup.enter)="onEnter('target')">CHEMBL206, CHEMBL402, CHEMBL2034, CHEMBL1862</textarea>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+      <md-input-container fxFlex="95">
+        <textarea mdInput mdTextareaAutosize placeholder="Start Nodes" mdAutosizeMaxRows = 20 [formControl]="startNodesCtrl"></textarea>
       </md-input-container>
-      <div fxFlex="30">
-        <label>Max Distance</label>
-        <md-slider mdInput fxLayoutAlign="center center"
-                   class="example-margin"
-                   aria-label = "max distance"
-                   [max]="10"
-                   [min]="1"
-                   [step]="1"
-                   [thumb-label]="true"
-                   [formControl]="distanceCtrl"
-                   [value]="5">
-        </md-slider>
-        <br>
-        <label>Confidence Level</label>
-        <md-slider mdInput fxLayoutAlign="center center"
-                   aria-label="confidence level"
-                   class="example-margin"
-                   [max]="100"
-                   [min]="1"
-                   [step]="1"
-                   [thumb-label]="true"
-                   [formControl]="confidenceCtrl"
-                   [value]="50">
-        </md-slider>
-        <br>
-        <div fxLayout="row" fxLayoutAlign="center center" >
-          <button md-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
-        </div>
-      </div>
-
-      <md-input-container fxFlex="35">
-        <textarea mdInput mdTextareaAutosize placeholder="End Nodes" [formControl]="endNodesCtrl" (keyup.enter)="onEnter('target')"></textarea>
-      </md-input-container>
-      <!--
-            <md-input-container fxFlex="100">
-              <input mdInput placeholder="search targets" [mdAutocomplete]="targetAuto" [formControl]="targetCtrl" (keyup.enter)="onEnter('target')">
-          </md-input-container>
-          <md-autocomplete #targetAuto="mdAutocomplete" [displayWith]="displayFn">
-              <md-option *ngFor="let option of autocompleteOptions" [value]="option">
-                {{ option.display}} <i>{{option.value}}</i>
-              </md-option>
-            </md-autocomplete>-->
-      <!--
-          <button md-button (click)="onEnter('target')"><md-icon>search</md-icon></button>
-      -->
   </div>
 
-  <!--<div fxLayout="row">
-    <div fxFlex="10"></div>
-    <div fxFlex="80">
-     <md-input-container fxFlex="100">
-         <input mdInput placeholder="search lychi" [mdAutocomplete]="patternAuto" [formControl]="patternCtrl" (keyup.enter)="onEnter('lychi')">
-     </md-input-container>
-     <md-autocomplete #patternAuto="mdAutocomplete" [displayWith]="displayFn">
-         <md-option *ngFor="let option of lychiAutocompleteOptions" [value]="option">
-           {{ option.display}} <i>{{option.value.low}}</i>
-         </md-option>
-       </md-autocomplete>
-     <button md-button (click)="onEnter('lychi')"><md-icon>search</md-icon></button>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+  <md-input-container fxFlex="95">
+        <textarea mdInput mdTextareaAutosize placeholder="End Nodes" mdAutosizeMaxRows = 20 [formControl]="endNodesCtrl"></textarea>
+      </md-input-container>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <label>Max Distance</label>
+      <md-slider mdInput fxLayoutAlign="center center"
+                 class="example-margin"
+                 aria-label = "max distance"
+                 [max]="10"
+                 [min]="1"
+                 [step]="1"
+                 [thumb-label]="true"
+                 [formControl]="distanceCtrl"
+                 [value]="5">
+      </md-slider>
+      <!--<br>
+      <label>Confidence Level</label>
+      <md-slider mdInput fxLayoutAlign="center center"
+                 aria-label="confidence level"
+                 class="example-margin"
+                 [max]="100"
+                 [min]="1"
+                 [step]="1"
+                 [thumb-label]="true"
+                 disabled="true"
+                 [formControl]="confidenceCtrl"
+                 [value]="50">
+      </md-slider>-->
+      <br>
     </div>
-     </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" >
+    <button md-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
+  </div>
+  </div>
 
-     <div fxLayout="row" fxLayoutAlign="center center" >
-     <button md-button color="primary" [disabled]="!targetSelected || !patternSelected" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
-       </div>
-     <div fxLayout="row" fxLayoutAlign="center center" >
-     <h5>*must select target and pattern</h5>
-   </div>
- </div>
- -->

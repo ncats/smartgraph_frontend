@@ -21,6 +21,7 @@
       "styles": [
         "styles.css"
       ],
+      "showCircularDependencies": false,
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {

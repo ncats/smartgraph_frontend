@@ -7,7 +7,7 @@ import { Node } from '../../../d3';
     <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
       <svg:circle
           class="node {{node.labels[0]}}"
-          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode}"
+          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode, hovering:node.params.hovered}"
           cx="0"
           cy="0"
           [attr.r]="node.r">
@@ -22,11 +22,11 @@ import { Node } from '../../../d3';
 </xhtml:div>
       </svg:foreignObject>
       </svg:circle>-->
-       <svg:text>{{node.properties?.chembl_id}}</svg:text>
-       
 <!--
-       <svg:text>{{node.properties.pref_name}}</svg:text>
+       <svg:text>{{node.properties?.uniprot_id}}</svg:text>
 -->
+       
+       <svg:text>{{node.properties?.uniprot_id}}</svg:text>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

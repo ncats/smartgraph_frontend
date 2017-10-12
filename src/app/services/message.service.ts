@@ -6,117 +6,116 @@ export class MessageService {
   constructor() {
   }
 
-  getMessage(term:any, type:string, properties?:any):Message {
+  getMessage(term: any, type: string, properties?: any): Message {
     let msg: string;
     let params: {};
     switch (type) {
-      case"targetSearch":
-      {
-        msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} OR n.chembl_id =~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100 UNION MATCH (n:Target) WHERE n.pref_name=~{qParam} OR n.chembl_id =~{qParam} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
-        // msg = 'MATCH (n:Target) WHERE n.pref_name=~{qParam2} RETURN n.pref_name, n.chembl_id ORDER BY n.pref_name LIMIT 100';
+      case"targetSearch": {
+        msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} OR n.uniprot_id =~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100 UNION MATCH (n:Target) WHERE n.name=~{qParam} OR n.uniprot_id =~{qParam} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
+        // msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
         params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
         break;
       }
-      case"patternSearch":
-      {
+      case"patternSearch": {
         //msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
-        msg = 'MATCH (n:Lychi) WHERE n.lychi=~{qParam} RETURN n.lychi, n.pid ORDER BY n.lychi LIMIT 50';
+        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.hash, n.pid ORDER BY n.hash LIMIT 50';
         params = {qParam: term + '.*'};
         break;
       }
-      case"lychiSearch":
-      {
+      case"compoundSearch": {
         //msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
-        msg = 'MATCH (n:Lychi) WHERE n.lychi=~{qParam} RETURN n.lychi, n.lid ORDER BY n.lychi LIMIT 50';
+        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.compound, n.lid ORDER BY n.compound LIMIT 50';
         params = {qParam: term + '.*'};
         break;
       }
-      case "expand":
-        switch(properties){
+      case "expand":{
+        let start:string = 'MATCH (n:'+ properties.origin;
+        switch (properties.target) {
           //todo: switch to parameterized  constraints for 'n'
           case "Target": {
-            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Target) RETURN n, r, b LIMIT 100';
+            // msg = 'MATCH p=shortestPath((t)-[r*..1]->(q:Target)) WHERE t.uuid = {qParam} return p LIMIT 100';
+            msg =start +'{uuid:{qParam}}) MATCH (n)-[r]-(b:Target) with {segments:[{start: startNode(r), relationship:r, end: endNode(r)}]} AS ret RETURN ret LIMIT 100';
             break;
           }
-          case "Lychi": {
-            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Lychi) RETURN n, r, b LIMIT 100';
+          case "Compound": {
+            msg =start +'{uuid:{qParam}}) MATCH (n)-[r]-(b:Compound) with {segments:[{start: startNode(r), relationship:r, end: endNode(r)}]} AS ret RETURN ret LIMIT 100';
             break;
           }
           case "Pattern": {
-            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b:Pattern) RETURN n, r, b LIMIT 100';
+            msg =start +'{uuid:{qParam}}) MATCH (n)-[r]-(b:Pattern) with {segments:[{start: startNode(r), relationship:r, end: endNode(r)}]} AS ret RETURN ret LIMIT 100';
             break;
           }
           case "All": {
-            msg = 'MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 100';
+            msg = 'MATCH (n) WHERE n.uuid = {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 100';
             break;
           }
         }
-      {
-        params =  {qParam: term};
+        params = {qParam: term};
         break;
       }
 
       case "chembl":
-      case "target":
-      {
-        msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
+      case "target": {
+        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
         params = {qParam: term};
         break;
       }
-      case "targets":{
+
+      case "endNodeSearch":
+      case "startNodeSearch": {
         console.log(term);
-        msg = 'MATCH (n:Target) WHERE n.chembl_id IN {qParam} RETURN n';
+        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.hash IN {qParam} RETURN c AS data';
+        //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
+        params = {qParam: term};
+        break;
+      }
+      case "smiles": {
+        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
         params = {qParam: term};
         break;
       }
 
-      case "smiles":
-      {
-        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
-        params =  {qParam: term};
+      case "compound": {
+        msg = 'MATCH (n:Compound) WHERE n.compound= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        params = {qParam: term};
         break;
       }
 
-      case "lychi":
-      {
-        msg = 'MATCH (n:Lychi) WHERE n.lychi= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
-        params =  {qParam: term};
-        break;
-      }
-
-      case "uuid":
-      {
+      case "uuid": {
         msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params =  {qParam: term};
+        params = {qParam: term};
         break;
       }
 
-      case "path":
-      {
+      case "path": {
+        console.log(term);
         let levels = properties.distance;
-        //msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
-
-        msg = 'MATCH p=shortestPath((t)-[r:REGULATES*..'+levels+']->(q:Target)) WHERE t.chembl_id IN {start} AND q.chembl_id IN {end} AND q.chembl_id <> t.chembl_id return p';
-        //msg = 'MATCH (n:Target) WHERE n.chembl_id IN {start} (n)-[r:TESTED_ON]->(t:Target)) MATCH s=shortestPath((t)-[:REGULATES*..'+levels +']->(q:Target)) WHERE q.chembl_id IN {end} q.chembl_id<>t.chembl_id AND return p, s';
-
-        //working 1 to 1 shortest path
-        //msg = 'MATCH p=((l:Lychi {lychi: $lychi} )-[r:TESTED_ON]->(t:Target)) MATCH s=shortestPath((t)-[:REGULATES*..'+levels +']->(q:Target {chembl_id: $target})) where q.chembl_id<>t.chembl_id return p, s';
-
-        //  msg = 'MATCH (sn:Target{ chembl_id: $target }),(en:Lychi { lychi: $lychi }), p = shortestPath((sn)-[*]-(en)) WITH p WHERE length(p)> 1 RETURN p';
-        params = {start: term.start, end: term.end};
+        msg = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
+               params = {start: term.start, end: term.end};
         break;
       }
 
-      case "node":{
-        msg = 'MATCH (n:Target) WHERE n.chembl_id= {qParam} RETURN n';
-        params =  {qParam: term};
+      case "node": {
+        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} RETURN n';
+        params = {qParam: term};
         break;
       }
-      //todo: this isn't paramaterized cypher doesn't support labels as parameters
-      //todo: may need to just write separate calls based on origin node label
-      case "counts":{
-        msg = ' MATCH (n) WHERE id (n) = {qParam} MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
-        params =  {qParam: term};
+      case "counts": {
+        switch(properties){
+          case "Target":{
+            msg = 'MATCH (n:Target) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+          case "Compound":{
+            msg = 'MATCH (n:Compound) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+          case "Pattern":{
+            msg = 'MATCH (n:Pattern) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+        }
+        params = {qParam: term};
         break;
       }
 
@@ -133,7 +132,8 @@ export class MessageService {
 }
 
 export interface Message {
-  type:string;
-  message:string;
-  params:Object;
+  type: string;
+  message: string;
+  params: Object;
 }
+

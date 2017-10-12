@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Node, NodeService} from '../../../d3';
 import {Subscription} from "rxjs";
+import {Link} from "../../../d3/models/link";
 
 @Component({
   selector: 'app-node-details-visual',
@@ -10,7 +11,8 @@ import {Subscription} from "rxjs";
 export class NodeDetailsVisualComponent implements OnInit {
   subscription: Subscription;
   hoveredNode: Node;
-  imageUrl: string;
+  downstreamLinks: Link[];
+  upstreamLinks: Link[];
 
 
   constructor(private nodeService: NodeService) {
@@ -19,17 +21,19 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
-        this.hoveredNode = node;
-        this.getSmiles(node);
+        this.hoveredNode = node.node;
+        this.getSmiles(node.node);
+        this.downstreamLinks = node.down;
+        this.upstreamLinks = node.up;
       });
   }
-  getSmiles(node : any): void{
+  getSmiles(node : any): string{
     if(node.properties && node.properties.smiles) {
-      this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
+     return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
     }else if(node.properties && node.properties.canonical_smiles){
-      this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.canonical_smiles) +'&standardize=true&format=svg';
+      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.canonical_smiles) +'&standardize=true&format=svg';
     }else{
-      this.imageUrl = null;
+      return null;
     }
 
   }

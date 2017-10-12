@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Node, Link, ForceDirectedGraph} from './';
+import {Node, Link, ForceDirectedGraph, NodeService} from './models';
 import * as d3 from 'd3';
-import {NodeService} from "./models/node.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
 
 @Injectable()
@@ -71,6 +70,8 @@ export class D3Service {
     let d3element = d3.select(element);
     let connectedLinks;
     let maximalLinks: any[] = [];
+    let upstreamNeighbors: Link[] = [];
+    let downstreamNeighbors: Link[] = [];
 
      let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
@@ -119,9 +120,18 @@ export class D3Service {
 
     };
 
+    //todo: this is kind of piggybacking on the filter function
     let getNeighborLinks = (e:any):boolean => {
+      let downstream = node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
+      let upstream = node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+      if(downstream == true) {
+        downstreamNeighbors.push(e);
+      }
+      if(upstream ==true){
+        upstreamNeighbors.push(e);
+      }
      //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
-        return node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
+        return downstream;
     };
 
     let getNeighborNodes = (e:any): boolean => {
@@ -145,7 +155,7 @@ export class D3Service {
     };
 
     let mouseOverFunction = ():void => {
-      this.nodeService.hoveredNode(node);
+      this.nodeService.hoveredNode({node: node , up:upstreamNeighbors, down: downstreamNeighbors});
       decorateLinks();
       decorateNodes();
     };
@@ -153,8 +163,10 @@ export class D3Service {
      let mouseOutFunction = ():void =>{
       clearNodes();
       clearLinks();
+       upstreamNeighbors = [];
+       downstreamNeighbors = [];
     };
-
+//todo: this fires constantly as the node is dragged
     d3element.on("mouseover", mouseOverFunction);
     d3element.on("mouseout", mouseOutFunction);
 
