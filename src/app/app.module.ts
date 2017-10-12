@@ -34,6 +34,7 @@ import {HoverableLinkDirective} from "./d3/directives/hoverable-link.directive";
 import {HoverableNodeDirective} from "./d3/directives/hoverable-node.directive";
 import {DraggableDirective} from "./d3/directives/draggable.directive";
 import {ClickableDirective} from "./d3/directives/clickable.directive";
+import { GraphDetailsComponent } from './visuals/shared/graph-details/graph-details.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import {ClickableDirective} from "./d3/directives/clickable.directive";
     HoverableLinkDirective,
     HoverableNodeDirective,
     DraggableDirective,
-    ClickableDirective
+    ClickableDirective,
+    GraphDetailsComponent
   ],
   imports: [
     BrowserModule,

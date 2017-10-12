@@ -4,6 +4,7 @@ import {Link} from './models/link';
 import {ForceDirectedGraph} from './models/force-directed-graph';
 import * as d3 from 'd3';
 import {NodeService} from "./models/node.service";
+import {LinkService} from "./models/link.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
 
 @Injectable()
@@ -14,6 +15,7 @@ export class D3Service {
 
   constructor(
     private nodeService : NodeService,
+    private linkService : LinkService,
     private nodeMenuController : NodeMenuControllerService
   ) {  }
 
@@ -70,53 +72,6 @@ export class D3Service {
     d3element.call(d3.drag()
       .on("start", started));
   }
-
-
-
-
-
-
-
-
-
-
-
-  /*/!** A method to bind a draggable behaviour to an svg element *!/
-  applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
-    let d3element = d3.select(element);
-
-    let started = ():void => {
-      //    function started() {
-      this.nodeMenuController.toggleVisible(false);
-      if (!d3.event.active) {
-        graph.simulation.alphaTarget(0.3).restart();
-      }
-      //hides tooltip if active
-      // d3element.select('.tooltip').style("opacity", 0);
-    }
-
-      function dragged() {
-        node.fx = d3.event.x;
-        node.fy = d3.event.y;
-      }
-
-      let ended = ():void => {
-        this.nodeMenuController.toggleVisible(false);
-        if (!d3.event.active) {
-          graph.simulation.alphaTarget(0);
-        }
-
-        //by not resetting these, the node stays where it is dragged
-        /!*  node.fx = null;
-         node.fy = null;*!/
-    }
-
-    d3element.call(d3.drag()
-      .on("start", started))
-      .on("end", ended);
-
-  }*/
-
 
   /** A method to bind hoverable behaviour to an svg element */
   applyHoverableNodeBehaviour(element, node: Node, graph: ForceDirectedGraph) {
@@ -226,108 +181,34 @@ export class D3Service {
 
   /** A method to bind hoverable behaviour to an svg element */
   applyHoverableLinkBehaviour(element, link: Link, graph: ForceDirectedGraph) {
-    /*let d3element = d3.select(element);
+    let d3element = d3.select(element);
     let connectedLinks;
-    let maximalLinks: any[] = [];
-    let upstreamNeighbors: Link[] = [];
-    let downstreamNeighbors: Link[] = [];
 
-    let decorateNodes = ():void =>{
-      d3element.select('circle').classed('hovering', true);
-      /!* d3element.selectAll('.tooltip').transition().duration(200)
-       .style("opacity", .9).attr('z-index', 666);*!/
-      d3.selectAll('circle')
-        .data(graph.nodes)
-        .filter(getNeighborNodes) //this will pass each node in the graph to the function
-        .classed('connected', true)
+      let decorateLinks = ():void =>{
+      d3element.select('line').classed('hovering', true).classed('connected', true);
+        this.linkService.hoveredLink(link);
     };
 
-
-
-    let decorateLinks = ():void =>{
-      connectedLinks = d3.selectAll('line')
-        .data(graph.links)
-        .filter(getNeighborLinks)
-        .classed('connected', true);
-
-      let connectedNodes = d3.selectAll('circle')
-        .data(graph.nodes)
-        .filter(getNeighborNodes)
-        .classed('connected', true);
-
-      connectedLinks.filter(findMaximalLinks)
-        .classed('maximal', true);
-
-      connectedNodes.filter(findMaximalNodes)
-        .classed('maximal', true);
+    let clearLinks = (): void => {
+      d3element.select('line').classed('hovering', false).classed('connected', false);
     };
 
-    let clearNodes = (): void =>{
-      d3element.select('circle').classed('hovering', false);
-      node.params.hovered = false;
-      /!* d3element.select('.tooltip').transition().duration(500)
-       .style("opacity", 0);*!/
-    };
-
-    let clearLinks= ():void => {
-      d3.selectAll('line')
-        .classed('connected', false)
-        .classed('maximal', false);
-      d3.selectAll('circle')
-        .classed('connected', false)
-        .classed('maximal', false);
-
-    };
-
-    //todo: this is kind of piggybacking on the filter function
-    let getNeighborLinks = (e:any):boolean => {
-      let downstream = node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
-      let upstream = node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
-      if(downstream == true) {
-        downstreamNeighbors.push(e);
-      }
-      if(upstream ==true){
-        upstreamNeighbors.push(e);
-      }
-      //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
-      return downstream;
-    };
-
-    let getNeighborNodes = (e:any): boolean => {
-      // const sources = connectedLinks.data().map(link => link.source.id);
-      const targets = connectedLinks.data().map(link=> link.target.id);
-      // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-      return targets.indexOf(e.id) > -1;
-    };
-
-    let findMaximalLinks = (e:any):boolean => {
-      if(e.properties && e.properties.maximal && e.properties.maximal == "t"){
-        maximalLinks= maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-        return true;
-      }else{
-        return false;
-      }
-    };
-
-    let findMaximalNodes = (e:any):boolean =>{
-      return maximalLinks.indexOf(e.id) > -1;
-    };
-
-    let mouseOverFunction = ():void => {
-      this.nodeService.hoveredNode({node: node , up:upstreamNeighbors, down: downstreamNeighbors});
+      let mouseOverFunction = ():void => {
+        console.log(link);
+      this.linkService.hoveredLink(link);
       decorateLinks();
-      decorateNodes();
+    //  decorateNodes();
     };
 
     let mouseOutFunction = ():void =>{
-      clearNodes();
+   //   clearNodes();
       clearLinks();
-      upstreamNeighbors = [];
-      downstreamNeighbors = [];
+    //  upstreamNeighbors = [];
+    //  downstreamNeighbors = [];
     };
-//todo: this fires constantly as the node is dragged
+
     d3element.on("mouseover", mouseOverFunction).on("mouseout", mouseOutFunction);
-*/
+
   }
 
 

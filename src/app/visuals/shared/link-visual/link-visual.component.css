@@ -31,6 +31,12 @@
   stroke: red;
 }
 
+
+.hovering {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
 /*#arrow{
   stroke-width: 2;
   stroke: #A5A5A5;
