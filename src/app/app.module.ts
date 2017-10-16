@@ -35,6 +35,8 @@ import {HoverableNodeDirective} from "./d3/directives/hoverable-node.directive";
 import {DraggableDirective} from "./d3/directives/draggable.directive";
 import {ClickableDirective} from "./d3/directives/clickable.directive";
 import { GraphDetailsComponent } from './visuals/shared/graph-details/graph-details.component';
+import {LoadingService} from "./services/loading.service";
+import { LoadingModalComponent } from './visuals/shared/loading-modal/loading-modal.component';
 
 
 @NgModule({
@@ -55,7 +57,8 @@ import { GraphDetailsComponent } from './visuals/shared/graph-details/graph-deta
     HoverableNodeDirective,
     DraggableDirective,
     ClickableDirective,
-    GraphDetailsComponent
+    GraphDetailsComponent,
+    LoadingModalComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +78,8 @@ import { GraphDetailsComponent } from './visuals/shared/graph-details/graph-deta
     SearchService,
     MessageService,
     GraphDataService,
-    NodeMenuControllerService
+    NodeMenuControllerService,
+    LoadingService
   ],
   bootstrap: [AppComponent]
 })

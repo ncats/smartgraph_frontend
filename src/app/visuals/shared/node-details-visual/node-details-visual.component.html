@@ -10,22 +10,22 @@
 </div>
 <div *ngIf="downstreamLinks?.length>0">
   <hr>
-  <md-grid-list cols="2" rowHeight="1:1">
-  <md-grid-tile-header><h2>Acts On: </h2></md-grid-tile-header>
+  <mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile-header><h2>Acts On: </h2></mat-grid-tile-header>
   <div *ngFor="let link of downstreamLinks">
-    <md-grid-tile><link-details-visual [link] = link [node] = link.target></link-details-visual></md-grid-tile>
+    <mat-grid-tile><link-details-visual [link] = link [node] = link.target></link-details-visual></mat-grid-tile>
   </div>
-  </md-grid-list>
+  </mat-grid-list>
 </div>
 
 <div *ngIf="upstreamLinks?.length>0">
   <hr>
-  <md-grid-list cols="2" rowHeight="1:1">
-    <md-grid-tile-header><h2>Acted On By: </h2></md-grid-tile-header>
+  <mat-grid-list cols="2" rowHeight="1:1">
+    <mat-grid-tile-header><h2>Acted On By: </h2></mat-grid-tile-header>
   <div *ngFor="let link of upstreamLinks">
-    <md-grid-tile><link-details-visual [link] = link [node] = link.source></link-details-visual></md-grid-tile>
+    <mat-grid-tile><link-details-visual [link] = link [node] = link.source></link-details-visual></mat-grid-tile>
   </div>
-  </md-grid-list>
+  </mat-grid-list>
 </div>
 </div>
 <!--

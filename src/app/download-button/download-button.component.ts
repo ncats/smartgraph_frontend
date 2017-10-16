@@ -5,7 +5,7 @@ import {unescape} from "querystring";
 @Component({
   selector: 'download-button',
   template: `
-      <button md-button>Download current graph <i class="material-icons">file_download</i></button>
+      <button mat-button>Download current graph <i class="material-icons">file_download</i></button>
 
 `,
   styleUrls: ['./download-button.component.css']

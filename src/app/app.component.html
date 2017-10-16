@@ -13,8 +13,14 @@
       <!--
             <graph [nodes]=nodes [links]=links ></graph>
       -->
-      <graph></graph>
+      <div *ngIf="loading else content">
+        <h1>Lodaing</h1>
+        <mat-spinner></mat-spinner>
+      </div>
 
+      <ng-template #content>
+        <graph></graph>
+      </ng-template>
     </div>
   </div>
 </div>

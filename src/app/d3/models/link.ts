@@ -22,6 +22,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
     this.properties = properties.properties;
     this.uuid = properties.properties.uuid;
     this.linkType = source.constructor.name + '_' + target.constructor.name;
+
     if (properties.properties.causal_statements) {
       this.causalStatements = Array.from(new Set(properties.properties.causal_statements.map((elem) => {
         let r;

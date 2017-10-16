@@ -6,6 +6,7 @@ import {Message, MessageService} from "./message.service";
 import {DataConnectionService} from "./data-connection.service";
 import {NodeService} from "../d3/models/node.service";
 import {LinkService} from "../d3/models/link.service";
+import {LoadingService} from "./loading.service";
 /*
 import {WebWorkerService} from "./services/web-worker.service";
 */
@@ -43,7 +44,8 @@ constructor(
   private dataConnectionService:DataConnectionService,
   private messageService: MessageService,
   private nodeService: NodeService,
-  private linkService: LinkService
+  private linkService: LinkService,
+  private loadingService: LoadingService
 ){
 
 
@@ -71,16 +73,18 @@ constructor(
       }
       case 'done':{
         this.makeGraph();
+        console.log(this);
+        this.loadingService.toggleVisible(false);
         break;
       }
     }
   });
 }
-  
+
   setFilter(filter:boolean):void{
-  this.filter=filter;  
+  this.filter=filter;
   };
-  
+
   parseRecords(path, event:any) {
     //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
     for (let r of path) {
@@ -101,14 +105,14 @@ constructor(
       } else {
       //  console.error(r);
         if (!r.start && !r.end) {
-          console.error(r);
+      //    console.error(r);
           //this is for node groups that aren't a path
           let n:Node = this.nodeService.makeNode(r.properties.uuid, r);
           this.nodeList.push(n);
           this.nodeService.setNode(n);
         } else {
           //this is the separate path for expanding nodes -- this does not have a uuid associated with the start or end nodes, so neo4j's id needs to be used to create the nodes
-          console.log(r);
+       //   console.log(r);
           let start = this.nodeService.makeNode(r.properties.uuid, {});
           let end = this.nodeService.makeNode(r.properties.uuid, {});
           let nodes = [start,end];
@@ -158,7 +162,6 @@ constructor(
     if(this.originalEvent !='load'){
       this.historyMap.get(this.originalEvent);
     }
-console.log(diff);
     //apply diff to current graph
     this.applyDiff(diff);
     this.countLinks();
@@ -247,5 +250,7 @@ countLinks():void{
     this.countLinks();
     this._graphHistorySource.next(this.graph);
     this.filter = false;
+    this.loadingService.toggleVisible(false);
+
   }
 }

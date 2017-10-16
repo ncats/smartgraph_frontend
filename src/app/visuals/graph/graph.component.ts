@@ -11,6 +11,7 @@ import {Subscription} from "rxjs";
 import * as d3 from 'd3';
 import {GraphDataService} from "../../services/graph-data.service";
 import {DownloadButtonComponent} from "../../download-button/download-button.component";
+import {LoadingService} from "../../services/loading.service";
 
 
 @Component({
@@ -54,7 +55,6 @@ public linksSubscription = Subscription;
   constructor(private d3Service: D3Service,
               private ref: ChangeDetectorRef,
               private el: ElementRef,
-              private nodeService: NodeService,
               private graphDataService: GraphDataService){ }
 
   ngOnInit() {
