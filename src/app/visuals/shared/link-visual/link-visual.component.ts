@@ -16,8 +16,9 @@ import { Node } from '../../../d3/models/node';
     <svg:text class="link-name"
         [attr.font-size]= 10
         [attr.x]="(link.source.x +link.target.x)/2 "
-        [attr.y]="(link.source.y +link.target.y)/2 ">
-        {{link.id}}
+        [attr.y]="(link.source.y +link.target.y)/2 "
+        >
+        {{link?.causalStatements }}
       </svg:text>
       </svg:g>
   `,
@@ -25,7 +26,6 @@ import { Node } from '../../../d3/models/node';
 })
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;
-
  // source:Node;
  // target:Node;
   constructor() {
@@ -33,7 +33,6 @@ export class LinkVisualComponent {
 
   ngOnInit() {
   }
-
 
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
    // this.source = link.source;

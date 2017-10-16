@@ -5,16 +5,17 @@ import {Subscription} from "rxjs";
 import {Link} from "../../../d3/models/link";
 
 @Component({
-  selector: 'app-node-details-visual',
+  selector: 'node-details-visual',
   templateUrl: './node-details-visual.component.html',
   styleUrls: ['./node-details-visual.component.css']
 })
 export class NodeDetailsVisualComponent implements OnInit {
+
   subscription: Subscription;
   hoveredNode: Node;
   downstreamLinks: Link[];
   upstreamLinks: Link[];
-
+  node:Node;
 
   constructor(private nodeService: NodeService) {
   }
