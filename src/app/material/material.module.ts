@@ -12,3 +12,4 @@ import {
   exports: [MdButtonModule, MdAutocompleteModule, MdMenuModule, MdToolbarModule, MdInputModule, MdIconModule, MdListModule, MdSliderModule, MdGridListModule, MdCardModule],
 })
 export class MaterialModule { }
+

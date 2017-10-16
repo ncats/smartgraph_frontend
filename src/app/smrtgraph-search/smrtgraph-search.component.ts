@@ -86,53 +86,45 @@ export class SmrtgraphSearchComponent implements OnInit {
       }
     });
 
-    //todo: needs to get chenbl(uniprot)id or inchii/lychi and get a list of uuids to pass to the path message
-
-    this.startNodesCtrl.valueChanges.subscribe(value => {
-      let valArr =value.trim().split(/[\s,;]+/);
-      let query: Message = this.messageService.getMessage(valArr, 'startNodeSearch');
-      setTimeout(() => this.dataConnectionService.messages.next(query), 0);
-//      this.dataConnectionService.messages.next(query);
-      this.startNodes = true;
-      this.graphDataService.graphhistory$.subscribe(res =>{
-        //todo: add validation rules: must have uniprot_id (for now)
-        //todo: this is going to happen on any change, so i need to filter by response type
-        res.nodes.filter(node => {
-            let id = node.properties.uniprot_id;
-            if (this.startUUIDList.includes(node.uuid)) {
-              //todo: this doesn't clear the parameters, just passes them.
-              node.params.endNode = false;
-              node.params.startNode = true;
-              this.nodeService.setNode(node);
-            } else {
-              node.params.startNode = false;
-              this.nodeService.setNode(node);
-            }
-        });
+    this.graphDataService.graphhistory$.subscribe(res =>{
+      //todo: add validation rules: must have uniprot_id (for now)
+      //todo: this is going to happen on any change, so i need to filter by response type
+      res.nodes.filter(node => {
+        let id = node.properties.uniprot_id;
+        if (this.startUUIDList.includes(node.uuid)) {
+          //todo: this doesn't clear the parameters, just passes them.
+          node.params.endNode = false;
+          node.params.startNode = true;
+        } else if (this.endUUIDList.includes(node.uuid)) {
+          node.params.startNode = false;
+          node.params.endNode = true;
+        } else {
+          node.params.startNode = false;
+        }
+        this.nodeService.setNode(node);
       });
     });
 
-    this.endNodesCtrl.valueChanges.subscribe(value => {
-      let valArr =value.trim().split(/[\s,;]+/);
-      let query: Message = this.messageService.getMessage(valArr, 'endNodeSearch');
-      setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+    //todo: needs to get chenbl(uniprot)id or inchii/lychi and get a list of uuids to pass to the path message
 
-//      this.dataConnectionService.messages.next(query);
+    this.startNodesCtrl.valueChanges.subscribe(value => {
+      this.getStartNodes(value.trim().split(/[\s,;]+/));
+      if(this.endNodesCtrl.value) {
+        this.getEndNodes(this.endNodesCtrl.value.trim().split(/[\s,;]+/));
+      }
+      this.startNodes = true;
+      this.graphDataService.setFilter(true);
+      this.startUUIDList = [];
+    });
+
+    this.endNodesCtrl.valueChanges.subscribe(value => {
+      this.getEndNodes(value.trim().split(/[\s,;]+/));
+      if(this.startNodesCtrl.value) {
+        this.getStartNodes(this.startNodesCtrl.value.trim().split(/[\s,;]+/));
+      }
       this.endNodes = true;
-      this.graphDataService.graphhistory$.subscribe(res =>{
-          //todo: add validation rules: cannot be both start and end node
-        res.nodes.filter(node => {
-          let id = node.properties.uniprot_id;
-          if (this.endUUIDList.includes(node.uuid)) {
-              node.params.startNode = false;
-              node.params.endNode = true;
-              this.nodeService.setNode(node);
-            } else {
-              node.params.endNode = false;
-              this.nodeService.setNode(node);
-            }
-        });
-      });
+      this.graphDataService.setFilter(true);
+      this.endUUIDList=[];
     });
 
 
@@ -155,6 +147,17 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
     this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
   }
+
+
+  getStartNodes(values:string[]):void{
+    let query: Message = this.messageService.getMessage(values, 'startNodeSearch');
+    setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+  };
+
+  getEndNodes(values:string[]):void{
+    let query: Message = this.messageService.getMessage(values, 'endNodeSearch');
+    setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+  };
 
   shortestPath(){
     console.log(this);
