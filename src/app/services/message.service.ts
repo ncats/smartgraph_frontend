@@ -64,7 +64,7 @@ export class MessageService {
       case "endNodeSearch":
       case "startNodeSearch": {
         console.log(term);
-        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.hash IN {qParam} RETURN c AS data';
+        msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.nostereo_hash IN {qParam} RETURN c AS data';
         //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
         params = {qParam: term};
         break;
