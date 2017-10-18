@@ -1,9 +1,13 @@
 
 <div [ngSwitch]="link?.type" *ngIf = "node?.params" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
+  <div *ngSwitchCase="'TESTED_ON'">
+    Tested On:
+    <target-detail-view [data]="{node: node}"></target-detail-view>
+  </div>
+
   <div    *ngSwitchCase="'REGULATES'">
     {{node.properties?.uniprot_id}} ({{node.properties?.name}})
   </div>
-  <div *ngSwitchCase="'TESTED_ON'"><div *ngIf = "node.params">{{node.properties?.uniprot_id}} ({{node.properties?.name}}) Median Activity: {{link.properties?.activity}}</div></div>
   <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{node.properties?.uniprot_id}}
     ({{node.properties?.name}}) {{link.properties | json}}
     <div *ngIf="node.properties?.canonical_smiles || node.properties?.smiles">

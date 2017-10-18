@@ -7,20 +7,7 @@ import { Node } from '../../../d3/models/node';
   selector: '[linkVisual]',
   template: `
  <svg:g>  
-        <svg:line class="link arrow"
-        [ngClass]="{arrow: true, flatarrow: false}"
-    [attr.x1]="endpointLessRadius(link, 'x1') || 0"
-    [attr.y1]="endpointLessRadius(link, 'y1') || 0"
-    [attr.x2]="endpointLessRadius(link, 'x2') || 0"
-    [attr.y2]="endpointLessRadius(link, 'y2') || 0">
-</svg:line>
-    <svg:text class="link-name"
-        [attr.font-size]= 10
-        [attr.x]="(link.source.x +link.target.x)/2 "
-        [attr.y]="(link.source.y +link.target.y)/2 "
-        >
-        {{link?.causalStatements }}
-      </svg:text>
+
       </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']
@@ -38,10 +25,10 @@ export class LinkVisualComponent {
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
    // this.source = link.source;
   //  this.target = link.target;
-    let x1 =  link.source.x;
-    let y1 =  link.source.y;
-    let x2 =  link.target.x;
-    let y2 =  link.target.y;
+    let x1 =  link.source.x || 0;
+    let y1 =  link.source.y || 0;
+    let x2 =  link.target.x || 0;
+    let y2 =  link.target.y || 0;
 
     let distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     let radius1 =  link.source.r || 0;

@@ -150,7 +150,7 @@ svg.append("defs").append("marker")
     this.downloader.downloadFile(d3.select('svg'), this.options);
   }
 
-  private _options: {width, height} = {width: 800, height: 600};
+   _options: {width, height} = {width: 800, height: 600};
 
   get options() {
     return this._options = {

@@ -1,7 +1,11 @@
-<ng-container [ngSwitch]= hoveredObjType>
-  <div *ngSwitchCase="'link'">Link<link-details-visual></link-details-visual></div>
+<!--<ng-container [ngSwitch]= hoveredObjType>
   <div *ngSwitchCase="'node'">
     <node-details-visual></node-details-visual>
-    </div>
-  </ng-container>
+  </div>
+  <div *ngSwitchCase="'link'"><link-details-visual></link-details-visual></div>
+</ng-container>-->
 
+<ng-container>
+    <node-details-visual></node-details-visual>
+<link-details-visual></link-details-visual>
+</ng-container>

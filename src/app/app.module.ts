@@ -36,10 +36,11 @@ import {DraggableDirective} from "./d3/directives/draggable.directive";
 import {ClickableDirective} from "./d3/directives/clickable.directive";
 import { GraphDetailsComponent } from './visuals/details/graph-details/graph-details.component';
 import {LoadingService} from "./services/loading.service";
-import { LoadingModalComponent } from './visuals/shared/loading-modal/loading-modal.component';
+import {LoadingModalComponent, LoadingDialog} from './visuals/shared/loading-modal/loading-modal.component';
 import { TargetDetailViewComponent } from './visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component';
 import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
 import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
+import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-visual.component";
 
 
 @NgModule({
@@ -64,7 +65,9 @@ import { PatternDetailViewComponent } from './visuals/details/node-details-visua
     LoadingModalComponent,
     TargetDetailViewComponent,
     CompoundDetailViewComponent,
-    PatternDetailViewComponent
+    PatternDetailViewComponent,
+    TooltipVisualComponent,
+    LoadingDialog
   ],
   imports: [
     BrowserModule,
