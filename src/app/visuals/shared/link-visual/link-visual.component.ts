@@ -7,7 +7,20 @@ import { Node } from '../../../d3/models/node';
   selector: '[linkVisual]',
   template: `
  <svg:g>  
-
+        <svg:line class="link arrow"
+        [ngClass]="{arrow: true, flatarrow: false}"
+    [attr.x1]="endpointLessRadius(link, 'x1') || 0"
+    [attr.y1]="endpointLessRadius(link, 'y1') || 0"
+    [attr.x2]="endpointLessRadius(link, 'x2') || 0"
+    [attr.y2]="endpointLessRadius(link, 'y2') || 0">
+</svg:line>
+    <svg:text class="link-name"
+        [attr.font-size]= 10
+        [attr.x]="(link.source?.x +link.target?.x)/2 "
+        [attr.y]="(link.source?.y +link.target?.y)/2 "
+        >
+        {{link?.causalStatements }}
+      </svg:text>
       </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']
