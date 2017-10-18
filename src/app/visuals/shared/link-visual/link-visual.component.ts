@@ -8,6 +8,7 @@ import { Node } from '../../../d3/models/node';
   template: `
  <svg:g>  
         <svg:line class="link arrow"
+        [ngClass]="{arrow: true, flatarrow: false}"
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"
     [attr.y1]="endpointLessRadius(link, 'y1') || 0"
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"

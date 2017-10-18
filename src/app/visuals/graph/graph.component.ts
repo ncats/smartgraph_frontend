@@ -155,8 +155,8 @@ svg.append("defs").append("marker")
   get options() {
     return this._options = {
       width: this.el.nativeElement.parentElement.offsetWidth,
-     // height: window.outerHeight*.5
-      height: window.innerHeight-(window.outerHeight-window.innerHeight)
+      height: window.innerHeight*.8
+     // height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };
   }
 }

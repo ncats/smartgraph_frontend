@@ -145,7 +145,8 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.dataConnectionService.messages.next(results);
       });
 
-    this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
+   // this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
+    this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
     this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
   }
 

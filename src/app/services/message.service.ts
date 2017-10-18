@@ -63,6 +63,7 @@ export class MessageService {
 
       case "endNodeSearch":
       case "startNodeSearch": {
+        //todo: convern nostereo_hash to a contains in hash search
         msg ='MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.nostereo_hash IN {qParam} RETURN c AS data';
         //  msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
         params = {qParam: term};

@@ -11,17 +11,23 @@ import {LinkService} from '../../../d3/models/link.service';
   styleUrls: ['link-details-visual.component.css']
 })
 export class LinkDetailsVisualComponent implements OnInit {
- @Input() link: Link;
+ @Input() data: Link;
  @Input() node: Node;
-  linkSubscription: Subscription;
+ link: Link;
+ linkSubscription: Subscription;
 
   constructor(private linkService: LinkService) { }
 
   ngOnInit() {
     this.linkSubscription = this.linkService.hoveredlink$
       .subscribe(link => {
+        console.log(link);
         this.link = link;
+        this.node = link.target;
       });
+    if(this.data){
+      this.link = this.data;
+    }
   }
 /*
   getSmiles(node : Node): string{

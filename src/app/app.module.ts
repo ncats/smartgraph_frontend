@@ -20,23 +20,26 @@ import {WebSocketService} from "./services/websocket.service";
 import {DataConnectionService} from "./services/data-connection.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
-import { NodeDetailsVisualComponent } from './visuals/shared/node-details-visual/node-details-visual.component';
+import { NodeDetailsVisualComponent } from './visuals/details/node-details-visual/node-details-visual.component';
 import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
 import {GraphDataService} from "./services/graph-data.service";
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
 import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
 import { DownloadButtonComponent } from './download-button/download-button.component';
-import { LinkDetailsVisualComponent } from './visuals/shared/link-details-visual/link-details-visual.component';
+import { LinkDetailsVisualComponent } from './visuals/details/link-details-visual/link-details-visual.component';
 import {LinkService} from "./d3/models/link.service";
 import {ZoomableDirective} from "./d3/directives/zoomable.directive";
 import {HoverableLinkDirective} from "./d3/directives/hoverable-link.directive";
 import {HoverableNodeDirective} from "./d3/directives/hoverable-node.directive";
 import {DraggableDirective} from "./d3/directives/draggable.directive";
 import {ClickableDirective} from "./d3/directives/clickable.directive";
-import { GraphDetailsComponent } from './visuals/shared/graph-details/graph-details.component';
+import { GraphDetailsComponent } from './visuals/details/graph-details/graph-details.component';
 import {LoadingService} from "./services/loading.service";
 import { LoadingModalComponent } from './visuals/shared/loading-modal/loading-modal.component';
+import { TargetDetailViewComponent } from './visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component';
+import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
+import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
 
 
 @NgModule({
@@ -58,7 +61,10 @@ import { LoadingModalComponent } from './visuals/shared/loading-modal/loading-mo
     DraggableDirective,
     ClickableDirective,
     GraphDetailsComponent,
-    LoadingModalComponent
+    LoadingModalComponent,
+    TargetDetailViewComponent,
+    CompoundDetailViewComponent,
+    PatternDetailViewComponent
   ],
   imports: [
     BrowserModule,

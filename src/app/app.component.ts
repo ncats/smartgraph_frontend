@@ -79,7 +79,7 @@ export class AppComponent {
       }
     });
 
-    this.subscription = this.loadingService.loading$.subscribe(res => {console.log(res); this.loading = res});
+    this.subscription = this.loadingService.loading$.subscribe(res => this.loading = res);
 
     /*
     * This provides an interface to handle the mapping of search input

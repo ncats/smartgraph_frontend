@@ -6,8 +6,8 @@ import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-graph-details',
-  templateUrl: './graph-details.component.html',
-  styleUrls: ['./graph-details.component.css']
+  templateUrl: 'graph-details.component.html',
+  styleUrls: ['graph-details.component.css']
 })
 export class GraphDetailsComponent implements OnInit {
   nodeSubscription: Subscription;

@@ -194,7 +194,6 @@ export class D3Service {
     };
 
       let mouseOverFunction = ():void => {
-        console.log(link);
       this.linkService.hoveredLink(link);
       decorateLinks();
     //  decorateNodes();

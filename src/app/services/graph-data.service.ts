@@ -73,7 +73,6 @@ constructor(
       }
       case 'done':{
         this.makeGraph();
-        console.log(this);
         this.loadingService.toggleVisible(false);
         break;
       }

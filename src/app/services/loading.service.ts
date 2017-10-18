@@ -10,7 +10,6 @@ export class LoadingService {
   constructor() { }
 
   toggleVisible(force) {
-    console.log(force);
     this._loadingSource.next(force);
   }
 }
