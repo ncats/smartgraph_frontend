@@ -2,13 +2,13 @@
   <div fxFlex="92">
     <ng-container [ngSwitch]=nodeType>
       <div *ngSwitchCase="'Target'">
-        <target-detail-view [data]=hoveredNode></target-detail-view>
+        <target-detail-view></target-detail-view>
       </div>
       <div *ngSwitchCase="'Compound'">
         <compound-detail-view [data]=hoveredNode></compound-detail-view>
       </div>
       <div *ngSwitchCase="'Pattern'">
-        <pattern-detail-view [data]=hoveredNode></pattern-detail-view>
+        <pattern-detail-view [data]= hoveredNode></pattern-detail-view>
       </div>
     </ng-container>
   </div>

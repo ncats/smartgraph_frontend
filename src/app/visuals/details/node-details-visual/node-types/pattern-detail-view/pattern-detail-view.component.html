@@ -1,15 +1,38 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title><h2>Pattern</h2></mat-card-title>
-    <img mat-card-avatar class="pattern-title">
-  </mat-card-header>
-  <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
-  <img mat-card-image [src] = getSmiles(node)>
-  <mat-card-content>
+
+<div class="container smrt-card">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" class = "main-row">
+    <div fxFlex="15">
+      <img class="pattern-avatar">
+    </div>
+    <div fxFlex="85">
+      <h2>Pattern</h2>
+    </div>
+  </div>
+  <div fxLayoutWrap="row">
+    <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
+    <img [src] = getSmiles(node)>
     <mat-list>
       <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
       <mat-list-item>Pattern Type: {{node.pattern_type}}</mat-list-item>
       <mat-list-item>Pattern Id: {{node.pattern_id}}</mat-list-item>
     </mat-list>
-  </mat-card-content>
-</mat-card>
+  </div>
+
+  <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
+    <h3>Pattern Of:</h3>
+    <div *ngFor="let link of downstreamLinks">
+      <link-details-visual [data] = link [node] = link.target></link-details-visual>
+    </div>
+  </div>
+
+  <div *ngIf="upstreamLinks?.length>0" fxLayoutWrap="row">
+    <h3>Pattern Of:</h3>
+    <div *ngFor="let link of upstreamLinks">
+      <link-details-visual [data] = link [node] = link.source></link-details-visual>
+    </div>
+  </div>
+
+
+
+</div>
+

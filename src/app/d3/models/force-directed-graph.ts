@@ -29,7 +29,6 @@ export class ForceDirectedGraph {
   }
 
   update(graph, options) {
-    console.log(graph);
     //frequently the data is separate from the graph image, so these need to be set for downstream filtering
     this.nodes = graph.nodes;
     this.links = graph.links;
@@ -89,7 +88,6 @@ export class ForceDirectedGraph {
     }
     /** Restarting the simulation internal timer */
     this.simulation.restart();
-    console.log(this);
     this.loadingService.toggleVisible(false);
   }
 }

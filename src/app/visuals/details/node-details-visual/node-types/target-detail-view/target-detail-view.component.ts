@@ -1,6 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Link} from "../../../../../d3/models/link";
 import {Target} from "../../../../../d3/models/node";
+import {Subscription} from "rxjs";
+import {NodeService} from "../../../../../d3/models/node.service";
 
 @Component({
   selector: 'target-detail-view',
@@ -8,22 +10,27 @@ import {Target} from "../../../../../d3/models/node";
   styleUrls: ['target-detail-view.component.css']
 })
 export class TargetDetailViewComponent implements OnInit {
-  @Input()
-  data: any;
+  @Input() data: any;
+
   node: Target;
   downstreamLinks: Link[];
   upstreamLinks: Link[];
 
-  uniprotUrl:string;
-  constructor() {
+  uniprotUrl: string;
+  subscription: Subscription;
+
+  constructor(private nodeService: NodeService) {
   }
 
   ngOnInit() {
-    this.node= this.data.node;
-    this.downstreamLinks = this.data.down;
-    this.upstreamLinks = this.data.up;
-    console.log(this);
-    this.uniprotUrl ="https://www.ebi.ac.uk/chembl/target/inspect/"+ this.node.uniprot_id;
-  }
+    this.subscription = this.nodeService.hoverednode$
+      .subscribe(data => {
+        console.log(data);
+        this.node = data.node;
+        this.downstreamLinks = data.down;
+        this.upstreamLinks = data.up;
+        this.uniprotUrl = "https://www.ebi.ac.uk/chembl/target/inspect/" + data.node.uniprot_id;
+      });
 
+  }
 }

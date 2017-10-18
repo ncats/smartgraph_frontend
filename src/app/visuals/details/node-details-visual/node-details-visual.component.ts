@@ -12,22 +12,33 @@ import {Link} from "../../../d3/models/link";
 export class NodeDetailsVisualComponent implements OnInit {
 
   subscription: Subscription;
-  hoveredNode: Node;
+  hoveredNode: any;
   downstreamLinks: Link[];
   upstreamLinks: Link[];
-  nodeType:string;
-  //node:Node;
-
+  nodeType: string;
   constructor(private nodeService: NodeService) {
   }
 
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
+        console.log(node);
         this.hoveredNode = node;
-        this.nodeType = node.node.constructor.name;
-
+        this.nodeType = '';
+        this.getNodeType();
       });
+  }
+
+  getNodeType():void{
+    if(this.hoveredNode){
+      console.log(this.hoveredNode);
+    this.nodeType =  this.hoveredNode.node.constructor.name;
+    }
+  }
+
+
+  ngOnChanges(changes){
+    console.log(changes);
   }
 }
 
