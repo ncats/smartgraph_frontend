@@ -20,20 +20,20 @@ export class NodeMenuHolderComponent{}
   template: `
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
- <md-list class="node-menu">
-<button  md-menu-item *ngIf="clickedNode.properties?.uniprot_id" [disabled] = "true"><b>{{clickedNode.properties?.uniprot_id}}</b></button>
- <button md-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
- <button md-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
- <button md-menu-item *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
-  <button md-menu-item *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
- <button md-menu-item *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
-  <button md-menu-item *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
- <button md-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
+ <mat-list class="node-menu">
+<button  mat-menu-item *ngIf="clickedNode.properties?.uniprot_id" [disabled] = "true"><b>{{clickedNode.properties?.uniprot_id}}</b></button>
+ <button mat-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+ <button mat-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
+ <button mat-menu-item *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
+  <button mat-menu-item *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
+ <button mat-menu-item *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+  <button mat-menu-item *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
+ <button mat-menu-item (click)="expand('All')">Expand All {{counts?.total}}</button>
 <!--
 //todo: collapse all show/hide logic
- <button md-menu-item (click)="collapse('All')">Collapse All</button>
+ <button mat-menu-item (click)="collapse('All')">Collapse All</button>
 -->
-</md-list>
+</mat-list>
  
 </xhtml:div>
  </svg:foreignObject>

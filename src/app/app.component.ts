@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
-import {Node, Link, NodeService} from './d3';
+import {Node} from './d3/models/node';
+import {Link} from './d3/models/link';
+import {NodeService} from './d3/models/node.service';
 import {DataConnectionService} from "./services/data-connection.service";
 import {Subscription} from 'rxjs/Subscription';
 import {SearchService} from "./services/search.service";
@@ -12,6 +14,7 @@ import 'rxjs/add/operator/map';
 
 import {Subject} from "rxjs";
 import { GraphDataService} from "./services/graph-data.service";
+import {LoadingService} from "./services/loading.service";
 
 
 @Component({
@@ -26,6 +29,7 @@ export class AppComponent {
   title = 'smrtgraph';
   nodes:Node[] = [];
   links:Link[] = [];
+  loading: boolean = true;
 
   searchTerm$ = new Subject<any>();
   subscription:Subscription;
@@ -41,7 +45,8 @@ export class AppComponent {
     private nodeService:NodeService,
     private searchService:SearchService,
     private messageService: MessageService,
-    private graphDataService: GraphDataService
+    private graphDataService: GraphDataService,
+    private loadingService : LoadingService
   ) {
     this.targetCtrl = new FormControl();
     this.patternCtrl = new FormControl();
@@ -73,6 +78,8 @@ export class AppComponent {
 
       }
     });
+
+    this.subscription = this.loadingService.loading$.subscribe(res => this.loading = res);
 
     /*
     * This provides an interface to handle the mapping of search input

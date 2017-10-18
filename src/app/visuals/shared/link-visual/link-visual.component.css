@@ -10,6 +10,13 @@
   marker-end: url(#arrow);
 }
 
+.flatarrow {
+  stroke-width: 2;
+  stroke: #A5A5A5;
+  fill: #A5A5A5;
+  marker-end: url(#flatarrow);
+}
+
 .link-name {
   font-family: 'Lato';
   font-weight: 300;
@@ -26,9 +33,21 @@
   marker-end: url(#hoverarrow);
 }
 
+.connected .flatarrow{
+  stroke-width: 2;
+  stroke: #595959;
+  marker-end: url(#hoverflatarrow);
+}
+
  .maximal{
   stroke-width: 2;
   stroke: red;
+}
+
+
+.hovering {
+  stroke: #000;
+  stroke-width: 2px;
 }
 
 /*#arrow{

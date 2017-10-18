@@ -5,8 +5,8 @@ import {DataConnectionService} from "../services/data-connection.service";
 import {SearchService} from "../services/search.service";
 import {Message, MessageService} from "../services/message.service";
 import { GraphDataService} from "../services/graph-data.service";
-import {MdSliderChange} from "@angular/material";
 import {NodeService} from "../d3/models/node.service";
+import {LoadingService} from "../services/loading.service";
 
 
 
@@ -34,7 +34,8 @@ export class SmrtgraphSearchComponent implements OnInit {
     private messageService: MessageService,
     private nodeService: NodeService,
     private dataConnectionService: DataConnectionService,
-    private graphDataService: GraphDataService
+    private graphDataService: GraphDataService,
+    private loadingService: LoadingService
   ) {
     this.startNodesCtrl = new FormControl();
     this.endNodesCtrl = new FormControl();
@@ -144,7 +145,8 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.dataConnectionService.messages.next(results);
       });
 
-    this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
+   // this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
+    this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
     this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
   }
 
@@ -160,7 +162,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   };
 
   shortestPath(){
-    console.log(this);
+   // this.loadingService.toggleVisible(true);
     if(this.startNodesCtrl.value && this.endNodesCtrl.value){
       let value:{} = {
         start:this.startUUIDList,

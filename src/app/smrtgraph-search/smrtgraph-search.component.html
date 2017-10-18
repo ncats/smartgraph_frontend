@@ -2,20 +2,20 @@
   <br>
 
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-      <md-input-container fxFlex="95">
-        <textarea mdInput mdTextareaAutosize placeholder="Start Nodes" mdAutosizeMaxRows = 20 [formControl]="startNodesCtrl"></textarea>
-      </md-input-container>
+      <mat-form-field fxFlex="95">
+        <textarea matInput matTextareaAutosize placeholder="Start Nodes" matAutosizeMaxRows = 15 [formControl]="startNodesCtrl"></textarea>
+      </mat-form-field>
   </div>
 
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-  <md-input-container fxFlex="95">
-        <textarea mdInput mdTextareaAutosize placeholder="End Nodes" mdAutosizeMaxRows = 20 [formControl]="endNodesCtrl"></textarea>
-      </md-input-container>
+  <mat-form-field fxFlex="95">
+        <textarea matInput matTextareaAutosize placeholder="End Nodes" matAutosizeMaxRows = 15 [formControl]="endNodesCtrl"></textarea>
+      </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
     <div fxFlex="95">
       <label>Max Distance</label>
-      <md-slider mdInput fxLayoutAlign="center center"
+      <mat-slider matInput fxLayoutAlign="center center"
                  class="example-margin"
                  aria-label = "max distance"
                  [max]="10"
@@ -24,10 +24,11 @@
                  [thumb-label]="true"
                  [formControl]="distanceCtrl"
                  [value]="5">
-      </md-slider>
-      <!--<br>
+      </mat-slider>
+      <br>
+<!--
       <label>Confidence Level</label>
-      <md-slider mdInput fxLayoutAlign="center center"
+      <mat-slider matInput fxLayoutAlign="center center"
                  aria-label="confidence level"
                  class="example-margin"
                  [max]="100"
@@ -37,12 +38,13 @@
                  disabled="true"
                  [formControl]="confidenceCtrl"
                  [value]="50">
-      </md-slider>-->
-      <br>
+      </mat-slider>
+      <br>-->
+
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center center" >
-    <button md-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<md-icon>search</md-icon><md-icon>share</md-icon></button>
+    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<mat-icon>search</mat-icon><mat-icon>share</mat-icon></button>
   </div>
   </div>
 

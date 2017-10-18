@@ -4,18 +4,42 @@
 <smrtgraph-menu></smrtgraph-menu>
 
 <div class="container">
-  <div fxLayout="row" fxLayoutGap="10px" >
+  <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
     <div fxFlex="25">
       <smrtgraph-search></smrtgraph-search>
-      <app-node-details-visual></app-node-details-visual>
+      <app-graph-details></app-graph-details>
     </div>
     <div fxFlex="75" class = "graph-row">
       <!--
             <graph [nodes]=nodes [links]=links ></graph>
       -->
-      <graph></graph>
+      <div *ngIf="loading else content">
+        <h1>Lodaing</h1>
+        <mat-spinner></mat-spinner>
+      </div>
 
+      <ng-template #content>
+        <graph></graph>
+      </ng-template>
     </div>
   </div>
-</div>
+  <!--<div fxLayout="row" fxLayoutGap="10px" class="link-list-row">
+  Linkslist
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  links
+
+  </div>-->
+  </div>
 

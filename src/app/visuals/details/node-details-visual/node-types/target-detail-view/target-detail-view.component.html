@@ -1,0 +1,30 @@
+
+<mat-card>
+  <mat-card-header fxFlexAlign="center">
+    <mat-card-title><h2>Target</h2></mat-card-title>
+    <mat-card-subtitle><a href= {{uniprotUrl}}>Target</a></mat-card-subtitle>
+    <img mat-card-avatar class="target-title">
+  </mat-card-header>
+  <mat-card-subtitle class="name">{{node?.properties?.name}}</mat-card-subtitle>
+  <mat-card-content>
+    <div *ngIf="downstreamLinks?.length>0">
+      <hr>
+      <mat-grid-list cols="2" rowHeight="1:1">
+        <mat-grid-tile-header><h2>Acts On: </h2></mat-grid-tile-header>
+        <div *ngFor="let link of downstreamLinks">
+          <mat-grid-tile><link-details-visual [data] = link [node] = link.target></link-details-visual></mat-grid-tile>
+        </div>
+      </mat-grid-list>
+    </div>
+
+    <div *ngIf="upstreamLinks?.length>0">
+      <hr>
+      <mat-grid-list cols="2" rowHeight="1:1">
+        <mat-grid-tile-header><h2>Acted On By: </h2></mat-grid-tile-header>
+        <div *ngFor="let link of upstreamLinks">
+          <mat-grid-tile><link-details-visual [data] = link [node] = link.source></link-details-visual></mat-grid-tile>
+        </div>
+      </mat-grid-list>
+    </div>
+  </mat-card-content>
+</mat-card>

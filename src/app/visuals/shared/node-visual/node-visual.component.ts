@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Node } from '../../../d3';
+import { Node } from '../../../d3/models/node';
 
 @Component({
   selector: '[nodeVisual]',
@@ -26,7 +26,7 @@ import { Node } from '../../../d3';
        <svg:text>{{node.properties?.uniprot_id}}</svg:text>
 -->
        
-       <svg:text>{{node.properties?.uniprot_id}}</svg:text>
+       <svg:text>{{node.properties?.uniprot_id || node.properties?.hash}}</svg:text>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

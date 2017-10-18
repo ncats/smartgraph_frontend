@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {Link, Node} from '../../../d3';
+import { Link } from '../../../d3/models/link';
+import { Node } from '../../../d3/models/node';
 
 
 @Component({
@@ -7,6 +8,7 @@ import {Link, Node} from '../../../d3';
   template: `
  <svg:g>  
         <svg:line class="link arrow"
+        [ngClass]="{arrow: true, flatarrow: false}"
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"
     [attr.y1]="endpointLessRadius(link, 'y1') || 0"
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"
@@ -14,9 +16,10 @@ import {Link, Node} from '../../../d3';
 </svg:line>
     <svg:text class="link-name"
         [attr.font-size]= 10
-        [attr.x]="(source.x +target.x)/2 "
-        [attr.y]="(source.y +target.y)/2 ">
-        {{link.id}}
+        [attr.x]="(link.source.x +link.target.x)/2 "
+        [attr.y]="(link.source.y +link.target.y)/2 "
+        >
+        {{link?.causalStatements }}
       </svg:text>
       </svg:g>
   `,
@@ -24,27 +27,25 @@ import {Link, Node} from '../../../d3';
 })
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;
-
-  source:Node;
-  target:Node;
+ // source:Node;
+ // target:Node;
   constructor() {
   }
 
   ngOnInit() {
   }
 
-
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
-    this.source = link.source;
-    this.target = link.target;
-    let x1 =  this.source.x;
-    let y1 =  this.source.y;
-    let x2 =  this.target.x;
-    let y2 =  this.target.y;
+   // this.source = link.source;
+  //  this.target = link.target;
+    let x1 =  link.source.x;
+    let y1 =  link.source.y;
+    let x2 =  link.target.x;
+    let y2 =  link.target.y;
 
     let distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    let radius1 =  this.source.r || 0;
-    let radius2 =  this.target.r || 0;
+    let radius1 =  link.source.r || 0;
+    let radius2 =  link.target.r || 0;
 
     if (attr_name === 'x1') return x1 + (x2 - x1) * radius1 / distance;
     if (attr_name === 'y1') return y1 + (y2 - y1) * radius1 / distance;

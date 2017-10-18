@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title><h2>Pattern</h2></mat-card-title>
+    <img mat-card-avatar class="pattern-title">
+  </mat-card-header>
+  <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
+  <img mat-card-image [src] = getSmiles(node)>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
+      <mat-list-item>Pattern Type: {{node.pattern_type}}</mat-list-item>
+      <mat-list-item>Pattern Id: {{node.pattern_id}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

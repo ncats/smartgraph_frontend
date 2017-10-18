@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-header fxFlexAlign="center">
+    <mat-card-title> <h2>Compound</h2></mat-card-title>
+    <img mat-card-avatar class="compound-title">
+  </mat-card-header>
+  <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
+  <img mat-card-image [src] = getSmiles(node)>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
+      <mat-list-item>Non stereo hash: {{node.nostereo_hash}}</mat-list-item>
+      <mat-list-item>Compound Id: {{node.compoundId}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

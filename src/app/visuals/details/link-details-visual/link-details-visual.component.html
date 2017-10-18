@@ -1,5 +1,5 @@
 
-<div [ngSwitch]="link?.type" *ngIf = "node.params" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
+<div [ngSwitch]="link?.type" *ngIf = "node?.params" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
   <div    *ngSwitchCase="'REGULATES'">
     {{node.properties?.uniprot_id}} ({{node.properties?.name}})
   </div>

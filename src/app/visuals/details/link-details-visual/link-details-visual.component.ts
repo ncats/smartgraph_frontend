@@ -1,5 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Link, Node} from '../../../d3';
+import {Link} from '../../../d3/models/link';
+import {Node} from '../../../d3/models/node';
+import {Subscription} from "rxjs";
+import {LinkService} from '../../../d3/models/link.service';
 
 
 @Component({
@@ -8,14 +11,25 @@ import {Link, Node} from '../../../d3';
   styleUrls: ['link-details-visual.component.css']
 })
 export class LinkDetailsVisualComponent implements OnInit {
-    @Input() link: Link;
-    @Input() node: Node;
+ @Input() data: Link;
+ @Input() node: Node;
+ link: Link;
+ linkSubscription: Subscription;
 
-  constructor() { }
+  constructor(private linkService: LinkService) { }
 
   ngOnInit() {
+    this.linkSubscription = this.linkService.hoveredlink$
+      .subscribe(link => {
+        console.log(link);
+        this.link = link;
+        this.node = link.target;
+      });
+    if(this.data){
+      this.link = this.data;
+    }
   }
-
+/*
   getSmiles(node : Node): string{
     if(node.properties && node.properties.smiles) {
       return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ LinkDetailsVisualComponent.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
@@ -23,9 +37,9 @@ export class LinkDetailsVisualComponent implements OnInit {
       return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ LinkDetailsVisualComponent.parseSmiles(node.properties.canonical_smiles) +'&standardize=true&format=svg';
     }else{
       return null;
-    }
+    }*/
 
-  }
+/*  }
 
   private static parseSmiles(smiles: string): string {
     return smiles
@@ -34,7 +48,7 @@ export class LinkDetailsVisualComponent implements OnInit {
       .replace(/[+]/g,'%2B')
       .replace(/[\\]/g,'%5C')
       .replace(/[|]/g,'%7C');
-  }
+  }*/
 
 
 }

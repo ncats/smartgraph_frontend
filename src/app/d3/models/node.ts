@@ -37,6 +37,7 @@ export class Node implements d3.SimulationNodeDatum {
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
   constructor(id, properties) {
+
     this.uuid = properties.properties.uuid ;
     this.id = id;
     //uuid is still saved here
@@ -64,3 +65,46 @@ export class Node implements d3.SimulationNodeDatum {
   }
 }
 
+export class Compound extends Node {
+  hash:string;
+  nostereo_hash:string;
+  smiles:string;
+  compoundId: string;
+
+  constructor (id, properties) {
+    super(id, properties);
+    this.hash= properties.properties.hash;
+    this.nostereo_hash= properties.properties.nostereo_hash;
+    this.smiles= properties.properties.smiles;
+    this.compoundId = properties.properties.compound_id.low;
+  }
+}
+
+export class Target extends Node {
+  uniprot_id:string;
+  name:string;
+  fullname:string;
+
+  constructor (id, properties) {
+    super(id, properties);
+    this.uniprot_id= properties.properties.uniprot_id;
+    this.name= properties.properties.name;
+    this.fullname= properties.properties.fullname.split("(")[0];
+  }
+}
+
+export class Pattern extends Node {
+  hash:string;
+  pattern_id:string;
+  pattern_type:string;
+  smiles:string;
+
+  constructor (id, properties) {
+    super(id, properties);
+    this.hash= properties.properties.hash;
+    this.pattern_id= properties.properties.pattern_id;
+    this.pattern_type= properties.properties.pattern_type;
+    this.smiles= properties.properties.smiles;
+
+  }
+}

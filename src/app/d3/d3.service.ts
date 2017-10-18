@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Node, Link, ForceDirectedGraph, NodeService} from './models';
+import {Node} from './models/node';
+import {Link} from './models/link';
+import {ForceDirectedGraph} from './models/force-directed-graph';
 import * as d3 from 'd3';
+import {NodeService} from "./models/node.service";
+import {LinkService} from "./models/link.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
 
 @Injectable()
@@ -8,10 +12,10 @@ export class D3Service {
   /** This service will provide methods to enable user interaction with elements
    * while maintaining the d3 simulations physics
    */
- // @Output() nodeClicked: EventEmitter<Node> = new EventEmitter<Node>();
 
   constructor(
     private nodeService : NodeService,
+    private linkService : LinkService,
     private nodeMenuController : NodeMenuControllerService
   ) {  }
 
@@ -23,8 +27,9 @@ export class D3Service {
     container = d3.select(containerElement);
 
     zoomed = () => {
-      let transform = d3.event.transform;
-      container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
+     // let transform = d3.event.transform;
+      container.attr("transform", d3.event.transform);
+      //  container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
     };
 
     zoom = d3.zoom().on("zoom", zoomed);
@@ -35,52 +40,55 @@ export class D3Service {
   applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     let d3element = d3.select(element);
 
-    function started() {
+    let started = ():void => {
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
       //hides tooltip if active
-     // d3element.select('.tooltip').style("opacity", 0);
+      // d3element.select('.tooltip').style("opacity", 0);
 
-      d3.event.on("drag", dragged).on("end", ended);
 
       function dragged() {
         node.fx = d3.event.x;
         node.fy = d3.event.y;
+       // d3.event.stopPropagation();
       }
 
-      function ended() {
+      let ended = ():void => {
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
         }
-
+        this.nodeMenuController.toggleVisible(false);
         //by not resetting these, the node stays where it is dragged
-      /*  node.fx = null;
-        node.fy = null;*/
+        /*  node.fx = null;
+         node.fy = null;*/
       }
+
+      d3.event.on("drag", dragged).on("end", ended,this.nodeMenuController.toggleVisible(false));
+
+     // this.nodeMenuController.toggleVisible(false);
     }
 
     d3element.call(d3.drag()
       .on("start", started));
   }
 
-
   /** A method to bind hoverable behaviour to an svg element */
-  applyHoverableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
+  applyHoverableNodeBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     let d3element = d3.select(element);
     let connectedLinks;
     let maximalLinks: any[] = [];
     let upstreamNeighbors: Link[] = [];
     let downstreamNeighbors: Link[] = [];
 
-     let decorateNodes = ():void =>{
+    let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
-     /* d3element.selectAll('.tooltip').transition().duration(200)
-        .style("opacity", .9).attr('z-index', 666);*/
+      /* d3element.selectAll('.tooltip').transition().duration(200)
+       .style("opacity", .9).attr('z-index', 666);*/
       d3.selectAll('circle')
-         .data(graph.nodes)
-         .filter(getNeighborNodes) //this will pass each node in the graph to the function
-         .classed('connected', true)
+        .data(graph.nodes)
+        .filter(getNeighborNodes) //this will pass each node in the graph to the function
+        .classed('connected', true)
     };
 
 
@@ -91,23 +99,23 @@ export class D3Service {
         .filter(getNeighborLinks)
         .classed('connected', true);
 
-       let connectedNodes = d3.selectAll('circle')
-         .data(graph.nodes)
-         .filter(getNeighborNodes)
-         .classed('connected', true);
+      let connectedNodes = d3.selectAll('circle')
+        .data(graph.nodes)
+        .filter(getNeighborNodes)
+        .classed('connected', true);
 
-         connectedLinks.filter(findMaximalLinks)
-         .classed('maximal', true);
+      connectedLinks.filter(findMaximalLinks)
+        .classed('maximal', true);
 
-       connectedNodes.filter(findMaximalNodes)
-         .classed('maximal', true);
-     };
+      connectedNodes.filter(findMaximalNodes)
+        .classed('maximal', true);
+    };
 
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
       node.params.hovered = false;
-     /* d3element.select('.tooltip').transition().duration(500)
-        .style("opacity", 0);*/
+      /* d3element.select('.tooltip').transition().duration(500)
+       .style("opacity", 0);*/
     };
 
     let clearLinks= ():void => {
@@ -130,25 +138,25 @@ export class D3Service {
       if(upstream ==true){
         upstreamNeighbors.push(e);
       }
-     //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
-        return downstream;
+      //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
+      return downstream;
     };
 
     let getNeighborNodes = (e:any): boolean => {
-     // const sources = connectedLinks.data().map(link => link.source.id);
+      // const sources = connectedLinks.data().map(link => link.source.id);
       const targets = connectedLinks.data().map(link=> link.target.id);
-     // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+      // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
       return targets.indexOf(e.id) > -1;
     };
 
-   let findMaximalLinks = (e:any):boolean => {
-     if(e.properties && e.properties.maximal && e.properties.maximal == "t"){
-       maximalLinks= maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-       return true;
-     }else{
-       return false;
-     }
-     };
+    let findMaximalLinks = (e:any):boolean => {
+      if(e.properties && e.properties.maximal && e.properties.maximal == "t"){
+        maximalLinks= maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+        return true;
+      }else{
+        return false;
+      }
+    };
 
     let findMaximalNodes = (e:any):boolean =>{
       return maximalLinks.indexOf(e.id) > -1;
@@ -160,21 +168,51 @@ export class D3Service {
       decorateNodes();
     };
 
-     let mouseOutFunction = ():void =>{
+    let mouseOutFunction = ():void =>{
       clearNodes();
       clearLinks();
-       upstreamNeighbors = [];
-       downstreamNeighbors = [];
+      upstreamNeighbors = [];
+      downstreamNeighbors = [];
     };
 //todo: this fires constantly as the node is dragged
-    d3element.on("mouseover", mouseOverFunction);
-    d3element.on("mouseout", mouseOutFunction);
+    d3element.on("mouseover", mouseOverFunction).on("mouseout", mouseOutFunction);
+
+  }
+
+  /** A method to bind hoverable behaviour to an svg element */
+  applyHoverableLinkBehaviour(element, link: Link, graph: ForceDirectedGraph) {
+    let d3element = d3.select(element);
+    let connectedLinks;
+
+      let decorateLinks = ():void =>{
+      d3element.select('line').classed('hovering', true).classed('connected', true);
+        this.linkService.hoveredLink(link);
+    };
+
+    let clearLinks = (): void => {
+      d3element.select('line').classed('hovering', false).classed('connected', false);
+    };
+
+      let mouseOverFunction = ():void => {
+      this.linkService.hoveredLink(link);
+      decorateLinks();
+    //  decorateNodes();
+    };
+
+    let mouseOutFunction = ():void =>{
+   //   clearNodes();
+      clearLinks();
+    //  upstreamNeighbors = [];
+    //  downstreamNeighbors = [];
+    };
+
+    d3element.on("mouseover", mouseOverFunction).on("mouseout", mouseOutFunction);
 
   }
 
 
- /** A method to bind click events to an svg element */
- //just emits the node for other components to listen for
+  /** A method to bind click events to an svg element */
+  //just emits the node for other components to listen for
   applyClickableBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     let d3element = d3.select(element);
     let svg = d3.select('svg');
@@ -192,13 +230,13 @@ export class D3Service {
       }
     };
     let decorateNodes = ():void =>{
-   /*   d3.selectAll('circle')
-        .data(graph.nodes)
-        .filter(getNeighborNodes) //this will pass each node in the graph to the function
-        .classed('connected', true);
+      /*   d3.selectAll('circle')
+       .data(graph.nodes)
+       .filter(getNeighborNodes) //this will pass each node in the graph to the function
+       .classed('connected', true);
 
-      //sets click coloring on current node
-      d3element.select("circle").classed("clicked", false);*/
+       //sets click coloring on current node
+       d3element.select("circle").classed("clicked", false);*/
     };
 
     let clickFunction = ():void => {
