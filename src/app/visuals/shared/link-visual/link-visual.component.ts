@@ -7,8 +7,8 @@ import { Node } from '../../../d3/models/node';
   selector: '[linkVisual]',
   template: `
  <svg:g>  
-        <svg:line class="link arrow"
-        [ngClass]="{arrow: true, flatarrow: false}"
+        <svg:line class="link"
+        [ngClass]="{arrow: link.edgeType != 'up', flatarrow: link.edgeType == 'up'}"
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"
     [attr.y1]="endpointLessRadius(link, 'y1') || 0"
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"

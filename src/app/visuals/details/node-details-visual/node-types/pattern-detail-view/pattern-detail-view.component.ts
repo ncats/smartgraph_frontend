@@ -1,6 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Pattern} from "../../../../../d3/models/node";
 import {Link} from "../../../../../d3/models/link";
+import {Subscription} from "rxjs";
+import {NodeService} from "../../../../../d3/models/node.service";
 
 @Component({
   selector: 'pattern-detail-view',
@@ -8,27 +10,36 @@ import {Link} from "../../../../../d3/models/link";
   styleUrls: ['pattern-detail-view.component.css']
 })
 export class PatternDetailViewComponent implements OnInit {
-  @Input()
+@Input()
   data:any;
   node: Pattern;
   downstreamLinks: Link[];
   upstreamLinks: Link[];
-  constructor() { }
+  subscription: Subscription;
+
+  constructor(private nodeService: NodeService) {
+  }
 
   ngOnInit() {
-    this.node= this.data.node;
-    this.downstreamLinks = this.data.down;
-    this.upstreamLinks = this.data.up;
-    this.getSmiles(this.node);
-
+    if(this.data){
+      this.node = this.data.node;
+    }
+    this.subscription = this.nodeService.hoverednode$
+      .subscribe(data => {
+        console.log(data);
+        this.node = data.node;
+        this.downstreamLinks = data.down;
+        this.upstreamLinks = data.up;
+        this.getSmiles(this.node);
+      });
   }
+
   getSmiles(node : any): string{
-    if(node.properties && node.properties.smiles) {
-      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
+    if(node.smiles) {
+      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.smiles) +'&standardize=true&format=svg';
     }else{
       return null;
     }
-
   }
 
   parseSmiles(smiles: string): string {

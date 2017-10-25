@@ -29,7 +29,7 @@ export class TargetDetailViewComponent implements OnInit {
         this.node = data.node;
         this.downstreamLinks = data.down;
         this.upstreamLinks = data.up;
-        this.uniprotUrl = "https://www.ebi.ac.uk/chembl/target/inspect/" + data.node.uniprot_id;
+       // this.uniprotUrl = "https://www.ebi.ac.uk/chembl/target/inspect/" + data.node.uniprot_id;
       });
 
   }

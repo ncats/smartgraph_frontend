@@ -1,15 +1,10 @@
 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
   <div fxFlex="92">
-    <ng-container [ngSwitch]=nodeType>
-      <div *ngSwitchCase="'Target'">
-        <target-detail-view></target-detail-view>
-      </div>
-      <div *ngSwitchCase="'Compound'">
-        <compound-detail-view [data]=hoveredNode></compound-detail-view>
-      </div>
-      <div *ngSwitchCase="'Pattern'">
-        <pattern-detail-view [data]= hoveredNode></pattern-detail-view>
-      </div>
-    </ng-container>
+    <div [ngSwitch]=nodeType>
+        <target-detail-view *ngSwitchCase="'Target'"></target-detail-view>
+        <compound-detail-view *ngSwitchCase="'Compound'" [data]= hoveredNode></compound-detail-view>
+        <pattern-detail-view *ngSwitchCase="'Pattern'"></pattern-detail-view>
+      <div *ngSwitchDefault></div>
+    </div>
   </div>
 </div>

@@ -33,7 +33,7 @@
   marker-end: url(#hoverarrow);
 }
 
-.connected .flatarrow{
+.connectedflat{
   stroke-width: 2;
   stroke: #595959;
   marker-end: url(#hoverflatarrow);

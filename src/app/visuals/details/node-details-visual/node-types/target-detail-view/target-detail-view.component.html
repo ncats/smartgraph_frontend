@@ -9,8 +9,17 @@
     </div>
   </div>
   <div fxLayoutWrap="row">
+  <!--
     <mat-card-subtitle><a href= {{uniprotUrl}}>Target</a></mat-card-subtitle>
-    <mat-card-subtitle class="name">{{node?.name || "" }}</mat-card-subtitle>
+-->
+    <mat-card-subtitle class="name">{{node?.fullname || "" }}</mat-card-subtitle>
+</div>
+  <div *ngIf = "node?.synonyms.length > 0" fxLayoutWrap="row">
+    <h3>Synonyms:</h3>
+    <br/>
+    <mat-list>
+      <mat-list-item *ngFor="let syn of node?.synonyms">{{syn}}</mat-list-item>
+    </mat-list>
   </div>
 
   <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">

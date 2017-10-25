@@ -150,7 +150,7 @@ export class D3Service {
     };
 
     let findMaximalLinks = (e:any):boolean => {
-      if(e.properties && e.properties.maximal && e.properties.maximal == "t"){
+      if(e.properties && e.properties.islargest){
         maximalLinks= maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
         return true;
       }else{
@@ -183,14 +183,18 @@ export class D3Service {
   applyHoverableLinkBehaviour(element, link: Link, graph: ForceDirectedGraph) {
     let d3element = d3.select(element);
     let connectedLinks;
+    let arrowType= 'connected';
 
       let decorateLinks = ():void =>{
-      d3element.select('line').classed('hovering', true).classed('connected', true);
+        if(link.edgeType == 'up'){
+          arrowType ="connectedflat";
+        }
+      d3element.select('line').classed('hovering', true).classed(arrowType, true);
         this.linkService.hoveredLink(link);
     };
 
     let clearLinks = (): void => {
-      d3element.select('line').classed('hovering', false).classed('connected', false);
+      d3element.select('line').classed('hovering', false).classed(arrowType, false);
     };
 
       let mouseOverFunction = ():void => {

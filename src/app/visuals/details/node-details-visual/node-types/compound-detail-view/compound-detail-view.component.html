@@ -8,12 +8,12 @@
     </div>
   </div>
 
-    <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
+    <mat-card-subtitle class="smiles">Smiles: {{node?.smiles}}</mat-card-subtitle>
     <img [src] = getSmiles(node)>
     <mat-list>
-      <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
-      <mat-list-item>Non stereo hash: {{node.nostereo_hash}}</mat-list-item>
-      <mat-list-item>Compound Id: {{node.compoundId}}</mat-list-item>
+      <mat-list-item>InChI Key: {{node?.hash}}</mat-list-item>
+      <mat-list-item>Non stereo hash: {{node?.nostereo_hash}}</mat-list-item>
+      <mat-list-item>Compound Id: {{node?.compoundId}}</mat-list-item>
     </mat-list>
   </div>
 

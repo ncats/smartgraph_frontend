@@ -13,8 +13,6 @@ export class NodeDetailsVisualComponent implements OnInit {
 
   subscription: Subscription;
   hoveredNode: any;
-  downstreamLinks: Link[];
-  upstreamLinks: Link[];
   nodeType: string;
   constructor(private nodeService: NodeService) {
   }

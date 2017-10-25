@@ -11,7 +11,7 @@
     {{node.properties?.uniprot_id}} ({{node.properties?.name}})
 -->
   </div>
-  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.maximal=='t'">maximal</span> pattern of: {{node.properties?.uniprot_id}}
+  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.islargest">maximal</span> pattern of: {{node.properties?.uniprot_id}}
     ({{node.properties?.name}}) {{link.properties | json}}
     <pattern-detail-view [data] = "{node: link.target}"></pattern-detail-view>
   </div>

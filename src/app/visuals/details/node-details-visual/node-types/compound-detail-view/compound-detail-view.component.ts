@@ -16,6 +16,7 @@ node: Compound;
   constructor() { }
 
   ngOnInit() {
+    console.log(this.data);
     this.node= this.data.node;
     this.downstreamLinks = this.data.down;
     this.upstreamLinks = this.data.up;
@@ -23,12 +24,12 @@ node: Compound;
   }
 
   getSmiles(node : any): string{
-    if(node.properties && node.properties.smiles) {
-      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.properties.smiles) +'&standardize=true&format=svg';
+    console.log(node);
+    if(node.smiles) {
+      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.smiles) +'&standardize=true&format=svg';
     }else{
       return null;
     }
-
   }
 
   parseSmiles(smiles: string): string {

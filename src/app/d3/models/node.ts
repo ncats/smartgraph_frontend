@@ -31,18 +31,17 @@ export class Node implements d3.SimulationNodeDatum {
   };
 
   params: Params;
-
   /*
   * Neo4j has their own uuid that will need to be used to track nodes, since some relationships are sepnt with the start
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
-  constructor(id, properties) {
+  constructor(id, data) {
 
-    this.uuid = properties.properties.uuid ;
+    this.uuid = data.properties.uuid ;
     this.id = id;
     //uuid is still saved here
-    this.properties = properties.properties;
-    this.labels = properties.labels;
+    this.properties = data.properties;
+    this.labels = data.labels;
     this.linkCount = 1;
     this.params = new Params();
   }
@@ -71,12 +70,12 @@ export class Compound extends Node {
   smiles:string;
   compoundId: string;
 
-  constructor (id, properties) {
-    super(id, properties);
-    this.hash= properties.properties.hash;
-    this.nostereo_hash= properties.properties.nostereo_hash;
-    this.smiles= properties.properties.smiles;
-    this.compoundId = properties.properties.compound_id.low;
+  constructor (id, data) {
+    super(id, data);
+    this.hash= data.properties.hash;
+    this.nostereo_hash= data.properties.nostereo_hash;
+    this.smiles= data.properties.smiles;
+    this.compoundId = data.properties.compound_id.low;
   }
 }
 
@@ -84,12 +83,16 @@ export class Target extends Node {
   uniprot_id:string;
   name:string;
   fullname:string;
+  synonyms: string[];
 
-  constructor (id, properties) {
-    super(id, properties);
-    this.uniprot_id= properties.properties.uniprot_id;
-    this.name= properties.properties.name;
-    this.fullname= properties.properties.fullname.split("(")[0];
+
+  constructor (id, data) {
+    super(id, data);
+    this.uniprot_id= data.properties.uniprot_id;
+    this.name= data.properties.name;
+    this.fullname= data.properties.fullname;
+    this.synonyms = data.properties.synonyms;
+
   }
 }
 
@@ -99,12 +102,12 @@ export class Pattern extends Node {
   pattern_type:string;
   smiles:string;
 
-  constructor (id, properties) {
-    super(id, properties);
-    this.hash= properties.properties.hash;
-    this.pattern_id= properties.properties.pattern_id;
-    this.pattern_type= properties.properties.pattern_type;
-    this.smiles= properties.properties.smiles;
+  constructor (id, data) {
+    super(id, data);
+    this.hash= data.properties.hash;
+    this.pattern_id= data.properties.pattern_id;
+    this.pattern_type= data.properties.pattern_type;
+    this.smiles= data.properties.smiles;
 
   }
 }
