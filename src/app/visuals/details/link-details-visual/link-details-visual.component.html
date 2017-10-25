@@ -1,11 +1,11 @@
 
 <div [ngSwitch]="link?.type" *ngIf = "node?.params" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
   <div *ngSwitchCase="'TESTED_ON'">
-    <target-detail-view [data]="{node: link.target}"></target-detail-view>
+    <target-detail-view [node]="link.target"></target-detail-view>
   </div>
 
   <div    *ngSwitchCase="'REGULATES'">
-    <target-detail-view [data]="{node: link.target}"></target-detail-view>
+    <target-detail-view [node]="link.target"></target-detail-view>
 
 <!--
     {{node.properties?.uniprot_id}} ({{node.properties?.name}})
@@ -13,10 +13,10 @@
   </div>
   <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.islargest">maximal</span> pattern of: {{node.properties?.uniprot_id}}
     ({{node.properties?.name}}) {{link.properties | json}}
-    <pattern-detail-view [data] = "{node: link.target}"></pattern-detail-view>
+    <pattern-detail-view [node] = "link.target"></pattern-detail-view>
   </div>
   <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of :
-  <target-detail-view [data]="{node: link.target}"></target-detail-view>
+  <target-detail-view [node]="link.target"></target-detail-view>
   </div>
   <!--    <div    *ngSwitchCase="'REGULATES'"></div>
       <div    *ngSwitchCase="'REGULATES'"></div>-->

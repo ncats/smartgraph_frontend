@@ -9,7 +9,7 @@
   </div>
 
     <mat-card-subtitle class="smiles">Smiles: {{node?.smiles}}</mat-card-subtitle>
-    <img [src] = getSmiles(node)>
+    <img [src] = nodeSmiles>
     <mat-list>
       <mat-list-item>InChI Key: {{node?.hash}}</mat-list-item>
       <mat-list-item>Non stereo hash: {{node?.nostereo_hash}}</mat-list-item>

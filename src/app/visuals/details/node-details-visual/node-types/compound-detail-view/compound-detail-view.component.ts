@@ -1,6 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Compound} from "../../../../../d3/models/node";
 import {Link} from "../../../../../d3/models/link";
+import {NodeService} from "../../../../../d3/models/node.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'compound-detail-view',
@@ -9,26 +11,22 @@ import {Link} from "../../../../../d3/models/link";
 })
 export class CompoundDetailViewComponent implements OnInit {
 @Input()
-data:any;
 node: Compound;
-  downstreamLinks: Link[];
+  @Input()
+downstreamLinks: Link[];
+  @Input()
   upstreamLinks: Link[];
-  constructor() { }
+  nodeSmiles:string;
 
-  ngOnInit() {
-    console.log(this.data);
-    this.node= this.data.node;
-    this.downstreamLinks = this.data.down;
-    this.upstreamLinks = this.data.up;
-    this.getSmiles(this.node);
+  constructor() {
   }
 
-  getSmiles(node : any): string{
-    console.log(node);
-    if(node.smiles) {
-      return 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(node.smiles) +'&standardize=true&format=svg';
-    }else{
-      return null;
+  ngOnInit() {
+  }
+
+  getSmiles(): void {
+    if (this.node.smiles) {
+      this.nodeSmiles = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' + this.parseSmiles(this.node.smiles) + '&standardize=true&format=svg';
     }
   }
 
@@ -40,5 +38,9 @@ node: Compound;
       .replace(/[\\]/g,'%5C')
       .replace(/[|]/g,'%7C');
     return parsed;
+  }
+
+  ngOnChanges(changes){
+    this.getSmiles();
   }
 }

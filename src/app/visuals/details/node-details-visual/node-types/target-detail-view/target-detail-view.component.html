@@ -12,7 +12,7 @@
   <!--
     <mat-card-subtitle><a href= {{uniprotUrl}}>Target</a></mat-card-subtitle>
 -->
-    <mat-card-subtitle class="name">{{node?.fullname || "" }}</mat-card-subtitle>
+    <mat-card-subtitle class="name">{{node?.fullname}}</mat-card-subtitle>
 </div>
   <div *ngIf = "node?.synonyms.length > 0" fxLayoutWrap="row">
     <h3>Synonyms:</h3>
@@ -22,7 +22,7 @@
     </mat-list>
   </div>
 
-  <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
+ <!-- <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
     <h3>Regulates:</h3>
     <div *ngFor="let link of downstreamLinks">
       <link-details-visual [data] = link [node] = link.target></link-details-visual>
@@ -34,5 +34,5 @@
     <div *ngFor="let link of upstreamLinks">
       <link-details-visual [data] = link [node] = link.source></link-details-visual>
     </div>
-  </div>
+  </div>-->
 </div>

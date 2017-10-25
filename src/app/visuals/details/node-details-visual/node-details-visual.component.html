@@ -1,9 +1,9 @@
 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
   <div fxFlex="92">
     <div [ngSwitch]=nodeType>
-        <target-detail-view *ngSwitchCase="'Target'"></target-detail-view>
-        <compound-detail-view *ngSwitchCase="'Compound'" [data]= hoveredNode></compound-detail-view>
-        <pattern-detail-view *ngSwitchCase="'Pattern'"></pattern-detail-view>
+        <target-detail-view *ngSwitchCase="'Target'"  [node]="hoveredNode.node" [upstreamLinks]="hoveredNode.up" [downstreamLinks]="hoveredNode.down"></target-detail-view>
+        <compound-detail-view *ngSwitchCase="'Compound'" [node]="hoveredNode.node" [upstreamLinks]="hoveredNode.up" [downstreamLinks]="hoveredNode.down"></compound-detail-view>
+        <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="hoveredNode.node" [upstreamLinks]="hoveredNode.up" [downstreamLinks]="hoveredNode.down"></pattern-detail-view>
       <div *ngSwitchDefault></div>
     </div>
   </div>

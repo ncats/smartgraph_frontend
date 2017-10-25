@@ -33,6 +33,10 @@ export class NodeService {
 
   }
 
+  clearNode():void{
+  this._hoveredNodeSource.next();
+}
+
   getNodes():Map<string, Node>{
     console.log(this.masterNodeMap.size);
     return this.masterNodeMap;
