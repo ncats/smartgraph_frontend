@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Subject} from "rxjs";
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class NodeMenuControllerService {
@@ -9,7 +9,7 @@ export class NodeMenuControllerService {
 
   // service command
   toggleVisible(force) {
-      this._clickedMenuSource.next(force);
+     // this._clickedMenuSource.next(force);
   }
 }
 
