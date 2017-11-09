@@ -28,7 +28,6 @@ export class NodeService {
   }
 
   hoveredNode(node:any){
-    console.log(node);
     this._hoveredNodeSource.next(node);
 
   }
@@ -38,7 +37,6 @@ export class NodeService {
 }
 
   getNodes():Map<string, Node>{
-    console.log(this.masterNodeMap.size);
     return this.masterNodeMap;
   }
 

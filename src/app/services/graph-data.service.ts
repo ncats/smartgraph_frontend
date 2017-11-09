@@ -92,8 +92,6 @@ constructor(
           //this ignores the initial start and end nodes, but they are added in the segments of the path
           let start:Node = this.nodeService.makeNode(l.start.properties.uuid, l.start);
           let end:Node = this.nodeService.makeNode(l.end.properties.uuid, l.end);
-         // let id = start.id.toString().concat(end.id.toString());
-         // let nodes:Node[] = ;
           this.nodeList.push(...[start,end]);
           let link:Link = this.linkService.makeLink(l.relationship.properties.uuid, start, end, l.relationship);
           this.linkList.push(link);
@@ -102,28 +100,21 @@ constructor(
           this.linkService.setLink( link);
         }
       } else {
-      //  console.error(r);
         if (!r.start && !r.end) {
-      //    console.error(r);
           //this is for node groups that aren't a path
           let n:Node = this.nodeService.makeNode(r.properties.uuid, r);
           this.nodeList.push(n);
           this.nodeService.setNode(n);
         } else {
           //this is the separate path for expanding nodes -- this does not have a uuid associated with the start or end nodes, so neo4j's id needs to be used to create the nodes
-       //   console.log(r);
           let start = this.nodeService.makeNode(r.properties.uuid, {});
           let end = this.nodeService.makeNode(r.properties.uuid, {});
           let nodes = [start,end];
-       //   let id = start.id.toString().concat(end.id.toString());
           this.nodeList.push(...nodes);
           let link = this.linkService.makeLink(r.properties.uuid, start, end, r);
-          //   let link = new Link(start, end, r.type, r.properties, r.properties.uuid);
-       //   this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
           this.linkService.setLink( link);
-          //    this.masterLinkMap.set(r.properties.uuid, link);
         }
       }
 

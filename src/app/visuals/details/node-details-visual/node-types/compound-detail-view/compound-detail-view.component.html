@@ -15,9 +15,8 @@
       <mat-list-item>Non stereo hash: {{node?.nostereo_hash}}</mat-list-item>
       <mat-list-item>Compound Id: {{node?.compoundId}}</mat-list-item>
     </mat-list>
-  </div>
 
-<div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
+<!--<div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
   <h3>Tested On:</h3>
   <div *ngFor="let link of downstreamLinks">
     <link-details-visual [data] = link [node] = link.target></link-details-visual>
@@ -28,5 +27,5 @@
   <h3>Pattern Of:</h3>
   <div *ngFor="let link of upstreamLinks">
     <link-details-visual [data] = link [node] = link.source></link-details-visual>
-  </div>
+  </div>-->
 </div>

@@ -20,7 +20,7 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
-          console.log(node);
+         // console.log(node);
           this.hoveredNode = node;
           // this.nodeType = '';
           this.getNodeType();
@@ -29,7 +29,7 @@ export class NodeDetailsVisualComponent implements OnInit {
 
   getNodeType():void{
     if(this.hoveredNode){
-      console.log(this.hoveredNode);
+     // console.log(this.hoveredNode);
     this.nodeType =  this.hoveredNode.node.constructor.name;
     }
   }

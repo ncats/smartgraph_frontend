@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import {NodeService} from "./models/node.service";
 import {LinkService} from "./models/link.service";
 import {NodeMenuControllerService} from "../services/node-menu-controller.service";
+import {LinkDatabase} from "../visuals/details/link-list-visual/link-database.service";
 
 @Injectable()
 export class D3Service {
@@ -16,7 +17,8 @@ export class D3Service {
   constructor(
     private nodeService : NodeService,
     private linkService : LinkService,
-    private nodeMenuController : NodeMenuControllerService
+    private nodeMenuController : NodeMenuControllerService,
+    private linkDatabase: LinkDatabase
   ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
@@ -41,36 +43,42 @@ export class D3Service {
     let d3element = d3.select(element);
 
     let started = ():void => {
+      d3element.raise();
+      console.log("drag started)");
+      d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
       //hides tooltip if active
       // d3element.select('.tooltip').style("opacity", 0);
 
+    }
 
       function dragged() {
+        console.log("dragging);");
         node.fx = d3.event.x;
         node.fy = d3.event.y;
-       // d3.event.stopPropagation();
       }
 
       let ended = ():void => {
+        console.log(d3.event);
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
         }
         this.nodeMenuController.toggleVisible(false);
+
         //by not resetting these, the node stays where it is dragged
         /*  node.fx = null;
          node.fy = null;*/
       }
 
-      d3.event.on("drag", dragged).on("end", ended,this.nodeMenuController.toggleVisible(false));
-
      // this.nodeMenuController.toggleVisible(false);
-    }
 
     d3element.call(d3.drag()
-      .on("start", started));
+      .on("start", started)
+      .on("drag", dragged)
+      .on("end", ended)
+    );
   }
 
   /** A method to bind hoverable behaviour to an svg element */
@@ -129,10 +137,11 @@ export class D3Service {
     };
 
     //todo: this is kind of piggybacking on the filter function
-    let getNeighborLinks = (e:any):boolean => {
+    let getNeighborLinks = (e:Link):boolean => {
       let downstream = node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
       let upstream = node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
       if(downstream == true) {
+      //  this.linkDatabase.addSite(e);
         downstreamNeighbors.push(e);
       }
       if(upstream ==true){
@@ -244,6 +253,8 @@ export class D3Service {
     };
 
     let clickFunction = ():void => {
+      if (d3.event.defaultPrevented) return;
+      console.log("click");
       graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
@@ -256,7 +267,7 @@ export class D3Service {
       //this just closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);
-      d3.event.stopPropagation();
+    //  d3.event.stopPropagation();
     };
 
     svg.on("click",clearMenu);

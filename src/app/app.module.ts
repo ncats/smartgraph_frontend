@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from './material/material.module';
+import {MaterialModule} from '../assets/material/material.module';
 
 
 import {D3Service} from './d3/d3.service';
@@ -40,6 +40,8 @@ import { TargetDetailViewComponent } from './visuals/details/node-details-visual
 import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
 import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
 import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-visual.component";
+import { LinkListVisualComponent } from './visuals/details/link-list-visual/link-list-visual.component';
+import {LinkDataSource, LinkDatabase} from "./visuals/details/link-list-visual/link-database.service";
 
 
 @NgModule({
@@ -66,7 +68,8 @@ import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-vi
     CompoundDetailViewComponent,
     PatternDetailViewComponent,
     TooltipVisualComponent,
-    LoadingDialog
+    LoadingDialog,
+    LinkListVisualComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,9 @@ import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-vi
     MessageService,
     GraphDataService,
     NodeMenuControllerService,
-    LoadingService
+    LoadingService,
+    LinkDatabase,
+    LinkDataSource
   ],
   bootstrap: [AppComponent]
 })

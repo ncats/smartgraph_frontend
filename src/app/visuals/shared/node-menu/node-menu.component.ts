@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, ViewChild, ViewContainerRef} from '@angular/core';
 import {NodeService} from "../../../d3/models/node.service";
-import {Subscription} from "rxjs";
+import {Subscription} from "rxjs/Subscription";
 import {Message, MessageService} from "../../../services/message.service";
 import {DataConnectionService} from "../../../services/data-connection.service";
 import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";

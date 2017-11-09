@@ -7,12 +7,10 @@
   <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
     <div fxFlex="25">
       <smrtgraph-search></smrtgraph-search>
-      <app-graph-details></app-graph-details>
+      <node-details-visual></node-details-visual>
     </div>
-    <div fxFlex="73" fxLayoutAlign="center center" class = "graph-row">
-      <!--
-            <graph [nodes]=nodes [links]=links ></graph>
-      -->
+    <div fxFlex="73" fxLayoutAlign="center" class = "graph-row">
+
       <div *ngIf="loading else content" >
         <mat-spinner></mat-spinner>
       </div>
@@ -22,23 +20,13 @@
       </ng-template>
     </div>
   </div>
-  <!--<div fxLayout="row" fxLayoutGap="10px" class="link-list-row">
-  Linkslist
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-  links
+  <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
+ <!--   <div *ngIf="loading else content" >
+      <mat-spinner></mat-spinner>
+    </div>-->
+    <link-list-visual></link-list-visual>
 
-  </div>-->
+    <ng-template #content>
+    </ng-template>
   </div>
-
+</div>
