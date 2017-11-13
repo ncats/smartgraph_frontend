@@ -41,7 +41,7 @@ import { CompoundDetailViewComponent } from './visuals/details/node-details-visu
 import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
 import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-visual.component";
 import { LinkListVisualComponent } from './visuals/details/link-list-visual/link-list-visual.component';
-import {LinkDataSource, LinkDatabase} from "./visuals/details/link-list-visual/link-database.service";
+import { LinkDatabase} from "./visuals/details/link-list-visual/link-database.service";
 
 
 @NgModule({
@@ -90,8 +90,7 @@ import {LinkDataSource, LinkDatabase} from "./visuals/details/link-list-visual/l
     GraphDataService,
     NodeMenuControllerService,
     LoadingService,
-    LinkDatabase,
-    LinkDataSource
+    LinkDatabase
   ],
   bootstrap: [AppComponent]
 })

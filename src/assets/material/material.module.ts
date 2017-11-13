@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import {
   MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule, MatInputModule, MatIconModule,
   MatListModule, MatSliderModule, MatGridListModule, MatCardModule, MatProgressSpinnerModule,
-  MatDialogModule, MatTableModule, MatSortModule
+  MatDialogModule, MatSortModule, MatTableModule
 } from '@angular/material';
 
 @NgModule({

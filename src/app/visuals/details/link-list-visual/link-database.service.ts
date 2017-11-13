@@ -5,6 +5,9 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import { startWith, map, merge } from 'rxjs/operators';
 import {Link} from "../../../d3/models/link";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/merge';
+
 
 /** An example database that the data source uses to retrieve data for the table. */
 @Injectable()
@@ -16,9 +19,11 @@ export class LinkDatabase {
 
   constructor() {
     //TODO: if necessary call linkservice/watcher
+    this.dataChange.next([]);
   }
   /** Adds a new link to the database. */
   addSite(link:Link) {
+    console.log(link);
     const copiedData = this.data.slice();
     copiedData.push(link);
     this.dataChange.next(copiedData);
@@ -37,21 +42,23 @@ export class LinkDataSource extends DataSource<any> {
 
   constructor(private _linkDatabase: LinkDatabase, private _sort: MatSort) {
     super();
-    console.log("asdasdaweaweqeqw");
-
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Link[]> {
-    console.log("sdfsdfsdsdf");
+    console.log("sdfsdfshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdsdf");
     const displayDataChanges = [
       this._linkDatabase.dataChange,
       this._sort.sortChange,
     ];
 
-    return Observable.merge(...displayDataChanges).map(() => {
+/*    return Observable.merge(...displayDataChanges).map(() => {
       return this.getSortedData();
-    });
+    }); */
+    return Observable.merge(...displayDataChanges).pipe(map(() => {
+      return this.getSortedData();
+    })
+    );
   }
 
   disconnect() {}

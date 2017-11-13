@@ -141,7 +141,7 @@ export class D3Service {
       let downstream = node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
       let upstream = node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
       if(downstream == true) {
-      //  this.linkDatabase.addSite(e);
+        this.linkDatabase.addSite(e);
         downstreamNeighbors.push(e);
       }
       if(upstream ==true){

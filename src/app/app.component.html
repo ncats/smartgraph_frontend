@@ -11,22 +11,19 @@
     </div>
     <div fxFlex="73" fxLayoutAlign="center" class = "graph-row">
 
-      <div *ngIf="loading else content" >
+      <div *ngIf="loading else graphcontent" >
         <mat-spinner></mat-spinner>
       </div>
 
-      <ng-template #content>
+      <ng-template #graphcontent>
         <graph></graph>
       </ng-template>
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
- <!--   <div *ngIf="loading else content" >
-      <mat-spinner></mat-spinner>
-    </div>-->
-    <link-list-visual></link-list-visual>
+    <div fxFlex="95">
 
-    <ng-template #content>
-    </ng-template>
+      <link-list-visual></link-list-visual>
+    </div>
   </div>
 </div>
