@@ -25,7 +25,6 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   properties?:any;
   uuid:string;
   id:string;
-  linkType:string;
   edgeType: string;
   reactions: Reaction[] = [];
 
@@ -35,7 +34,6 @@ export class Link implements d3.SimulationLinkDatum<Node> {
     this.type = data.type || "";
     this.properties = data.properties;
     this.uuid = data.properties.uuid;
-    this.linkType = source.constructor.name + '_' + target.constructor.name;
     this.edgeType= data.properties.edgeType;
     if (data.properties.edgeInfo && data.properties.edgeInfo.length >0) {
         for (let reaction of data.properties.edgeInfo){

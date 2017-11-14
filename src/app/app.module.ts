@@ -42,6 +42,7 @@ import { PatternDetailViewComponent } from './visuals/details/node-details-visua
 import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-visual.component";
 import { LinkListVisualComponent } from './visuals/details/link-list-visual/link-list-visual.component';
 import { LinkDatabase} from "./visuals/details/link-list-visual/link-database.service";
+import { ReactionVisualComponent } from './visuals/details/link-list-visual/reaction-visual/reaction-visual.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { LinkDatabase} from "./visuals/details/link-list-visual/link-database.se
     PatternDetailViewComponent,
     TooltipVisualComponent,
     LoadingDialog,
-    LinkListVisualComponent
+    LinkListVisualComponent,
+    ReactionVisualComponent
   ],
   imports: [
     BrowserModule,

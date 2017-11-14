@@ -5,14 +5,11 @@
       <img class="target-avatar">
     </div>
     <div fxFlex="85">
-      <h2>Target</h2>
+      <h2>{{node.genes}}</h2>
     </div>
   </div>
   <div fxLayoutWrap="row">
-  <!--
-    <mat-card-subtitle><a href= {{uniprotUrl}}>Target</a></mat-card-subtitle>
--->
-    <mat-card-subtitle class="name">{{node?.fullname}}</mat-card-subtitle>
+    <mat-card-subtitle>{{node?.fullname}}</mat-card-subtitle>
 </div>
   <div *ngIf = "node?.synonyms.length > 0" fxLayoutWrap="row">
     <h3>Synonyms:</h3>
@@ -21,18 +18,4 @@
       <mat-list-item *ngFor="let syn of node?.synonyms">{{syn}}</mat-list-item>
     </mat-list>
   </div>
-
- <!-- <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
-    <h3>Regulates:</h3>
-    <div *ngFor="let link of downstreamLinks">
-      <link-details-visual [data] = link [node] = link.target></link-details-visual>
-    </div>
-  </div>
-
-  <div *ngIf="upstreamLinks?.length>0" fxLayoutWrap="row">
-    <h3>Regulated By:</h3>
-    <div *ngFor="let link of upstreamLinks">
-      <link-details-visual [data] = link [node] = link.source></link-details-visual>
-    </div>
-  </div>-->
 </div>

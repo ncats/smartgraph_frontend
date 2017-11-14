@@ -2,7 +2,6 @@
  * Created by sheilstk on 6/16/17.
  */
 import {Injectable}      from '@angular/core'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Node} from "./node";
 import {Compound} from "./node";
 import {Target} from "./node";

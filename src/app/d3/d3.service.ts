@@ -44,7 +44,6 @@ export class D3Service {
 
     let started = ():void => {
       d3element.raise();
-      console.log("drag started)");
       d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
@@ -52,16 +51,14 @@ export class D3Service {
       //hides tooltip if active
       // d3element.select('.tooltip').style("opacity", 0);
 
-    }
+    };
 
       function dragged() {
-        console.log("dragging);");
         node.fx = d3.event.x;
         node.fy = d3.event.y;
       }
 
       let ended = ():void => {
-        console.log(d3.event);
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
         }
@@ -70,7 +67,7 @@ export class D3Service {
         //by not resetting these, the node stays where it is dragged
         /*  node.fx = null;
          node.fy = null;*/
-      }
+      };
 
      // this.nodeMenuController.toggleVisible(false);
 
@@ -141,7 +138,6 @@ export class D3Service {
       let downstream = node.id === (typeof (e.source) == "object" ? e.source.id : e.source);
       let upstream = node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
       if(downstream == true) {
-        this.linkDatabase.addSite(e);
         downstreamNeighbors.push(e);
       }
       if(upstream ==true){
@@ -172,9 +168,9 @@ export class D3Service {
     };
 
     let mouseOverFunction = ():void => {
-      this.nodeService.hoveredNode({node: node , up:upstreamNeighbors, down: downstreamNeighbors});
       decorateLinks();
       decorateNodes();
+      this.nodeService.hoveredNode({node: node , up:upstreamNeighbors, down: downstreamNeighbors});
     };
 
     let mouseOutFunction = ():void =>{
@@ -208,7 +204,8 @@ export class D3Service {
 
       let mouseOverFunction = ():void => {
       this.linkService.hoveredLink(link);
-      decorateLinks();
+        this.linkDatabase.addSite(link);
+        decorateLinks();
     //  decorateNodes();
     };
 

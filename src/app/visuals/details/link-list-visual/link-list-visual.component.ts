@@ -8,14 +8,13 @@ import {LinkDataSource, LinkDatabase} from "./link-database.service";
   styleUrls: ['./link-list-visual.component.css']
 })
 export class LinkListVisualComponent implements OnInit {
-  displayedColumns = ['edgeType', 'sourceType', 'targetType'];
+  displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score'];
   dataSource: LinkDataSource | null;
 
   @ViewChild(MatSort) sort: MatSort;
   constructor(private linkDatabase: LinkDatabase){
   }
   ngOnInit() {
-    console.log(this);
     this.dataSource = new LinkDataSource(this.linkDatabase, this.sort);
   }
 }

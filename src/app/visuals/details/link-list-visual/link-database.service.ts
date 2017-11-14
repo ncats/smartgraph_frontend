@@ -3,10 +3,12 @@ import {DataSource} from '@angular/cdk/collections';
 import {MatSort} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { startWith, map, merge } from 'rxjs/operators';
+import { map, merge } from 'rxjs/operators';
 import {Link} from "../../../d3/models/link";
-import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/merge';
+import {Subscription} from "rxjs/Subscription";
+import {NodeService} from "../../../d3/models/node.service";
+import {LinkService} from "../../../d3/models/link.service";
 
 
 /** An example database that the data source uses to retrieve data for the table. */
@@ -15,17 +17,37 @@ export class LinkDatabase {
   link: Link;
   /** Stream that emits whenever the data has been modified. */
   dataChange: BehaviorSubject<Link[]> = new BehaviorSubject<Link[]>([]);
+  nodeSubscription: Subscription;
+  linkSubscription: Subscription;
+
   get data(): Link[] { return this.dataChange.value; }
 
-  constructor() {
-    //TODO: if necessary call linkservice/watcher
-    this.dataChange.next([]);
+  constructor(private nodeService: NodeService,
+              private linkService: LinkService
+  ) {
+    this.nodeSubscription = this.nodeService.hoverednode$
+      .subscribe(node => {
+        this.dataChange.next([]);
+        this.addSite(node.up);
+        this.addSite(node.down);
+      });
+
+    this.linkSubscription = this.linkService.hoveredlink$
+      .subscribe(link => {
+        this.dataChange.next([]);
+        this.addSite([link]);
+      });
   }
+
   /** Adds a new link to the database. */
-  addSite(link:Link) {
-    console.log(link);
+  addSite(links:any) {
     const copiedData = this.data.slice();
-    copiedData.push(link);
+    if(links.length>0){
+    for(let link of links) {
+      console.log(link);
+      copiedData.push(link);
+}
+    }
     this.dataChange.next(copiedData);
   }
 }
@@ -46,7 +68,6 @@ export class LinkDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Link[]> {
-    console.log("sdfsdfshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdsdf");
     const displayDataChanges = [
       this._linkDatabase.dataChange,
       this._sort.sortChange,
@@ -78,6 +99,7 @@ export class LinkDataSource extends DataSource<any> {
         case 'average_response_time': [propertyA, propertyB] = [a.average_response_time, b.average_response_time]; break;
         case 'hour': [propertyA, propertyB] = [a.hour, b.hour]; break;*/
         case 'edgeType': [propertyA, propertyB] = [a.edgeType, b.edgeType]; break;
+        case 'linkType': [propertyA, propertyB] = [a.type, b.type]; break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

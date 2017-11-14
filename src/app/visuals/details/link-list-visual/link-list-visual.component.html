@@ -3,24 +3,61 @@
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
-
-  <!-- ID Column -->
-  <ng-container matColumnDef="edgeType">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.edgeType}} </mat-cell>
+  <ng-container matColumnDef="source">
+    <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
+    <mat-cell *matCellDef="let row"> <node-details-visual [data] = row.source></node-details-visual></mat-cell>
   </ng-container>
 
-  <!-- Progress Column -->
-  <ng-container matColumnDef="sourceType">
-    <mat-header-cell *matHeaderCellDef > Source  </mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.source?.nodeType}}</mat-cell>
+  <ng-container matColumnDef="linkType">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Link Type </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.type}}  </mat-cell>
   </ng-container>
 
-  <!-- Average Column -->
-  <ng-container matColumnDef="targetType">
+  <ng-container matColumnDef="target">
     <mat-header-cell *matHeaderCellDef >Target</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.target?.nodeType}} </mat-cell>
+    <mat-cell *matCellDef="let row"> <node-details-visual [data] = row.target></node-details-visual></mat-cell>
   </ng-container>
+
+  <ng-container matColumnDef="details">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Details</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <div *ngIf = 'row.reactions.length>0'>
+        <div *ngFor="let reaction of row.reactions trackById">
+          <span *ngIf ="reaction.mechanism">{{reaction.mechanism}}</span>
+          <span *ngIf ="reaction.mechanism && reaction.causal">: </span><br>
+          <span *ngIf ="reaction.causal">{{reaction.causal}}</span><br>
+          <br />
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="reference">
+    <mat-header-cell *matHeaderCellDef>Reference</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <div *ngIf = 'row.reactions.length>0'><mat-list>
+      <mat-list-item *ngFor="let reaction of row.reactions trackById">
+        <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference.split(':')[0]}}</a>
+      </mat-list-item>
+    </mat-list>
+    </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="score">
+    <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <div *ngIf = 'row.reactions.length>0'>
+        <mat-list>
+        <mat-list-item *ngFor="let reaction of row.reactions trackById">
+          Confidence: {{reaction.confidence}}
+        </mat-list-item>
+      </mat-list>
+      </div>
+      <div *ngIf = ''></div>
+    </mat-cell>
+  </ng-container>
+
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>

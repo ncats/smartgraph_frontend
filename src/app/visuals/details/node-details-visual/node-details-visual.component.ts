@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {Node} from '../../../d3/models/node';
 import {NodeService} from '../../../d3/models/node.service';
 import {Subscription} from "rxjs";
@@ -10,7 +10,7 @@ import {Link} from "../../../d3/models/link";
   styleUrls: ['node-details-visual.component.css']
 })
 export class NodeDetailsVisualComponent implements OnInit {
-
+@Input() data:Node;
   subscription: Subscription;
   hoveredNode: any;
   nodeType: string;
@@ -20,23 +20,23 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.hoverednode$
       .subscribe(node => {
-         // console.log(node);
           this.hoveredNode = node;
-          // this.nodeType = '';
           this.getNodeType();
       });
+    if(this.data){
+      this.hoveredNode = {node: this.data};
+      this.getNodeType();
+    }
   }
 
   getNodeType():void{
     if(this.hoveredNode){
-     // console.log(this.hoveredNode);
     this.nodeType =  this.hoveredNode.node.constructor.name;
     }
   }
 
 
   ngOnChanges(changes){
-    console.log(changes);
   }
 }
 

@@ -26,7 +26,7 @@ import { Node } from '../../../d3/models/node';
        <svg:text>{{node.properties?.uniprot_id}}</svg:text>
 -->
        
-       <svg:text>{{node.properties?.uniprot_id || node.properties?.hash}}</svg:text>
+       <svg:text *ngIf='node.r > 25'>{{node.r}} {{node.genes || node.properties?.uniprot_id || node.properties?.hash}}</svg:text>
     </svg:g>
   `,
   styleUrls: ['./node-visual.component.css']

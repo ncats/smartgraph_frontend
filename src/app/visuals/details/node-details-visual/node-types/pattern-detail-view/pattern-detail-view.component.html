@@ -10,29 +10,14 @@
   </div>
   <div fxLayoutWrap="row">
     <mat-card-subtitle class="smiles">Smiles: {{node.smiles}}</mat-card-subtitle>
+<!--
     <img [src] = getSmiles(node)>
+-->
     <mat-list>
       <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
       <mat-list-item>Pattern Type: {{node.pattern_type}}</mat-list-item>
       <mat-list-item>Pattern Id: {{node.pattern_id}}</mat-list-item>
     </mat-list>
   </div>
-
- <!-- <div *ngIf="downstreamLinks?.length>0" fxLayoutWrap="row">
-    <h3>Pattern Of:</h3>
-    <div *ngFor="let link of downstreamLinks">
-      <link-details-visual [data] = link [node] = link.target></link-details-visual>
-    </div>
-  </div>
-
-  <div *ngIf="upstreamLinks?.length>0" fxLayoutWrap="row">
-    <h3>Pattern Of:</h3>
-    <div *ngFor="let link of upstreamLinks">
-      <link-details-visual [data] = link [node] = link.source></link-details-visual>
-    </div>
-  </div>-->
-
-
-
 </div>
 

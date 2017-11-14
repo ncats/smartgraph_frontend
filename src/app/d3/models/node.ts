@@ -84,6 +84,7 @@ export class Target extends Node {
   name:string;
   fullname:string;
   synonyms: string[];
+  genes: string;
 
 
   constructor (id, data) {
@@ -92,6 +93,7 @@ export class Target extends Node {
     this.name= data.properties.name;
     this.fullname= data.properties.fullname;
     this.synonyms = data.properties.synonyms;
+    this.genes = data.properties.gene_symbols.join(", ");
 
   }
 }

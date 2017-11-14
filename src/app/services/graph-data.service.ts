@@ -54,7 +54,7 @@ constructor(
     switch(response.type) {
       case 'path':{
         this.filter = true;
-        //intention absence of break to allow fall through
+        //intentional absence of break to allow fall through
       }
       case 'startNodeSearch':
       case 'endNodeSearch':
@@ -184,17 +184,9 @@ countLinks():void{
   for (let l of this.graph.links) {
     let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
     source.linkCount ++;
-    //todo: not sure why this was put here...
-    if(source.labels[0] =="Compound"){
-      //console.log(source);
-    }
     this.nodeService.setNode(source);
     let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
-    //todo: not sure why this was put here...
     target.linkCount ++;
-    if(target.labels[0] =="Compound"){
-      console.log(target);
-    }
     this.nodeService.setNode(target);
   }
 }
