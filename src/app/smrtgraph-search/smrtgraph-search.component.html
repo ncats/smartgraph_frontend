@@ -26,7 +26,6 @@
                  [value]="5">
       </mat-slider>
       <br>
-<!--
       <label>Confidence Level</label>
       <mat-slider matInput fxLayoutAlign="center center"
                  aria-label="confidence level"
@@ -39,7 +38,33 @@
                  [formControl]="confidenceCtrl"
                  [value]="50">
       </mat-slider>
-      <br>-->
+      <br>
+      <label>Activity</label>
+      <mat-slider matInput fxLayoutAlign="center center"
+                 aria-label="activity level"
+                 class="example-margin"
+                 [max]="100"
+                 [min]="1"
+                 [step]="1"
+                 [thumb-label]="true"
+                 disabled="true"
+                 [formControl]="activityCtrl"
+                 [value]="50">
+      </mat-slider>
+      <br>
+      <label>Pattern Similarity</label>
+      <mat-slider matInput fxLayoutAlign="center center"
+                 aria-label="pattern similarity"
+                 class="example-margin"
+                 [max]="100"
+                 [min]="1"
+                 [step]="1"
+                 [thumb-label]="true"
+                 disabled="true"
+                 [formControl]="similarityCtrl"
+                 [value]="50">
+      </mat-slider>
+      <br>
 
     </div>
   </div>

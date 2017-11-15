@@ -72,7 +72,7 @@ public linksSubscription = Subscription;
     });
 
     /** Receiving an initialized simulated graph from our custom d3 service */
-    this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
+    this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this._options);
     /** Binding change detection check on each tick
      * This along with an onPush change detection strategy should enforce checking only when relevant!
      * This improves scripting computation duration in a couple of tests I've made, consistently.
@@ -156,6 +156,7 @@ svg.append("defs").append("marker")
     return this._options = {
       width: this.el.nativeElement.parentElement.offsetWidth,
       height: window.innerHeight*.8
+      //height: window.innerHeight*.8
      // height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };
   }

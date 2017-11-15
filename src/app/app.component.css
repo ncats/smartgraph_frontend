@@ -1,8 +1,28 @@
-.main-row{
+/*.main-row{
   max-height: 80%;
-}
+}*/
 
-.link-list-row{
+/*.link-list-row{
   max-height: 20%;
   background-color: #1E71A2;
+}*/
+/*
+.mat-drawer-backdrop {
+  display: none;
+  visibility: hidden;
 }
+
+.mat-drawer-backdrop.mat-drawer-shown {
+  display: none;
+  visibility: hidden;
+}
+
+
+
+.smrtSearchSidenav {
+  min-height: 100%;
+}*/
+
+/*.mat-drawer-content {
+  display: block;
+}*/

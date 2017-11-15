@@ -20,6 +20,8 @@ export class SmrtgraphSearchComponent implements OnInit {
   endNodesCtrl: FormControl;
   distanceCtrl: FormControl;
   confidenceCtrl: FormControl;
+  activityCtrl: FormControl;
+  similarityCtrl: FormControl;
 
   searchTerm$ = new Subject<any>();
   autocompleteOptions:any[] = [];
@@ -41,6 +43,8 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.endNodesCtrl = new FormControl();
     this.distanceCtrl = new FormControl();
     this.confidenceCtrl = new FormControl();
+    this.activityCtrl = new FormControl();
+    this.similarityCtrl = new FormControl();
   }
 
   /*

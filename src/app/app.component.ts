@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
 import {Node} from './d3/models/node';
@@ -20,7 +20,9 @@ import {LoadingService} from "./services/loading.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
 })
 
 export class AppComponent {
