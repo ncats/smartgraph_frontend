@@ -1,62 +1,37 @@
-
-
-
 <smrtgraph-menu></smrtgraph-menu>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [mode]="'side'" [opened]="true" class = "smrtSearchSidenav">
+  <button type="button" class="sidenavToggle" mat-raised-button [color]="'accent'" (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
     <!-- sidenav content -->
-      <button type="button" mat-button (click)="sidenav.close()">
-        Close sidenav
-      </button>
-      <smrtgraph-search></smrtgraph-search>
-      <node-details-visual></node-details-visual>
+    <smrtgraph-search></smrtgraph-search>
+    <node-details-visual></node-details-visual>
   </mat-sidenav>
   <!-- primary content -->
-      <button type="button" mat-button (click)="sidenav.open()">
-        Open sidenav
-      </button>
 
-      <graph></graph>
+
+  <graph></graph>
   <!--<div *ngIf="loading else graphcontent" class = "smrtSearchSidenav" >
     <mat-spinner></mat-spinner>
   </div>
 
   <ng-template #graphcontent class = "smrtSearchSidenav">
     <graph></graph>
+
   </ng-template>-->
+
+
+  <mat-sidenav #settingsToggle [mode]="'over'" position="end">
+    <smrtgraph-settings></smrtgraph-settings>
+  </mat-sidenav>
+
 </mat-sidenav-container>
-<div fxLayout="row" fxLayoutGap="10px" class = "main-row">
+
+<div fxLayout="row" fxLayoutGap="10px" class = "link-list-row">
   <div fxFlex="100">
 
     <link-list-visual></link-list-visual>
   </div>
 </div>
 
-<!--
-
-
-<div class="container">
-  <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
-    <div fxFlex="25">
-      <smrtgraph-search></smrtgraph-search>
-      <node-details-visual></node-details-visual>
-    </div>
-    <div fxFlex="73" fxLayoutAlign="center" class = "graph-row">
-
-      <div *ngIf="loading else graphcontent" >
-        <mat-spinner></mat-spinner>
-      </div>
-
-      <ng-template #graphcontent>
-        <graph></graph>
-      </ng-template>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutGap="10px" class = "main-row">
-    <div fxFlex="100">
-
-      <link-list-visual></link-list-visual>
-    </div>
-  </div>
-</div>
--->

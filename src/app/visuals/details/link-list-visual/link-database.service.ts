@@ -44,7 +44,6 @@ export class LinkDatabase {
     const copiedData = this.data.slice();
     if(links.length>0){
     for(let link of links) {
-      console.log(link);
       copiedData.push(link);
 }
     }

@@ -48,6 +48,7 @@ constructor(
   private loadingService: LoadingService
 ){
 
+  //todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
 
   this.dataConnectionService.messages.subscribe(msg => {
     let response = JSON.parse(msg);

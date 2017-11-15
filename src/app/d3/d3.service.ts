@@ -43,7 +43,8 @@ export class D3Service {
     let d3element = d3.select(element);
 
     let started = ():void => {
-      d3element.raise();
+      console.log(d3.event);
+     // d3element.raise();
       d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
@@ -250,6 +251,8 @@ export class D3Service {
     };
 
     let clickFunction = ():void => {
+      //d3.event.sourceEvent.stopPropagation();
+      console.log(d3.event);
       if (d3.event.defaultPrevented) return;
       console.log("click");
       graph.nodes.map(node => node.params.menu = false);
@@ -261,6 +264,7 @@ export class D3Service {
     };
 
     let clearMenu =():void =>{
+      console.log(d3.event);
       //this just closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);

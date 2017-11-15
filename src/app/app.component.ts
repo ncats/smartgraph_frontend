@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import APP_CONFIG from './app.config';
 import {Node} from './d3/models/node';
@@ -15,6 +15,7 @@ import 'rxjs/add/operator/map';
 import {Subject} from "rxjs";
 import { GraphDataService} from "./services/graph-data.service";
 import {LoadingService} from "./services/loading.service";
+import {SettingsService} from "./services/settings.service";
 
 
 @Component({
@@ -41,6 +42,7 @@ export class AppComponent {
   targetSelected: boolean = false;
   patternSelected: boolean = false;
 
+  @ViewChild('settingsToggle') public settingsToggle;
 
   constructor(
     private dataConnectionService:DataConnectionService,
@@ -48,7 +50,8 @@ export class AppComponent {
     private searchService:SearchService,
     private messageService: MessageService,
     private graphDataService: GraphDataService,
-    private loadingService : LoadingService
+    private loadingService : LoadingService,
+    public settingsService: SettingsService
   ) {
     this.targetCtrl = new FormControl();
     this.patternCtrl = new FormControl();
@@ -56,7 +59,6 @@ export class AppComponent {
   *  this is the main subscription pipeline that reads the websocket data
   *  all data comes through here, and must be passed on based on the response type
    */
-
 
   //todo: fix above description
     //todo: set all subscriptions to be variable to close on destroy
@@ -131,7 +133,9 @@ export class AppComponent {
     });
   }
 
-
+  ngAfterViewInit():void {
+    this.settingsService.sidenav = this.settingsToggle;
+  }
 
 
   onEnter(type: string) {

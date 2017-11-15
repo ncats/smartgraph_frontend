@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {SettingsService} from "../services/settings.service";
 
 @Component({
   selector: 'smrtgraph-menu',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SmrtgraphMenuComponent implements OnInit {
 title:string = "smrtgraph";
-  constructor() { }
+
+  constructor(public settingsService: SettingsService) { }
 
   ngOnInit() {
+  }
+
+  navOpen() {
+    this.settingsService.sidenav.toggle();
   }
 
 }

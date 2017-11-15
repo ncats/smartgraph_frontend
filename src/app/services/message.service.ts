@@ -90,8 +90,25 @@ export class MessageService {
       case "path": {
         console.log(term);
         let levels = properties.distance;
-        msg = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
+        //WHERE all(rel in r where rel.max_confidence_value > .3)
+        let start = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE ';
+        let confidence="";
+        let activity="";
+        let similarity="";
+        let where="";
+
+        if (properties.confidence) {
+          confidence = ' all(rel in r where rel.max_confidence_value >' + properties.confidence + ') AND';
+        }
+        if (properties.activity) {
+          activity = ' all(rel in r where rel.activity >' + properties.activity + ') AND';
+        }
+        if (properties.similarity) {
+          similarity = ' all(rel in r where rel.ratio >' + properties.similarity + ') AND';
+        }
+        msg = start+confidence + activity + similarity + ' t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
                params = {start: term.start, end: term.end};
+        console.log(msg);
         break;
       }
 

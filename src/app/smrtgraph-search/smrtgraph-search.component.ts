@@ -110,8 +110,6 @@ export class SmrtgraphSearchComponent implements OnInit {
       });
     });
 
-    //todo: needs to get chenbl(uniprot)id or inchii/lychi and get a list of uuids to pass to the path message
-
     this.startNodesCtrl.valueChanges.subscribe(value => {
       this.getStartNodes(value.trim().split(/[\s,;]+/));
       if(this.endNodesCtrl.value) {
@@ -134,6 +132,15 @@ export class SmrtgraphSearchComponent implements OnInit {
 
 
     this.distanceCtrl.valueChanges.subscribe(value => {
+      this.shortestPath();
+    });
+    this.confidenceCtrl.valueChanges.subscribe(value => {
+      this.shortestPath();
+    });
+    this.activityCtrl.valueChanges.subscribe(value => {
+      this.shortestPath();
+    });
+    this.similarityCtrl.valueChanges.subscribe(value => {
       this.shortestPath();
     });
     /*
@@ -174,8 +181,12 @@ export class SmrtgraphSearchComponent implements OnInit {
       };
       let params:{} ={
         distance:this.distanceCtrl.value || 5,
-        confidence:this.confidenceCtrl.value || 50
+        confidence:this.confidenceCtrl.value,
+        activity:this.activityCtrl.value,
+        similarity:this.similarityCtrl.value,
       };
+      console.log(params);
+      console.log(value);
       let query: Message = this.messageService.getMessage(value, "path", params);
      this.dataConnectionService.messages.next(query);
     }

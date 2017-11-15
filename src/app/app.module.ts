@@ -35,14 +35,14 @@ import {DraggableDirective} from "./d3/directives/draggable.directive";
 import {ClickableDirective} from "./d3/directives/clickable.directive";
 import { GraphDetailsComponent } from './visuals/details/graph-details/graph-details.component';
 import {LoadingService} from "./services/loading.service";
-import {LoadingModalComponent, LoadingDialog} from './visuals/shared/loading-modal/loading-modal.component';
 import { TargetDetailViewComponent } from './visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component';
 import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
 import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
-import {TooltipVisualComponent} from "./visuals/shared/tooltip-visual/tooltip-visual.component";
 import { LinkListVisualComponent } from './visuals/details/link-list-visual/link-list-visual.component';
 import { LinkDatabase} from "./visuals/details/link-list-visual/link-database.service";
 import { ReactionVisualComponent } from './visuals/details/link-list-visual/reaction-visual/reaction-visual.component';
+import {SettingsService} from "./services/settings.service";
+import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-settings.component';
 
 
 @NgModule({
@@ -64,14 +64,12 @@ import { ReactionVisualComponent } from './visuals/details/link-list-visual/reac
     DraggableDirective,
     ClickableDirective,
     GraphDetailsComponent,
-    LoadingModalComponent,
     TargetDetailViewComponent,
     CompoundDetailViewComponent,
     PatternDetailViewComponent,
-    TooltipVisualComponent,
-    LoadingDialog,
     LinkListVisualComponent,
-    ReactionVisualComponent
+    ReactionVisualComponent,
+    SmrtgraphSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +90,8 @@ import { ReactionVisualComponent } from './visuals/details/link-list-visual/reac
     GraphDataService,
     NodeMenuControllerService,
     LoadingService,
-    LinkDatabase
+    LinkDatabase,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

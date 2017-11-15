@@ -5,6 +5,7 @@ import {Message, MessageService} from "../../../services/message.service";
 import {DataConnectionService} from "../../../services/data-connection.service";
 import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
 import {GraphDataService} from "../../../services/graph-data.service";
+import {SettingsService} from "../../../services/settings.service";
 
 @Component({
   selector: '[nodeMenu]',
@@ -21,7 +22,7 @@ export class NodeMenuHolderComponent{}
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
  <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
  <mat-list class="node-menu">
-<button  mat-menu-item *ngIf="clickedNode.properties?.uniprot_id" [disabled] = "true"><b>{{clickedNode.properties?.uniprot_id}}</b></button>
+<button  mat-menu-item [disabled] = "true"><b>{{label}}</b></button>
  <button mat-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
  <button mat-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
  <button mat-menu-item *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
@@ -43,16 +44,18 @@ export class NodeMenuHolderComponent{}
 export class NodeMenuComponent{
   clickedNode: any ={x:0, y:0};
   subscription:Subscription;
-  menuSubscription:Subscription;
+  settingsSubscription:Subscription;
   menuToggle:boolean= false;
   counts: any ={total:0};
+  label: string;
 
  constructor(
    private nodeService:NodeService,
   private dataConnectionService:DataConnectionService,
   private messageService: MessageService,
    private nodeMenuController : NodeMenuControllerService,
-   private graphDataService: GraphDataService
+   private graphDataService: GraphDataService,
+   private settingsService: SettingsService
  ) {
    //this only gets the count of the nodes
    this.subscription = this.nodeService.clickednode$
@@ -65,6 +68,25 @@ export class NodeMenuComponent{
          // this.getSmiles(node);
        }
      });
+
+   /*this.settingsSubscription = this.settingsService.dataChange
+     .subscribe(settings => {
+       console.log(settings);
+       console.log(this.clickedNode);
+       switch(this.clickedNode.constructor.name) {
+         case 'Target': {
+           this.label = this.clickedNode[settings.targetLabel];
+           break;
+         }
+         case 'Compound': {
+           /!*
+            this.label = this.settingsService.settings.compoundLabel;
+            *!/
+           this.label = this.node.properties.hash;
+           break;
+         }
+       }
+     });*/
 
    this.dataConnectionService.messages.subscribe(msg => {
      let response = JSON.parse(msg);
