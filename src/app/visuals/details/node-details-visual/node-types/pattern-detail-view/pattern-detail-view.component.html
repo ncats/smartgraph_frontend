@@ -10,9 +10,7 @@
   </div>
   <div fxLayoutWrap="row">
     <h3 class="smiles">Smiles: {{node.smiles}}</h3>
-<!--
-    <img [src] = getSmiles(node)>
--->
+    <img [src] = node?.imageUrl>
     <mat-list>
       <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
       <mat-list-item>Pattern Type: {{node.pattern_type}}</mat-list-item>

@@ -1,18 +1,36 @@
 <!-- sidenav content -->
-<h1>Settings</h1>
-<h2>Target Labels</h2>
-<mat-radio-group class="vertical-group" [formControl]="targetLabelCtrl">
+<div class="container">
+  <h1>Settings</h1>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+<div fxFlex="95">
+  <h3>Target Labels</h3>
+  <mat-radio-group class="vertical-group" [formControl]="targetLabelCtrl">
   <mat-radio-button value="genes" checked = 'true'>Gene name</mat-radio-button>
   <mat-radio-button value="uniprot_id">Uniprot ID</mat-radio-button>
   <mat-radio-button value="fullname">Full name</mat-radio-button>
 </mat-radio-group>
-<br>
-<h2>Compound Labels</h2>
-<mat-radio-group class="vertical-group">
-  <mat-radio-button value="hash">InChI</mat-radio-button>
+</div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <h3>Compound Labels</h3>
+      <mat-radio-group class="vertical-group" [formControl]="compoundLabelCtrl" >
+      <mat-radio-button value="hash" checked = 'true'>InChI</mat-radio-button>
   <mat-radio-button value="structure">Structure</mat-radio-button>
 </mat-radio-group>
-
+  </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center" >
+    <h3>Pattern Labels</h3><br/>
+    <div fxFlex="95">
+  <mat-checkbox [value]="'structure'" [formControl]="patternLabelCtrl">Show Structures</mat-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center" >
+    <h3>Link Labels</h3><br/>
+    <div fxFlex="95">
+  <mat-checkbox [formControl]="showLinkLabelCtrl">Show Relationship Types</mat-checkbox>
+    </div>
 <!--<h2>Database Sources</h2>
   <mat-checkbox>Check me!</mat-checkbox><br>
   <mat-checkbox>Check me!</mat-checkbox><br>
@@ -30,3 +48,5 @@
 <br>
 <button mat-button routerLink="/products">Products</button><br>
 <button mat-button routerLink="/dashboard">Dashboard</button><br>-->
+  </div>
+</div>

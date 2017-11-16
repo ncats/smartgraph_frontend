@@ -22,19 +22,28 @@ export class D3Service {
   ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
-  applyZoomableBehaviour(svgElement, containerElement) {
-    let svg, container, zoomed, zoom;
+  applyZoomableBehaviour(svgElement, containerElement, graph: ForceDirectedGraph) {
+    let svg, container, zoomed, zoom, clearMenu;
 
     svg = d3.select(svgElement);
     container = d3.select(containerElement);
 
     zoomed = () => {
-     // let transform = d3.event.transform;
+      this.nodeMenuController.toggleVisible(false);
+      graph.nodes.map(node => node.params.menu = false);
+      // let transform = d3.event.transform;
       container.attr("transform", d3.event.transform);
       //  container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
     };
 
+    clearMenu = () => {
+      console.log("clear");
+      this.nodeMenuController.toggleVisible(false);
+      graph.nodes.map(node => node.params.menu = false);
+    };
+
     zoom = d3.zoom().on("zoom", zoomed);
+    svg.on("mousedown", clearMenu);
     svg.call(zoom);
   }
 
@@ -60,10 +69,11 @@ export class D3Service {
       }
 
       let ended = ():void => {
+        console.log("ended drag");
+        d3.event.sourceEvent.stopPropagation();
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
         }
-        this.nodeMenuController.toggleVisible(false);
 
         //by not resetting these, the node stays where it is dragged
         /*  node.fx = null;
@@ -229,9 +239,12 @@ export class D3Service {
     let svg = d3.select('svg');
 
     let toggleMenu = ():void => {
+      console.log(node.params.menu);
       //if menu is open, close it
       if (node.params.menu) {
         this.nodeMenuController.toggleVisible(false);
+        node.params.menu = false;
+
       }
 //if menu is closed, open it
       else {
@@ -255,7 +268,7 @@ export class D3Service {
       console.log(d3.event);
       if (d3.event.defaultPrevented) return;
       console.log("click");
-      graph.nodes.map(node => node.params.menu = false);
+      //graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
 //todo: this may be less necessary with the menu opening
@@ -271,8 +284,8 @@ export class D3Service {
     //  d3.event.stopPropagation();
     };
 
-    svg.on("click",clearMenu);
-    d3element.on("click",clickFunction);
+    svg.on("mousedown",clearMenu);
+    d3element.on("click", clickFunction);
   };
 
 

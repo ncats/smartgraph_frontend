@@ -95,3 +95,15 @@ circle.node.Pattern {
 .label--left {
   text-anchor: end;
 }
+
+.structureImage.Compound{
+  max-width: 7vh;
+  border: #1E71A2 1px solid;
+  border-radius: 50%;
+}
+
+.structureImage.Pattern{
+  max-width: 7vh;
+  border: #FF9C22 1px solid;
+  border-radius: 50%;
+}

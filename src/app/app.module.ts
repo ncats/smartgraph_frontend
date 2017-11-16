@@ -12,7 +12,7 @@ import {NodeService} from './d3/models/node.service';
 import { AppComponent } from './app.component';
 
 import { GraphComponent } from './visuals/graph/graph.component';
-import { NodeVisualComponent } from './visuals/shared/node-visual/node-visual.component';
+import {NodeVisualComponent, StructureViewer} from './visuals/shared/node-visual/node-visual.component';
 import { LinkVisualComponent } from './visuals/shared/link-visual/link-visual.component';
 
 import {WebSocketService} from "./services/websocket.service";
@@ -20,7 +20,7 @@ import {DataConnectionService} from "./services/data-connection.service";
 import {SearchService} from "./services/search.service";
 import {MessageService} from "./services/message.service";
 import { NodeDetailsVisualComponent } from './visuals/details/node-details-visual/node-details-visual.component';
-import {NodeMenuComponent, NodeMenuHolderComponent} from './visuals/shared/node-menu/node-menu.component';
+import {NodeMenuComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from "./services/node-menu-controller.service";
 import {GraphDataService} from "./services/graph-data.service";
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
@@ -51,7 +51,7 @@ import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-setti
     GraphComponent,
     NodeDetailsVisualComponent,
     NodeMenuComponent,
-    NodeMenuHolderComponent,
+    StructureViewer,
     SmrtgraphMenuComponent,
     SmrtgraphSearchComponent,
     DownloadButtonComponent,

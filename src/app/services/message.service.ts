@@ -88,7 +88,6 @@ export class MessageService {
       }
 
       case "path": {
-        console.log(term);
         let levels = properties.distance;
         //WHERE all(rel in r where rel.max_confidence_value > .3)
         let start = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE ';
@@ -108,7 +107,6 @@ export class MessageService {
         }
         msg = start+confidence + activity + similarity + ' t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
                params = {start: term.start, end: term.end};
-        console.log(msg);
         break;
       }
 

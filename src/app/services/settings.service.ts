@@ -18,6 +18,8 @@ export class SettingsService {
 export class Settings{
   targetLabel:string;
   compoundLabel:string;
+  patternLabel: string;
+  showLinkLabel: boolean;
   databases:[string];
 
   constructor(){}

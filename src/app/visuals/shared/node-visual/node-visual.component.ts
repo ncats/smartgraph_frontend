@@ -4,9 +4,21 @@ import {SettingsService} from "../../../services/settings.service";
 import {Subscription} from "rxjs";
 
 @Component({
+  selector: 'structure-view',
+  styleUrls: ['./node-visual.component.css'],
+  template: `
+    <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl>
+`
+})
+export class StructureViewer{
+@Input() data:Node;
+  ngOnInit():void{console.log(this.data);}
+}
+
+@Component({
   selector: '[nodeVisual]',
   template: `
-    <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
+    <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'">
       <svg:circle
           class="node {{node.labels[0]}}"
           [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode, hovering:node.params.hovered}"
@@ -14,12 +26,19 @@ import {Subscription} from "rxjs";
           cy="0"
           [attr.r]="node.r">
       </svg:circle>
+             
      
 <!--
        <svg:text *ngIf='node.r > 15 && node.linkCount >1' >{{node.genes || node.properties?.uniprot_id || node.properties?.hash}}</svg:text>
 -->
        <svg:text>{{label}}</svg:text>
-    </svg:g>
+       </svg:g>
+        <svg:foreignObject width='7vh' height='7vh' *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
+ <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
+    <structure-view [data]="node"></structure-view>
+</xhtml:div>
+      </svg:foreignObject>
+
   `,
   styleUrls: ['./node-visual.component.css']
 })
@@ -27,7 +46,6 @@ export class NodeVisualComponent {
   @Input('nodeVisual') node: Node;
 label: string;
   subscription: Subscription;
-
 
   constructor(public settingsService:SettingsService){}
 
@@ -42,11 +60,23 @@ label: string;
           case 'Compound': {
             /*
              this.label = this.settingsService.settings.compoundLabel;
-             */
-            this.label = this.node.properties.hash;
+             */if(settings.compoundLabel == 'structure'){
+             this.label= settings.compoundLabel;
+                }else {
+              this.label = this.node.properties.hash;
+            }
+            break;
+          }
+          case 'Pattern': {
+              this.label = settings.patternLabel;
             break;
           }
         }
       });
     }
+
+
 }
+
+
+

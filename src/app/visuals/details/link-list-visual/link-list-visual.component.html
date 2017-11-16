@@ -37,7 +37,7 @@
     <mat-cell *matCellDef="let row">
       <div *ngIf = 'row.reactions.length>0'><mat-list>
       <mat-list-item *ngFor="let reaction of row.reactions trackById">
-        <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference.split(':')[0]}}</a>
+        <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference}}</a>
       </mat-list-item>
     </mat-list>
     </div>

@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import { Link } from '../../../d3/models/link';
 import { Node } from '../../../d3/models/node';
+import {Subscription} from "rxjs";
+import {SettingsService} from "../../../services/settings.service";
 
 
 @Component({
@@ -12,14 +14,14 @@ import { Node } from '../../../d3/models/node';
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"
     [attr.y1]="endpointLessRadius(link, 'y1') || 0"
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"
-    [attr.y2]="endpointLessRadius(link, 'y2') || 0">
-</svg:line>
-    <svg:text class="link-name"
+    [attr.y2]="endpointLessRadius(link, 'y2') || 0" 
+></svg:line>
+    <svg:text class="link-name" *ngIf="showLinkLabel"
         [attr.font-size]= 10
         [attr.x]="(link.source?.x +link.target?.x)/2 "
         [attr.y]="(link.source?.y +link.target?.y)/2 "
         >
-        {{link?.causalStatements }}
+        {{link?.type }}
       </svg:text>
       </svg:g>
   `,
@@ -27,13 +29,23 @@ import { Node } from '../../../d3/models/node';
 })
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;
- // source:Node;
- // target:Node;
-  constructor() {
+  showLinkLabel:boolean;
+  subscription: Subscription;
+
+  constructor( private settingsService:SettingsService) {
+    console.log(this.link);
   }
 
   ngOnInit() {
-  }
+    console.log(this.link.edgeType);
+
+    this.subscription = this.settingsService.dataChange
+      .subscribe(settings => {
+        console.log(settings);
+        this.showLinkLabel = settings.showLinkLabel;
+  });
+
+}
 
   endpointLessRadius(link, attr_name) { // subtract radius away from line end
    // this.source = link.source;

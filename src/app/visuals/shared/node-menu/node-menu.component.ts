@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component} from '@angular/core';
 import {NodeService} from "../../../d3/models/node.service";
 import {Subscription} from "rxjs/Subscription";
 import {Message, MessageService} from "../../../services/message.service";
@@ -8,20 +8,11 @@ import {GraphDataService} from "../../../services/graph-data.service";
 import {SettingsService} from "../../../services/settings.service";
 
 @Component({
-  selector: '[nodeMenu]',
-  template: `
- <svg:g menu-list></svg:g>
-`,
-  styleUrls: ['./node-menu.component.css']
-})
-export class NodeMenuHolderComponent{}
-
-@Component({
   selector: '[menu-list]',
   template: `
-<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="250" height="300" *ngIf="menuToggle" >
- <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
- <mat-list class="node-menu">
+<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="200" height="400" *ngIf="menuToggle" >
+ <xhtml:body xmlns="http://www.w3.org/1999/xhtml">
+ <mat-list>
 <button  mat-menu-item [disabled] = "true"><b>{{label}}</b></button>
  <button mat-menu-item *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
  <button mat-menu-item *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
@@ -36,7 +27,7 @@ export class NodeMenuHolderComponent{}
 -->
 </mat-list>
  
-</xhtml:div>
+</xhtml:body>
  </svg:foreignObject>
 `,
   styleUrls: ['./node-menu.component.css']
@@ -44,6 +35,7 @@ export class NodeMenuHolderComponent{}
 export class NodeMenuComponent{
   clickedNode: any ={x:0, y:0};
   subscription:Subscription;
+  menuSubscription:Subscription;
   settingsSubscription:Subscription;
   menuToggle:boolean= false;
   counts: any ={total:0};

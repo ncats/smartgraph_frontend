@@ -9,6 +9,7 @@ export class NodeMenuControllerService {
 
   // service command
   toggleVisible(force) {
+    console.log(force);
       this._clickedMenuSource.next(force);
   }
 }

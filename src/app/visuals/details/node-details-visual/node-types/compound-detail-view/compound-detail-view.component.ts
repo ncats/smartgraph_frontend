@@ -23,7 +23,7 @@ downstreamLinks: Link[];
 
   ngOnInit() {
   }
-
+/*
   getSmiles(): void {
     if (this.node.smiles) {
       this.nodeSmiles = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' + this.parseSmiles(this.node.smiles) + '&standardize=true&format=svg';
@@ -42,5 +42,5 @@ downstreamLinks: Link[];
 
   ngOnChanges(changes){
     this.getSmiles();
-  }
+  }*/
 }

@@ -69,6 +69,7 @@ export class Compound extends Node {
   nostereo_hash:string;
   smiles:string;
   compoundId: string;
+  imageUrl :string;
 
   constructor (id, data) {
     super(id, data);
@@ -76,6 +77,17 @@ export class Compound extends Node {
     this.nostereo_hash= data.properties.nostereo_hash;
     this.smiles= data.properties.smiles;
     this.compoundId = data.properties.compound_id.low;
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(data.properties.smiles) +'&standardize=true&format=svg';
+  }
+
+  private parseSmiles(smiles: string): string {
+    let parsed = smiles
+      .replace(/[;]/g,'%3B')
+      .replace(/[#]/g,'%23')
+      .replace(/[+]/g,'%2B')
+      .replace(/[\\]/g,'%5C')
+      .replace(/[|]/g,'%7C');
+    return parsed;
   }
 }
 
@@ -103,6 +115,7 @@ export class Pattern extends Node {
   pattern_id:string;
   pattern_type:string;
   smiles:string;
+  imageUrl:string;
 
   constructor (id, data) {
     super(id, data);
@@ -110,6 +123,15 @@ export class Pattern extends Node {
     this.pattern_id= data.properties.pattern_id;
     this.pattern_type= data.properties.pattern_type;
     this.smiles= data.properties.smiles;
-
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(data.properties.smiles) +'&standardize=true&format=svg&preset=HIGHLIGHT&amap='+data.properties.smiles.split("").map((a,i)=>i).join(",");
+  }
+  private parseSmiles(smiles: string): string {
+    let parsed = smiles
+      .replace(/[;]/g,'%3B')
+      .replace(/[#]/g,'%23')
+      .replace(/[+]/g,'%2B')
+      .replace(/[\\]/g,'%5C')
+      .replace(/[|]/g,'%7C');
+    return parsed;
   }
 }
