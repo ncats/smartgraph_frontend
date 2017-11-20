@@ -22,28 +22,31 @@ export class D3Service {
   ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
-  applyZoomableBehaviour(svgElement, containerElement, graph: ForceDirectedGraph) {
+  applyZoomableBehaviour(svgElement, containerElement) {
     let svg, container, zoomed, zoom, clearMenu;
 
     svg = d3.select(svgElement);
     container = d3.select(containerElement);
 
     zoomed = () => {
+console.log("ssssssss");
       this.nodeMenuController.toggleVisible(false);
-      graph.nodes.map(node => node.params.menu = false);
       // let transform = d3.event.transform;
       container.attr("transform", d3.event.transform);
+      //clearMenu();
       //  container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
     };
 
     clearMenu = () => {
+      console.log(d3.event);
       console.log("clear");
       this.nodeMenuController.toggleVisible(false);
-      graph.nodes.map(node => node.params.menu = false);
     };
 
-    zoom = d3.zoom().on("zoom", zoomed);
-    svg.on("mousedown", clearMenu);
+    zoom = d3.zoom()
+      .filter(() => { console.log(d3.event); return !d3.event.button || d3.event.type==="mousedown"})
+      .on("zoom", zoomed);
+   // svg.on("mousedown", function() {console.log("DFGDGDFDFGDGDGDF"); console.log(d3.event); d3.event.stopImmediatePropagation(); });
     svg.call(zoom);
   }
 
@@ -53,14 +56,10 @@ export class D3Service {
 
     let started = ():void => {
       console.log(d3.event);
-     // d3element.raise();
       d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
-        graph.simulation.alphaTarget(0.3).restart();
+        graph.simulation.alphaTarget(0.7).restart();
       }
-      //hides tooltip if active
-      // d3element.select('.tooltip').style("opacity", 0);
-
     };
 
       function dragged() {
@@ -69,7 +68,6 @@ export class D3Service {
       }
 
       let ended = ():void => {
-        console.log("ended drag");
         d3.event.sourceEvent.stopPropagation();
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
@@ -79,8 +77,6 @@ export class D3Service {
         /*  node.fx = null;
          node.fy = null;*/
       };
-
-     // this.nodeMenuController.toggleVisible(false);
 
     d3element.call(d3.drag()
       .on("start", started)
@@ -239,9 +235,8 @@ export class D3Service {
     let svg = d3.select('svg');
 
     let toggleMenu = ():void => {
-      console.log(node.params.menu);
-      //if menu is open, close it
       if (node.params.menu) {
+        console.log("close menu");
         this.nodeMenuController.toggleVisible(false);
         node.params.menu = false;
 
@@ -251,16 +246,9 @@ export class D3Service {
         this.nodeService.changeNode(node);
         this.nodeMenuController.toggleVisible(true);
         node.params.menu = true;
+        //if menu is open, close it
       }
-    };
-    let decorateNodes = ():void =>{
-      /*   d3.selectAll('circle')
-       .data(graph.nodes)
-       .filter(getNeighborNodes) //this will pass each node in the graph to the function
-       .classed('connected', true);
-
-       //sets click coloring on current node
-       d3element.select("circle").classed("clicked", false);*/
+      console.log(node.params.menu);
     };
 
     let clickFunction = ():void => {
@@ -271,8 +259,6 @@ export class D3Service {
       //graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
-//todo: this may be less necessary with the menu opening
-      //decorateNodes();
       d3.event.stopPropagation();
     };
 
@@ -281,11 +267,10 @@ export class D3Service {
       //this just closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);
-    //  d3.event.stopPropagation();
     };
 
-    svg.on("mousedown",clearMenu);
     d3element.on("click", clickFunction);
+    svg.on("mousedown",function(){console.log("dgdgdfgdgdfgdfgdg"); clearMenu});
   };
 
 

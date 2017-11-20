@@ -13,6 +13,6 @@ export class ZoomableDirective {
   constructor(private d3Service: D3Service, private _element: ElementRef) {}
 
     ngOnInit() {
-        this.d3Service.applyZoomableBehaviour(this.containerElement, this._element.nativeElement, this.graph);
+        this.d3Service.applyZoomableBehaviour(this.containerElement, this._element.nativeElement);
     }
 }

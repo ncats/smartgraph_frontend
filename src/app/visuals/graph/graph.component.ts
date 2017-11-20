@@ -22,8 +22,8 @@ import {DownloadButtonComponent} from "../../download-button/download-button.com
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node" 
         [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
         </g>
-        <svg:g menu-list #menu></svg:g>
       </g>
+        <svg:g menu-list #menu></svg:g>
         <defs>
           <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
             <path fill = "#A5A5A5" stroke ="#A5A5A5" d = "M0,-5L10,0L0,5"></path>

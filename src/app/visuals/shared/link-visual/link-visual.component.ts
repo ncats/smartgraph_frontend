@@ -33,15 +33,11 @@ export class LinkVisualComponent {
   subscription: Subscription;
 
   constructor( private settingsService:SettingsService) {
-    console.log(this.link);
   }
 
   ngOnInit() {
-    console.log(this.link.edgeType);
-
     this.subscription = this.settingsService.dataChange
       .subscribe(settings => {
-        console.log(settings);
         this.showLinkLabel = settings.showLinkLabel;
   });
 
