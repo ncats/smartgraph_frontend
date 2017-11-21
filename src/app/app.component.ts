@@ -8,11 +8,8 @@ import {DataConnectionService} from "./services/data-connection.service";
 import {Subscription} from 'rxjs/Subscription';
 import {SearchService} from "./services/search.service";
 import {Message, MessageService} from "./services/message.service";
-
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-
-import {Subject} from "rxjs";
+import { map} from 'rxjs/operators';
+import {Subject} from "rxjs/Subject";
 import { GraphDataService} from "./services/graph-data.service";
 import {LoadingService} from "./services/loading.service";
 import {SettingsService} from "./services/settings.service";
@@ -90,21 +87,19 @@ export class AppComponent {
     * it retrieves a query object from the service, returning the most recent input
     * this query is then passed on to the main data service
     * */
-    this.searchService.search(this.searchTerm$)
+   /* this.searchService.search(this.searchTerm$)
       .subscribe(results => {
         //empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
         this.compoundAutocompleteOptions=[];
-        console.log(results);
         this.dataConnectionService.messages.next(results);
-      });
+      });*/
   }
   ngOnInit() {
     this.targetCtrl.valueChanges.subscribe(value => {
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
-        console.log("element clicked");
         this.onEnter("target");
       }else {
         if (value != '') {
@@ -116,7 +111,6 @@ export class AppComponent {
     });
 
     this.patternCtrl.valueChanges.subscribe(value => {
-      console.log(value);
       //forces selected option
       //todo: this doesn't seem very efficient
       if(value.value){
@@ -148,14 +142,12 @@ export class AppComponent {
       }
       case"compound":{
         this.patternSelected = true;
-        console.log(this.patternCtrl.value);
         value = this.patternCtrl.value.display;
         break;
       }
     }
     this.graphDataService.clearGraph();
     let query: Message = this.messageService.getMessage(value, type);
-    console.log(query);
     this.dataConnectionService.messages.next(query);
   }
 

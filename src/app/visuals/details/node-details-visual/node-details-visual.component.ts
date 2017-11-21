@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Node} from '../../../d3/models/node';
 import {NodeService} from '../../../d3/models/node.service';
-import {Subscription} from "rxjs";
+import {Subscription} from "rxjs/Subscription";
 import {Link} from "../../../d3/models/link";
 
 @Component({

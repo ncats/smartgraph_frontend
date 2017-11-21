@@ -19,7 +19,6 @@ export class SmrtgraphSettingsComponent implements OnInit {
     this.compoundLabelCtrl = new FormControl();
     this.patternLabelCtrl = new FormControl();
     this.showLinkLabelCtrl = new FormControl();
-
   }
 
   ngOnInit() {

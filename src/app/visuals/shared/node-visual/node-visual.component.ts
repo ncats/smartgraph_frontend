@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Node } from '../../../d3/models/node';
+import {Node, Pattern, Compound} from '../../../d3/models/node';
 import {SettingsService} from "../../../services/settings.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'structure-view',
@@ -10,9 +9,9 @@ import {Subscription} from "rxjs";
     <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl>
 `
 })
+
 export class StructureViewer{
-@Input() data:Node;
-  ngOnInit():void{console.log(this.data);}
+@Input() data:Compound | Pattern;
 }
 
 @Component({
@@ -26,11 +25,6 @@ export class StructureViewer{
           cy="0"
           [attr.r]="node.r">
       </svg:circle>
-             
-     
-<!--
-       <svg:text *ngIf='node.r > 15 && node.linkCount >1' >{{node.genes || node.properties?.uniprot_id || node.properties?.hash}}</svg:text>
--->
        <svg:text>{{label}}</svg:text>
        </svg:g>
         <svg:foreignObject width='7vh' height='7vh' *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
@@ -45,12 +39,11 @@ export class StructureViewer{
 export class NodeVisualComponent {
   @Input('nodeVisual') node: Node;
 label: string;
-  subscription: Subscription;
 
   constructor(public settingsService:SettingsService){}
 
   ngOnInit():void{
-    this.subscription = this.settingsService.dataChange
+    this.settingsService.dataChange
       .subscribe(settings => {
         switch(this.node.constructor.name) {
           case 'Target': {

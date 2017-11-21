@@ -2,8 +2,7 @@
  * Created by sheilstk on 6/16/17.
  */
 import {Injectable}      from '@angular/core'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subject} from "rxjs";
+import {Subject} from "rxjs/Subject";
 import {Link} from "./link";
 
 @Injectable()
@@ -29,7 +28,6 @@ export class LinkService {
   }
 
   getLinks():Map<string, Link>{
-    console.log(this.masterLinkMap.size);
     return this.masterLinkMap;
   }
 

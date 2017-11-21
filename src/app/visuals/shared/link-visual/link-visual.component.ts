@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import { Link } from '../../../d3/models/link';
 import { Node } from '../../../d3/models/node';
-import {Subscription} from "rxjs";
+import {Subscription} from "rxjs/Subscription";
 import {SettingsService} from "../../../services/settings.service";
 
 

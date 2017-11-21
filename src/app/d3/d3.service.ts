@@ -29,24 +29,16 @@ export class D3Service {
     container = d3.select(containerElement);
 
     zoomed = () => {
-console.log("ssssssss");
       this.nodeMenuController.toggleVisible(false);
-      // let transform = d3.event.transform;
       container.attr("transform", d3.event.transform);
-      //clearMenu();
-      //  container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
     };
 
     clearMenu = () => {
-      console.log(d3.event);
-      console.log("clear");
       this.nodeMenuController.toggleVisible(false);
     };
 
     zoom = d3.zoom()
-      .filter(() => { console.log(d3.event); return !d3.event.button || d3.event.type==="mousedown"})
       .on("zoom", zoomed);
-   // svg.on("mousedown", function() {console.log("DFGDGDFDFGDGDGDF"); console.log(d3.event); d3.event.stopImmediatePropagation(); });
     svg.call(zoom);
   }
 
@@ -55,7 +47,6 @@ console.log("ssssssss");
     let d3element = d3.select(element);
 
     let started = ():void => {
-      console.log(d3.event);
       d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.7).restart();
@@ -95,8 +86,6 @@ console.log("ssssssss");
 
     let decorateNodes = ():void =>{
       d3element.select('circle').classed('hovering', true);
-      /* d3element.selectAll('.tooltip').transition().duration(200)
-       .style("opacity", .9).attr('z-index', 666);*/
       d3.selectAll('circle')
         .data(graph.nodes)
         .filter(getNeighborNodes) //this will pass each node in the graph to the function
@@ -126,8 +115,6 @@ console.log("ssssssss");
     let clearNodes = (): void =>{
       d3element.select('circle').classed('hovering', false);
       node.params.hovered = false;
-      /* d3element.select('.tooltip').transition().duration(500)
-       .style("opacity", 0);*/
     };
 
     let clearLinks= ():void => {
@@ -150,15 +137,11 @@ console.log("ssssssss");
       if(upstream ==true){
         upstreamNeighbors.push(e);
       }
-      //   return node.id === (typeof (e.source) == "object" ? e.source.id : e.source) || node.id === (typeof (e.target) == "object" ? e.target.id : e.target);
       return downstream;
     };
 
     let getNeighborNodes = (e:any): boolean => {
-      // const sources = connectedLinks.data().map(link => link.source.id);
-      const targets = connectedLinks.data().map(link=> link.target.id);
-      // let nodesList = sources.concat(targets).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
-      return targets.indexOf(e.id) > -1;
+      return connectedLinks.data().map(link=> link.target.id).indexOf(e.id) > -1;
     };
 
     let findMaximalLinks = (e:any):boolean => {
@@ -194,7 +177,6 @@ console.log("ssssssss");
   /** A method to bind hoverable behaviour to an svg element */
   applyHoverableLinkBehaviour(element, link: Link, graph: ForceDirectedGraph) {
     let d3element = d3.select(element);
-    let connectedLinks;
     let arrowType= 'connected';
 
       let decorateLinks = ():void =>{
@@ -213,14 +195,10 @@ console.log("ssssssss");
       this.linkService.hoveredLink(link);
         this.linkDatabase.addSite(link);
         decorateLinks();
-    //  decorateNodes();
     };
 
     let mouseOutFunction = ():void =>{
-   //   clearNodes();
       clearLinks();
-    //  upstreamNeighbors = [];
-    //  downstreamNeighbors = [];
     };
 
     d3element.on("mouseover", mouseOverFunction).on("mouseout", mouseOutFunction);
@@ -236,7 +214,6 @@ console.log("ssssssss");
 
     let toggleMenu = ():void => {
       if (node.params.menu) {
-        console.log("close menu");
         this.nodeMenuController.toggleVisible(false);
         node.params.menu = false;
 
@@ -248,14 +225,10 @@ console.log("ssssssss");
         node.params.menu = true;
         //if menu is open, close it
       }
-      console.log(node.params.menu);
     };
 
     let clickFunction = ():void => {
-      //d3.event.sourceEvent.stopPropagation();
-      console.log(d3.event);
       if (d3.event.defaultPrevented) return;
-      console.log("click");
       //graph.nodes.map(node => node.params.menu = false);
       //todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
       toggleMenu();
@@ -263,14 +236,13 @@ console.log("ssssssss");
     };
 
     let clearMenu =():void =>{
-      console.log(d3.event);
       //this just closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);
     };
 
     d3element.on("click", clickFunction);
-    svg.on("mousedown",function(){console.log("dgdgdfgdgdfgdfgdg"); clearMenu});
+    svg.on("mousedown", clearMenu);
   };
 
 

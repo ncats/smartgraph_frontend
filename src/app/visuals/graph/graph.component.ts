@@ -6,7 +6,6 @@ import {D3Service} from '../../d3/d3.service';
 import {ForceDirectedGraph} from '../../d3/models/force-directed-graph';
 import {Node} from '../../d3/models/node';
 import {Link} from '../../d3/models/link';
-import {Subscription} from "rxjs";
 import * as d3 from 'd3';
 import {GraphDataService} from "../../services/graph-data.service";
 import {DownloadButtonComponent} from "../../download-button/download-button.component";
@@ -22,8 +21,8 @@ import {DownloadButtonComponent} from "../../download-button/download-button.com
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node" 
         [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
         </g>
-      </g>
         <svg:g menu-list #menu></svg:g>
+      </g>
         <defs>
           <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
             <path fill = "#A5A5A5" stroke ="#A5A5A5" d = "M0,-5L10,0L0,5"></path>

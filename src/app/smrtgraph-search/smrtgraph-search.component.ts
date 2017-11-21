@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl} from "@angular/forms";
-import {Subject} from "rxjs";
+import {Subject} from "rxjs/Subject";
 import {DataConnectionService} from "../services/data-connection.service";
 import {SearchService} from "../services/search.service";
 import {Message, MessageService} from "../services/message.service";
@@ -185,8 +185,6 @@ export class SmrtgraphSearchComponent implements OnInit {
         activity:this.activityCtrl.value,
         similarity:this.similarityCtrl.value,
       };
-      console.log(params);
-      console.log(value);
       let query: Message = this.messageService.getMessage(value, "path", params);
      this.dataConnectionService.messages.next(query);
     }
