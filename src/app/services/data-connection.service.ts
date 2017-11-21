@@ -4,7 +4,8 @@ import {WebSocketService} from './websocket.service';
 import {Observable} from "rxjs/Observable";
 import {map, share} from "rxjs/operators";
 
-const DATA_URL = 'ws://localhost:1337';
+//const DATA_URL = 'ws://localhost:1337';
+const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
 
 @Injectable()
 export class DataConnectionService {
@@ -18,7 +19,6 @@ export class DataConnectionService {
       map((response: MessageEvent): string => response.data)
     //  error(error => Observable.empty())
       );
-    console.log(this.messagesEmitter);
 
     this.messages = this.messagesEmitter.pipe(
       share()
