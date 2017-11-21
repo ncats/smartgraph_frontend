@@ -10,24 +10,55 @@ export class MessageService {
     let msg: string;
     let params: {};
     switch (type) {
-      case'targetSearch': {
-        msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} OR n.uniprot_id =~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100 UNION MATCH (n:Target) WHERE n.name=~{qParam} OR n.uniprot_id =~{qParam} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
-        //  msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
-        params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
+
+      case 'chembl':
+      case 'target': {
+        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
+        params = {qParam: term};
         break;
       }
-      case'patternSearch': {
-        // msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
-        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.hash, n.pid ORDER BY n.hash LIMIT 50';
-        params = {qParam: term + '.*'};
+
+      case 'compound': {
+        msg = 'MATCH (n:Compound) WHERE n.compound= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        params = {qParam: term};
         break;
       }
-      case'compoundSearch': {
+
+      case 'compoundSearch': {
         // msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
         msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.compound, n.lid ORDER BY n.compound LIMIT 50';
         params = {qParam: term + '.*'};
         break;
       }
+
+      case 'counts': {
+        switch (properties){
+          case 'Target': {
+            msg = 'MATCH (n:Target) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+          case 'Compound': {
+            msg = 'MATCH (n:Compound) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+          case 'Pattern': {
+            msg = 'MATCH (n:Pattern) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            break;
+          }
+        }
+        params = {qParam: term};
+        break;
+      }
+
+      case 'endNodeSearch':
+      case 'startNodeSearch': {
+        // todo: convern nostereo_hash to a contains in hash search
+        msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.nostereo_hash IN {qParam} RETURN c AS data';
+        //   msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
+        params = {qParam: term};
+        break;
+      }
+
       case 'expand': {
         const start: string = 'MATCH (n:' + properties.origin;
         switch (properties.target) {
@@ -54,41 +85,8 @@ export class MessageService {
         break;
       }
 
-      case 'chembl':
-      case 'target': {
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
-        params = {qParam: term};
-        break;
-      }
-
-      case 'endNodeSearch':
-      case 'startNodeSearch': {
-        // todo: convern nostereo_hash to a contains in hash search
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n AS data UNION MATCH (c:Compound) WHERE c.nostereo_hash IN {qParam} RETURN c AS data';
-        //   msg = 'MATCH (n:Target) WHERE n.uniprot_id IN {qParam} RETURN n UNION MATCH (n:Compound) WHERE n.hash IN {qParam} RETURN n';
-        params = {qParam: term};
-        break;
-      }
-      case 'smiles': {
-        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
-        params = {qParam: term};
-        break;
-      }
-
-      case 'compound': {
-        msg = 'MATCH (n:Compound) WHERE n.compound= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
-        params = {qParam: term};
-        break;
-      }
-
-      case 'uuid': {
-        msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
-        params = {qParam: term};
-        break;
-      }
-
-      case 'prediction': {
-        msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN c,p,t,r1,r2 LIMIT 300';
+      case 'node': {
+        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} RETURN n';
         params = {qParam: term};
         break;
       }
@@ -112,30 +110,38 @@ export class MessageService {
           similarity = ' all(rel in r where rel.ratio >' + properties.similarity + ') AND';
         }
         msg = start + confidence + activity + similarity + ' t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
-               params = {start: term.start, end: term.end};
+        params = {start: term.start, end: term.end};
         break;
       }
 
-      case 'node': {
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id= {qParam} RETURN n';
+      case'patternSearch': {
+        // msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
+        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.hash, n.pid ORDER BY n.hash LIMIT 50';
+        params = {qParam: term + '.*'};
+        break;
+      }
+
+      case 'prediction': {
+        msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN c,p,t,r1,r2 LIMIT 300';
         params = {qParam: term};
         break;
       }
-      case 'counts': {
-        switch (properties){
-          case 'Target': {
-            msg = 'MATCH (n:Target) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
-            break;
-          }
-          case 'Compound': {
-            msg = 'MATCH (n:Compound) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
-            break;
-          }
-          case 'Pattern': {
-            msg = 'MATCH (n:Pattern) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
-            break;
-          }
-        }
+
+      case 'smiles': {
+        msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        params = {qParam: term};
+        break;
+      }
+
+      case'targetSearch': {
+        msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} OR n.uniprot_id =~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100 UNION MATCH (n:Target) WHERE n.name=~{qParam} OR n.uniprot_id =~{qParam} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
+        //  msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
+        params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
+        break;
+      }
+
+      case 'uuid': {
+        msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
         params = {qParam: term};
         break;
       }

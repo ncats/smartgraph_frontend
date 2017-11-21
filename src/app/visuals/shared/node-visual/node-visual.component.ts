@@ -61,7 +61,7 @@ label: string;
             break;
           }
           case 'Pattern': {
-              this.label = settings.patternLabel;
+              this.label = settings.patternLabel ? settings.patternLabel : "";
             break;
           }
         }
