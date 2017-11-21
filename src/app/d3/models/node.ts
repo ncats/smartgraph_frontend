@@ -36,7 +36,6 @@ export class Node implements d3.SimulationNodeDatum {
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
   constructor(id, data) {
-      console.log(id);
     this.uuid = data.properties.uuid;
     this.id = id;
     //  uuid is still saved here

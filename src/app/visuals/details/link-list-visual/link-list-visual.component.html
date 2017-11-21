@@ -58,6 +58,11 @@
     </mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="confidence">
+    <mat-header-cell *matHeaderCellDef >Confidence</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.max_confidence_value}}</mat-cell>
+  </ng-container>
+
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>

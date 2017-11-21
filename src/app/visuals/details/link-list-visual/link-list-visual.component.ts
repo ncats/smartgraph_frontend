@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSort} from '@angular/material';
-import {LinkDataSource, LinkDatabase} from './link-database.service';
+import {MatSort} from "@angular/material";
+import {LinkDataSource, LinkDatabase} from "./link-database.service";
 
 @Component({
   selector: 'link-list-visual',
@@ -8,7 +8,7 @@ import {LinkDataSource, LinkDatabase} from './link-database.service';
   styleUrls: ['./link-list-visual.component.css']
 })
 export class LinkListVisualComponent implements OnInit {
-  displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score'];
+  displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score', 'confidence'];
   dataSource: LinkDataSource | null;
 
   @ViewChild(MatSort) sort: MatSort;
