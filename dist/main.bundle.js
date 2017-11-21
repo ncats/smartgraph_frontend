@@ -3780,7 +3780,7 @@ var NodeVisualComponent = /** @class */ (function () {
                     break;
                 }
                 case 'Pattern': {
-                    _this.label = settings.patternLabel;
+                    _this.label = settings.patternLabel ? settings.patternLabel : "";
                     break;
                 }
             }
