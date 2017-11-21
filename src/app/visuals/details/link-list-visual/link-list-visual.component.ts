@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSort} from "@angular/material";
-import {LinkDataSource, LinkDatabase} from "./link-database.service";
+import {MatSort} from '@angular/material';
+import {LinkDataSource, LinkDatabase} from './link-database.service';
 
 @Component({
   selector: 'link-list-visual',

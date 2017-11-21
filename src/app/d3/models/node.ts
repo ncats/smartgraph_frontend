@@ -1,21 +1,21 @@
 import APP_CONFIG from '../../app.config';
 
 export class Params {
-  hovered: boolean = false;
-  startNode: boolean = false;
-  endNode: boolean= false;
-  menu: boolean = false;
+  hovered = false;
+  startNode = false;
+  endNode= false;
+  menu = false;
 
   constructor() {}
 }
 
 export class Node implements d3.SimulationNodeDatum {
-  // optional - defining optional implementation properties - required for relevant typing assistance
+  //  optional - defining optional implementation properties - required for relevant typing assistance
   index?: number;
-  x?: number = 0;
-  y?: number = 0;
-  vx?: number = 0;
-  vy?: number = 0;
+  x = 0;
+  y = 0;
+  vx = 0;
+  vy = 0;
   fx?: number | null;
   fy?: number | null;
 
@@ -23,9 +23,9 @@ export class Node implements d3.SimulationNodeDatum {
   id: string;
   properties: any;
   labels?: string[];
-  linkCount: number = 0;
-  expanded: Object ={
-    target:false,
+  linkCount = 0;
+  expanded: Object = {
+    target: false,
     compound: false,
     pattern: false
   };
@@ -36,10 +36,10 @@ export class Node implements d3.SimulationNodeDatum {
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
   constructor(id, data) {
-
-    this.uuid = data.properties.uuid ;
+      console.log(id);
+    this.uuid = data.properties.uuid;
     this.id = id;
-    //uuid is still saved here
+    //  uuid is still saved here
     this.properties = data.properties;
     this.labels = data.labels;
     this.linkCount = 1;
@@ -59,79 +59,82 @@ export class Node implements d3.SimulationNodeDatum {
   }
 
   get color() {
-    let index = Math.floor(APP_CONFIG.SPECTRUM.length * this.normal());
+    const index = Math.floor(APP_CONFIG.SPECTRUM.length * this.normal());
     return APP_CONFIG.SPECTRUM[index];
   }
 }
 
 export class Compound extends Node {
-  hash:string;
-  nostereo_hash:string;
-  smiles:string;
+  hash: string;
+  nostereo_hash: string;
+  smiles: string;
   compoundId: string;
-  imageUrl :string;
+  imageUrl: string;
 
   constructor (id, data) {
     super(id, data);
-    this.hash= data.properties.hash;
-    this.nostereo_hash= data.properties.nostereo_hash;
-    this.smiles= data.properties.smiles;
+    this.hash = data.properties.hash;
+    this.nostereo_hash = data.properties.nostereo_hash;
+    this.smiles = data.properties.smiles;
     this.compoundId = data.properties.compound_id.low;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(data.properties.smiles) +'&standardize=true&format=svg';
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' +
+      this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg';
   }
 
   private parseSmiles(smiles: string): string {
-    let parsed = smiles
-      .replace(/[;]/g,'%3B')
-      .replace(/[#]/g,'%23')
-      .replace(/[+]/g,'%2B')
-      .replace(/[\\]/g,'%5C')
-      .replace(/[|]/g,'%7C');
+    const parsed = smiles
+      .replace(/[;]/g, '%3B')
+      .replace(/[#]/g, '%23')
+      .replace(/[+]/g, '%2B')
+      .replace(/[\\]/g, '%5C')
+      .replace(/[|]/g, '%7C');
     return parsed;
   }
 }
 
 export class Target extends Node {
-  uniprot_id:string;
-  name:string;
-  fullname:string;
+  uniprot_id: string;
+  name: string;
+  fullname: string;
   synonyms: string[];
   genes: string;
 
 
   constructor (id, data) {
     super(id, data);
-    this.uniprot_id= data.properties.uniprot_id;
-    this.name= data.properties.name;
-    this.fullname= data.properties.fullname;
+    this.uniprot_id = data.properties.uniprot_id;
+    this.name = data.properties.name;
+    this.fullname = data.properties.fullname;
     this.synonyms = data.properties.synonyms;
-    this.genes = data.properties.gene_symbols.join(", ");
+    this.genes = data.properties.gene_symbols.join(', ');
 
   }
 }
 
 export class Pattern extends Node {
-  hash:string;
-  pattern_id:string;
-  pattern_type:string;
-  smiles:string;
-  imageUrl:string;
+  hash: string;
+  pattern_id: string;
+  pattern_type: string;
+  smiles: string;
+  imageUrl: string;
 
   constructor (id, data) {
     super(id, data);
-    this.hash= data.properties.hash;
-    this.pattern_id= data.properties.pattern_id;
-    this.pattern_type= data.properties.pattern_type;
-    this.smiles= data.properties.smiles;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure='+ this.parseSmiles(data.properties.smiles) +'&standardize=true&format=svg&preset=HIGHLIGHT&amap='+data.properties.smiles.split("").map((a,i)=>i).join(",");
+    this.hash = data.properties.hash;
+    this.pattern_id = data.properties.pattern_id;
+    this.pattern_type = data.properties.pattern_type;
+    this.smiles = data.properties.smiles;
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' +
+      this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg&preset=HIGHLIGHT&amap=' +
+      data.properties.smiles.split('').map((a, i) => i).join(',');
   }
   private parseSmiles(smiles: string): string {
-    let parsed = smiles
-      .replace(/[;]/g,'%3B')
-      .replace(/[#]/g,'%23')
-      .replace(/[+]/g,'%2B')
-      .replace(/[\\]/g,'%5C')
-      .replace(/[|]/g,'%7C');
+    const parsed = smiles
+      .replace(/[;]/g, '%3B')
+      .replace(/[#]/g, '%23')
+      .replace(/[+]/g, '%2B')
+      .replace(/[\\]/g, '%5C')
+      .replace(/[|]/g, '%7C');
     return parsed;
   }
 }

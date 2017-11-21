@@ -4,11 +4,11 @@ import {MatSort} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import { map, merge } from 'rxjs/operators';
-import {Link} from "../../../d3/models/link";
+import {Link} from '../../../d3/models/link';
 import 'rxjs/add/observable/merge';
-import {Subscription} from "rxjs/Subscription";
-import {NodeService} from "../../../d3/models/node.service";
-import {LinkService} from "../../../d3/models/link.service";
+import {Subscription} from 'rxjs/Subscription';
+import {NodeService} from '../../../d3/models/node.service';
+import {LinkService} from '../../../d3/models/link.service';
 
 
 /** An example database that the data source uses to retrieve data for the table. */
@@ -40,10 +40,10 @@ export class LinkDatabase {
   }
 
   /** Adds a new link to the database. */
-  addSite(links:any) {
+  addSite(links: any) {
     const copiedData = this.data.slice();
-    if(links.length>0){
-    for(let link of links) {
+    if (links.length > 0) {
+    for (const link of links) {
       copiedData.push(link);
 }
     }
@@ -86,7 +86,7 @@ export class LinkDataSource extends DataSource<any> {
   /** Returns a sorted copy of the database data. */
   getSortedData(): Link[] {
     const data = this._linkDatabase.data.slice();
-    if (!this._sort.active || this._sort.direction == '') { return data; }
+    if (!this._sort.active || this._sort.direction === '') { return data; }
 
     return data.sort((a, b) => {
       let propertyA: number|string = '';
@@ -101,10 +101,10 @@ export class LinkDataSource extends DataSource<any> {
         case 'linkType': [propertyA, propertyB] = [a.type, b.type]; break;
       }
 
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
-      return (valueA < valueB ? -1 : 1) * (this._sort.direction == 'asc' ? 1 : -1);
+      return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
     });
   }
 }

@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class SettingsService {
   sidenav: any;
-  settings:Settings = new Settings();
+  settings: Settings = new Settings();
   dataChange: BehaviorSubject<Settings> = new BehaviorSubject<Settings>(this.settings);
 
   constructor() {
-    this.settings.targetLabel = "genes";
-    this.settings.compoundLabel = "hash";
+    this.settings.targetLabel = 'genes';
+    this.settings.compoundLabel = 'hash';
     this.dataChange.next(this.settings);
   }
 
 }
 
 export class Settings{
-  targetLabel:string;
-  compoundLabel:string;
+  targetLabel: string;
+  compoundLabel: string;
   patternLabel: string;
   showLinkLabel: boolean;
-  databases:[string];
+  databases: [string];
 
   constructor(){}
 }

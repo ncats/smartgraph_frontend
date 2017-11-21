@@ -4,15 +4,15 @@ import APP_CONFIG from './app.config';
 import {Node} from './d3/models/node';
 import {Link} from './d3/models/link';
 import {NodeService} from './d3/models/node.service';
-import {DataConnectionService} from "./services/data-connection.service";
+import {DataConnectionService} from './services/data-connection.service';
 import {Subscription} from 'rxjs/Subscription';
-import {SearchService} from "./services/search.service";
-import {Message, MessageService} from "./services/message.service";
+import {SearchService} from './services/search.service';
+import {Message, MessageService} from './services/message.service';
 import { map} from 'rxjs/operators';
-import {Subject} from "rxjs/Subject";
-import { GraphDataService} from "./services/graph-data.service";
-import {LoadingService} from "./services/loading.service";
-import {SettingsService} from "./services/settings.service";
+import {Subject} from 'rxjs/Subject';
+import { GraphDataService} from './services/graph-data.service';
+import {LoadingService} from './services/loading.service';
+import {SettingsService} from './services/settings.service';
 
 
 @Component({
@@ -27,27 +27,27 @@ export class AppComponent {
   targetCtrl: FormControl;
   patternCtrl: FormControl;
   title = 'smrtgraph';
-  nodes:Node[] = [];
-  links:Link[] = [];
-  loading: boolean = true;
+  nodes: Node[] = [];
+  links: Link[] = [];
+  loading = true;
 
   searchTerm$ = new Subject<any>();
-  subscription:Subscription;
-  clickedNode:Node;
-  autocompleteOptions:any[] = [];
-  compoundAutocompleteOptions:any[] = [];
-  targetSelected: boolean = false;
-  patternSelected: boolean = false;
+  subscription: Subscription;
+  clickedNode: Node;
+  autocompleteOptions: any[] = [];
+  compoundAutocompleteOptions: any[] = [];
+  targetSelected = false;
+  patternSelected = false;
 
   @ViewChild('settingsToggle') public settingsToggle;
 
   constructor(
-    private dataConnectionService:DataConnectionService,
-    private nodeService:NodeService,
-    private searchService:SearchService,
+    private dataConnectionService: DataConnectionService,
+    private nodeService: NodeService,
+    private searchService: SearchService,
     private messageService: MessageService,
     private graphDataService: GraphDataService,
-    private loadingService : LoadingService,
+    private loadingService: LoadingService,
     public settingsService: SettingsService
   ) {
     this.targetCtrl = new FormControl();
@@ -57,23 +57,23 @@ export class AppComponent {
   *  all data comes through here, and must be passed on based on the response type
    */
 
-  //todo: fix above description
-    //todo: set all subscriptions to be variable to close on destroy
+  // todo: fix above description
+    // todo: set all subscriptions to be variable to close on destroy
     this.dataConnectionService.messages.subscribe(msg => {
-      //console.log(msg);
-      let response = JSON.parse(msg);
-     // console.log(response);
+      // console.log(msg);
+      const response = JSON.parse(msg);
+     //  console.log(response);
       switch (response.type) {
 
-        case "targetSearch": {
+        case 'targetSearch': {
           this.autocompleteOptions.push(response.data);
           break;
         }
-        case "compoundSearch": {
+        case 'compoundSearch': {
           this.compoundAutocompleteOptions.push(response.data);
           break;
         }
-        case "counts": {
+        case 'counts': {
           break;
         }
 
@@ -89,7 +89,7 @@ export class AppComponent {
     * */
    /* this.searchService.search(this.searchTerm$)
       .subscribe(results => {
-        //empty autocomplete options array, otherwise it will never change
+        // empty autocomplete options array, otherwise it will never change
         this.autocompleteOptions=[];
         this.compoundAutocompleteOptions=[];
         this.dataConnectionService.messages.next(results);
@@ -97,62 +97,62 @@ export class AppComponent {
   }
   ngOnInit() {
     this.targetCtrl.valueChanges.subscribe(value => {
-      //forces selected option
-      //todo: this doesn't seem very efficient
-      if(value.value){
-        this.onEnter("target");
+      // forces selected option
+      // todo: this doesn't seem very efficient
+      if (value.value){
+        this.onEnter('target');
       }else {
         if (value != '') {
-          //empty autocomplete options array, otherwise it will never change
+          // empty autocomplete options array, otherwise it will never change
           this.autocompleteOptions = [];
-          this.searchTerm$.next({term: value, type: "targetSearch"});
+          this.searchTerm$.next({term: value, type: 'targetSearch'});
         }
       }
     });
 
     this.patternCtrl.valueChanges.subscribe(value => {
-      //forces selected option
-      //todo: this doesn't seem very efficient
-      if(value.value){
-        this.onEnter("compound");
+      // forces selected option
+      // todo: this doesn't seem very efficient
+      if (value.value){
+        this.onEnter('compound');
       }else {
         if (value != '') {
-          //empty autocomplete options array, otherwise it will never change
-          //this.compoundAutocompleteOptions = [];
+          // empty autocomplete options array, otherwise it will never change
+          // this.compoundAutocompleteOptions = [];
 
-         // this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
-          this.searchTerm$.next({term: value, type: "compoundSearch"});
+         //  this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
+          this.searchTerm$.next({term: value, type: 'compoundSearch'});
         }
       }
     });
   }
 
-  ngAfterViewInit():void {
+  ngAfterViewInit(): void {
     this.settingsService.sidenav = this.settingsToggle;
   }
 
 
   onEnter(type: string) {
     let value: string;
-    switch(type){
-      case"target":{
+    switch (type){
+      case'target': {
         this.targetSelected = true;
         value = this.targetCtrl.value.value;
         break;
       }
-      case"compound":{
+      case'compound': {
         this.patternSelected = true;
         value = this.patternCtrl.value.display;
         break;
       }
     }
     this.graphDataService.clearGraph();
-    let query: Message = this.messageService.getMessage(value, type);
+    const query: Message = this.messageService.getMessage(value, type);
     this.dataConnectionService.messages.next(query);
   }
 
   ngOnDestroy() {
-    // prevent memory leak when component is destroyed
-   // this.subscription.unsubscribe();
+    //  prevent memory leak when component is destroyed
+   //  this.subscription.unsubscribe();
   }
 }

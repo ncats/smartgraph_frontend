@@ -27,12 +27,12 @@ var SmrtgraphSearchComponent = (function () {
     }
     SmrtgraphSearchComponent.prototype.ngOnInit = function () {
         var _this = this;
-        //todo: fix above description
-        //todo: set all subscriptions to be variable to close on destroy
+        // todo: fix above description
+        // todo: set all subscriptions to be variable to close on destroy
         this.dataConnectionService.messages.subscribe(function (msg) {
-            //console.log(msg);
+            // console.log(msg);
             var response = JSON.parse(msg);
-            // console.log(response);
+            //  console.log(response);
             switch (response.type) {
                 case "targetSearch": {
                     _this.autocompleteOptions.push(response.data);
@@ -82,22 +82,22 @@ var SmrtgraphSearchComponent = (function () {
             });
         });
         this.distanceCtrl.valueChanges.subscribe(function (value) {
-            //console.log(value);
+            // console.log(value);
             _this.shortestPath();
         });
         /* this.patternCtrl.valueChanges.subscribe(value => {
            console.log([value]);
-           //forces selected option
-           //todo: this doesn't seem very efficient
+           // forces selected option
+           // todo: this doesn't seem very efficient
            if(value.value){
              this.onEnter("lychi");
            }else {
              if (value != '') {
-               //empty autocomplete options array, otherwise it will never change
-               //this.lychiAutocompleteOptions = [];
-     
-               // this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
-             //  this.searchTerm$.next({term: value, type: "lychiSearch"});
+               // empty autocomplete options array, otherwise it will never change
+               // this.lychiAutocompleteOptions = [];
+
+               //  this.searchTerm$.next({term: value.replace(/\(/gi, "\\(").replace(/\)/gi, "\\)").replace(/\[/gi, "\\[").replace(/\]/gi, "\\]"), type: "patternSearch"});
+             //   this.searchTerm$.next({term: value, type: "lychiSearch"});
              }
            }
          });*/
@@ -108,7 +108,7 @@ var SmrtgraphSearchComponent = (function () {
          * */
         this.searchService.search(this.searchTerm$)
             .subscribe(function (results) {
-            //empty autocomplete options array, otherwise it will never change
+            // empty autocomplete options array, otherwise it will never change
             _this.autocompleteOptions = [];
             _this.lychiAutocompleteOptions = [];
             console.log(results);
@@ -133,7 +133,7 @@ var SmrtgraphSearchComponent = (function () {
        this.graphDataService.clearGraph();
        let query: Message = this.messageService.getMessage(value, type);
        console.log(query);
-     //  this.dataConnectionService.messages.next(query);
+     //   this.dataConnectionService.messages.next(query);
      }*/
     SmrtgraphSearchComponent.prototype.shortestPath = function () {
         console.log(this);
@@ -148,9 +148,9 @@ var SmrtgraphSearchComponent = (function () {
             };
             /*      console.log(value);
                   console.log(params);*/
-            // this.graphDataService.clearGraph();
+            //  this.graphDataService.clearGraph();
             var query = this.messageService.getMessage(value, "path", params);
-            //   console.log(query);
+            //    console.log(query);
             this.dataConnectionService.messages.next(query);
         }
     };

@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Compound} from "../../../../../d3/models/node";
-import {Link} from "../../../../../d3/models/link";
+import {Compound} from '../../../../../d3/models/node';
+import {Link} from '../../../../../d3/models/link';
 
 
 @Component({
@@ -15,7 +15,7 @@ node: Compound;
 downstreamLinks: Link[];
   @Input()
   upstreamLinks: Link[];
-  nodeSmiles:string;
+  nodeSmiles: string;
 
   constructor() {
   }

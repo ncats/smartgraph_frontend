@@ -1,19 +1,20 @@
 import {Component} from '@angular/core';
-import {NodeService} from "../../../d3/models/node.service";
-import {Subscription} from "rxjs/Subscription";
-import {Message, MessageService} from "../../../services/message.service";
-import {DataConnectionService} from "../../../services/data-connection.service";
-import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
-import {GraphDataService} from "../../../services/graph-data.service";
-import {SettingsService, Settings} from "../../../services/settings.service";
+import {NodeService} from '../../../d3/models/node.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Message, MessageService} from '../../../services/message.service';
+import {DataConnectionService} from '../../../services/data-connection.service';
+import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
+import {GraphDataService} from '../../../services/graph-data.service';
+import {SettingsService, Settings} from '../../../services/settings.service';
 
 @Component({
   selector: '[menu-list]',
   template: `
 <svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="30vh" *ngIf="clickedNode.params.menu" >
- <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
+ <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
   <mat-list>
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"><span (click)="nodeMenuController.toggleVisible(false)"><mat-icon>clear</mat-icon></span></button>
+    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
@@ -23,7 +24,7 @@ import {SettingsService, Settings} from "../../../services/settings.service";
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" (click)="expand('All')">Expand All {{counts?.total}}</button>
 <!--
-//todo: collapse all show/hide logic
+// todo: collapse all show/hide logic
  <button mat-menu-item (click)="collapse('All')">Collapse All</button>
 -->
   </mat-list>
@@ -33,17 +34,17 @@ import {SettingsService, Settings} from "../../../services/settings.service";
   styleUrls: ['./node-menu.component.css']
 })
 export class NodeMenuComponent{
-  clickedNode: any ={x:0, y:0, params:{menu: false}};
-  counts: any ={total:0};
+  clickedNode: any = {x: 0, y: 0, params: {menu: false}};
+  counts: any = {total: 0};
   subscription: Subscription;
   settings: Settings;
   label: string;
 
  constructor(
-   private nodeService:NodeService,
-  private dataConnectionService:DataConnectionService,
+   private nodeService: NodeService,
+  private dataConnectionService: DataConnectionService,
   private messageService: MessageService,
-   private nodeMenuController : NodeMenuControllerService,
+   private nodeMenuController: NodeMenuControllerService,
    private graphDataService: GraphDataService,
    public settingsService: SettingsService
  ) {
@@ -54,26 +55,26 @@ export class NodeMenuComponent{
 
 
   ngOnInit() {
-    //this only gets the count of the nodes
+    // this only gets the count of the nodes
     this.nodeService.clickednode$.subscribe(node => {
       this.clickedNode = node;
-      if(this.clickedNode.id) {
-        this.counts={total:0};
-        let message: Message = this.messageService.getMessage(this.clickedNode.id, "counts", this.clickedNode.labels[0]);
+      if (this.clickedNode.id) {
+        this.counts = {total: 0};
+        const message: Message = this.messageService.getMessage(this.clickedNode.id, 'counts', this.clickedNode.labels[0]);
         this.dataConnectionService.messages.next(message);
       }
       this.setLabel();
     });
 
     this.dataConnectionService.messages.subscribe(msg => {
-      let response = JSON.parse(msg);
-      if(this.clickedNode.id && response.type =="counts") {
+      const response = JSON.parse(msg);
+      if (this.clickedNode.id && response.type == 'counts') {
         this.counts[response.data._fields[0][0].toLowerCase()] = response.data._fields[1].low;
         this.counts.total = this.counts.total + response.data._fields[1].low;
       }
     });
 
-    this.nodeMenuController.clickedmenu$.subscribe(res =>{
+    this.nodeMenuController.clickedmenu$.subscribe(res => {
       this.clickedNode.params.menu = res;
     });
 
@@ -83,35 +84,15 @@ export class NodeMenuComponent{
     });
   }
 
-  expand(label):void{
-   let params = {
-     "origin": this.clickedNode.labels[0],
-     "target": label
-   };
-   this.graphDataService.nodeExpand(this.clickedNode.id, params);
-//todo: this option is not node specific -- change to map
-    this.clickedNode.expanded[label.toLowerCase()]= true;
-    this.nodeMenuController.toggleVisible(false);
-    this.clickedNode.params.menu = false;
-  }
-
-  collapse(label):void{
-    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.id});
-//todo: this option is not node specific -- change to map
-    this.clickedNode.expanded[label.toLowerCase()]= false;
-    this.nodeMenuController.toggleVisible(false);
-    this.clickedNode.params.menu = false;
-  }
-
-  setLabel():void{
-    switch(this.clickedNode.constructor.name) {
+  setLabel(): void{
+    switch (this.clickedNode.constructor.name) {
       case 'Target': {
         this.label = this.clickedNode[this.settings.targetLabel];
         break;
       }
       case 'Compound': {
-        if(this.settings.compoundLabel == 'structure'){
-          this.label= this.settings.compoundLabel;
+        if (this.settings.compoundLabel == 'structure'){
+          this.label = this.settings.compoundLabel;
         }else {
           this.label = this.clickedNode.properties.hash;
         }
@@ -123,4 +104,34 @@ export class NodeMenuComponent{
       }
     }
   }
+
+  expand(label): void {
+   const params = {
+     'origin': this.clickedNode.labels[0],
+     'target': label
+   };
+   this.graphDataService.nodeExpand(this.clickedNode.id, params);
+// todo: this option is not node specific -- change to map
+    this.clickedNode.expanded[label.toLowerCase()] = true;
+    this.nodeMenuController.toggleVisible(false);
+    this.clickedNode.params.menu = false;
+  }
+
+  collapse(label): void {
+    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.id});
+// todo: this option is not node specific -- change to map
+    this.clickedNode.expanded[label.toLowerCase()] = false;
+    this.nodeMenuController.toggleVisible(false);
+    this.clickedNode.params.menu = false;
+  }
+
+  getPredictions():void {
+   console.log("fgdfgdfgfdgd");
+    const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'prediction');
+    console.log(message);
+    this.dataConnectionService.messages.next(message);
+    this.clickedNode.params.menu = false;
+  }
+
+
 }

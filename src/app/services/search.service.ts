@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {Message, MessageService} from "./message.service";
+import {Message, MessageService} from './message.service';
 
 
 @Injectable()
@@ -19,7 +19,7 @@ export class SearchService {
     return terms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-    //  switchMap(term => this.searchEntries(term))
+    //   switchMap(term => this.searchEntries(term))
     );
   }
 

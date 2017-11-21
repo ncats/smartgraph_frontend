@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation, Input} from '@angular/core';
-import {Reaction} from "../../../../d3/models/link";
+import {Reaction} from '../../../../d3/models/link';
 
 @Component({
   selector: 'reaction-visual',
@@ -8,7 +8,8 @@ import {Reaction} from "../../../../d3/models/link";
   encapsulation: ViewEncapsulation.None
 })
 export class ReactionVisualComponent implements OnInit {
-  @Input('data') reactions:Reaction[];
+  @Input() reactions: string;
+
   constructor() { }
 
   ngOnInit() {
