@@ -60,9 +60,9 @@ export class NodeMenuComponent{
     // this only gets the count of the nodes
     this.nodeService.clickednode$.subscribe(node => {
       this.clickedNode = node;
-      if (this.clickedNode.id) {
+      if (this.clickedNode.uuid) {
         this.counts = {total: 0};
-        const message: Message = this.messageService.getMessage(this.clickedNode.id, 'counts', this.clickedNode.labels[0]);
+        const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'counts', this.clickedNode.labels[0]);
         this.dataConnectionService.messages.next(message);
       }
       this.setLabel();
@@ -70,7 +70,7 @@ export class NodeMenuComponent{
 
     this.dataConnectionService.messages.subscribe(msg => {
       const response = JSON.parse(msg);
-      if (this.clickedNode.id && response.type == 'counts') {
+      if (this.clickedNode.uuid && response.type == 'counts') {
         this.counts[response.data._fields[0][0].toLowerCase()] = response.data._fields[1].low;
         this.counts.total = this.counts.total + response.data._fields[1].low;
       }
@@ -112,7 +112,7 @@ export class NodeMenuComponent{
      'origin': this.clickedNode.labels[0],
      'target': label
    };
-   this.graphDataService.nodeExpand(this.clickedNode.id, params);
+   this.graphDataService.nodeExpand(this.clickedNode.uuid, params);
 // todo: this option is not node specific -- change to map
     this.clickedNode.expanded[label.toLowerCase()] = true;
     this.nodeMenuController.toggleVisible(false);
@@ -120,7 +120,7 @@ export class NodeMenuComponent{
   }
 
   collapse(label): void {
-    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.id});
+    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.uuid});
 // todo: this option is not node specific -- change to map
     this.clickedNode.expanded[label.toLowerCase()] = false;
     this.nodeMenuController.toggleVisible(false);

@@ -130,8 +130,8 @@ export class D3Service {
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
       console.log("finding neighbors");
-      const downstream = node.id === (typeof (e.source) == 'object' ? e.source.id : e.source);
-      const upstream = node.id === (typeof (e.target) == 'object' ? e.target.id : e.target);
+      const downstream = node.uuid === (typeof (e.source) == 'object' ? e.source.id : e.source);
+      const upstream = node.uuid === (typeof (e.target) == 'object' ? e.target.id : e.target);
       if (downstream == true) {
         downstreamNeighbors.push(e);
       }
@@ -159,6 +159,7 @@ export class D3Service {
       return maximalLinks.indexOf(e.id) > -1;
     };
 
+    // todo: this is called on drag and iterates over the entire graph
     const mouseOverFunction = (): void => {
       decorateLinks();
       decorateNodes();

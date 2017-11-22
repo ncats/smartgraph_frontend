@@ -76,7 +76,7 @@ export class DownloadButtonComponent implements OnInit {
       //  Add Children element Ids and Classes to the list
       const nodes = parentElement.getElementsByTagName('*');
       for (const node of nodes) {
-        const id = node.id;
+        const id = node.uuid;
         if (!contains('#' + id, selectorTextArr)) {
           selectorTextArr.push('#' + id);
         }

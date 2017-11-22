@@ -185,10 +185,10 @@ constructor(
 countLinks(): void{
     this.graph.nodes.forEach(node => node.linkCount = 1);
   for (const l of this.graph.links) {
-    const source: Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
+    const source: Node =  this.nodeService.getById(l.source.uuid ? l.source.uuid : l.source);
     source.linkCount ++;
     this.nodeService.setNode(source);
-    const target: Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
+    const target: Node =  this.nodeService.getById(l.target.uuid ? l.target.uuid : l.target);
     target.linkCount ++;
     this.nodeService.setNode(target);
   }
@@ -221,7 +221,7 @@ countLinks(): void{
   nodeCollapse(node: Node, label: any ): void{
     this.filter = true;
 // get the expand object to delete the nodes added
-    const diff = this.historyMap.get('expand').get(node.id).diff;
+    const diff = this.historyMap.get('expand').get(node.uuid).diff;
 
     const undoDiff = {
       addedNodes: [],

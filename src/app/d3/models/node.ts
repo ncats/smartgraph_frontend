@@ -35,9 +35,10 @@ export class Node implements d3.SimulationNodeDatum {
   * Neo4j has their own uuid that will need to be used to track nodes, since some relationships are sepnt with the start
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
-  constructor(id, data) {
-    this.uuid = data.properties.uuid;
-    this.id = id;
+  constructor(uuid, data) {
+    console.log(uuid);
+    console.log(data.properties);
+    this.uuid = uuid;
     //  uuid is still saved here
     this.properties = data.properties;
     this.labels = data.labels;
@@ -70,8 +71,8 @@ export class Compound extends Node {
   compoundId: string;
   imageUrl: string;
 
-  constructor (id, data) {
-    super(id, data);
+  constructor (uuid, data) {
+    super(uuid, data);
     this.hash = data.properties.hash;
     this.nostereo_hash = data.properties.nostereo_hash;
     this.smiles = data.properties.smiles;
@@ -93,16 +94,14 @@ export class Compound extends Node {
 
 export class Target extends Node {
   uniprot_id: string;
-  name: string;
   fullname: string;
   synonyms: string[];
   genes: string;
 
 
-  constructor (id, data) {
-    super(id, data);
+  constructor (uuid, data) {
+    super(uuid, data);
     this.uniprot_id = data.properties.uniprot_id;
-    this.name = data.properties.name;
     this.fullname = data.properties.fullname;
     this.synonyms = data.properties.synonyms;
     this.genes = data.properties.gene_symbols.join(', ');
@@ -117,8 +116,8 @@ export class Pattern extends Node {
   smiles: string;
   imageUrl: string;
 
-  constructor (id, data) {
-    super(id, data);
+  constructor (uuid, data) {
+    super(uuid, data);
     this.hash = data.properties.hash;
     this.pattern_id = data.properties.pattern_id;
     this.pattern_type = data.properties.pattern_type;
