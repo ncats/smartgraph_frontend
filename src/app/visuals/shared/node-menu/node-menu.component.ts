@@ -6,15 +6,15 @@ import {DataConnectionService} from '../../../services/data-connection.service';
 import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
 import {GraphDataService} from '../../../services/graph-data.service';
 import {SettingsService, Settings} from '../../../services/settings.service';
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
   selector: '[menu-list]',
   template: `
-<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="30vh" *ngIf="clickedNode.params.menu" >
+<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="50vh" *ngIf="clickedNode.params.menu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
   <mat-list>
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"><span (click)="nodeMenuController.toggleVisible(false)"><mat-icon>clear</mat-icon></span></button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
@@ -23,6 +23,7 @@ import {SettingsService, Settings} from '../../../services/settings.service';
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" (click)="expand('All')">Expand All {{counts?.total}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
 <!--
 // todo: collapse all show/hide logic
  <button mat-menu-item (click)="collapse('All')">Collapse All</button>
@@ -46,7 +47,8 @@ export class NodeMenuComponent{
   private messageService: MessageService,
    private nodeMenuController: NodeMenuControllerService,
    private graphDataService: GraphDataService,
-   public settingsService: SettingsService
+   public settingsService: SettingsService,
+   public loadingService: LoadingService
  ) {
 /*   this.settings = this.settingsService.dataChange.getValue();
    console.log(this.settings);*/
@@ -127,6 +129,7 @@ export class NodeMenuComponent{
 
   getPredictions():void {
    console.log("fgdfgdfgfdgd");
+   this.loadingService.toggleVisible(true);
     const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'prediction');
     console.log(message);
     this.dataConnectionService.messages.next(message);

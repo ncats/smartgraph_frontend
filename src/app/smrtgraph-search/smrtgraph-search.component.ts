@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {DataConnectionService} from '../services/data-connection.service';
-import {SearchService} from '../services/search.service';
 import {Message, MessageService} from '../services/message.service';
 import { GraphDataService} from '../services/graph-data.service';
 import {NodeService} from '../d3/models/node.service';
@@ -60,15 +59,6 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.dataConnectionService.messages.subscribe(msg => {
       const response = JSON.parse(msg);
       switch (response.type) {
-
-        case 'targetSearch': {
-          this.autocompleteOptions.push(response.data);
-          break;
-        }
-        case 'compoundSearch': {
-          this.compoundAutocompleteOptions.push(response.data);
-          break;
-        }
         case 'startNodeSearch': {
           this.startUUIDList.push(response.data._fields[0].properties.uuid);
           break;

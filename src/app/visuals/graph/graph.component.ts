@@ -73,7 +73,7 @@ export class GraphComponent {
   }
 
   ngOnInit() {
-    this.subscription = this.loadingService.loading$.subscribe(res => this.loading = res);
+    this.loadingService.loading$.subscribe(res => this.loading = res);
     this.graphDataService.graphhistory$.subscribe(res => {
       this.nodes = res.nodes;
       this.links = res.links;
