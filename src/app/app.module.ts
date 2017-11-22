@@ -17,7 +17,6 @@ import { LinkVisualComponent } from './visuals/shared/link-visual/link-visual.co
 
 import {WebSocketService} from './services/websocket.service';
 import {DataConnectionService} from './services/data-connection.service';
-import {SearchService} from './services/search.service';
 import {MessageService} from './services/message.service';
 import { NodeDetailsVisualComponent } from './visuals/details/node-details-visual/node-details-visual.component';
 import {NodeMenuComponent} from './visuals/shared/node-menu/node-menu.component';
@@ -85,7 +84,6 @@ import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/n
     D3Service,
     NodeService,
     LinkService,
-    SearchService,
     MessageService,
     GraphDataService,
     NodeMenuControllerService,

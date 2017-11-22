@@ -1,14 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Subject} from 'rxjs/Subject';
 import {DataConnectionService} from '../services/data-connection.service';
 import {SearchService} from '../services/search.service';
 import {Message, MessageService} from '../services/message.service';
 import { GraphDataService} from '../services/graph-data.service';
 import {NodeService} from '../d3/models/node.service';
 import {LoadingService} from '../services/loading.service';
-
-
 
 @Component({
   selector: 'smrtgraph-search',
@@ -23,16 +20,12 @@ export class SmrtgraphSearchComponent implements OnInit {
   activityCtrl: FormControl;
   similarityCtrl: FormControl;
 
-  searchTerm$ = new Subject<any>();
-  autocompleteOptions: any[] = [];
-  compoundAutocompleteOptions: any[] = [];
   startUUIDList: any[] = [];
   endUUIDList: any[] = [];
   startNodes = false;
   endNodes = false;
 
   constructor(
-    private searchService: SearchService,
     private messageService: MessageService,
     private nodeService: NodeService,
     private dataConnectionService: DataConnectionService,
@@ -143,18 +136,6 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.similarityCtrl.valueChanges.subscribe(value => {
       this.shortestPath();
     });
-    /*
-     * This provides an interface to handle the mapping of search input
-     * it retrieves a query object from the service, returning the most recent input
-     * this query is then passed on to the main data service
-     * */
-    this.searchService.search(this.searchTerm$)
-      .subscribe(results => {
-        // empty autocomplete options array, otherwise it will never change
-        this.autocompleteOptions = [];
-        this.compoundAutocompleteOptions = [];
-        this.dataConnectionService.messages.next(results);
-      });
 
    //  this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
     this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');

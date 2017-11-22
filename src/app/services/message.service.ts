@@ -24,13 +24,6 @@ export class MessageService {
         break;
       }
 
-      case 'compoundSearch': {
-        // msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
-        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.compound, n.lid ORDER BY n.compound LIMIT 50';
-        params = {qParam: term + '.*'};
-        break;
-      }
-
       case 'counts': {
         switch (properties){
           case 'Target': {
@@ -115,13 +108,6 @@ export class MessageService {
         break;
       }
 
-      case'patternSearch': {
-        // msg = 'MATCH (n:Pattern) WHERE n.smiles=~{qParam} RETURN n.smiles, n.pid ORDER BY n.smiles LIMIT 50';
-        msg = 'MATCH (n:Compound) WHERE n.hash=~{qParam} RETURN n.hash, n.pid ORDER BY n.hash LIMIT 50';
-        params = {qParam: term + '.*'};
-        break;
-      }
-
       case 'prediction': {
         msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN c,p,t,r1,r2 LIMIT 300';
         params = {qParam: term};
@@ -131,13 +117,6 @@ export class MessageService {
       case 'smiles': {
         msg = 'MATCH (n:Pattern) WHERE n.pid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
         params = {qParam: term};
-        break;
-      }
-
-      case'targetSearch': {
-        msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} OR n.uniprot_id =~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100 UNION MATCH (n:Target) WHERE n.name=~{qParam} OR n.uniprot_id =~{qParam} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
-        //  msg = 'MATCH (n:Target) WHERE n.name=~{qParam2} RETURN n.name, n.uniprot_id ORDER BY n.name LIMIT 100';
-        params = {qParam2: '(?i)' + term + '.*', qParam: '(?i).*' + term + '.*'};
         break;
       }
 
