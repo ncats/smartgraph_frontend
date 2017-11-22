@@ -7,18 +7,23 @@ import {ForceDirectedGraph} from '../../d3/models/force-directed-graph';
 import {Node} from '../../d3/models/node';
 import {Link} from '../../d3/models/link';
 import * as d3 from 'd3';
-import {GraphDataService} from "../../services/graph-data.service";
-import {DownloadButtonComponent} from "../../download-button/download-button.component";
+import {GraphDataService} from '../../services/graph-data.service';
+import {DownloadButtonComponent} from '../../download-button/download-button.component';
+import {LoadingService} from "../../services/loading.service";
+import {Subscription} from "rxjs/Subscription";
 
 
 @Component({
   selector: 'graph',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+  <div *ngIf="loading" class = "loadingIcon" fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg" [draggableInGraph]="graph">
         <g [linkVisual]="link" [hoverableLink]="link" *ngFor="let link of links"></g>
-        <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node" 
+        <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
         [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
         </g>
         <svg:g menu-list #menu></svg:g>
@@ -32,7 +37,7 @@ import {DownloadButtonComponent} from "../../download-button/download-button.com
           </marker>
           <marker id="flatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
             <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
-          </marker> 
+          </marker>
           <marker id="hoverflatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
             <path fill = "#595959" stroke ="#595959" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
           </marker>
@@ -49,6 +54,8 @@ export class GraphComponent {
   private downloader: DownloadButtonComponent;
   public nodes: Node[] = [];
   public links: Link[] = [];
+  subscription: Subscription;
+  loading: boolean = true;
 
 
   @HostListener('window:resize', ['$event'])
@@ -61,10 +68,12 @@ export class GraphComponent {
   constructor(private d3Service: D3Service,
               private ref: ChangeDetectorRef,
               private el: ElementRef,
-              private graphDataService: GraphDataService) {
+              private graphDataService: GraphDataService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
+    this.loadingService.loading$.subscribe(res => this.loading = res);
     this.graphDataService.graphhistory$.subscribe(res => {
       this.nodes = res.nodes;
       this.links = res.links;
@@ -99,7 +108,7 @@ export class GraphComponent {
     return this._options = {
       width: this.el.nativeElement.parentElement.offsetWidth,
       height: window.innerHeight * .8
-      // height: window.innerHeight-(window.outerHeight-window.innerHeight)
+      //  height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };
   }
 }

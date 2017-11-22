@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Link} from '../../../d3/models/link';
 import {Node} from '../../../d3/models/node';
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 import {LinkService} from '../../../d3/models/link.service';
 
 
@@ -24,7 +24,7 @@ export class LinkDetailsVisualComponent implements OnInit {
         this.link = link;
         this.node = link.target;
       });
-    if(this.data){
+    if (this.data){
       this.link = this.data;
     }
   }

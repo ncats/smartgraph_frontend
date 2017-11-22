@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import {Node, Pattern, Compound} from '../../../d3/models/node';
-import {SettingsService} from "../../../services/settings.service";
+import {Node, Pattern, Compound, Target} from '../../../d3/models/node';
+import {SettingsService} from '../../../services/settings.service';
 
 @Component({
   selector: 'structure-view',
@@ -11,7 +11,7 @@ import {SettingsService} from "../../../services/settings.service";
 })
 
 export class StructureViewer{
-@Input() data:Compound | Pattern;
+@Input() data: Compound | Pattern;
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class StructureViewer{
        <svg:text>{{label}}</svg:text>
        </svg:g>
         <svg:foreignObject width='7vh' height='7vh' *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
- <xhtml:div xmlns="http://www.w3.org/1999/xhtml">
+ <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
     <structure-view [data]="node"></structure-view>
 </xhtml:div>
       </svg:foreignObject>
@@ -37,15 +37,16 @@ export class StructureViewer{
   styleUrls: ['./node-visual.component.css']
 })
 export class NodeVisualComponent {
-  @Input('nodeVisual') node: Node;
-label: string;
+  @Input('nodeVisual')
+  node: Node;
+  label: string;
 
-  constructor(public settingsService:SettingsService){}
+  constructor(public settingsService: SettingsService){}
 
-  ngOnInit():void{
+  ngOnInit(): void{
     this.settingsService.dataChange
       .subscribe(settings => {
-        switch(this.node.constructor.name) {
+        switch (this.node.constructor.name) {
           case 'Target': {
             this.label = this.node[settings.targetLabel];
             break;
@@ -53,22 +54,21 @@ label: string;
           case 'Compound': {
             /*
              this.label = this.settingsService.settings.compoundLabel;
-             */if(settings.compoundLabel == 'structure'){
-             this.label= settings.compoundLabel;
+             */if (settings.compoundLabel == 'structure'){
+             this.label = settings.compoundLabel;
                 }else {
-              this.label = this.node.properties.hash;
+              this.label = this.node['hash'];
             }
             break;
           }
           case 'Pattern': {
-            this.label = settings.patternLabel ? settings.patternLabel : "";
+
+              this.label = settings.patternLabel ? settings.patternLabel : "";
             break;
           }
         }
       });
     }
-
-
 }
 
 

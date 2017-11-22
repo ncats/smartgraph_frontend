@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Pattern} from "../../../../../d3/models/node";
-import {Link} from "../../../../../d3/models/link";
+import {Pattern} from '../../../../../d3/models/node';
+import {Link} from '../../../../../d3/models/link';
 
 @Component({
   selector: 'pattern-detail-view',
@@ -14,7 +14,7 @@ export class PatternDetailViewComponent implements OnInit {
   downstreamLinks: Link[];
   @Input()
   upstreamLinks: Link[];
-  nodeSmiles:string;
+  nodeSmiles: string;
 
   constructor() {
   }
@@ -30,12 +30,12 @@ export class PatternDetailViewComponent implements OnInit {
   }
 
   parseSmiles(smiles: string): string {
-    let parsed = smiles
-      .replace(/[;]/g,'%3B')
-      .replace(/[#]/g,'%23')
-      .replace(/[+]/g,'%2B')
-      .replace(/[\\]/g,'%5C')
-      .replace(/[|]/g,'%7C');
+    const parsed = smiles
+      .replace(/[;]/g, '%3B')
+      .replace(/[#]/g, '%23')
+      .replace(/[+]/g, '%2B')
+      .replace(/[\\]/g, '%5C')
+      .replace(/[|]/g, '%7C');
     return parsed;
   }
 

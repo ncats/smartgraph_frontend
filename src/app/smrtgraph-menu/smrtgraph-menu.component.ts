@@ -1,5 +1,5 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {SettingsService} from "../services/settings.service";
+import {SettingsService} from '../services/settings.service';
 
 @Component({
   selector: 'smrtgraph-menu',
@@ -7,7 +7,7 @@ import {SettingsService} from "../services/settings.service";
   styleUrls: ['./smrtgraph-menu.component.css']
 })
 export class SmrtgraphMenuComponent implements OnInit {
-title:string = "smrtgraph";
+title = 'smrtgraph';
 
   constructor(public settingsService: SettingsService) { }
 

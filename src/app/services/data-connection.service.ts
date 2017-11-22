@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {WebSocketService} from './websocket.service';
-import {Observable} from "rxjs/Observable";
-import {map, share} from "rxjs/operators";
+import {Observable} from 'rxjs/Observable';
+import {map, share} from 'rxjs/operators';
 
-//const DATA_URL = 'ws://localhost:1337';
-const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
+const DATA_URL = 'ws://localhost:1337';
+//const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
 
 @Injectable()
 export class DataConnectionService {
@@ -13,15 +13,15 @@ export class DataConnectionService {
   private messagesEmitter: any;
   constructor(private wsService: WebSocketService) {
 
-    // subscribe to websocket
+    //  subscribe to websocket
     this.messagesEmitter  = <Subject<any>>this.wsService
       .connect(DATA_URL).pipe(
       map((response: MessageEvent): string => response.data)
-    //  error(error => Observable.empty())
+    //   error(error => Observable.empty())
       );
 
     this.messages = this.messagesEmitter.pipe(
       share()
-    )
+    );
   }
-} // end class DataService
+} //  end class DataService

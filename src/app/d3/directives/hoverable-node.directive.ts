@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef } from '@angular/core';
 import { D3Service } from '../d3.service';
-import {Node} from "../models/node";
-import {ForceDirectedGraph} from "../models/force-directed-graph";
+import {Node} from '../models/node';
+import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 @Directive({
     selector: '[hoverableNode]'

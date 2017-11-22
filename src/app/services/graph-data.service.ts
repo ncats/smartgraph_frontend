@@ -1,70 +1,71 @@
 import { Injectable } from '@angular/core';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 import {Link} from '../d3/models/link';
 import {Node} from '../d3/models/node';
-import {Message, MessageService} from "./message.service";
-import {DataConnectionService} from "./data-connection.service";
-import {NodeService} from "../d3/models/node.service";
-import {LinkService} from "../d3/models/link.service";
-import {LoadingService} from "./loading.service";
+import {Message, MessageService} from './message.service';
+import {DataConnectionService} from './data-connection.service';
+import {NodeService} from '../d3/models/node.service';
+import {LinkService} from '../d3/models/link.service';
+import {LoadingService} from './loading.service';
 /*
 import {WebWorkerService} from "./services/web-worker.service";
 */
 
 
 export interface Event {
-//  type:string;
-  label:string;
-  diff:Object;
+//   type:string;
+  label: string;
+  diff: Object;
 }
 
 
 @Injectable()
 export class GraphDataService {
-graph ={
+graph = {
   nodes: [],
-  links:[]
+  links: []
 };
 
-eventData:any;
+eventData: any;
 
-history =[];
-  // Observable navItem source
+history = [];
+  //  Observable navItem source
   private _graphHistorySource = new Subject<any>();
-  masterLinkMap:Map<string, Link> = new Map();
-  historyMap:Map<string, any> = new Map();
+  masterLinkMap: Map<string, Link> = new Map();
+  historyMap: Map<string, any> = new Map();
   graphhistory$ = this._graphHistorySource.asObservable();
   originalEvent: string;
-  filter: boolean = false;
+  filter = false;
 nodeList: any = [];
 linkList: any = [];
-nodes: any  =[];
+nodes: any  = [];
 
 constructor(
-  private dataConnectionService:DataConnectionService,
+  private dataConnectionService: DataConnectionService,
   private messageService: MessageService,
   private nodeService: NodeService,
   private linkService: LinkService,
   private loadingService: LoadingService
 ){
 
-  //todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
+  // todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
 
   this.dataConnectionService.messages.subscribe(msg => {
-    let response = JSON.parse(msg);
-    switch(response.type) {
-      case 'path':{
+    const response = JSON.parse(msg);
+    switch (response.type) {
+      case 'path': {
         this.filter = true;
-        //intentional absence of break to allow fall through
+        // intentional absence of break to allow fall through
       }
       case 'startNodeSearch':
       case 'endNodeSearch':
+      case 'prediction':
       case 'expand':
       case 'load': {
         this.originalEvent = response.type;
-        //  let bytes = encoder.encode(msg);
-        // this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
-        let records = response.data._fields;
+        //   let bytes = encoder.encode(msg);
+        //  this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
+        const records = response.data._fields;
         if (records.length == 0) {
           console.error(response);
         } else {
@@ -72,7 +73,7 @@ constructor(
         }
         break;
       }
-      case 'done':{
+      case 'done': {
         this.makeGraph();
         this.loadingService.toggleVisible(false);
         break;
@@ -81,20 +82,20 @@ constructor(
   });
 }
 
-  setFilter(filter:boolean):void{
-  this.filter=filter;
-  };
+  setFilter(filter: boolean): void{
+  this.filter = filter;
+  }
 
-  parseRecords(path, event:any) {
-    //neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
-    for (let r of path) {
+  parseRecords(path, event: any) {
+    // neo4j websocket returns one record at a time, so looping isn't necessary, but still probably a good idea
+    for (const r of path) {
       if (r.segments) {
-        for (let l of r.segments) {
-          //this ignores the initial start and end nodes, but they are added in the segments of the path
-          let start:Node = this.nodeService.makeNode(l.start.properties.uuid, l.start);
-          let end:Node = this.nodeService.makeNode(l.end.properties.uuid, l.end);
-          this.nodeList.push(...[start,end]);
-          let link:Link = this.linkService.makeLink(l.relationship.properties.uuid, start, end, l.relationship);
+        for (const l of r.segments) {
+          // this ignores the initial start and end nodes, but they are added in the segments of the path
+          const start: Node = this.nodeService.makeNode(l.start.properties.uuid, l.start);
+          const end: Node = this.nodeService.makeNode(l.end.properties.uuid, l.end);
+          this.nodeList.push(...[start, end]);
+          const link: Link = this.linkService.makeLink(l.relationship.properties.uuid, start, end, l.relationship);
           this.linkList.push(link);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
@@ -102,17 +103,17 @@ constructor(
         }
       } else {
         if (!r.start && !r.end) {
-          //this is for node groups that aren't a path
-          let n:Node = this.nodeService.makeNode(r.properties.uuid, r);
+          // this is for node groups that aren't a path
+          const n: Node = this.nodeService.makeNode(r.properties.uuid, r);
           this.nodeList.push(n);
           this.nodeService.setNode(n);
         } else {
-          //this is the separate path for expanding nodes -- this does not have a uuid associated with the start or end nodes, so neo4j's id needs to be used to create the nodes
-          let start = this.nodeService.makeNode(r.properties.uuid, {});
-          let end = this.nodeService.makeNode(r.properties.uuid, {});
-          let nodes = [start,end];
+          // this is the separate path for expanding nodes -- this does not have a uuid associated with the start or end nodes, so neo4j's id needs to be used to create the nodes
+          const start = this.nodeService.makeNode(r.properties.uuid, {});
+          const end = this.nodeService.makeNode(r.properties.uuid, {});
+          const nodes = [start, end];
           this.nodeList.push(...nodes);
-          let link = this.linkService.makeLink(r.properties.uuid, start, end, r);
+          const link = this.linkService.makeLink(r.properties.uuid, start, end, r);
           this.nodeService.setNode(start);
           this.nodeService.setNode(end);
           this.linkService.setLink( link);
@@ -122,51 +123,51 @@ constructor(
     }
   }
 
-  makeGraph():void {
-    let newNodes =this.nodeList.filter((elem, pos, arr) => {
+  makeGraph(): void {
+    const newNodes = this.nodeList.filter((elem, pos, arr) => {
         return arr.indexOf(elem) == pos;
       });
-   let newLinks = this.linkList.filter((elem, pos, arr) => {
+   const newLinks = this.linkList.filter((elem, pos, arr) => {
      return arr.indexOf(elem) == pos;
    });
 
-    let diff = {
-      removedNodes: this.graph.nodes.filter(node =>newNodes.indexOf(node) === -1),
-      addedNodes: newNodes.filter(node =>this.graph.nodes.indexOf(node) === -1),
+    const diff = {
+      removedNodes: this.graph.nodes.filter(node => newNodes.indexOf(node) === -1),
+      addedNodes: newNodes.filter(node => this.graph.nodes.indexOf(node) === -1),
       removedLinks: this.graph.links.filter(link => newLinks.indexOf(link) === -1),
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
 
-    if(this.eventData){
+    if (this.eventData){
       this.eventData.event.diff = diff;
-      let eventList = this.historyMap.get("expand") ? this.historyMap.get("expand") : new Map();
-    if(eventList){
-    //  eventList.push(eventMap);
+      const eventList = this.historyMap.get('expand') ? this.historyMap.get('expand') : new Map();
+    if (eventList){
+    //   eventList.push(eventMap);
       eventList.set(this.eventData.id, this.eventData.event);
-      this.historyMap.set("expand", eventList);
+      this.historyMap.set('expand', eventList);
 /*    }else{
       eventMap.set(this.eventData.id, this.eventData.event);
       this.historyMap.set("expand", eventMap);
     */}
     }
-    //todo setting the history for load events probably isn't necessary
-    if(this.originalEvent !='load'){
+    // todo setting the history for load events probably isn't necessary
+    if (this.originalEvent != 'load'){
       this.historyMap.get(this.originalEvent);
     }
-    //apply diff to current graph
+    // apply diff to current graph
     this.applyDiff(diff);
     this.countLinks();
-    //update graph
+    // update graph
     this._graphHistorySource.next(this.graph);
     this.nodeList = [];
      this.linkList = [];
      this.filter = false;
   }
 
-  applyDiff(diff:any):void{
-    //todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
-    //todo: need to iterate over remaining nodes and links and remove them
-    if(this.filter == true) {
+  applyDiff(diff: any): void{
+    // todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
+    // todo: need to iterate over remaining nodes and links and remove them
+    if (this.filter == true) {
       diff.removedNodes.forEach(node => {
         this.graph.nodes.splice(this.graph.nodes.indexOf(node), 1);
       });
@@ -180,48 +181,48 @@ constructor(
     });
   }
 
-countLinks():void{
+countLinks(): void{
     this.graph.nodes.forEach(node => node.linkCount = 1);
-  for (let l of this.graph.links) {
-    let source:Node =  this.nodeService.getById(l.source.id ? l.source.id : l.source);
+  for (const l of this.graph.links) {
+    const source: Node =  this.nodeService.getById(l.source.uuid ? l.source.uuid : l.source);
     source.linkCount ++;
     this.nodeService.setNode(source);
-    let target:Node =  this.nodeService.getById(l.target.id ? l.target.id : l.target);
+    const target: Node =  this.nodeService.getById(l.target.uuid ? l.target.uuid : l.target);
     target.linkCount ++;
     this.nodeService.setNode(target);
   }
 }
 
-  clearGraph():void{
+  clearGraph(): void{
     this.graph.links = [];
     this.graph.nodes = [];
   }
 
-  nodeExpand(id:string, properties: any):void {
-    let message: Message = this.messageService.getMessage(id, "expand", properties);
+  nodeExpand(id: string, properties: any): void {
+    const message: Message = this.messageService.getMessage(id, 'expand', properties);
 
-    //right now this is only creating a skeleton map object without the diff
-    //this happens here because node id and label is needed for tracking.
-    let event: Event = {
-      //  type: "expand",
+    // right now this is only creating a skeleton map object without the diff
+    // this happens here because node id and label is needed for tracking.
+    const event: Event = {
+      //   type: "expand",
       label: properties,
       diff: {
-        addedNodes:[],
-        removedNodes:[],
-        addedLinks:[],
-        removedLinks:[]
+        addedNodes: [],
+        removedNodes: [],
+        addedLinks: [],
+        removedLinks: []
       }
     };
-  this.eventData ={id:id, event: event};
+  this.eventData = {id: id, event: event};
     this.dataConnectionService.messages.next(message);
   }
 
-  nodeCollapse(node:Node, label:any ):void{
+  nodeCollapse(node: Node, label: any ): void{
     this.filter = true;
-//get the expand object to delete the nodes added
-    let diff = this.historyMap.get('expand').get(node.id).diff;
+// get the expand object to delete the nodes added
+    const diff = this.historyMap.get('expand').get(node.uuid).diff;
 
-    let undoDiff = {
+    const undoDiff = {
       addedNodes: [],
       removedNodes: diff.addedNodes,
       addedLinks: [],

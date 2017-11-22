@@ -3,6 +3,12 @@
   stroke: #A5A5A5;
 }
 
+.end {
+  stroke-width: 2;
+  stroke: #A5A5A5;
+  fill: #A5A5A5;
+}
+
 .arrow {
   stroke-width: 2;
   stroke: #A5A5A5;
@@ -46,7 +52,7 @@
 
 
 .hovering {
-  stroke: #000;
+  stroke: #595959;
   stroke-width: 2px;
 }
 

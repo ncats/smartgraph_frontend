@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NodeService} from '../../../d3/models/node.service';
 import {LinkService} from '../../../d3/models/link.service';
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 
 
 @Component({
@@ -22,11 +22,11 @@ export class GraphDetailsComponent implements OnInit {
   ngOnInit() {
     this.nodeSubscription = this.nodeService.hoverednode$
       .subscribe(node => {
-        this.hoveredObjType = "node";
+        this.hoveredObjType = 'node';
       });
     this.linkSubscription = this.linkService.hoveredlink$
       .subscribe(link => {
-        this.hoveredObjType = "link";
+        this.hoveredObjType = 'link';
       });
   }
 }

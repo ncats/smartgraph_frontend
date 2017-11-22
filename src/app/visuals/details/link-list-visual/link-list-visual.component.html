@@ -55,7 +55,13 @@
       </mat-list>
       </div>
       <div *ngIf = 'row.properties.activity'>Activity: {{row.properties.activity}}</div>
-      <div *ngIf = 'row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>    </mat-cell>
+      <div *ngIf = 'row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="confidence">
+    <mat-header-cell *matHeaderCellDef >Confidence</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.max_confidence_value}}</mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {Renderer2} from '@angular/core';
-import {unescape} from "querystring";
+import {unescape} from 'querystring';
 
 @Component({
   selector: 'download-button',
@@ -22,8 +22,8 @@ export class DownloadButtonComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // var div = this.elRef.nativeElement.querySelector('#');
-    // console.log(div);
+    //  var div = this.elRef.nativeElement.querySelector('#');
+    //  console.log(div);
     console.log(this.rd);
     console.log(this.el);
   }
@@ -32,13 +32,13 @@ export class DownloadButtonComponent implements OnInit {
 
 
   downloadFile(data: any, options: any) {
-    console.log("downloading");
-    let svgString = this.getSVGString(data.node());
-    this.svgString2Image( svgString, 2*options.width, 2*options.height, save ); // passes Blob and filesize String to the callback
+    console.log('downloading');
+    const svgString = this.getSVGString(data.node());
+    this.svgString2Image( svgString, 2 * options.width, 2 * options.height, save ); //  passes Blob and filesize String to the callback
 
     function save( dataBlob ){
       console.log(dataBlob);
-     // saveAs( dataBlob, 'D3 vis exported to PNG.png' ); // FileSaver.js function
+     //  saveAs( dataBlob, 'D3 vis exported to PNG.png' ); //  FileSaver.js function
     }
    /* let image = new Image();
     image.src = 'data:image/svg+xml;base64,' + window.btoa(encodeURIComponent(svgString));
@@ -50,57 +50,57 @@ export class DownloadButtonComponent implements OnInit {
     window.open(url);*/
   }
 
-  // Below are the functions that handle actual exporting:
+  //  Below are the functions that handle actual exporting:
   getSVGString(svgNode) {
-    svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
-    let cssStyleText = getCSSStyles(svgNode);
+    svgNode.setAttribute('xlink', 'http:// www.w3.org/1999/xlink');
+    const cssStyleText = getCSSStyles(svgNode);
     appendCSS(cssStyleText, svgNode);
 
-    var serializer = new XMLSerializer();
-    var svgString = serializer.serializeToString(svgNode);
-    svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); // Fix root xlink without namespace
-    svgString = svgString.replace(/NS\d+:href/g, 'xlink:href'); // Safari NS namespace fix
+    const serializer = new XMLSerializer();
+    let svgString = serializer.serializeToString(svgNode);
+    svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); //  Fix root xlink without namespace
+    svgString = svgString.replace(/NS\d+:href/g, 'xlink:href'); //  Safari NS namespace fix
 
     return svgString;
 
     function getCSSStyles(parentElement) {
-      let selectorTextArr = [];
+      const selectorTextArr = [];
 
-      // Add Parent element Id and Classes to the list
+      //  Add Parent element Id and Classes to the list
       selectorTextArr.push('#' + parentElement.id);
-      for (let classType of parentElement.classList) {
+      for (const classType of parentElement.classList) {
         if (!contains('.' + classType, selectorTextArr)) {
           selectorTextArr.push('.' + classType);
         }
       }
-      // Add Children element Ids and Classes to the list
-      let nodes = parentElement.getElementsByTagName("*");
-      for (let node of nodes) {
-        let id = node.id;
+      //  Add Children element Ids and Classes to the list
+      const nodes = parentElement.getElementsByTagName('*');
+      for (const node of nodes) {
+        const id = node.uuid;
         if (!contains('#' + id, selectorTextArr)) {
           selectorTextArr.push('#' + id);
         }
-        let classes = node.classList;
-        for (let nodeClass of classes) {
+        const classes = node.classList;
+        for (const nodeClass of classes) {
           if (!contains('.' + nodeClass, selectorTextArr)) {
             selectorTextArr.push('.' + nodeClass);
           }
         }
       }
 
-      // Extract CSS Rules
-      let extractedCSSText = "";
+      //  Extract CSS Rules
+      let extractedCSSText = '';
       for (let r = 0; r < document.styleSheets.length; r++) {
-        let css = document.styleSheets[r];
+        const css = document.styleSheets[r];
         try {
           if (!(css instanceof CSSStyleSheet)) continue;
         } catch (e) {
-          if (e.name !== 'SecurityError') throw e; // for Firefox
+          if (e.name !== 'SecurityError') throw e; //  for Firefox
           continue;
         }
-        // Now TypeScript knows that your sheet is CSS sheet
+        //  Now TypeScript knows that your sheet is CSS sheet
         if (css) {
-          let rules = css.cssRules ? css.cssRules : css.rules;
+          const rules = css.cssRules ? css.cssRules : css.rules;
           if (rules) {
             for (let i = 0; i < rules.length; i++) {
               const rule = rules[i];
@@ -121,24 +121,24 @@ export class DownloadButtonComponent implements OnInit {
     }
 
     function appendCSS(cssText, element) {
-      let styleElement = document.createElement("style");
-      styleElement.setAttribute("type", "text/css");
+      const styleElement = document.createElement('style');
+      styleElement.setAttribute('type', 'text/css');
       styleElement.innerHTML = cssText;
-      let refNode = element.hasChildNodes() ? element.children[0] : null;
+      const refNode = element.hasChildNodes() ? element.children[0] : null;
       element.insertBefore(styleElement, refNode);
     }
   }
 
      svgString2Image(svgString, width, height, callback) {
-      var imgsrc = 'data:image/svg+xml;base64,' + btoa(svgString); // Convert SVG string to data URL
+      const imgsrc = 'data:image/svg+xml;base64,' + btoa(svgString); //  Convert SVG string to data URL
 
-      var canvas = document.createElement("canvas");
-      var context = canvas.getContext("2d");
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
 
       canvas.width = width;
       canvas.height = height;
 
-      var image = new Image();
+      const image = new Image();
        image.src = imgsrc;
        image.onload = function () {
          context.clearRect(0, 0, width, height);
@@ -147,11 +147,11 @@ export class DownloadButtonComponent implements OnInit {
         context.drawImage(image, 0, 0, width, height);
 console.log(context);
 
-      //    console.log(blob);
-      //  });
+      //     console.log(blob);
+      //   });
       };
 
-       let blob = new Blob([image], {type: 'image/png;charset=utf-8'});
+       const blob = new Blob([image], {type: 'image/png;charset=utf-8'});
       console.log(canvas);
       console.log(blob);
       console.log(image);
