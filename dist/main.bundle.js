@@ -1426,8 +1426,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var DATA_URL = 'ws://localhost:1337';
-//const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
+//const DATA_URL = 'ws://localhost:1337';
+var DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
 var DataConnectionService = /** @class */ (function () {
     function DataConnectionService(wsService) {
         this.wsService = wsService;
