@@ -54,8 +54,8 @@
         </mat-list-item>
       </mat-list>
       </div>
-      <div *ngIf = ''></div>
-    </mat-cell>
+      <div *ngIf = 'row.properties.activity'>Activity: {{row.properties.activity}}</div>
+      <div *ngIf = 'row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>    </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
