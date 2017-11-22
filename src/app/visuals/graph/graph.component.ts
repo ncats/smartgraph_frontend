@@ -9,12 +9,17 @@ import {Link} from '../../d3/models/link';
 import * as d3 from 'd3';
 import {GraphDataService} from '../../services/graph-data.service';
 import {DownloadButtonComponent} from '../../download-button/download-button.component';
+import {LoadingService} from "../../services/loading.service";
+import {Subscription} from "rxjs/Subscription";
 
 
 @Component({
   selector: 'graph',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+  <div *ngIf="loading" class = "loadingIcon" fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg" [draggableInGraph]="graph">
         <g [linkVisual]="link" [hoverableLink]="link" *ngFor="let link of links"></g>
@@ -49,6 +54,8 @@ export class GraphComponent {
   private downloader: DownloadButtonComponent;
   public nodes: Node[] = [];
   public links: Link[] = [];
+  subscription: Subscription;
+  loading: boolean = true;
 
 
   @HostListener('window:resize', ['$event'])
@@ -61,10 +68,12 @@ export class GraphComponent {
   constructor(private d3Service: D3Service,
               private ref: ChangeDetectorRef,
               private el: ElementRef,
-              private graphDataService: GraphDataService) {
+              private graphDataService: GraphDataService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
+    this.subscription = this.loadingService.loading$.subscribe(res => this.loading = res);
     this.graphDataService.graphhistory$.subscribe(res => {
       this.nodes = res.nodes;
       this.links = res.links;

@@ -23,9 +23,10 @@ export class AppComponent {
   constructor(
     private loadingService: LoadingService,
     public settingsService: SettingsService
-  ) { }
+  ) {
+    this.loadingService.toggleVisible(true);
+  }
   ngOnInit() {
-    this.subscription = this.loadingService.loading$.subscribe(res => this.loading = res);
   }
 
   ngAfterViewInit(): void {
