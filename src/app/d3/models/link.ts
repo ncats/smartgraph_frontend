@@ -24,7 +24,6 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   type?: string;
   properties?: any;
   uuid: string;
-  id: string;
   edgeType: string;
   reactions: Reaction[] = [];
   max_confidence_value: string;

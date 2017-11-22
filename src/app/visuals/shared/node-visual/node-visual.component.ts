@@ -37,8 +37,9 @@ export class StructureViewer{
   styleUrls: ['./node-visual.component.css']
 })
 export class NodeVisualComponent {
-  @Input('nodeVisual') node: Node;
-label: string;
+  @Input('nodeVisual')
+  node: Node;
+  label: string;
 
   constructor(public settingsService: SettingsService){}
 
@@ -56,7 +57,7 @@ label: string;
              */if (settings.compoundLabel == 'structure'){
              this.label = settings.compoundLabel;
                 }else {
-              this.label = this.node.hash;
+              this.label = this.node['hash'];
             }
             break;
           }

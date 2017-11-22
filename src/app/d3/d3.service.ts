@@ -83,7 +83,6 @@ export class D3Service {
     let maximalLinks: any[] = [];
     let upstreamNeighbors: Link[] = [];
     let downstreamNeighbors: Link[] = [];
-
     const decorateNodes = (): void => {
       d3element.select('circle').classed('hovering', true);
       d3.selectAll('circle')
@@ -98,7 +97,9 @@ export class D3Service {
       connectedLinks = d3.selectAll('line')
         .data(graph.links)
         .filter(getNeighborLinks)
-        .classed('connected', true);
+        .classed('hovering', true)
+        .classed('connected', function(link) {return link.edgeType != "up";})
+        .classed('connectedflat', function(link) {return link.edgeType === "up";});
 
       const connectedNodes = d3.selectAll('circle')
         .data(graph.nodes)
@@ -120,6 +121,8 @@ export class D3Service {
     const clearLinks = (): void => {
       d3.selectAll('line')
         .classed('connected', false)
+        .classed('connectedflat', false)
+        .classed('hovering', false)
         .classed('maximal', false);
       d3.selectAll('circle')
         .classed('connected', false)
@@ -129,9 +132,6 @@ export class D3Service {
 
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
-      console.log("finding neighbors");
-      console.log(node);
-      console.log(e);
       const downstream = node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source);
       const upstream = node.uuid === (typeof (e.target) == 'object' ? e.target.uuid : e.target);
       if (downstream == true) {
