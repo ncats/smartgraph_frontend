@@ -6,13 +6,9 @@
 
   <div    *ngSwitchCase="'REGULATES'">
     <target-detail-view [node]="link.target"></target-detail-view>
-
-<!--
-    {{node.properties?.uniprot_id}} ({{node.properties?.name}})
--->
   </div>
-  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.islargest">maximal</span> pattern of: {{node.properties?.uniprot_id}}
-    ({{node.properties?.name}}) {{link.properties | json}}
+  <div    *ngSwitchCase="'PATTERN_OF'"> <span *ngIf="link.properties.islargest">maximal</span> pattern of: {{node?.uniprot_id}}
+    ({{node?.name}}) {{link.properties | json}}
     <pattern-detail-view [node] = "link.target"></pattern-detail-view>
   </div>
   <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of :

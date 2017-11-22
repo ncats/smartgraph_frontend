@@ -56,7 +56,7 @@ label: string;
              */if (settings.compoundLabel == 'structure'){
              this.label = settings.compoundLabel;
                 }else {
-              this.label = this.node.properties.hash;
+              this.label = this.node.hash;
             }
             break;
           }

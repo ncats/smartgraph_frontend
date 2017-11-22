@@ -36,7 +36,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
     this.properties = data.properties;
     this.uuid = data.properties.uuid;
     this.edgeType = data.properties.edgeType;
-    this.max_confidence_value = data.properties.max_confidence_value || 0;
+    this.max_confidence_value = data.properties.max_confidence_value;
     if (data.properties.edgeInfo && data.properties.edgeInfo.length > 0) {
       for (const reaction of data.properties.edgeInfo){
         this.reactions.push(new Reaction(reaction));

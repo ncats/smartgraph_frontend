@@ -57,7 +57,7 @@ var SmrtgraphSearchComponent = (function () {
             _this.startNodes = true;
             _this.graphDataService.graphhistory$.subscribe(function (res) {
                 res.nodes.filter(function (node) {
-                    var id = node.properties.chembl_id || node.properties.properties.chembl_id;
+                    var id = node.uuid;
                     if (valArr.includes(id)) {
                         node.params.startNode = true;
                     }
@@ -74,7 +74,7 @@ var SmrtgraphSearchComponent = (function () {
             _this.endNodes = true;
             _this.graphDataService.graphhistory$.subscribe(function (res) {
                 res.nodes.filter(function (node) {
-                    var id = node.properties.chembl_id || node.properties.properties.chembl_id;
+                    var id = node.uuid;
                     if (valArr.includes(id)) {
                         node.params.endNode = true;
                     }

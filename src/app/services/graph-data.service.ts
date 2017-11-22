@@ -62,7 +62,6 @@ constructor(
       case 'prediction':
       case 'expand':
       case 'load': {
-        console.log(response);
         this.originalEvent = response.type;
         //   let bytes = encoder.encode(msg);
         //  this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);

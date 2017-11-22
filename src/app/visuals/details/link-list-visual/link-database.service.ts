@@ -27,6 +27,7 @@ export class LinkDatabase {
   ) {
     this.nodeSubscription = this.nodeService.hoverednode$
       .subscribe(node => {
+        console.log(node);
         this.dataChange.next([]);
         this.addSite(node.up);
         this.addSite(node.down);

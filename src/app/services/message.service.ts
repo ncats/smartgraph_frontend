@@ -87,7 +87,6 @@ export class MessageService {
       case 'path': {
         const levels = properties.distance;
         // WHERE all(rel in r where rel.max_confidence_value > .3)
-        console.log(properties.confidence);
         const start = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE ';
         let confidence = '';
         let activity = '';
@@ -98,7 +97,7 @@ export class MessageService {
           confidence = ' all(rel in r where rel.max_confidence_value >=' + properties.confidence + ' OR rel.activity > 0 OR rel.ratio> 0) AND';
         }
         if (properties.activity) {
-          activity = ' all(rel in r where rel.activity >=' + properties.activity + ') AND';
+          activity = ' all(rel in r where rel.activity <=' + properties.activity + ') AND';
         }
         if (properties.similarity) {
           similarity = ' all(rel in r where rel.ratio >=' + properties.similarity + ') AND';

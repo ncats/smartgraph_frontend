@@ -78,7 +78,7 @@ export class SmrtgraphSearchComponent implements OnInit {
       // todo: add validation rules: must have uniprot_id (for now)
       // todo: this is going to happen on any change, so i need to filter by response type
       res.nodes.filter(node => {
-        const id = node.properties.uniprot_id;
+        const id = node.uniprot_id;
         if (this.startUUIDList.includes(node.uuid)) {
           // todo: this doesn't clear the parameters, just passes them.
           node.params.endNode = false;

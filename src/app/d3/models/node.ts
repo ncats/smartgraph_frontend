@@ -21,7 +21,7 @@ export class Node implements d3.SimulationNodeDatum {
 
   uuid: string;
   id: string;
-  properties: any;
+ // properties: any;
   labels?: string[];
   linkCount = 0;
   expanded: Object = {
@@ -36,11 +36,9 @@ export class Node implements d3.SimulationNodeDatum {
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
   * */
   constructor(uuid, data) {
-    console.log(uuid);
-    console.log(data.properties);
     this.uuid = uuid;
     //  uuid is still saved here
-    this.properties = data.properties;
+  //  this.properties = data.properties;
     this.labels = data.labels;
     this.linkCount = 1;
     this.params = new Params();
@@ -77,7 +75,7 @@ export class Compound extends Node {
     this.nostereo_hash = data.properties.nostereo_hash;
     this.smiles = data.properties.smiles;
     this.compoundId = data.properties.compound_id.low;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' +
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?size=200&structure=' +
       this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg';
   }
 
@@ -122,7 +120,7 @@ export class Pattern extends Node {
     this.pattern_id = data.properties.pattern_id;
     this.pattern_type = data.properties.pattern_type;
     this.smiles = data.properties.smiles;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' +
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?size=200&structure=' +
       this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg&preset=HIGHLIGHT&amap=' +
       data.properties.smiles.split('').map((a, i) => i).join(',');
   }

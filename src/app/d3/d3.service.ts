@@ -130,8 +130,10 @@ export class D3Service {
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
       console.log("finding neighbors");
-      const downstream = node.uuid === (typeof (e.source) == 'object' ? e.source.id : e.source);
-      const upstream = node.uuid === (typeof (e.target) == 'object' ? e.target.id : e.target);
+      console.log(node);
+      console.log(e);
+      const downstream = node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source);
+      const upstream = node.uuid === (typeof (e.target) == 'object' ? e.target.uuid : e.target);
       if (downstream == true) {
         downstreamNeighbors.push(e);
       }
@@ -143,12 +145,12 @@ export class D3Service {
 
     const getNeighborNodes = (e: any): boolean => {
       console.log("finding neighbors nodes");
-      return connectedLinks.data().map(link => link.target.id).indexOf(e.id) > -1;
+      return connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) > -1;
     };
 
     const findMaximalLinks = (e: any): boolean => {
       if (e.properties && e.properties.islargest){
-        maximalLinks = maximalLinks.concat([e.source.id, e.target.id]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
+        maximalLinks = maximalLinks.concat([e.source.uuid, e.target.uuid]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
         return true;
       }else{
         return false;
@@ -183,6 +185,7 @@ export class D3Service {
     let arrowType = 'connected';
 
       const decorateLinks = (): void => {
+        console.log(link.edgeType);
         if (link.edgeType == 'up'){
           arrowType = 'connectedflat';
         }

@@ -22,24 +22,5 @@ downstreamLinks: Link[];
 
   ngOnInit() {
   }
-/*
-  getSmiles(): void {
-    if (this.node.smiles) {
-      this.nodeSmiles = 'https://tripod.nih.gov/servlet/renderServletv12/?structure=' + this.parseSmiles(this.node.smiles) + '&standardize=true&format=svg';
-    }
-  }
 
-  parseSmiles(smiles: string): string {
-    let parsed = smiles
-      .replace(/[;]/g,'%3B')
-      .replace(/[#]/g,'%23')
-      .replace(/[+]/g,'%2B')
-      .replace(/[\\]/g,'%5C')
-      .replace(/[|]/g,'%7C');
-    return parsed;
-  }
-
-  ngOnChanges(changes){
-    this.getSmiles();
-  }*/
 }
