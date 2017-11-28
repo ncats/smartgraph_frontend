@@ -51,12 +51,7 @@ export class NodeMenuComponent{
    private graphDataService: GraphDataService,
    public settingsService: SettingsService,
    public loadingService: LoadingService
- ) {
-   console.log(this.label);
-
-/*   this.settings = this.settingsService.dataChange.getValue();
-   console.log(this.settings);*/
- }
+ ) { }
 
 
 
@@ -97,7 +92,6 @@ export class NodeMenuComponent{
         break;
       }
       case 'Compound': {
-        console.log(this.label);
         if (this.label && this.settings.compoundLabel === 'structure'){
           this.label = this.settings.compoundLabel;
         }else {
@@ -110,7 +104,6 @@ export class NodeMenuComponent{
         break;
       }
     }
-    console.log(this);
   }
 
   expand(label): void {
@@ -134,10 +127,8 @@ export class NodeMenuComponent{
   }
 
   getPredictions():void {
-   console.log("fgdfgdfgfdgd");
    this.loadingService.toggleVisible(true);
     const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'prediction');
-    console.log(message);
     this.dataConnectionService.messages.next(message);
     this.clickedNode.params.menu = false;
   }

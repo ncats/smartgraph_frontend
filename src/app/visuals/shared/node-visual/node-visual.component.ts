@@ -52,9 +52,7 @@ export class NodeVisualComponent {
             break;
           }
           case 'Compound': {
-            /*
-             this.label = this.settingsService.settings.compoundLabel;
-             */if (settings.compoundLabel == 'structure'){
+            if (settings.compoundLabel == 'structure'){
              this.label = settings.compoundLabel;
                 }else {
               this.label = this.node['hash'];

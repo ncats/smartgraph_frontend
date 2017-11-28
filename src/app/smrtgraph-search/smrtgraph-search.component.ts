@@ -145,10 +145,11 @@ export class SmrtgraphSearchComponent implements OnInit {
 
   shortestPath(){
      this.loadingService.toggleVisible(true);
-    if (this.startNodesCtrl.value && this.endNodesCtrl.value){
+     console.log(this.endNodesCtrl.value);
+    if (this.startNodesCtrl.value){
       const value: {} = {
         start: this.startUUIDList,
-        end: this.endUUIDList
+        end: this.endUUIDList || []
       };
       const params: {} = {
         distance: this.distanceCtrl.value || 5,

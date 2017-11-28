@@ -92,6 +92,8 @@ export class MessageService {
         let activity = '';
         let similarity = '';
         const where = '';
+        const inStart = '  t.uuid IN {start}';
+        const inEnd = ' AND q.uuid IN {end}';
 
         if (properties.confidence) {
           confidence = ' all(rel in r where rel.max_confidence_value >=' + properties.confidence + ' OR rel.activity > 0 OR rel.ratio> 0) AND';
@@ -102,7 +104,11 @@ export class MessageService {
         if (properties.similarity) {
           similarity = ' all(rel in r where rel.ratio >=' + properties.similarity + ') AND';
         }
-        msg = start + confidence + activity + similarity + ' t.uuid IN {start} AND q.uuid IN {end} AND q.uuid <> t.uuid return p';
+        if(term.end.length > 0){
+          msg = start + confidence + activity + similarity + inStart + inEnd + ' AND q.uuid <> t.uuid return p';
+        }else {
+          msg = start + confidence + activity + similarity + inStart + ' AND q.uuid <> t.uuid return p';
+        }
         params = {start: term.start, end: term.end};
         break;
       }
