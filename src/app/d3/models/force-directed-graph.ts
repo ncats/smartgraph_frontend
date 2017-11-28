@@ -11,7 +11,7 @@ const FORCES = {
   COLLISION: 1,
   //  A positive value causes nodes to attract each other, similar to gravity, while a negative
   //  value causes nodes to repel each other, similar to electrostatic charge.
-  CHARGE: -1
+  CHARGE: -80
 };
 
 export class ForceDirectedGraph {
@@ -30,20 +30,20 @@ export class ForceDirectedGraph {
   }
 
   update(graph, options) {
+    console.log(this);
     //  frequently the data is separate from the graph image, so these need to be set for downstream filtering
     this.nodes = graph.nodes;
     this.links = graph.links;
 
     this.simulation.nodes(this.nodes);
-    this.simulation
-      .force('link', d3.forceLink(this.links).id(d => d['id'])
-        .strength(FORCES.LINKS));
+    this.simulation.force("link", d3.forceLink(this.links));
+    //    .strength(FORCES.LINKS));
     this.initSimulation(options);
     if (!this.simulation) {
       throw new Error('simulation was not initialized yet');
     }
       //  this.simulation.restart();
-    this.simulation.alphaTarget(0.5).restart();
+    this.simulation.alpha(1).restart();
     this.loadingService.toggleVisible(false);
   }
 
@@ -55,14 +55,16 @@ export class ForceDirectedGraph {
     /** Creating the simulation */
     if (!this.simulation) {
       this.simulation = d3.forceSimulation()
-      /* repels the nodes away from each other*/
+        .force('link', d3.forceLink(this.links).id(d => d['id']))
+        //  .distance(this.links.length*100))
+        /* repels the nodes away from each other*/
         .force('charge', d3.forceManyBody()
-          .strength(d => FORCES.CHARGE * d['r']))
+         .strength(d => FORCES.CHARGE * d['r']))
         /** Updating the central force of the simulation */
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
         /* prevents node overlap*/
         .force('collide', d3.forceCollide()
-          .radius(d => d['r'] + 5).iterations(2)
+          .radius(d => d['r'] + 5).iterations(1)
           .strength(FORCES.COLLISION))
         .force('y', d3.forceY().y(function(){return Math.random() * ((3 * options.height / 4) -
           (options.height / 4) + 1) + (options.height / 4);

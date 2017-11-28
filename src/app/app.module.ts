@@ -24,7 +24,7 @@ import {NodeMenuControllerService} from './services/node-menu-controller.service
 import {GraphDataService} from './services/graph-data.service';
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
 import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
-import { DownloadButtonComponent } from './download-button/download-button.component';
+import {DownloadButtonComponent} from './download-button/download-button.component';
 import { LinkDetailsVisualComponent } from './visuals/details/link-details-visual/link-details-visual.component';
 import {LinkService} from './d3/models/link.service';
 import {ZoomableDirective} from './d3/directives/zoomable.directive';

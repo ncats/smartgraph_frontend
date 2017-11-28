@@ -1,19 +1,39 @@
 import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {Renderer2} from '@angular/core';
 import {unescape} from 'querystring';
+import {GraphDataService} from "../services/graph-data.service";
+import {Link} from '../d3/models/link';
+import {Node} from '../d3/models/node';
 
 @Component({
   selector: 'download-button',
   template: `
-      <button mat-button>Download current graph <i class="material-icons">file_download</i></button>
-
+<button mat-button [matMenuTriggerFor]="menu">
+  Download graph <mat-icon>file_download</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)=" downloadJSON()">
+    <mat-icon>code</mat-icon>
+    <span>Cytoscape JSON</span>
+  </button>
+  <button mat-menu-item (click)=" downloadCSV()" disabled>
+    <mat-icon>border_all</mat-icon>
+    <span>CSV</span>
+  </button>
+  <button mat-menu-item (click)=" downloadGraph()" disabled>
+    <mat-icon>photo</mat-icon>
+    <span>PNG</span>
+  </button>
+</mat-menu>
 `,
   styleUrls: ['./download-button.component.css']
 })
 export class DownloadButtonComponent implements OnInit {
   @ViewChild('#svg') el: ElementRef;
 
-  constructor(private rd: Renderer2) {
+  file: any;
+  constructor(private rd: Renderer2,
+  private graphDataService: GraphDataService) {
   }
 
   ngOnInit() {
@@ -30,8 +50,24 @@ export class DownloadButtonComponent implements OnInit {
 
   //
 
+downloadJSON(){
+    let cyto = new CytoJSON();
+    let graph = this.graphDataService.returnGraph();
+  for (let node of graph.nodes) {
+    cyto.elements.nodes.push(new CytoNode(node));
+  }
+  for (let link of graph.links) {
+    cyto.elements.edges.push(new CytoEdge(link));
+  }
+    console.log(graph);
+    console.log(cyto);
+this.file = new Blob([JSON.stringify(cyto)], { type: "type: 'text/json'"});
+  this.downloadFile();
+}
 
-  downloadFile(data: any, options: any) {
+downloadCSV(){}
+
+  downloadPNG(data: any, options: any) {
     console.log('downloading');
     const svgString = this.getSVGString(data.node());
     this.svgString2Image( svgString, 2 * options.width, 2 * options.height, save ); //  passes Blob and filesize String to the callback
@@ -156,4 +192,75 @@ console.log(context);
       console.log(blob);
       console.log(image);
     }
+
+  public blobToFile = (theBlob: Blob, fileName:string): File => {
+    var b: any = theBlob;
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    b.lastModifiedDate = new Date();
+    b.name = fileName;
+
+    //Cast to a File() type
+    return <File>theBlob;
+  }
+
+    downloadFile():void{
+  console.log(this.file);
+      let url = window.URL.createObjectURL(this.file);
+      window.open(url);
+    }
+
+}
+
+export class CytoJSON{
+  format_version ="1.0";
+  "generated_by" = "cytoscape-3.6.0";
+  target_cytoscapejs_version = "~2.1";
+  data: Object = {
+    shared_name: "smrtgraph.csv",
+    name : "smrtgraph.csv",
+    SUID : 64,
+    __Annotations: [],
+    selected: false
+  };
+elements = {
+  edges:  [],
+  nodes: []
+};
+
+constructor(){}
+}
+
+export class CytoNode{
+  data={id:"", node:{}};
+  position = {
+    x : 0,
+    y : 0
+  };
+  selected : boolean;
+
+  constructor(node: Node){
+    this.data.id = node.uuid;
+    this.data.node = node;
+    this.position.x= node['x'] || 0;
+    this.position.y= node['y'] || 0;
+    this.selected = false;
+  }
+
+}
+export class CytoEdge{
+  data = {
+    id : '',
+    source : '',
+    target : '',
+    properties: {}
+  };
+  selected : boolean;
+
+  constructor(link:Link){
+    this.data.id = link.uuid;
+    this.data.properties = link;
+    this.data.source = link.source['uuid'] || link.source;
+    this.data.target = link.target['uuid'] || link.target;
+    this.selected = false;
+  }
 }

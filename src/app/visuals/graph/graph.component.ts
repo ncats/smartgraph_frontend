@@ -43,15 +43,13 @@ import {Subscription} from "rxjs/Subscription";
           </marker>
         </defs>
     </svg>
-<!--
-          <download-button (click)=" downloadGraph()"></download-button>
--->
+          <download-button ></download-button>
   `,
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent {
-  @ViewChild(DownloadButtonComponent)
-  private downloader: DownloadButtonComponent;
+/*  @ViewChild(DownloadButtonComponent)
+  private downloader: DownloadButtonComponent;*/
   public nodes: Node[] = [];
   public links: Link[] = [];
   subscription: Subscription;
@@ -98,9 +96,9 @@ export class GraphComponent {
     this.graph.initSimulation(this.options);
   }
 
-  downloadGraph(): void {
+/*  downloadGraph(): void {
     this.downloader.downloadFile(d3.select('svg'), this.options);
-  }
+  }*/
 
   _options: {width, height} = {width: 800, height: 600};
 

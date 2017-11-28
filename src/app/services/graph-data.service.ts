@@ -237,4 +237,8 @@ countLinks(): void{
     this.loadingService.toggleVisible(false);
 
   }
+
+  returnGraph():any{
+    return this.graph;
+  }
 }

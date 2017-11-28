@@ -23,9 +23,7 @@ import {LoadingService} from "../../../services/loading.service";
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" (click)="expand('All')">Expand All {{counts?.total}}</button>
-<!--
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
--->
 <!--
 // todo: collapse all show/hide logic
  <button mat-menu-item (click)="collapse('All')">Collapse All</button>
