@@ -52,6 +52,8 @@ export class NodeMenuComponent{
    public settingsService: SettingsService,
    public loadingService: LoadingService
  ) {
+   console.log(this.label);
+
 /*   this.settings = this.settingsService.dataChange.getValue();
    console.log(this.settings);*/
  }
@@ -95,7 +97,8 @@ export class NodeMenuComponent{
         break;
       }
       case 'Compound': {
-        if (this.settings.compoundLabel == 'structure'){
+        console.log(this.label);
+        if (this.label && this.settings.compoundLabel === 'structure'){
           this.label = this.settings.compoundLabel;
         }else {
           this.label = this.clickedNode.hash;
@@ -107,6 +110,7 @@ export class NodeMenuComponent{
         break;
       }
     }
+    console.log(this);
   }
 
   expand(label): void {
