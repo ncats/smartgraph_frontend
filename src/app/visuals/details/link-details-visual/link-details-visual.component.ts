@@ -24,6 +24,12 @@ export class LinkDetailsVisualComponent implements OnInit {
         this.link = link;
         this.node = link.target;
       });
+/*
+    this.linkSubscription = this.linkService.hoveredlink$
+      .subscribe(link => {
+        this.link = link;
+        this.node = link.target;
+      });*/
     if (this.data){
       this.link = this.data;
     }

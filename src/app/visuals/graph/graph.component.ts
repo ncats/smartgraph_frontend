@@ -22,7 +22,7 @@ import {Subscription} from "rxjs/Subscription";
   </div>
     <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
       <g [zoomableOf]="svg" [draggableInGraph]="graph">
-        <g [linkVisual]="link" [hoverableLink]="link" *ngFor="let link of links"></g>
+        <g [linkVisual]="link" [clickableLink] = "link" [hoverableLink]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
         [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
         </g>

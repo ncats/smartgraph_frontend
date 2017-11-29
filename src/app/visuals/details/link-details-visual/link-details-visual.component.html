@@ -1,6 +1,6 @@
 
 <div [ngSwitch]="link?.type" *ngIf = "node?.params" (mouseenter)="node.params.hovered = true;" (mouseleave)="node.params.hovered = false;">
-  <div *ngSwitchCase="'TESTED_ON'">
+<!--  <div *ngSwitchCase="'TESTED_ON'">
     <target-detail-view [node]="link.target"></target-detail-view>
   </div>
 
@@ -14,7 +14,7 @@
   <div    *ngSwitchCase="'POTENT_PATTERN_OF'">potent pattern of :
   <target-detail-view [node]="link.target"></target-detail-view>
   </div>
-  <!--    <div    *ngSwitchCase="'REGULATES'"></div>
-      <div    *ngSwitchCase="'REGULATES'"></div>-->
-  <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>
+  &lt;!&ndash;    <div    *ngSwitchCase="'REGULATES'"></div>
+      <div    *ngSwitchCase="'REGULATES'"></div>&ndash;&gt;
+  <div *ngSwitchDefault> {{link.type}} {{link.properties}}</div>-->
 </div>

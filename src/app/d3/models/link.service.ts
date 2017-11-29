@@ -10,20 +10,34 @@ export class LinkService {
   //  Observable navItem source
   private _clickedLinkSource = new Subject<Link>();
   private _hoveredLinkSource = new Subject<any>();
+  private _linkSource = new Subject<any>();
   private  masterLinkMap: Map<string, Link> = new Map();
-
+private clickedLinkList: Link[] = [];
+private hoveredLinkList: Link[] = [];
   //  Observable navItem stream
-  lastLink = {};
+  links = {
+    clicked: this.clickedLinkList,
+    hovered: this.hoveredLinkList,
+  };
+
   clickedlink$ = this._clickedLinkSource.asObservable();
   hoveredlink$ = this._hoveredLinkSource.asObservable();
+  linkslist$ = this._linkSource.asObservable();
 
   //  service command
-  changeLink(link: Link) {
-    this._clickedLinkSource.next(link);
+  clickedLinks(link: Link) {
+    this.clickedLinkList.push(link);
+    console.log(this.clickedLinkList);
+    console.log(this.links);
+    this._clickedLinkSource.next(this.links);
+    this._linkSource.next(this.links);
   }
 
   hoveredLink(link: any) {
+    this.hoveredLinkList= [link];
+    console.log(this.links);
     this._hoveredLinkSource.next(link);
+    this._linkSource.next(this.links);
 
   }
 

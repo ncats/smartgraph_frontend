@@ -24,8 +24,12 @@ export class GraphDetailsComponent implements OnInit {
       .subscribe(node => {
         this.hoveredObjType = 'node';
       });
-    this.linkSubscription = this.linkService.hoveredlink$
+/*    this.linkSubscription = this.linkService.hoveredlink$
       .subscribe(link => {
+        this.hoveredObjType = 'link';
+      });*/
+    this.linkSubscription = this.linkService.linkslist$
+      .subscribe(res => {
         this.hoveredObjType = 'link';
       });
   }

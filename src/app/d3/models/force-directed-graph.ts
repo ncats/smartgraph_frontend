@@ -30,7 +30,6 @@ export class ForceDirectedGraph {
   }
 
   update(graph, options) {
-    console.log(this);
     //  frequently the data is separate from the graph image, so these need to be set for downstream filtering
     this.nodes = graph.nodes;
     this.links = graph.links;

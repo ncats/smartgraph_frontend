@@ -33,10 +33,17 @@ export class LinkDatabase {
         this.addSite(node.down);
       });
 
-    this.linkSubscription = this.linkService.hoveredlink$
+/*    this.linkSubscription = this.linkService.hoveredlink$
       .subscribe(link => {
         this.dataChange.next([]);
         this.addSite([link]);
+      });*/
+
+this.linkSubscription = this.linkService.linkslist$
+      .subscribe(res => {
+        this.dataChange.next([]);
+        this.addSite(res.clicked);
+        this.addSite(res.hovered);
       });
   }
 

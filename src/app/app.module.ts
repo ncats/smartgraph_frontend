@@ -31,7 +31,7 @@ import {ZoomableDirective} from './d3/directives/zoomable.directive';
 import {HoverableLinkDirective} from './d3/directives/hoverable-link.directive';
 import {HoverableNodeDirective} from './d3/directives/hoverable-node.directive';
 import {DraggableDirective} from './d3/directives/draggable.directive';
-import {ClickableDirective} from './d3/directives/clickable.directive';
+import {ClickableNodeDirective} from './d3/directives/clickable-node.directive';
 import { GraphDetailsComponent } from './visuals/details/graph-details/graph-details.component';
 import {LoadingService} from './services/loading.service';
 import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
@@ -42,6 +42,7 @@ import { ReactionVisualComponent } from './visuals/details/link-list-visual/reac
 import {SettingsService} from './services/settings.service';
 import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-settings.component';
 import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component";
+import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/n
     HoverableLinkDirective,
     HoverableNodeDirective,
     DraggableDirective,
-    ClickableDirective,
+    ClickableNodeDirective,
+    ClickableLinkDirective,
     GraphDetailsComponent,
     TargetDetailViewComponent,
     CompoundDetailViewComponent,

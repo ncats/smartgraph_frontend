@@ -1,6 +1,7 @@
 .link {
     stroke-width: .75;
   stroke: #A5A5A5;
+  cursor: pointer;
 }
 
 .end {
@@ -52,6 +53,11 @@
 
 
 .hovering {
+  stroke: #595959;
+  stroke-width: 2px;
+}
+
+.clicked {
   stroke: #595959;
   stroke-width: 2px;
 }

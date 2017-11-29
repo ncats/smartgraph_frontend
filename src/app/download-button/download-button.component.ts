@@ -37,15 +37,15 @@ export class DownloadButtonComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.rd.data);
-    console.log(this.el);
+/*    console.log(this.rd.data);
+    console.log(this.el);*/
   }
 
   ngAfterViewInit() {
     //  var div = this.elRef.nativeElement.querySelector('#');
     //  console.log(div);
-    console.log(this.rd);
-    console.log(this.el);
+/*    console.log(this.rd);
+    console.log(this.el);*/
   }
 
   //
@@ -59,8 +59,6 @@ downloadJSON(){
   for (let link of graph.links) {
     cyto.elements.edges.push(new CytoEdge(link));
   }
-    console.log(graph);
-    console.log(cyto);
 this.file = new Blob([JSON.stringify(cyto)], { type: "type: 'text/json'"});
   this.downloadFile();
 }
