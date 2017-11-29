@@ -249,68 +249,31 @@ export class D3Service {
 
     d3element.on('click', clickFunction);
     svg.on('mousedown', clearMenu);
-  }
+  };
 
   /** A method to bind click events to an svg element */
     // just emits the link for other components to listen for
   applyClickableLinkBehaviour = (element, link: Link, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
     const svg = d3.select('svg');
-
-/*    const  = (): void => {
-      console.log("click link");
-      d3.event.stopPropagation();
-    };*/
-
     let arrowType = 'connected';
 
-    const decorateLinks = (): void => {
+    const clickFunction = (): void => {
       console.log(link.edgeType);
       if (link.edgeType == 'up'){
         arrowType = 'connectedflat';
       }
       let d3link = d3element.select('line');
       d3link.classed('clicked', !d3link.classed('clicked')).classed(arrowType, !d3link.classed(arrowType));
-      this.linkService.clickedLinks(link);
-    };
-
-
-    const clickFunction = (): void => {
-     // this.linkService.hoveredLink(link);
-     // this.linkDatabase.addSite(link);
-      decorateLinks();
-    };
-
-    const mouseOutFunction = (): void => {
-      clearLinks();
-    };
-
-    /*const toggleMenu = (): void => {
-      if (node.params.menu) {
-        this.nodeMenuController.toggleVisible(false);
-        node.params.menu = false;
-
-      }
-// if menu is closed, open it
-      else {
-        this.nodeService.changeNode(node);
-        this.nodeMenuController.toggleVisible(true);
-        node.params.menu = true;
-        // if menu is open, close it
+      if(d3link.classed('clicked')){
+        this.linkService.clickedLinks(link);
+      }else{
+        this.linkService.removeClickedLink(link);
       }
     };
 
-
-    const clearMenu = (): void => {
-      // this just closes out the menu and sets the menu tracking variable to be false for each node
-      this.nodeMenuController.toggleVisible(false);
-      graph.nodes.map(node => node.params.menu = false);
-    };
-
-    svg.on('mousedown', clearMenu);*/
     d3element.on('click', clickFunction);
-
-  }
+  };
 
   /** The interactable graph we will return
    * This method does not interact with the document, purely physical calculations with d3

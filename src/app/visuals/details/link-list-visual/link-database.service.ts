@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DataSource} from '@angular/cdk/collections';
-import {MatSort} from '@angular/material';
+import {MatTableDataSource, MatSort} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import { map, merge } from 'rxjs/operators';
@@ -27,10 +26,10 @@ export class LinkDatabase {
   ) {
     this.nodeSubscription = this.nodeService.hoverednode$
       .subscribe(node => {
-        console.log(node);
+      /*  console.log(node);
         this.dataChange.next([]);
         this.addSite(node.up);
-        this.addSite(node.down);
+        this.addSite(node.down);*/
       });
 
 /*    this.linkSubscription = this.linkService.hoveredlink$
@@ -41,20 +40,25 @@ export class LinkDatabase {
 
 this.linkSubscription = this.linkService.linkslist$
       .subscribe(res => {
-        this.dataChange.next([]);
-        this.addSite(res.clicked);
+     /*   console.log(res);
+       // this.dataChange.next([]);
         this.addSite(res.hovered);
+        this.addSite(res.clicked);*/
       });
   }
 
   /** Adds a new link to the database. */
   addSite(links: any) {
-    const copiedData = this.data.slice();
+    let copiedData = this.data.slice();
     if (links.length > 0) {
     for (const link of links) {
       copiedData.push(link);
-}
+      }
     }
+    console.log(copiedData);
+  //  console.log(...new Set(copiedData));
+  // let copiedData2 = [...new Set(copiedData)];
+   // console.log(copiedData2);
     this.dataChange.next(copiedData);
   }
 }
@@ -66,23 +70,23 @@ this.linkSubscription = this.linkService.linkslist$
  * the underlying data. Instead, it only needs to take the data and send the table exactly what
  * should be rendered.
  */
-@Injectable()
-export class LinkDataSource extends DataSource<any> {
+/*@Injectable()
+export class LinkDataSource extends MatTableDataSource<any> {
 
   constructor(private _linkDatabase: LinkDatabase, private _sort: MatSort) {
     super();
   }
 
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
+  /!** Connect function called by the table to retrieve one stream containing the data to render. *!/
   connect(): Observable<Link[]> {
     const displayDataChanges = [
       this._linkDatabase.dataChange,
       this._sort.sortChange,
     ];
 
-/*    return Observable.merge(...displayDataChanges).map(() => {
+/!*    return Observable.merge(...displayDataChanges).map(() => {
       return this.getSortedData();
-    }); */
+    }); *!/
     return Observable.merge(...displayDataChanges).pipe(map(() => {
       return this.getSortedData();
     })
@@ -91,7 +95,7 @@ export class LinkDataSource extends DataSource<any> {
 
   disconnect() {}
 
-  /** Returns a sorted copy of the database data. */
+  /!** Returns a sorted copy of the database data. *!/
   getSortedData(): Link[] {
     const data = this._linkDatabase.data.slice();
     if (!this._sort.active || this._sort.direction === '') { return data; }
@@ -101,10 +105,10 @@ export class LinkDataSource extends DataSource<any> {
       let propertyB: number|string = '';
 
       switch (this._sort.active) {
-       /* case 'status': [propertyA, propertyB] = [a.status, b.status]; break;
+       /!* case 'status': [propertyA, propertyB] = [a.status, b.status]; break;
         case 'friendly_name': [propertyA, propertyB] = [a.friendly_name, b.friendly_name]; break;
         case 'average_response_time': [propertyA, propertyB] = [a.average_response_time, b.average_response_time]; break;
-        case 'hour': [propertyA, propertyB] = [a.hour, b.hour]; break;*/
+        case 'hour': [propertyA, propertyB] = [a.hour, b.hour]; break;*!/
         case 'edgeType': [propertyA, propertyB] = [a.edgeType, b.edgeType]; break;
         case 'linkType': [propertyA, propertyB] = [a.type, b.type]; break;
       }
@@ -115,5 +119,5 @@ export class LinkDataSource extends DataSource<any> {
       return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
     });
   }
-}
+}*/
 
