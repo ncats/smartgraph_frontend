@@ -9,7 +9,12 @@ import {SettingsService} from '../../../services/settings.service';
   selector: '[linkVisual]',
   template: `
  <svg:g>
-
+    <!--<svg:line class="clickable-area" 
+[attr.x1]=x1
+    [attr.y1]=y1
+    [attr.x2]=x2
+    [attr.y2]=y2
+       ></svg:line>-->
         <svg:line class="link end"
         [ngClass]="{arrow: link.edgeType != 'up', flatarrow: link.edgeType == 'up'}"
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"

@@ -24,19 +24,15 @@ export class NodeDetailsVisualComponent implements OnInit {
           this.getNodeType();
       });
     if (this.data){
-      this.hoveredNode = {node: this.data};
+      this.hoveredNode = this.data;
       this.getNodeType();
     }
   }
 
   getNodeType(): void{
     if (this.hoveredNode){
-    this.nodeType =  this.hoveredNode.node.constructor.name;
+    this.nodeType =  this.hoveredNode.constructor.name;
     }
-  }
-
-
-  ngOnChanges(changes){
   }
 }
 

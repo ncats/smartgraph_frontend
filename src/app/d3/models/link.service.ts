@@ -8,43 +8,40 @@ import {Link} from './link';
 @Injectable()
 export class LinkService {
   //  Observable navItem source
-  private _hoveredLinkSource = new Subject<any>();
   private _linkSource = new Subject<any>();
   private  masterLinkMap: Map<string, Link> = new Map();
 private clickedLinkList: Link[] = [];
 private hoveredLinkList: Link[] = [];
-  //  Observable navItem stream
-  links = {
-    clicked: this.clickedLinkList,
-    hovered: this.hoveredLinkList
-  };
 
-  hoveredlink$ = this._hoveredLinkSource.asObservable();
+  //  Observable navItem stream
   linkslist$ = this._linkSource.asObservable();
 
   //  service command
-  clickedLinks(link: Link) {
+  clickedLinks(link: Link):void {
     this.clickedLinkList.push(link);
-    console.log(this.clickedLinkList);
-    console.log(this.links);
-    this._linkSource.next(this.links);
+    this._linkSource.next({
+      clicked: this.clickedLinkList,
+      hovered: this.hoveredLinkList
+    });
   }
 
-  hoveredLink(link: any) {
-    console.log(link);
+  hoveredLink(link: Link[]):void {
     if(this.hoveredLinkList.length > 0){
-      this.hoveredLinkList.pop();
+      this.hoveredLinkList = [];
     }
-
-    this.hoveredLinkList.push(link);
-    console.log(this);
-   // this._hoveredLinkSource.next(link);
-    this._linkSource.next(this.links);
+    this.hoveredLinkList.push(...link);
+    this._linkSource.next({
+      clicked: this.clickedLinkList,
+      hovered: this.hoveredLinkList
+    });
   }
 
-  removeClickedLink(link:Link){
+  removeClickedLink(link:Link):void{
     this.clickedLinkList.splice( this.clickedLinkList.indexOf(link), 1);
-    this._linkSource.next(this.links);
+    this._linkSource.next({
+      clicked: this.clickedLinkList,
+      hovered: this.hoveredLinkList
+    });
   }
 
   getLinks(): Map<string, Link> {

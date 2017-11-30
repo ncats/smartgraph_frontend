@@ -145,7 +145,6 @@ export class SmrtgraphSearchComponent implements OnInit {
 
   shortestPath(){
      this.loadingService.toggleVisible(true);
-     console.log(this.endNodesCtrl.value);
     if (this.startNodesCtrl.value){
       const value: {} = {
         start: this.startUUIDList,

@@ -11,11 +11,6 @@ import {Link} from '../../../../../d3/models/link';
 export class CompoundDetailViewComponent implements OnInit {
 @Input()
 node: Compound;
-  @Input()
-downstreamLinks: Link[];
-  @Input()
-  upstreamLinks: Link[];
-  nodeSmiles: string;
 
   constructor() {
   }

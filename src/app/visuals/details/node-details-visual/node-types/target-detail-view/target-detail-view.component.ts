@@ -10,10 +10,7 @@ import {Target} from '../../../../../d3/models/node';
 export class TargetDetailViewComponent implements OnInit {
   @Input()
   node: Target;
-  @Input()
-  downstreamLinks: Link[];
-  @Input()
-  upstreamLinks: Link[];
+
 
   uniprotUrl: string;
 

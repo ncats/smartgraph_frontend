@@ -8,11 +8,10 @@ import {ForceDirectedGraph} from '../models/force-directed-graph';
 })
 export class HoverableLinkDirective {
     @Input('hoverableLink') link: Link;
-    @Input('draggableInGraph') graph: ForceDirectedGraph;
 
     constructor(private d3Service: D3Service, private _element: ElementRef) { }
 
     ngOnInit() {
-        this.d3Service.applyHoverableLinkBehaviour(this._element.nativeElement, this.link, this.graph);
+        this.d3Service.applyHoverableLinkBehaviour(this._element.nativeElement, this.link);
     }
 }

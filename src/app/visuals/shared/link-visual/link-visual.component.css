@@ -66,3 +66,9 @@
   stroke-width: 2;
   stroke: #A5A5A5;
 }*/
+.clickable-area{
+  stroke: red;
+  fill:none;
+  stroke-width: 15px;
+  cursor: pointer;
+}

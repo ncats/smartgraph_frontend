@@ -6,7 +6,6 @@ import * as d3 from 'd3';
 import {NodeService} from './models/node.service';
 import {LinkService} from './models/link.service';
 import {NodeMenuControllerService} from '../services/node-menu-controller.service';
-import {LinkDatabase} from '../visuals/details/link-list-visual/link-database.service';
 
 @Injectable()
 export class D3Service {
@@ -17,8 +16,7 @@ export class D3Service {
   constructor(
     private nodeService: NodeService,
     private linkService: LinkService,
-    private nodeMenuController: NodeMenuControllerService,
-    private linkDatabase: LinkDatabase
+    private nodeMenuController: NodeMenuControllerService
   ) {  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
@@ -80,20 +78,13 @@ export class D3Service {
   applyHoverableNodeBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     const d3element = d3.select(element);
     let connectedLinks;
+    let connectedNodes;
     let maximalLinks: any[] = [];
-    let upstreamNeighbors: Link[] = [];
-    let downstreamNeighbors: Link[] = [];
+    let neighbors: Link[] = [];
+  //  let downstreamNeighbors: Link[] = [];
+
     const decorateNodes = (): void => {
       d3element.select('circle').classed('hovering', true);
-      d3.selectAll('circle')
-        .data(graph.nodes)
-        .filter(getNeighborNodes) // this will pass each node in the graph to the function
-        .classed('connected', true);
-    };
-
-
-
-    const decorateLinks = (): void => {
       connectedLinks = d3.selectAll('line')
         .data(graph.links)
         .filter(getNeighborLinks)
@@ -101,7 +92,7 @@ export class D3Service {
         .classed('connected', function(link) {return link.edgeType != "up";})
         .classed('connectedflat', function(link) {return link.edgeType === "up";});
 
-      const connectedNodes = d3.selectAll('circle')
+       connectedNodes = d3.selectAll('circle')
         .data(graph.nodes)
         .filter(getNeighborNodes)
         .classed('connected', true);
@@ -114,11 +105,6 @@ export class D3Service {
     };
 
     const clearNodes = (): void => {
-      d3element.select('circle').classed('hovering', false);
-      node.params.hovered = false;
-    };
-
-    const clearLinks = (): void => {
       d3.selectAll('line')
         .classed('connected', false)
         .classed('connectedflat', false)
@@ -126,21 +112,18 @@ export class D3Service {
         .classed('maximal', false);
       d3.selectAll('circle')
         .classed('connected', false)
+        .classed('hovering', false)
         .classed('maximal', false);
-
+      node.params.hovered = false;
     };
 
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
-      const downstream = node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source);
-      const upstream = node.uuid === (typeof (e.target) == 'object' ? e.target.uuid : e.target);
-      if (downstream == true) {
-        downstreamNeighbors.push(e);
+      const neighbor = (node.uuid === ((typeof (e.source) == 'object' ? e.source.uuid : e.source)) || node.uuid ===(typeof (e.target) == 'object' ? e.target.uuid : e.target));
+      if (neighbor == true) {
+        neighbors.push(e);
       }
-      if (upstream == true){
-        upstreamNeighbors.push(e);
-      }
-      return downstream;
+      return neighbor;
     };
 
     const getNeighborNodes = (e: any): boolean => {
@@ -158,21 +141,21 @@ export class D3Service {
     };
 
     const findMaximalNodes = (e: any): boolean => {
-      return maximalLinks.indexOf(e.id) > -1;
+      return maximalLinks.indexOf(e.uuid) > -1;
     };
 
     // todo: this is called on drag and iterates over the entire graph
     const mouseOverFunction = (): void => {
-      decorateLinks();
       decorateNodes();
-      this.nodeService.hoveredNode({node: node , up: upstreamNeighbors, down: downstreamNeighbors});
+      this.nodeService.hoveredNode(node);
+      if(neighbors.length>0) {
+        this.linkService.hoveredLink(neighbors);
+      }
     };
 
     const mouseOutFunction = (): void => {
       clearNodes();
-      clearLinks();
-      upstreamNeighbors = [];
-      downstreamNeighbors = [];
+      neighbors = [];
     };
 // todo: this fires constantly as the node is dragged
     d3element.on('mouseover', mouseOverFunction).on('mouseout', mouseOutFunction);
@@ -180,31 +163,20 @@ export class D3Service {
   }
 
   /** A method to bind hoverable behaviour to an svg element */
-  applyHoverableLinkBehaviour(element, link: Link, graph: ForceDirectedGraph) {
+  applyHoverableLinkBehaviour(element, link: Link) {
     const d3element = d3.select(element);
     let arrowType = 'connected';
 
-      const decorateLinks = (): void => {
-        console.log(link.edgeType);
-        if (link.edgeType == 'up'){
-          arrowType = 'connectedflat';
-        }
+    const mouseOverFunction = (): void => {
+      if (link.edgeType == 'up'){
+        arrowType = 'connectedflat';
+      }
       d3element.select('line').classed('hovering', true).classed(arrowType, true);
-        this.linkService.hoveredLink(link);
-    };
-
-    const clearLinks = (): void => {
-      d3element.select('line').classed('hovering', false).classed(arrowType, false);
-    };
-
-      const mouseOverFunction = (): void => {
-      this.linkService.hoveredLink(link);
-        this.linkDatabase.addSite(link);
-        decorateLinks();
+      this.linkService.hoveredLink([link]);
     };
 
     const mouseOutFunction = (): void => {
-     clearLinks();
+      d3element.select('line').classed('hovering', false).classed(arrowType, false);
     };
 
     d3element.on('mouseover', mouseOverFunction).on('mouseout', mouseOutFunction);
@@ -213,7 +185,7 @@ export class D3Service {
 
 
   /** A method to bind click events to an svg element */
-  // just emits the node for other components to listen for
+  // emits the node for other components to listen for
   applyClickableNodeBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
     const svg = d3.select('svg');
@@ -242,7 +214,7 @@ export class D3Service {
     };
 
     const clearMenu = (): void => {
-      // this just closes out the menu and sets the menu tracking variable to be false for each node
+      // this closes out the menu and sets the menu tracking variable to be false for each node
       this.nodeMenuController.toggleVisible(false);
       graph.nodes.map(node => node.params.menu = false);
     };
@@ -252,14 +224,13 @@ export class D3Service {
   };
 
   /** A method to bind click events to an svg element */
-    // just emits the link for other components to listen for
+    // emits the link for other components to listen for
   applyClickableLinkBehaviour = (element, link: Link, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
     const svg = d3.select('svg');
     let arrowType = 'connected';
 
     const clickFunction = (): void => {
-      console.log(link.edgeType);
       if (link.edgeType == 'up'){
         arrowType = 'connectedflat';
       }

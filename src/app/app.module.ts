@@ -25,7 +25,6 @@ import {GraphDataService} from './services/graph-data.service';
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
 import { SmrtgraphMenuComponent } from './smrtgraph-menu/smrtgraph-menu.component';
 import {DownloadButtonComponent} from './download-button/download-button.component';
-import { LinkDetailsVisualComponent } from './visuals/details/link-details-visual/link-details-visual.component';
 import {LinkService} from './d3/models/link.service';
 import {ZoomableDirective} from './d3/directives/zoomable.directive';
 import {HoverableLinkDirective} from './d3/directives/hoverable-link.directive';
@@ -37,7 +36,6 @@ import {LoadingService} from './services/loading.service';
 import { CompoundDetailViewComponent } from './visuals/details/node-details-visual/node-types/compound-detail-view/compound-detail-view.component';
 import { PatternDetailViewComponent } from './visuals/details/node-details-visual/node-types/pattern-detail-view/pattern-detail-view.component';
 import { LinkListVisualComponent } from './visuals/details/link-list-visual/link-list-visual.component';
-import { LinkDatabase} from './visuals/details/link-list-visual/link-database.service';
 import { ReactionVisualComponent } from './visuals/details/link-list-visual/reaction-visual/reaction-visual.component';
 import {SettingsService} from './services/settings.service';
 import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-settings.component';
@@ -55,7 +53,6 @@ import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
     SmrtgraphMenuComponent,
     SmrtgraphSearchComponent,
     DownloadButtonComponent,
-    LinkDetailsVisualComponent,
     NodeVisualComponent,
     LinkVisualComponent,
     ZoomableDirective,
@@ -90,7 +87,6 @@ import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
     GraphDataService,
     NodeMenuControllerService,
     LoadingService,
-    LinkDatabase,
     SettingsService
   ],
   bootstrap: [AppComponent]

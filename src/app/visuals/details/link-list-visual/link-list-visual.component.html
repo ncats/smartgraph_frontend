@@ -5,7 +5,7 @@
         The actual rendered columns are set as a property on the row definition" -->
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
-    <mat-cell *matCellDef="let row"> <node-details-visual [data] = row.source></node-details-visual></mat-cell>
+    <mat-cell *matCellDef="let row"><node-details-visual [data] = row.source></node-details-visual></mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="linkType">
@@ -15,13 +15,13 @@
 
   <ng-container matColumnDef="target">
     <mat-header-cell *matHeaderCellDef >Target</mat-header-cell>
-    <mat-cell *matCellDef="let row"> <node-details-visual [data] = row.target></node-details-visual></mat-cell>
+    <mat-cell *matCellDef="let row"><node-details-visual [data] = row.target></node-details-visual></mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="details">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Details</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <div *ngIf = 'row.reactions.length>0'>
+      <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <div *ngFor="let reaction of row.reactions trackById">
           <span *ngIf ="reaction.mechanism">{{reaction.mechanism}}</span>
           <span *ngIf ="reaction.mechanism && reaction.causal">: </span><br>
@@ -35,7 +35,7 @@
   <ng-container matColumnDef="reference">
     <mat-header-cell *matHeaderCellDef>Reference</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <div *ngIf = 'row.reactions.length>0'><mat-list>
+      <div *ngIf = 'row.reactions && row.reactions.length>0'><mat-list>
       <mat-list-item *ngFor="let reaction of row.reactions trackById">
         <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference}}</a>
       </mat-list-item>
@@ -47,15 +47,15 @@
   <ng-container matColumnDef="score">
     <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <div *ngIf = 'row.reactions.length>0'>
+      <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <mat-list>
         <mat-list-item *ngFor="let reaction of row.reactions trackById">
           Confidence: {{reaction.confidence}}
         </mat-list-item>
       </mat-list>
       </div>
-      <div *ngIf = 'row.properties.activity'>Activity: {{row.properties.activity}}</div>
-      <div *ngIf = 'row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>
+      <div *ngIf = 'row.properties && row.properties.activity'>Activity: {{row.properties.activity}}</div>
+      <div *ngIf = 'row.properties && row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>
     </mat-cell>
   </ng-container>
 
