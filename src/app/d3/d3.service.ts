@@ -147,7 +147,7 @@ export class D3Service {
     // todo: this is called on drag and iterates over the entire graph
     const mouseOverFunction = (): void => {
       decorateNodes();
-      this.nodeService.hoveredNode(node);
+      this.nodeService.hoveredNode([node]);
       if(neighbors.length>0) {
         this.linkService.hoveredLink(neighbors);
       }

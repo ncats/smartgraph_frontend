@@ -14,6 +14,7 @@ export class NodeService {
   //  Observable navItem source
   private _clickedNodeSource = new Subject<Node>();
   private _hoveredNodeSource = new Subject<any>();
+  private _nodeSource = new Subject<any>();
   private  masterNodeMap: Map<string, Node> = new Map();
 
   //  Observable navItem stream
@@ -21,15 +22,51 @@ export class NodeService {
   clickednode$ = this._clickedNodeSource.asObservable();
   hoverednode$ = this._hoveredNodeSource.asObservable();
 
+  private clickedNodeList: Node[] = [];
+  private hoveredNodeList: Node[] = [];
+
+  //  Observable navItem stream
+  nodeslist$ = this._nodeSource.asObservable();
+
+  //  service command
+  clickedNodes(node: Node):void {
+    this.clickedNodeList.push(node);
+    this._nodeSource.next({
+      clicked: this.clickedNodeList,
+      hovered: this.hoveredNodeList
+    });
+  }
+
+  hoveredNode(node: Node[]):void {
+    if(this.hoveredNodeList.length > 0){
+      this.hoveredNodeList = [];
+    }
+    this.hoveredNodeList.push(...node);
+    this._nodeSource.next({
+      clicked: this.clickedNodeList,
+      hovered: this.hoveredNodeList
+    });
+  }
+
+  removeClickedNode(node:Node):void{
+    this.clickedNodeList.splice( this.clickedNodeList.indexOf(node), 1);
+    this._nodeSource.next({
+      clicked: this.clickedNodeList,
+      hovered: this.hoveredNodeList
+    });
+  }
+  
+  
+  
   //  service command
   changeNode(node: Node) {
     this._clickedNodeSource.next(node);
   }
 
-  hoveredNode(node: any) {
+/*  hoveredNode(node: any) {
     this._hoveredNodeSource.next(node);
 
-  }
+  }*/
 
   clearNode(): void {
   this._hoveredNodeSource.next();
