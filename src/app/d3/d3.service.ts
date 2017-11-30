@@ -85,7 +85,7 @@ export class D3Service {
 
     const decorateNodes = (): void => {
       d3element.select('circle').classed('hovering', true);
-      connectedLinks = d3.selectAll('line')
+      connectedLinks = d3.selectAll('.link')
         .data(graph.links)
         .filter(getNeighborLinks)
         .classed('hovering', true)
@@ -105,7 +105,7 @@ export class D3Service {
     };
 
     const clearNodes = (): void => {
-      d3.selectAll('line')
+      d3.selectAll('.link')
         .classed('connected', false)
         .classed('connectedflat', false)
         .classed('hovering', false)
@@ -119,11 +119,11 @@ export class D3Service {
 
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
-      const neighbor = (node.uuid === ((typeof (e.source) == 'object' ? e.source.uuid : e.source)) || node.uuid ===(typeof (e.target) == 'object' ? e.target.uuid : e.target));
+      const neighbor = (node.uuid === e.source.uuid || node.uuid === e.target.uuid);
       if (neighbor == true) {
         neighbors.push(e);
       }
-      return neighbor;
+      return node.uuid === e.source.uuid;
     };
 
     const getNeighborNodes = (e: any): boolean => {
@@ -146,6 +146,7 @@ export class D3Service {
 
     // todo: this is called on drag and iterates over the entire graph
     const mouseOverFunction = (): void => {
+      if (d3.event.defaultPrevented) return;
       decorateNodes();
       this.nodeService.hoveredNode([node]);
       if(neighbors.length>0) {
@@ -171,12 +172,12 @@ export class D3Service {
       if (link.edgeType == 'up'){
         arrowType = 'connectedflat';
       }
-      d3element.select('line').classed('hovering', true).classed(arrowType, true);
+      d3element.select('.link').classed('hovering', true).classed(arrowType, true);
       this.linkService.hoveredLink([link]);
     };
 
     const mouseOutFunction = (): void => {
-      d3element.select('line').classed('hovering', false).classed(arrowType, false);
+      d3element.select('.link').classed('hovering', false).classed(arrowType, false);
     };
 
     d3element.on('mouseover', mouseOverFunction).on('mouseout', mouseOutFunction);
@@ -234,7 +235,7 @@ export class D3Service {
       if (link.edgeType == 'up'){
         arrowType = 'connectedflat';
       }
-      let d3link = d3element.select('line');
+      let d3link = d3element.select('.link');
       d3link.classed('clicked', !d3link.classed('clicked')).classed(arrowType, !d3link.classed(arrowType));
       if(d3link.classed('clicked')){
         this.linkService.clickedLinks(link);

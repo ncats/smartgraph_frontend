@@ -11,14 +11,14 @@
 }
 
 .arrow {
-  stroke-width: 2;
+  stroke-width: 2 !important;
   stroke: #A5A5A5;
   fill: #A5A5A5;
   marker-end: url(#arrow);
 }
 
 .flatarrow {
-  stroke-width: 2;
+  stroke-width: 2 !important;
   stroke: #A5A5A5;
   fill: #A5A5A5;
   marker-end: url(#flatarrow);
@@ -35,13 +35,13 @@
 }
 
 .connected{
-  stroke-width: 2;
+  stroke-width: 2 !important;
   stroke: #595959;
   marker-end: url(#hoverarrow);
 }
 
 .connectedflat{
-  stroke-width: 2;
+  stroke-width: 2 !important;
   stroke: #595959;
   marker-end: url(#hoverflatarrow);
 }
@@ -54,12 +54,12 @@
 
 .hovering {
   stroke: #595959;
-  stroke-width: 2px;
+  stroke-width: 3px;
 }
 
 .clicked {
   stroke: #595959;
-  stroke-width: 2px;
+  stroke-width: 3px;
 }
 
 /*#arrow{
@@ -67,7 +67,7 @@
   stroke: #A5A5A5;
 }*/
 .clickable-area{
-  stroke: red;
+  stroke: transparent;
   fill:none;
   stroke-width: 15px;
   cursor: pointer;

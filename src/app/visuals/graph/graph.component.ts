@@ -30,16 +30,16 @@ import {Subscription} from "rxjs/Subscription";
       </g>
         <defs>
           <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#A5A5A5" stroke ="#A5A5A5" d = "M0,-5L10,0L0,5"></path>
+            <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
           </marker>
           <marker id="hoverarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#595959" stroke ="#595959" d = "M0,-5L10,0L0,5"></path>
+            <path fill = "#595959" stroke ="#595959" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
           </marker>
           <marker id="flatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
+            <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
           </marker>
           <marker id="hoverflatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#595959" stroke ="#595959" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
+            <path fill = "#595959" stroke ="#595959" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
           </marker>
         </defs>
     </svg>
