@@ -21,7 +21,7 @@ import {SettingsService} from '../../../services/settings.service';
         [attr.x]="(link.source?.x +link.target?.x)/2 "
         [attr.y]="(link.source?.y +link.target?.y)/2 "
         >
-        {{link?.edgeType }}
+        {{link?.type }}
       </svg:text>
           <svg:line class="clickable-area" 
   [attr.x1]= link.source.x
