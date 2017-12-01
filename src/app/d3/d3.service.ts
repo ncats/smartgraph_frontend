@@ -119,11 +119,11 @@ export class D3Service {
 
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
-      const neighbor = (node.uuid === e.source.uuid || node.uuid === e.target.uuid);
+      const neighbor = (node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source) || node.uuid ===(typeof (e.target) == 'object' ? e.target.uuid : e.target));
       if (neighbor == true) {
         neighbors.push(e);
       }
-      return node.uuid === e.source.uuid;
+      return node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source);
     };
 
     const getNeighborNodes = (e: any): boolean => {
