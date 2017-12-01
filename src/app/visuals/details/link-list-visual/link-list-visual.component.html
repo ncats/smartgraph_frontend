@@ -1,16 +1,20 @@
 
-<mat-table #table [dataSource]="dataSource" matSort>
+<mat-table #table [dataSource]="dataSource" matSort >
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
-    <mat-cell *matCellDef="let row"><node-details-visual [data] = row.source></node-details-visual></mat-cell>
+    <mat-cell *matCellDef="let row" ><node-details-visual [data] = row.source></node-details-visual></mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="linkType">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Link Type </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.type}}  </mat-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-list>
+        <mat-list-item>{{row.type}}</mat-list-item>
+      </mat-list>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="target">
@@ -23,6 +27,7 @@
     <mat-cell *matCellDef="let row">
       <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <div *ngFor="let reaction of row.reactions trackById">
+          <br/>
           <span *ngIf ="reaction.mechanism">{{reaction.mechanism}}</span>
           <span *ngIf ="reaction.mechanism && reaction.causal">: </span><br>
           <span *ngIf ="reaction.causal">{{reaction.causal}}</span><br>
@@ -35,7 +40,8 @@
   <ng-container matColumnDef="reference">
     <mat-header-cell *matHeaderCellDef>Reference</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <div *ngIf = 'row.reactions && row.reactions.length>0'><mat-list>
+      <div *ngIf = 'row.reactions && row.reactions.length>0'>
+        <mat-list>
       <mat-list-item *ngFor="let reaction of row.reactions trackById">
         <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference}}</a>
       </mat-list-item>
@@ -52,19 +58,23 @@
         <mat-list-item *ngFor="let reaction of row.reactions trackById">
           Confidence: {{reaction.confidence}}
         </mat-list-item>
-      </mat-list>
+        </mat-list>
       </div>
-      <div *ngIf = 'row.properties && row.properties.activity'>Activity: {{row.properties.activity}}</div>
-      <div *ngIf = 'row.properties && row.properties.ratio'>Overlap Ratio: {{row.properties.ratio}}</div>
+      <div *ngIf = 'row.properties && row.properties.activity'><br/>Activity: {{row.properties.activity}}</div>
+      <div *ngIf = 'row.properties && row.properties.ratio'><br/>Overlap Ratio: {{row.properties.ratio}}</div>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="confidence">
     <mat-header-cell *matHeaderCellDef >Confidence</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.max_confidence_value}}</mat-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-list>
+        <mat-list-item> {{row.max_confidence_value}}</mat-list-item>
+      </mat-list>
+     </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" fxLayoutAlign="center start" ></mat-row>
 </mat-table>
 
