@@ -5,7 +5,14 @@
         The actual rendered columns are set as a property on the row definition" -->
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
-    <mat-cell *matCellDef="let row" ><node-details-visual [data] = row.source></node-details-visual></mat-cell>
+    <mat-cell *matCellDef="let row" >
+      <div [ngSwitch]=getNodeType(row.source)>
+      <target-detail-view *ngSwitchCase="'Target'"  [node]="row.source"></target-detail-view>
+      <compound-detail-view *ngSwitchCase="'Compound'" [node]="row.source"></compound-detail-view>
+      <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row.source"></pattern-detail-view>
+      <div *ngSwitchDefault></div>
+    </div>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="linkType">
@@ -19,7 +26,14 @@
 
   <ng-container matColumnDef="target">
     <mat-header-cell *matHeaderCellDef >Target</mat-header-cell>
-    <mat-cell *matCellDef="let row"><node-details-visual [data] = row.target></node-details-visual></mat-cell>
+    <mat-cell *matCellDef="let row">
+      <div [ngSwitch]=getNodeType(row.target)>
+        <target-detail-view *ngSwitchCase="'Target'"  [node]="row.target"></target-detail-view>
+        <compound-detail-view *ngSwitchCase="'Compound'" [node]="row.target"></compound-detail-view>
+        <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row.target"></pattern-detail-view>
+        <div *ngSwitchDefault></div>
+      </div>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="details">

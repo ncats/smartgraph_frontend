@@ -6,31 +6,18 @@ import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-graph-details',
-  templateUrl: 'graph-details.component.html',
-  styleUrls: ['graph-details.component.css']
+  styleUrls: ['graph-details.component.css'],
+  template:
+  `
+<mat-tab-group selectedIndex="1">
+  <mat-tab label="Link View">
+    <link-list-visual></link-list-visual>
+  </mat-tab>
+  <mat-tab label="Node View">
+    <node-details-visual></node-details-visual>
+  </mat-tab>
+</mat-tab-group>
+`
 })
-export class GraphDetailsComponent implements OnInit {
-  nodeSubscription: Subscription;
-  linkSubscription: Subscription;
-  hoveredObjType: string;
+export class GraphDetailsComponent {}
 
-  constructor(
-    private nodeService: NodeService,
-    private linkService: LinkService
-  ) {}
-
-  ngOnInit() {
-    this.nodeSubscription = this.nodeService.hoverednode$
-      .subscribe(node => {
-        this.hoveredObjType = 'node';
-      });
-/*    this.linkSubscription = this.linkService.hoveredlink$
-      .subscribe(link => {
-        this.hoveredObjType = 'link';
-      });*/
-    this.linkSubscription = this.linkService.linkslist$
-      .subscribe(res => {
-        this.hoveredObjType = 'link';
-      });
-  }
-}

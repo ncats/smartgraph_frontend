@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+<!--<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
   <div fxFlex="92">
     <div [ngSwitch]=nodeType>
         <target-detail-view *ngSwitchCase="'Target'"  [node]="hoveredNode"></target-detail-view>
@@ -7,4 +7,25 @@
       <div *ngSwitchDefault></div>
     </div>
   </div>
-</div>
+</div>-->
+
+
+<mat-table #table [dataSource]="dataSource" >
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+  <ng-container matColumnDef="source">
+    <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
+    <mat-cell *matCellDef="let row" > <div [ngSwitch]=getNodeType(row)>
+      <target-detail-view *ngSwitchCase="'Target'"  [node]="row"></target-detail-view>
+      <compound-detail-view *ngSwitchCase="'Compound'" [node]="row"></compound-detail-view>
+      <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row"></pattern-detail-view>
+      <div *ngSwitchDefault></div>
+    </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" fxLayoutAlign="center start" ></mat-row>
+</mat-table>
+

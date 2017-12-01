@@ -193,13 +193,16 @@ export class D3Service {
 
     const toggleMenu = (): void => {
       if (node.params.menu) {
+        d3element.select('circle').classed('clicked', false);
         this.nodeMenuController.toggleVisible(false);
         node.params.menu = false;
-
+        this.nodeService.removeClickedNode(node);
       }
 // if menu is closed, open it
       else {
         this.nodeService.changeNode(node);
+        this.nodeService.clickedNodes(node);
+        d3element.select('circle').classed('clicked', true);
         this.nodeMenuController.toggleVisible(true);
         node.params.menu = true;
         // if menu is open, close it

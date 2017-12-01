@@ -2,7 +2,12 @@ mat-sidenav {
   width: 25%;
 }
 
+.mat-drawer-container {
+  /*
+  height: 65vh;
+  */
+}
+
 .sidenavToggle{
   position: absolute !important;
 }
-

@@ -5,7 +5,15 @@
   */
 }
 
-.expand-list{
+.expand-list2{
   position: inherit;
-  z-index: 66666666;
+}
+
+.expand-list{
+  position: relative;
+}
+
+.node-menu{
+  background-color: red;
+  overflow:hidden;
 }

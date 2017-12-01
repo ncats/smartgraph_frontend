@@ -22,8 +22,8 @@
 
 
 .clicked {
-  stroke: #e64a19;
-  stroke-width: 2px;
+  stroke: #595959;
+  stroke-width: 3px;
 }
 
 .node {
@@ -78,22 +78,6 @@ circle.node.Pattern {
 .maximal{
   stroke-width: 2;
   stroke: #e64a19;
-}
-
-.label--top {
-  text-anchor: middle;
-}
-
-.label--right {
-  text-anchor: start;
-}
-
-.label--bottom {
-  text-anchor: middle;
-}
-
-.label--left {
-  text-anchor: end;
 }
 
 .structureImage.Compound{

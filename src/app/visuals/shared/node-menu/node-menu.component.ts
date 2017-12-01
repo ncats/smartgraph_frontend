@@ -11,9 +11,9 @@ import {LoadingService} from "../../../services/loading.service";
 @Component({
   selector: '[menu-list]',
   template: `
-<svg:foreignObject class="node-menu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="50vh" *ngIf="clickedNode.params.menu" >
+<svg:foreignObject class="node-menu" [attr.transform]="'translate(' + clickedNode.x + ',' + clickedNode.y + ')'" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="50vh" *ngIf="clickedNode.params.menu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
-  <mat-list>
+  <mat-list class = "expand-list2">
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"><span (click)="nodeMenuController.toggleVisible(false)"><mat-icon>clear</mat-icon></span></button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
@@ -22,7 +22,8 @@ import {LoadingService} from "../../../services/loading.service";
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
-    <button mat-menu-item class = "expand-list" (click)="expand('All')">Expand All {{counts?.total}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.all" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
 <!--
 // todo: collapse all show/hide logic

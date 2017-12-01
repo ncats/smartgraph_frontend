@@ -1,15 +1,14 @@
 <smrtgraph-menu></smrtgraph-menu>
-<mat-sidenav-container>
+<mat-sidenav-container class = "upperSection">
   <button type="button" class="sidenavToggle" mat-raised-button [color]="'accent'" (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
+  <mat-sidenav #sidenav [mode]="'side'" [opened]="true" class = "upperSection" >
     <!-- sidenav content -->
-    <smrtgraph-search></smrtgraph-search>
-    <node-details-visual></node-details-visual>
+    <smrtgraph-search ></smrtgraph-search>
   </mat-sidenav>
   <!-- primary content -->
-  <graph></graph>
+  <graph class = "upperSection"></graph>
 
   <mat-sidenav #settingsToggle [mode]="'over'" position="end">
     <app-smrtgraph-settings></app-smrtgraph-settings>
@@ -19,8 +18,7 @@
 
 <div fxLayout="row" fxLayoutGap="10px" class = "link-list-row">
   <div fxFlex="100">
-
-    <link-list-visual></link-list-visual>
+<app-graph-details></app-graph-details>
   </div>
 </div>
 

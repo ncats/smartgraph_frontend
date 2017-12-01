@@ -54,7 +54,7 @@ constructor(
     const response = JSON.parse(msg);
     switch (response.type) {
       case 'path': {
-        this.filter = true;
+      //  this.filter = true;
         // intentional absence of break to allow fall through
       }
       case 'startNodeSearch':
@@ -63,18 +63,19 @@ constructor(
       case 'expand':
       case 'load': {
         this.originalEvent = response.type;
+        const records = response.data._fields;
         //   let bytes = encoder.encode(msg);
         //  this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
-        const records = response.data._fields;
         if (records.length == 0) {
           console.error(response);
         } else {
           this.parseRecords(records, response.type);
+          this.makeGraph();
+
         }
         break;
       }
       case 'done': {
-        this.makeGraph();
         this.loadingService.toggleVisible(false);
         break;
       }
@@ -221,7 +222,7 @@ countLinks(): void{
     this.filter = true;
 // get the expand object to delete the nodes added
     const diff = this.historyMap.get('expand').get(node.uuid).diff;
-
+console.log(this.historyMap);
     const undoDiff = {
       addedNodes: [],
       removedNodes: diff.addedNodes,

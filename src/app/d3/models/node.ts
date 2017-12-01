@@ -27,7 +27,8 @@ export class Node implements d3.SimulationNodeDatum {
   expanded: Object = {
     target: false,
     compound: false,
-    pattern: false
+    pattern: false,
+    all:false
   };
 
   params: Params;

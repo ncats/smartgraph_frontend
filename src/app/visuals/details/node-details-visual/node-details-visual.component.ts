@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Node} from '../../../d3/models/node';
 import {NodeService} from '../../../d3/models/node.service';
 import {Subscription} from 'rxjs/Subscription';
-import {Link} from '../../../d3/models/link';
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
   selector: 'node-details-visual',
@@ -10,29 +10,31 @@ import {Link} from '../../../d3/models/link';
   styleUrls: ['node-details-visual.component.css']
 })
 export class NodeDetailsVisualComponent implements OnInit {
-@Input() data: Node;
+  @Input() data: Node;
+
+  displayedColumns = ['source'];
+  linkSubscription: Subscription;
+  dataSource = new MatTableDataSource<any>();
   subscription: Subscription;
   hoveredNode: any;
   nodeType: string;
+
   constructor(private nodeService: NodeService) {
   }
 
   ngOnInit() {
-    this.subscription = this.nodeService.hoverednode$
-      .subscribe(node => {
-          this.hoveredNode = node;
-          this.getNodeType();
+    this.subscription = this.nodeService.nodeList$
+      .subscribe(res => {
+        console.log(res);
+        this.dataSource.data = Array.from(new Set(res.hovered.concat(res.clicked)));
       });
-    if (this.data){
-      this.hoveredNode = this.data;
-      this.getNodeType();
+    if (this.data) {
+      this.dataSource.data = [this.data];
     }
   }
 
-  getNodeType(): void{
-    if (this.hoveredNode){
-    this.nodeType =  this.hoveredNode.constructor.name;
-    }
+  getNodeType(node:Node): string {
+      return node.constructor.name;
   }
+
 }
-

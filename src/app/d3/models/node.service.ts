@@ -21,12 +21,10 @@ export class NodeService {
   lastNode = {};
   clickednode$ = this._clickedNodeSource.asObservable();
   hoverednode$ = this._hoveredNodeSource.asObservable();
+  nodeList$ = this._nodeSource.asObservable();
 
   private clickedNodeList: Node[] = [];
   private hoveredNodeList: Node[] = [];
-
-  //  Observable navItem stream
-  nodeslist$ = this._nodeSource.asObservable();
 
   //  service command
   clickedNodes(node: Node):void {
@@ -55,9 +53,9 @@ export class NodeService {
       hovered: this.hoveredNodeList
     });
   }
-  
-  
-  
+
+
+
   //  service command
   changeNode(node: Node) {
     this._clickedNodeSource.next(node);

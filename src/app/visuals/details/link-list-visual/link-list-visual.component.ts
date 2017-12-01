@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {MatTableDataSource, MatSort} from "@angular/material";
 import {Link} from "../../../d3/models/link";
 import {LinkService} from "../../../d3/models/link.service";
@@ -10,7 +10,7 @@ import {Subscription} from "rxjs";
   templateUrl: './link-list-visual.component.html',
   styleUrls: ['./link-list-visual.component.css']
 })
-export class LinkListVisualComponent implements OnInit {
+export class LinkListVisualComponent implements OnInit , AfterViewInit {
   displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score', 'confidence'];
   linkSubscription: Subscription;
   data :  Link[] = [];
@@ -28,5 +28,9 @@ export class LinkListVisualComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  getNodeType(node:Node): string {
+    return node.constructor.name;
   }
 }
