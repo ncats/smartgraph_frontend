@@ -1,19 +1,14 @@
-.node-menu{
+.foreignObjectMenu{
   background-color: rgb(250, 250, 250);
-  /*
-  position: fixed;
-  */
 }
-
+/*
 .expand-list2{
   position: inherit;
 }
+*/
 
 .expand-list{
-  position: relative;
+  position: inherit;
 }
 
-.node-menu{
-  background-color: red;
-  overflow:hidden;
-}
+

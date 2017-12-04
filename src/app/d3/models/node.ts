@@ -1,7 +1,6 @@
 import APP_CONFIG from '../../app.config';
 
 export class Params {
-  hovered = false;
   startNode = false;
   endNode= false;
   menu = false;

@@ -33,6 +33,8 @@ export class NodeService {
       clicked: this.clickedNodeList,
       hovered: this.hoveredNodeList
     });
+    // this will return the single most recent click. That way subscriptions don't updated if hovered nodes change.
+    this.changeNode(node);
   }
 
   hoveredNode(node: Node[]):void {

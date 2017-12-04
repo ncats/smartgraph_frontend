@@ -21,18 +21,13 @@ export class D3Service {
 
   /** A method to bind a pan and zoom behaviour to an svg element */
   applyZoomableBehaviour(svgElement, containerElement) {
-    let svg, container, zoomed, zoom, clearMenu;
+    let svg, container, zoomed, zoom;
 
     svg = d3.select(svgElement);
     container = d3.select(containerElement);
 
     zoomed = () => {
-      this.nodeMenuController.toggleVisible(false);
       container.attr('transform', d3.event.transform);
-    };
-
-    clearMenu = () => {
-      this.nodeMenuController.toggleVisible(false);
     };
 
     zoom = d3.zoom()
@@ -114,7 +109,7 @@ export class D3Service {
         .classed('connected', false)
         .classed('hovering', false)
         .classed('maximal', false);
-      node.params.hovered = false;
+  //    node.params.hovered = false;
     };
 
     // todo: this is kind of piggybacking on the filter function
@@ -189,42 +184,19 @@ export class D3Service {
   // emits the node for other components to listen for
   applyClickableNodeBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
-    const svg = d3.select('svg');
-
-    const toggleMenu = (): void => {
-      if (node.params.menu) {
-        d3element.select('circle').classed('clicked', false);
-        this.nodeMenuController.toggleVisible(false);
-        node.params.menu = false;
-        this.nodeService.removeClickedNode(node);
-      }
-// if menu is closed, open it
-      else {
-        this.nodeService.changeNode(node);
-        this.nodeService.clickedNodes(node);
-        d3element.select('circle').classed('clicked', true);
-        this.nodeMenuController.toggleVisible(true);
-        node.params.menu = true;
-        // if menu is open, close it
-      }
-    };
+   // const svg = d3.select('svg');
 
     const clickFunction = (): void => {
       if (d3.event.defaultPrevented) return;
-      // graph.nodes.map(node => node.params.menu = false);
-      // todo: this is calling the node change every time the node is clicked to toggle the menu, which ends up trying to expand the node each time, resulting in a diff of 0
-      toggleMenu();
+      let d3node = d3element.select('circle');
+      d3node.classed('clicked', !d3node.classed('clicked'));
+      console.log(d3.select('.node-menu'));
+      d3.select('.node-menu').raise();
       d3.event.stopPropagation();
     };
 
-    const clearMenu = (): void => {
-      // this closes out the menu and sets the menu tracking variable to be false for each node
-      this.nodeMenuController.toggleVisible(false);
-      graph.nodes.map(node => node.params.menu = false);
-    };
-
     d3element.on('click', clickFunction);
-    svg.on('mousedown', clearMenu);
+  //  svg.on('mousedown', this.nodeMenuController.hideMenus());
   };
 
   /** A method to bind click events to an svg element */

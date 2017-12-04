@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import {Node, Pattern, Compound} from '../../../d3/models/node';
 import {SettingsService} from '../../../services/settings.service';
+import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
+import {NodeService} from "../../../d3/models/node.service";
 
 @Component({
   selector: 'structure-view',
@@ -17,10 +19,10 @@ export class StructureViewer{
 @Component({
   selector: '[nodeVisual]',
   template: `
-    <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'">
+    <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'" (click)="toggleMenu()">
       <svg:circle
           class="node {{node.labels[0]}}"
-          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode, hovering:node.params.hovered}"
+          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode}"
           cx="0"
           cy="0"
           [attr.r]="node.r">
@@ -41,18 +43,24 @@ export class NodeVisualComponent {
   node: Node;
   label: string;
 
-  constructor(public settingsService: SettingsService){}
+  constructor(public settingsService: SettingsService,
+              private nodeService: NodeService,
+              private nodeMenuController: NodeMenuControllerService
+              ){}
 
   ngOnInit(): void{
     this.settingsService.dataChange
       .subscribe(settings => {
+        console.log(settings);
         switch (this.node.constructor.name) {
           case 'Target': {
             this.label = this.node[settings.targetLabel];
+            console.log(this.label);
             break;
           }
           case 'Compound': {
-            if (settings.compoundLabel == 'structure'){
+            console.log("ccc");
+            if (settings.compoundLabel === 'structure'){
              this.label = settings.compoundLabel;
                 }else {
               this.label = this.node['hash'];
@@ -66,6 +74,12 @@ export class NodeVisualComponent {
         }
       });
     }
+
+    toggleMenu(){
+      // this is the only place where the menu is opened
+this.nodeService.clickedNodes(this.node);
+this.nodeMenuController.toggleVisible(this.node.uuid);
+  }
 }
 
 

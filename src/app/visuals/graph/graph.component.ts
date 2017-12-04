@@ -26,8 +26,8 @@ import {Subscription} from "rxjs/Subscription";
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
         [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
         </g>
+        <svg:g menu-list #menu class="node-menu"></svg:g>
       </g>
-        <svg:g menu-list #menu></svg:g>
         <defs>
           <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
             <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
@@ -100,7 +100,7 @@ export class GraphComponent {
     this.downloader.downloadFile(d3.select('svg'), this.options);
   }*/
 
-  _options: {width, height} = {width: 400, height: 400};
+  _options: {width, height} = {width: 600, height: 600};
 
   get options() {
     return this._options = {
