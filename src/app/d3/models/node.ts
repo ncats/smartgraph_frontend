@@ -3,7 +3,6 @@ import APP_CONFIG from '../../app.config';
 export class Params {
   startNode = false;
   endNode= false;
-  menu = false;
 
   constructor() {}
 }

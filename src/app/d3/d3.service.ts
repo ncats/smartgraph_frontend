@@ -183,7 +183,7 @@ export class D3Service {
   /** A method to bind click events to an svg element */
   // emits the node for other components to listen for
   applyClickableNodeBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
-    const d3element = d3.select(element);
+ /*   const d3element = d3.select(element);
     const svg = d3.select('svg');
 
     const clickFunction = (): void => {
@@ -194,7 +194,7 @@ export class D3Service {
       d3.event.stopPropagation();
     };
 
-    svg.on('mousedown', clickFunction);
+    svg.on('mousedown', clickFunction);*/
   };
 
   /** A method to bind click events to an svg element */

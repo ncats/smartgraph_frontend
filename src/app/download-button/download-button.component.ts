@@ -16,6 +16,10 @@ import {Node} from '../d3/models/node';
     <mat-icon>code</mat-icon>
     <span>Cytoscape JSON</span>
   </button>
+    <button mat-menu-item (click)=" downloadEdges()">
+    <mat-icon>list</mat-icon>
+    <span>Edge List</span>
+  </button>
   <button mat-menu-item (click)=" downloadCSV()" disabled>
     <mat-icon>border_all</mat-icon>
     <span>CSV</span>
@@ -64,6 +68,19 @@ this.file = new Blob([JSON.stringify(cyto)], { type: "type: 'text/json'"});
 }
 
 downloadCSV(){}
+
+
+downloadEdges(){
+  let graph = this.graphDataService.returnGraph();
+  let edgeList ='source, target \n';
+  for (let link of graph.links) {
+    let src = link.source.uuid;
+    let tgt = link.target.uuid;
+    edgeList = edgeList + src +", " +tgt +'\n';
+  }
+  this.file = new Blob([edgeList], { type: "type: 'text/csv'"});
+  this.downloadFile();
+}
 
   downloadPNG(data: any, options: any) {
     console.log('downloading');

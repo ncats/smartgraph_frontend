@@ -56,11 +56,9 @@ export class NodeVisualComponent {
         switch (this.node.constructor.name) {
           case 'Target': {
             this.label = this.node[settings.targetLabel];
-            console.log(this.label);
             break;
           }
           case 'Compound': {
-            console.log("ccc");
             if (settings.compoundLabel === 'structure'){
              this.label = settings.compoundLabel;
                 }else {
@@ -73,6 +71,7 @@ export class NodeVisualComponent {
             break;
           }
         }
+        console.log(this.label);
       });
     }
 

@@ -16,7 +16,7 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
   template: `
 <svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="27vh" *ngIf="openMenu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" >
-  <mat-list class = "expand-list2" [class.mat-elevation-z1]="'true'" >
+  <mat-list [class.mat-elevation-z1]="'true'" >
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
