@@ -184,19 +184,17 @@ export class D3Service {
   // emits the node for other components to listen for
   applyClickableNodeBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
-   // const svg = d3.select('svg');
+    const svg = d3.select('svg');
 
     const clickFunction = (): void => {
       if (d3.event.defaultPrevented) return;
-      let d3node = d3element.select('circle');
-      d3node.classed('clicked', !d3node.classed('clicked'));
-      console.log(d3.select('.node-menu'));
-      d3.select('.node-menu').raise();
+      this.nodeMenuController.hideMenus()
+//      let d3node = d3element.select('circle');
+  //    d3node.classed('clicked', !d3node.classed('clicked'));
       d3.event.stopPropagation();
     };
 
-    d3element.on('click', clickFunction);
-  //  svg.on('mousedown', this.nodeMenuController.hideMenus());
+    svg.on('mousedown', clickFunction);
   };
 
   /** A method to bind click events to an svg element */

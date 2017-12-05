@@ -22,7 +22,7 @@ export class StructureViewer{
     <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'" (click)="toggleMenu()">
       <svg:circle
           class="node {{node.labels[0]}}"
-          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode}"
+          [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode, clicked: nodeClicked}"
           cx="0"
           cy="0"
           [attr.r]="node.r">
@@ -42,6 +42,7 @@ export class NodeVisualComponent {
   @Input('nodeVisual')
   node: Node;
   label: string;
+  nodeClicked: boolean= false;
 
   constructor(public settingsService: SettingsService,
               private nodeService: NodeService,
@@ -77,9 +78,11 @@ export class NodeVisualComponent {
 
     toggleMenu(){
       // this is the only place where the menu is opened
+      this.nodeClicked = !this.nodeClicked;
 this.nodeService.clickedNodes(this.node);
 this.nodeMenuController.toggleVisible(this.node.uuid);
   }
+
 }
 
 

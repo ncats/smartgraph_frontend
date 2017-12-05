@@ -14,9 +14,9 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
 @Component({
   selector: '[menu-list]',
   template: `
-<svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="50vh" *ngIf="openMenu">
- <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
-  <mat-list class = "expand-list2">
+<svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="20vh" height="27vh" *ngIf="openMenu" >
+ <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" >
+  <mat-list class = "expand-list2" [class.mat-elevation-z1]="'true'" >
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
@@ -27,6 +27,8 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
     <button mat-menu-item class = "expand-list" *ngIf="expanded.pattern===true" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="!expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="expanded.all===true" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="expand('Predictions')">Get Predictions</button>
+    <button mat-menu-item class = "expand-list" *ngIf="expanded.predictions===true" (click)="collapse('Predictions')">Remove Predictions</button>
   </mat-list>
 </xhtml:div>
 </svg:foreignObject>
@@ -49,14 +51,12 @@ export class NodeMenuComponent{
    private nodeMenuController: NodeMenuControllerService,
    private graphDataService: GraphDataService,
    public settingsService: SettingsService,
-   public nodeExpandService: NodeExpandService,
-   public loadingService: LoadingService
+   public nodeExpandService: NodeExpandService
  ) { }
 
 
 
   ngOnInit() {
-   console.log(this);
     // this only gets the count of the nodes
     this.nodeService.clickednode$.subscribe(node => {
       this.clickedNode = node;
@@ -65,7 +65,6 @@ export class NodeMenuComponent{
         const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'counts', this.clickedNode.labels[0]);
         this.dataConnectionService.messages.next(message);
         this.expanded = this.nodeExpandService.fetchExpand(this.clickedNode.uuid);
-      console.log(this);
       }
       this.setLabel();
     });
@@ -94,7 +93,6 @@ export class NodeMenuComponent{
 
     this.settingsService.dataChange.subscribe(settings => {
       this.settings = settings;
-        console.log("change settings");
         this.setLabel();
     });
   }
@@ -128,8 +126,11 @@ export class NodeMenuComponent{
      'origin': this.clickedNode.labels[0],
      'target': label
    };
-   this.graphDataService.nodeExpand(this.clickedNode.uuid, params);
-// todo: this option is not node specific -- change to map
+   if(label =="Predictions"){
+     this.graphDataService.nodeExpand(this.clickedNode.uuid, 'prediction', params);
+   }else{
+     this.graphDataService.nodeExpand(this.clickedNode.uuid, 'expand', params);
+   }
     this.expanded[label.toLowerCase()] = true;
     this.nodeExpandService.setExpand(this.clickedNode.uuid, this.expanded);
     this.closeMenu();
@@ -137,16 +138,8 @@ export class NodeMenuComponent{
 
   collapse(label): void {
     this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.uuid});
-// todo: this option is not node specific -- change to map
     this.expanded[label.toLowerCase()] = false;
     this.nodeExpandService.setExpand(this.clickedNode.uuid, this.expanded);
-    this.closeMenu();
-  }
-
-  getPredictions():void {
-   this.loadingService.toggleVisible(true);
-    const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'prediction');
-    this.dataConnectionService.messages.next(message);
     this.closeMenu();
   }
 

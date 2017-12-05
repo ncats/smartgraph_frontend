@@ -12,3 +12,6 @@
 }
 
 
+.mat-menu-ripple.mat-ripple {
+  position: relative !important;
+}

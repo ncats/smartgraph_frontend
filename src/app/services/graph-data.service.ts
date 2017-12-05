@@ -70,12 +70,13 @@ constructor(
           console.error(response);
         } else {
           this.parseRecords(records, response.type);
-          this.makeGraph();
+          //this.makeGraph();
 
         }
         break;
       }
       case 'done': {
+        this.makeGraph();
         this.loadingService.toggleVisible(false);
         break;
       }
@@ -199,8 +200,8 @@ countLinks(): void{
     this.graph.nodes = [];
   }
 
-  nodeExpand(id: string, properties: any): void {
-    const message: Message = this.messageService.getMessage(id, 'expand', properties);
+  nodeExpand(id: string, type:string, properties: any): void {
+    const message: Message = this.messageService.getMessage(id, type, properties);
 
     // right now this is only creating a skeleton map object without the diff
     // this happens here because node id and label is needed for tracking.
