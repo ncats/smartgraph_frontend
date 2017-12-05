@@ -1364,12 +1364,13 @@ var DownloadButtonComponent = (function () {
     DownloadButtonComponent.prototype.downloadCSV = function () { };
     DownloadButtonComponent.prototype.downloadEdges = function () {
         var graph = this.graphDataService.returnGraph();
-        var edgeList = 'source, target \n';
+        var edgeList = 'edge,source,target \n';
         for (var _i = 0, _a = graph.links; _i < _a.length; _i++) {
             var link = _a[_i];
             var src = link.source.uuid;
             var tgt = link.target.uuid;
-            edgeList = edgeList + src + ", " + tgt + '\n';
+            var edge = link.uuid;
+            edgeList = edgeList + edge + "," + src + "," + tgt + '\n';
         }
         this.file = new Blob([edgeList], { type: "type: 'text/csv'" });
         this.downloadFile();

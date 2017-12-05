@@ -72,11 +72,12 @@ downloadCSV(){}
 
 downloadEdges(){
   let graph = this.graphDataService.returnGraph();
-  let edgeList ='source, target \n';
+  let edgeList ='edge,source,target \n';
   for (let link of graph.links) {
     let src = link.source.uuid;
     let tgt = link.target.uuid;
-    edgeList = edgeList + src +", " +tgt +'\n';
+    let edge = link.uuid;
+    edgeList = edgeList + edge + "," + src +"," +tgt +'\n';
   }
   this.file = new Blob([edgeList], { type: "type: 'text/csv'"});
   this.downloadFile();
