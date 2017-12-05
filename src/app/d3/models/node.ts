@@ -23,13 +23,6 @@ export class Node implements d3.SimulationNodeDatum {
  // properties: any;
   labels?: string[];
   linkCount = 0;
-  expanded: Object = {
-    target: false,
-    compound: false,
-    pattern: false,
-    all:false
-  };
-
   params: Params;
   /*
   * Neo4j has their own uuid that will need to be used to track nodes, since some relationships are sepnt with the start

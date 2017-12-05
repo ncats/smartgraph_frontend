@@ -41,6 +41,7 @@ import {SettingsService} from './services/settings.service';
 import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-settings.component';
 import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component";
 import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
+import {NodeExpandService} from "./services/node-expand.service";
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
     GraphDataService,
     NodeMenuControllerService,
     LoadingService,
-    SettingsService
+    SettingsService,
+    NodeExpandService
   ],
   bootstrap: [AppComponent]
 })

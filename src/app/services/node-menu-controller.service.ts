@@ -12,9 +12,11 @@ export class NodeMenuControllerService {
 
   //  service command
   toggleVisible(node: string) {
-    if(this._activeMenu && this._activeMenu === node){
+    // menu already open -- close it
+     if(this._activeMenu && this._activeMenu === node){
       this.hideMenus();
     }else{
+    //menu closed -- open it
       this._activeMenu = node;
       this.showMenu();
     }
@@ -28,8 +30,5 @@ export class NodeMenuControllerService {
     this._clickedMenuSource.next(false);
   }
 
-  getNode():string{
-    return this._activeMenu;
-  }
 }
 

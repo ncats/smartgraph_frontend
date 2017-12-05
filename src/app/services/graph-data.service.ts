@@ -54,7 +54,7 @@ constructor(
     const response = JSON.parse(msg);
     switch (response.type) {
       case 'path': {
-      //  this.filter = true;
+        this.filter = true;
         // intentional absence of break to allow fall through
       }
       case 'startNodeSearch':

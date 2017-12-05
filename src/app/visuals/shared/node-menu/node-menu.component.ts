@@ -8,6 +8,7 @@ import {GraphDataService} from '../../../services/graph-data.service';
 import {SettingsService, Settings} from '../../../services/settings.service';
 import {LoadingService} from "../../../services/loading.service";
 import {Node} from '../../../d3/models/node';
+import {NodeExpandService, Expand} from "../../../services/node-expand.service";
 
 
 @Component({
@@ -18,15 +19,14 @@ import {Node} from '../../../d3/models/node';
   <mat-list class = "expand-list2">
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
-    <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.target" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
-    <button mat-menu-item class = "expand-list"  *ngIf="!clickedNode.expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.compound" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.pattern" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="!clickedNode.expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.expanded.all" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="getPredictions()">Get Predictions</button>
+    <button mat-menu-item class = "expand-list" *ngIf="!expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="expanded.target===true" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
+    <button mat-menu-item class = "expand-list"  *ngIf="!expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="expanded.compound===true" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="!expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="expanded.pattern===true" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="!expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
+    <button mat-menu-item class = "expand-list" *ngIf="expanded.all===true" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
   </mat-list>
 </xhtml:div>
 </svg:foreignObject>
@@ -40,6 +40,7 @@ export class NodeMenuComponent{
   settings: Settings;
   label: string;
   openMenu: boolean = false;
+  expanded: Expand = new Expand();
 
  constructor(
    private nodeService: NodeService,
@@ -48,12 +49,14 @@ export class NodeMenuComponent{
    private nodeMenuController: NodeMenuControllerService,
    private graphDataService: GraphDataService,
    public settingsService: SettingsService,
+   public nodeExpandService: NodeExpandService,
    public loadingService: LoadingService
  ) { }
 
 
 
   ngOnInit() {
+   console.log(this);
     // this only gets the count of the nodes
     this.nodeService.clickednode$.subscribe(node => {
       this.clickedNode = node;
@@ -61,9 +64,12 @@ export class NodeMenuComponent{
         this.counts = {total: 0};
         const message: Message = this.messageService.getMessage(this.clickedNode.uuid, 'counts', this.clickedNode.labels[0]);
         this.dataConnectionService.messages.next(message);
+        this.expanded = this.nodeExpandService.fetchExpand(this.clickedNode.uuid);
+      console.log(this);
       }
       this.setLabel();
     });
+
 
     this.dataConnectionService.messages.subscribe(msg => {
       const response = JSON.parse(msg);
@@ -124,14 +130,16 @@ export class NodeMenuComponent{
    };
    this.graphDataService.nodeExpand(this.clickedNode.uuid, params);
 // todo: this option is not node specific -- change to map
-    this.clickedNode.expanded[label.toLowerCase()] = true;
+    this.expanded[label.toLowerCase()] = true;
+    this.nodeExpandService.setExpand(this.clickedNode.uuid, this.expanded);
     this.closeMenu();
   }
 
   collapse(label): void {
     this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.uuid});
 // todo: this option is not node specific -- change to map
-    this.clickedNode.expanded[label.toLowerCase()] = false;
+    this.expanded[label.toLowerCase()] = false;
+    this.nodeExpandService.setExpand(this.clickedNode.uuid, this.expanded);
     this.closeMenu();
   }
 
