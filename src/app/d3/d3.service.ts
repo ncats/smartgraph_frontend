@@ -122,7 +122,7 @@ export class D3Service {
     };
 
     const getNeighborNodes = (e: any): boolean => {
-      console.log("finding neighbors nodes");
+    //  console.log("finding neighbors nodes");
       return connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) > -1;
     };
 

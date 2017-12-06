@@ -3,7 +3,6 @@ import {Link} from './link';
 import {Node} from './node';
 
 import * as d3 from 'd3';
-import {LoadingService} from '../../services/loading.service';
 
 const FORCES = {
   LINKS: 1 / 50,
@@ -20,7 +19,6 @@ export class ForceDirectedGraph {
 
   public nodes: Node[] = [];
   public links: Link[] = [];
-  private loadingService: LoadingService = new LoadingService;
 
   constructor(
     nodes, links, options: {width, height}) {
@@ -43,7 +41,6 @@ export class ForceDirectedGraph {
     }
       //  this.simulation.restart();
     this.simulation.alpha(1).restart();
-    this.loadingService.toggleVisible(false);
   }
 
   initSimulation(options) {
@@ -91,6 +88,5 @@ export class ForceDirectedGraph {
     }
     /** Restarting the simulation internal timer */
     this.simulation.restart();
-    this.loadingService.toggleVisible(false);
   }
 }

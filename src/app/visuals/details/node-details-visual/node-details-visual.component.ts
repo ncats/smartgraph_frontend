@@ -25,7 +25,6 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.nodeList$
       .subscribe(res => {
-        console.log(res);
         this.dataSource.data = Array.from(new Set(res.hovered.concat(res.clicked)));
       });
     if (this.data) {

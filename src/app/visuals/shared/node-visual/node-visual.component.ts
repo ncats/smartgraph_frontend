@@ -52,7 +52,7 @@ export class NodeVisualComponent {
   ngOnInit(): void{
     this.settingsService.dataChange
       .subscribe(settings => {
-        console.log(settings);
+       // console.log(settings);
         switch (this.node.constructor.name) {
           case 'Target': {
             this.label = this.node[settings.targetLabel];
@@ -71,7 +71,7 @@ export class NodeVisualComponent {
             break;
           }
         }
-        console.log(this.label);
+     //   console.log(this.label);
       });
     }
 
