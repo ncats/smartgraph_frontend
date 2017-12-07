@@ -55,7 +55,6 @@ export class MessageService {
       case 'expand': {
         const start: string = 'MATCH (n:' + properties.origin;
         switch (properties.target) {
-          // todo: switch to parameterized  constraints for 'n'
           case 'Target': {
             //  msg = 'MATCH p=shortestPath((t)-[r*..1]->(q:Target)) WHERE t.uuid = {qParam} return p LIMIT 100';
             msg = start + '{uuid:{qParam}}) MATCH (n)-[r]-(b:Target) with {segments:[{start: startNode(r), relationship:r, end: endNode(r)}]} AS ret RETURN ret LIMIT 100';

@@ -11,14 +11,6 @@ import {LoadingService} from './loading.service';
 import {WebWorkerService} from "./services/web-worker.service";
 */
 
-
-export interface Event {
-//   type:string;
-  label: string;
-  diff: Object;
-}
-
-
 @Injectable()
 export class GraphDataService {
 graph = {
@@ -52,49 +44,64 @@ constructor(
 
   this.dataConnectionService.messages.subscribe(msg => {
     const response = JSON.parse(msg);
-    switch (response.type) {
-      case 'path': {
-        this.filter = true;
-        // intentional absence of break to allow fall through
-      }
-      case 'startNodeSearch':
-      case 'endNodeSearch':
-      case 'prediction':{
-        this.noResults = false;
-        //fall through
-      }
-      case 'expand': {
-        this.originalEvent = response.type.toString();
-        const records = response.data._fields;
-        //   let bytes = encoder.encode(msg);
-        //  this.webWorkerService.reportParser.postMessage(bytes.buffer, [bytes.buffer]);
-        if (records.length == 0) {
-          console.error(response);
-        } else {
-          this.parseRecords(records);
-       //   this.appendGraph();
-
+    if(response.data) {
+      this.originalEvent = response.type.toString();
+      const records = response.data._fields;
+      if (records.length == 0) {
+        console.error(response);
+      } else {
+        switch (response.type) {
+          case 'path':
+          {
+            this.filter = true;
+            this.parseRecords(records);
+            break;
+          }
+          case 'startNodeSearch':
+          case 'endNodeSearch':
+          case 'prediction':
+          case 'expand':
+          {
+            this.noResults = false;
+            this.parseRecords(records);
+          }
+          case 'done':
+          {
+          //  console.log(this.nodeList);
+            // todo: still want an alert if no predictions are found.
+            if (this.noResults && (this.nodeList.length === 0 && this.linkList.length === 0)) {
+              this.clearGraph();
+              this._graphHistorySource.next(this.graph);
+              alert('no path found');
+            } else {
+              console.log('done');
+              // this will remove orphan nodes on the final pass
+              //  this.filter = true;
+              this.cleanGraph();
+            }
+            this.loadingService.toggleVisible(false);
+            break;
+          }
         }
-        break;
       }
-      case 'done': {
-        console.log(this.nodeList);
-        // todo: still want an alert if no predictions are found.
-        if(this.noResults && (this.nodeList.length ===0 && this.linkList.length ===0)){
-          this.clearGraph();
-          this._graphHistorySource.next(this.graph);
-          alert('no path found');
-        }else{
+    }else{
+      //no new results added
+      console.log(this.nodeList);
+      // todo: still want an alert if no predictions are found.
+      if (this.noResults && (this.nodeList.length === 0 && this.linkList.length === 0)) {
+        this.clearGraph();
+        this._graphHistorySource.next(this.graph);
+        alert('no path found');
+      } else {
         console.log('done');
         // this will remove orphan nodes on the final pass
-          this.filter =true;
+        //  this.filter = true;
         this.cleanGraph();
-        }
-        this.loadingService.toggleVisible(false);
-        break;
       }
+      this.loadingService.toggleVisible(false);
     }
   });
+
 }
 
   setFilter(filter: boolean): void{
@@ -193,10 +200,6 @@ constructor(
       removedLinks: this.graph.links.filter(link =>  this.linkList.indexOf(link) === -1),
       addedLinks:  this.linkList.filter(link => this.graph.links.indexOf(link) === -1)
     };
-    console.log(this.nodeList);
-    console.log(this.linkList);
-    console.log(this.graph);
-    console.log(diff);
     // apply diff to current graph
     this.applyDiff(diff);
     // update link counts
@@ -211,8 +214,17 @@ constructor(
   }
 
   applyDiff(diff: any): void{
-    console.log(this.graph)
-;    // todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
+    console.log(this.nodeList);
+    console.log(this.linkList);
+    console.log(this.graph);
+    console.log(diff);
+    if (this.eventData){
+      console.log("event");
+    //  diff.removedNodes.push(this.nodeService.getById(this.eventData.id));
+       this.historyMap.set(this.eventData.id, diff);
+       console.log(this.historyMap);
+    }
+    // todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
     // todo: need to iterate over remaining nodes and links and remove them
     if (this.filter == true) {
       diff.removedNodes.forEach(node => {
@@ -228,7 +240,7 @@ constructor(
 
   //this works here because the node and link lists aren't explicitly typed
 countLinks(): void{
-    this.graph.nodes.forEach(node => node.linkCount = 1);
+    this.graph.nodes.forEach(node => node.linkCount = 0);
     this.graph.links.forEach(l => {
       l.source.linkCount ++;
       l.target.linkCount ++;
@@ -241,18 +253,8 @@ countLinks(): void{
   }
 
   nodeExpand(id: string, type:string, properties: any): void {
+    this.eventData = {id: id, diff:{}};
     const message: Message = this.messageService.getMessage(id, type, properties);
-
-    // right now this is only creating a skeleton map object without the diff
-    // this happens here because node id and label are needed for tracking.
-    const event: Event = {
-      label: properties,
-      diff: {}
-    };
-
-    this.oldGraph = JSON.parse(JSON.stringify(this.graph));
-   // console.log(oldGraph);
-  this.eventData = {id: id, event: event};
     this.dataConnectionService.messages.next(message);
   }
 
@@ -262,14 +264,14 @@ countLinks(): void{
     const diff = this.historyMap.get(node.uuid).diff;
 console.log(this.historyMap);
 console.log(diff);
-/*    const undoDiff = {
+    const undoDiff = {
       addedNodes: [],
       removedNodes: diff.addedNodes,
       addedLinks: [],
       removedLinks: diff.addedLinks
-    };*/
+    };
 
-    this.applyDiff(diff);
+    this.applyDiff(undoDiff);
 
     this.countLinks();
     this._graphHistorySource.next(this.graph);
