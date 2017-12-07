@@ -27,7 +27,7 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
     <button mat-menu-item class = "expand-list" *ngIf="expanded.pattern===true" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="!expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="expanded.all===true" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target'" (click)="expand('Predictions')">Get Predictions</button>
+    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target' && !expanded.predictions" (click)="expand('Predictions')">Get Predictions</button>
     <button mat-menu-item class = "expand-list" *ngIf="expanded.predictions===true" (click)="collapse('Predictions')">Remove Predictions</button>
   </mat-list>
 </xhtml:div>
