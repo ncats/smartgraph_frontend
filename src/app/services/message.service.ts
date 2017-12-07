@@ -127,7 +127,7 @@ export class MessageService {
       }
 
       case 'uuid': {
-        msg = 'MATCH (n) WHERE n.uuid= {qParam} MATCH (n)-[r]-(b) RETURN n, r, b';
+        msg = 'MATCH (n) WHERE n.uuid= {qParam} RETURN n';
         params = {qParam: term};
         break;
       }

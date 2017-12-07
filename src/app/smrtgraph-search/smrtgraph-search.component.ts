@@ -99,7 +99,6 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.getEndNodes(this.endNodesCtrl.value.trim().split(/[\s,;]+/));
       }
       this.startNodes = true;
-      this.graphDataService.setFilter(true);
       this.startUUIDList = [];
     });
 
@@ -109,7 +108,6 @@ export class SmrtgraphSearchComponent implements OnInit {
         this.getStartNodes(this.startNodesCtrl.value.trim().split(/[\s,;]+/));
       }
       this.endNodes = true;
-      this.graphDataService.setFilter(true);
       this.endUUIDList = [];
     });
 
@@ -159,5 +157,9 @@ export class SmrtgraphSearchComponent implements OnInit {
       const query: Message = this.messageService.getMessage(value, 'path', params);
      this.dataConnectionService.messages.next(query);
     }
+  }
+
+  clearGraph():void{
+    this.graphDataService.clearGraph();
   }
 }

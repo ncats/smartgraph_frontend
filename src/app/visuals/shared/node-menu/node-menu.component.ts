@@ -137,7 +137,7 @@ export class NodeMenuComponent{
   }
 
   collapse(label): void {
-    this.graphDataService.nodeCollapse(this.clickedNode, {event: label, node: this.clickedNode.uuid});
+    this.graphDataService.nodeCollapse(this.clickedNode);
     this.expanded[label.toLowerCase()] = false;
     this.nodeExpandService.setExpand(this.clickedNode.uuid, this.expanded);
     this.closeMenu();

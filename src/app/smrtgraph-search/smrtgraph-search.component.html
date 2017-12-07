@@ -76,7 +76,8 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center center" >
-    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<mat-icon>search</mat-icon><mat-icon>share</mat-icon></button>
+    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<mat-icon>search</mat-icon><mat-icon>share</mat-icon></button> |
+    <button mat-button color="primary" (click)="clearGraph()">clear graph<mat-icon>delete</mat-icon></button>
   </div>
   </div>
 
