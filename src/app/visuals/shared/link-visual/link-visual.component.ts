@@ -10,7 +10,7 @@ import {SettingsService} from '../../../services/settings.service';
   template: `
  <svg:g class ="link-group">
         <svg:line class="link end"
-        [ngClass]="{arrow: link.edgeType != 'up', flatarrow: link.edgeType == 'up'}"
+        [ngClass]="{arrow: link.edgeType != 'down', flatarrow: link.edgeType === 'down'}"
     [attr.x1]="endpointLessRadius(link, 'x1') || 0"
     [attr.y1]="endpointLessRadius(link, 'y1') || 0"
     [attr.x2]="endpointLessRadius(link, 'x2') || 0"

@@ -62,7 +62,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var AppComponent = (function () {
+var AppComponent = /** @class */ (function () {
     function AppComponent(loadingService, settingsService) {
         this.loadingService = loadingService;
         this.settingsService = settingsService;
@@ -214,7 +214,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AppModule = (function () {
+var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
@@ -301,7 +301,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var D3Service = (function () {
+var D3Service = /** @class */ (function () {
     /** This service will provide methods to enable user interaction with elements
      * while maintaining the d3 simulations physics
      */
@@ -402,8 +402,8 @@ var D3Service = (function () {
                 .data(graph.links)
                 .filter(getNeighborLinks)
                 .classed('hovering', true)
-                .classed('connected', function (link) { return link.edgeType != "up"; })
-                .classed('connectedflat', function (link) { return link.edgeType === "up"; });
+                .classed('connected', function (link) { return link.edgeType != "down"; })
+                .classed('connectedflat', function (link) { return link.edgeType === "down"; });
             connectedNodes = __WEBPACK_IMPORTED_MODULE_2_d3__["k" /* selectAll */]('circle')
                 .data(graph.nodes)
                 .filter(getNeighborNodes)
@@ -472,7 +472,7 @@ var D3Service = (function () {
         var d3element = __WEBPACK_IMPORTED_MODULE_2_d3__["j" /* select */](element);
         var arrowType = 'connected';
         var mouseOverFunction = function () {
-            if (link.edgeType == 'up') {
+            if (link.edgeType === 'down') {
                 arrowType = 'connectedflat';
             }
             d3element.select('.link').classed('hovering', true).classed(arrowType, true);
@@ -524,7 +524,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ClickableLinkDirective = (function () {
+var ClickableLinkDirective = /** @class */ (function () {
     function ClickableLinkDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -575,7 +575,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ClickableNodeDirective = (function () {
+var ClickableNodeDirective = /** @class */ (function () {
     function ClickableNodeDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -626,7 +626,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var DraggableDirective = (function () {
+var DraggableDirective = /** @class */ (function () {
     function DraggableDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -675,7 +675,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var HoverableLinkDirective = (function () {
+var HoverableLinkDirective = /** @class */ (function () {
     function HoverableLinkDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -722,7 +722,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var HoverableNodeDirective = (function () {
+var HoverableNodeDirective = /** @class */ (function () {
     function HoverableNodeDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -771,7 +771,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ZoomableDirective = (function () {
+var ZoomableDirective = /** @class */ (function () {
     function ZoomableDirective(d3Service, _element) {
         this.d3Service = d3Service;
         this._element = _element;
@@ -817,7 +817,7 @@ var FORCES = {
     //  value causes nodes to repel each other, similar to electrostatic charge.
     CHARGE: -80
 };
-var ForceDirectedGraph = (function () {
+var ForceDirectedGraph = /** @class */ (function () {
     function ForceDirectedGraph(nodes, links, options) {
         this.ticker = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         this.nodes = [];
@@ -906,7 +906,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var LinkService = (function () {
+var LinkService = /** @class */ (function () {
     function LinkService() {
         //  Observable navItem source
         this._linkSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
@@ -976,7 +976,7 @@ var LinkService = (function () {
 "use strict";
 /* unused harmony export Reaction */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Link; });
-var Reaction = (function () {
+var Reaction = /** @class */ (function () {
     function Reaction(data) {
         var r = data.split('|');
         this.causal = r[0];
@@ -987,7 +987,7 @@ var Reaction = (function () {
     return Reaction;
 }());
 
-var Link = (function () {
+var Link = /** @class */ (function () {
     function Link(source, target, data) {
         this.reactions = [];
         this.source = source;
@@ -1034,7 +1034,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var NodeService = (function () {
+var NodeService = /** @class */ (function () {
     function NodeService() {
         //  Observable navItem source
         this._clickedNodeSource = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["a" /* Subject */]();
@@ -1157,7 +1157,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 
-var Params = (function () {
+var Params = /** @class */ (function () {
     function Params() {
         this.startNode = false;
         this.endNode = false;
@@ -1165,7 +1165,7 @@ var Params = (function () {
     return Params;
 }());
 
-var Node = (function () {
+var Node = /** @class */ (function () {
     /*
     * Neo4j has their own uuid that will need to be used to track nodes, since some relationships are sepnt with the start
     * and end nodes notated solely by the Neo4j ids, rather than the full node object
@@ -1212,7 +1212,7 @@ var Node = (function () {
     return Node;
 }());
 
-var Compound = (function (_super) {
+var Compound = /** @class */ (function (_super) {
     __extends(Compound, _super);
     function Compound(uuid, data) {
         var _this = _super.call(this, uuid, data) || this;
@@ -1236,7 +1236,7 @@ var Compound = (function (_super) {
     return Compound;
 }(Node));
 
-var Target = (function (_super) {
+var Target = /** @class */ (function (_super) {
     __extends(Target, _super);
     function Target(uuid, data) {
         var _this = _super.call(this, uuid, data) || this;
@@ -1249,7 +1249,7 @@ var Target = (function (_super) {
     return Target;
 }(Node));
 
-var Pattern = (function (_super) {
+var Pattern = /** @class */ (function (_super) {
     __extends(Pattern, _super);
     function Pattern(uuid, data) {
         var _this = _super.call(this, uuid, data) || this;
@@ -1318,7 +1318,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var DownloadButtonComponent = (function () {
+var DownloadButtonComponent = /** @class */ (function () {
     function DownloadButtonComponent(rd, graphDataService) {
         this.rd = rd;
         this.graphDataService = graphDataService;
@@ -1504,7 +1504,7 @@ var DownloadButtonComponent = (function () {
     return DownloadButtonComponent;
 }());
 
-var CytoJSON = (function () {
+var CytoJSON = /** @class */ (function () {
     function CytoJSON() {
         this.format_version = "1.0";
         this["generated_by"] = "cytoscape-3.6.0";
@@ -1524,7 +1524,7 @@ var CytoJSON = (function () {
     return CytoJSON;
 }());
 
-var CytoNode = (function () {
+var CytoNode = /** @class */ (function () {
     function CytoNode(node) {
         this.data = { id: "", node: {} };
         this.position = {
@@ -1540,7 +1540,7 @@ var CytoNode = (function () {
     return CytoNode;
 }());
 
-var CytoEdge = (function () {
+var CytoEdge = /** @class */ (function () {
     function CytoEdge(link) {
         this.data = {
             id: '',
@@ -1569,7 +1569,7 @@ var CytoEdge = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__websocket_service__ = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__("../../../../rxjs/_esm5/operators.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__("../../../../rxjs/_esm5/operators/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1585,7 +1585,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 //const DATA_URL = 'ws://localhost:1337';
 var DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
-var DataConnectionService = (function () {
+var DataConnectionService = /** @class */ (function () {
     function DataConnectionService(wsService) {
         this.wsService = wsService;
         this.messages = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
@@ -1638,7 +1638,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /*
  import {WebWorkerService} from "./services/web-worker.service";
  */
-var GraphDataService = (function () {
+var GraphDataService = /** @class */ (function () {
     function GraphDataService(dataConnectionService, messageService, nodeService, linkService, loadingService) {
         // todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
         var _this = this;
@@ -2193,7 +2193,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var LoadingService = (function () {
+var LoadingService = /** @class */ (function () {
     function LoadingService() {
         this._loadingSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
         //  Observable navItem stream
@@ -2229,7 +2229,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var MessageService = (function () {
+var MessageService = /** @class */ (function () {
     function MessageService() {
     }
     MessageService.prototype.getMessage = function (term, type, properties) {
@@ -2383,7 +2383,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var NodeExpandService = (function () {
+var NodeExpandService = /** @class */ (function () {
     function NodeExpandService() {
         this.expandMap = new Map();
     }
@@ -2407,7 +2407,7 @@ var NodeExpandService = (function () {
     return NodeExpandService;
 }());
 
-var Expand = (function () {
+var Expand = /** @class */ (function () {
     function Expand() {
         this.all = false;
         this.compound = false;
@@ -2437,7 +2437,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-var NodeMenuControllerService = (function () {
+var NodeMenuControllerService = /** @class */ (function () {
     function NodeMenuControllerService() {
         this._clickedMenuSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
         //  Observable navItem stream
@@ -2490,7 +2490,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var SettingsService = (function () {
+var SettingsService = /** @class */ (function () {
     function SettingsService() {
         this.settings = new Settings();
         this.dataChange = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](this.settings);
@@ -2505,7 +2505,7 @@ var SettingsService = (function () {
     return SettingsService;
 }());
 
-var Settings = (function () {
+var Settings = /** @class */ (function () {
     function Settings() {
     }
     return Settings;
@@ -2535,7 +2535,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var WebSocketService = (function () {
+var WebSocketService = /** @class */ (function () {
     function WebSocketService() {
     }
     WebSocketService.prototype.connect = function (url) {
@@ -2616,7 +2616,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var SmrtgraphMenuComponent = (function () {
+var SmrtgraphMenuComponent = /** @class */ (function () {
     function SmrtgraphMenuComponent(settingsService) {
         this.settingsService = settingsService;
         this.title = 'smrtgraph';
@@ -2694,7 +2694,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var SmrtgraphSearchComponent = (function () {
+var SmrtgraphSearchComponent = /** @class */ (function () {
     function SmrtgraphSearchComponent(messageService, nodeService, dataConnectionService, graphDataService, loadingService) {
         this.messageService = messageService;
         this.nodeService = nodeService;
@@ -2886,7 +2886,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var SmrtgraphSettingsComponent = (function () {
+var SmrtgraphSettingsComponent = /** @class */ (function () {
     function SmrtgraphSettingsComponent(settingsService) {
         this.settingsService = settingsService;
         this.targetLabelCtrl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]();
@@ -2965,7 +2965,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var GraphDetailsComponent = (function () {
+var GraphDetailsComponent = /** @class */ (function () {
     function GraphDetailsComponent() {
     }
     GraphDetailsComponent = __decorate([
@@ -3027,7 +3027,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var LinkListVisualComponent = (function () {
+var LinkListVisualComponent = /** @class */ (function () {
     function LinkListVisualComponent(linkService) {
         this.linkService = linkService;
         this.displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score', 'confidence'];
@@ -3107,7 +3107,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var ReactionVisualComponent = (function () {
+var ReactionVisualComponent = /** @class */ (function () {
     function ReactionVisualComponent() {
     }
     ReactionVisualComponent.prototype.ngOnInit = function () {
@@ -3179,7 +3179,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var NodeDetailsVisualComponent = (function () {
+var NodeDetailsVisualComponent = /** @class */ (function () {
     function NodeDetailsVisualComponent(nodeService) {
         this.nodeService = nodeService;
         this.displayedColumns = ['source'];
@@ -3260,7 +3260,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var CompoundDetailViewComponent = (function () {
+var CompoundDetailViewComponent = /** @class */ (function () {
     function CompoundDetailViewComponent() {
     }
     CompoundDetailViewComponent.prototype.ngOnInit = function () {
@@ -3327,7 +3327,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var PatternDetailViewComponent = (function () {
+var PatternDetailViewComponent = /** @class */ (function () {
     function PatternDetailViewComponent() {
     }
     PatternDetailViewComponent.prototype.ngOnInit = function () {
@@ -3396,7 +3396,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var TargetDetailViewComponent = (function () {
+var TargetDetailViewComponent = /** @class */ (function () {
     function TargetDetailViewComponent() {
     }
     TargetDetailViewComponent.prototype.ngOnInit = function () {
@@ -3464,7 +3464,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var GraphComponent = (function () {
+var GraphComponent = /** @class */ (function () {
     function GraphComponent(d3Service, ref, el, graphDataService, loadingService) {
         this.d3Service = d3Service;
         this.ref = ref;
@@ -3583,7 +3583,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var LinkVisualComponent = (function () {
+var LinkVisualComponent = /** @class */ (function () {
     function LinkVisualComponent(settingsService) {
         this.settingsService = settingsService;
     }
@@ -3620,7 +3620,7 @@ var LinkVisualComponent = (function () {
     LinkVisualComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: '[linkVisual]',
-            template: "\n <svg:g class =\"link-group\">\n        <svg:line class=\"link end\"\n        [ngClass]=\"{arrow: link.edgeType != 'up', flatarrow: link.edgeType == 'up'}\"\n    [attr.x1]=\"endpointLessRadius(link, 'x1') || 0\"\n    [attr.y1]=\"endpointLessRadius(link, 'y1') || 0\"\n    [attr.x2]=\"endpointLessRadius(link, 'x2') || 0\"\n    [attr.y2]=\"endpointLessRadius(link, 'y2') || 0\"\n></svg:line>\n    <svg:text class=\"link-name\" *ngIf=\"showLinkLabel\"\n        [attr.font-size]= 10\n        [attr.x]=\"(link.source?.x +link.target?.x)/2 \"\n        [attr.y]=\"(link.source?.y +link.target?.y)/2 \"\n        >\n        {{link?.type }}\n      </svg:text>\n          <svg:line class=\"clickable-area\" \n  [attr.x1]= link.source.x\n    [attr.y1]=link.source.y\n    [attr.x2]=link.target.x\n    [attr.y2]=link.target.y\n       ></svg:line>\n      </svg:g>\n  ",
+            template: "\n <svg:g class =\"link-group\">\n        <svg:line class=\"link end\"\n        [ngClass]=\"{arrow: link.edgeType != 'down', flatarrow: link.edgeType === 'down'}\"\n    [attr.x1]=\"endpointLessRadius(link, 'x1') || 0\"\n    [attr.y1]=\"endpointLessRadius(link, 'y1') || 0\"\n    [attr.x2]=\"endpointLessRadius(link, 'x2') || 0\"\n    [attr.y2]=\"endpointLessRadius(link, 'y2') || 0\"\n></svg:line>\n    <svg:text class=\"link-name\" *ngIf=\"showLinkLabel\"\n        [attr.font-size]= 10\n        [attr.x]=\"(link.source?.x +link.target?.x)/2 \"\n        [attr.y]=\"(link.source?.y +link.target?.y)/2 \"\n        >\n        {{link?.type }}\n      </svg:text>\n          <svg:line class=\"clickable-area\" \n  [attr.x1]= link.source.x\n    [attr.y1]=link.source.y\n    [attr.x2]=link.target.x\n    [attr.y2]=link.target.y\n       ></svg:line>\n      </svg:g>\n  ",
             styles: [__webpack_require__("../../../../../src/app/visuals/shared/link-visual/link-visual.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_settings_service__["a" /* SettingsService */]])
@@ -3680,7 +3680,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var NodeMenuComponent = (function () {
+var NodeMenuComponent = /** @class */ (function () {
     function NodeMenuComponent(nodeService, dataConnectionService, messageService, nodeMenuController, graphDataService, settingsService, nodeExpandService) {
         this.nodeService = nodeService;
         this.dataConnectionService = dataConnectionService;
@@ -3845,7 +3845,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var StructureViewer = (function () {
+var StructureViewer = /** @class */ (function () {
     function StructureViewer() {
     }
     __decorate([
@@ -3862,7 +3862,7 @@ var StructureViewer = (function () {
     return StructureViewer;
 }());
 
-var NodeVisualComponent = (function () {
+var NodeVisualComponent = /** @class */ (function () {
     function NodeVisualComponent(settingsService, nodeService, nodeMenuController) {
         this.settingsService = settingsService;
         this.nodeService = nodeService;
@@ -3941,7 +3941,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  */
 
 
-var MaterialModule = (function () {
+var MaterialModule = /** @class */ (function () {
     function MaterialModule() {
     }
     MaterialModule = __decorate([
