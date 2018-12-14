@@ -24,10 +24,10 @@ import {Node} from '../d3/models/node';
     <mat-icon>border_all</mat-icon>
     <span>CSV</span>
   </button>
-  <button mat-menu-item (click)=" downloadGraph()" disabled>
+<!--  <button mat-menu-item (click)=" downloadGraph()" disabled>
     <mat-icon>photo</mat-icon>
     <span>PNG</span>
-  </button>
+  </button>-->
 </mat-menu>
 `,
   styleUrls: ['./download-button.component.css']

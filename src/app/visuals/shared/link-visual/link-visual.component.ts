@@ -8,28 +8,28 @@ import {SettingsService} from '../../../services/settings.service';
 @Component({
   selector: '[linkVisual]',
   template: `
- <svg:g class ="link-group">
-        <svg:line class="link end"
-        [ngClass]="{arrow: link.edgeType != 'down', flatarrow: link.edgeType === 'down'}"
-    [attr.x1]="endpointLessRadius(link, 'x1') || 0"
-    [attr.y1]="endpointLessRadius(link, 'y1') || 0"
-    [attr.x2]="endpointLessRadius(link, 'x2') || 0"
-    [attr.y2]="endpointLessRadius(link, 'y2') || 0"
-></svg:line>
-    <svg:text class="link-name" *ngIf="showLinkLabel"
-        [attr.font-size]= 10
-        [attr.x]="(link.source?.x +link.target?.x)/2 "
-        [attr.y]="(link.source?.y +link.target?.y)/2 "
-        >
+    <svg:g class ="link-group">
+      <svg:line class="link end"
+                [ngClass]="{arrow: link.edgeType != 'down', flatarrow: link.edgeType === 'down'}"
+                [attr.x1]="endpointLessRadius(link, 'x1') || 0"
+                [attr.y1]="endpointLessRadius(link, 'y1') || 0"
+                [attr.x2]="endpointLessRadius(link, 'x2') || 0"
+                [attr.y2]="endpointLessRadius(link, 'y2') || 0"
+      />
+      <svg:text class="link-name" *ngIf="showLinkLabel"
+                [attr.font-size]= 10
+                [attr.x]="(link.source?.x + link.target?.x)/2 "
+                [attr.y]="(link.source?.y + link.target?.y)/2 "
+      >
         {{link?.type }}
       </svg:text>
-          <svg:line class="clickable-area" 
-  [attr.x1]= link.source.x
-    [attr.y1]=link.source.y
-    [attr.x2]=link.target.x
-    [attr.y2]=link.target.y
-       ></svg:line>
-      </svg:g>
+      <svg:line class="clickable-area"
+                [attr.x1]= "getSource(link.source,'x')"
+                [attr.y1]= "getSource(link.source,'y')"
+                [attr.x2]= "getSource(link.target,'x')"
+                [attr.y2]= "getSource(link.target,'y')"
+      />
+    </svg:g>
   `,
   styleUrls: ['./link-visual.component.css']
 })
@@ -45,13 +45,21 @@ export class LinkVisualComponent {
     this.subscription = this.settingsService.dataChange
       .subscribe(settings => {
         this.showLinkLabel = settings.showLinkLabel;
-  });
+      });
 
-}
+  }
+
+  getSource(link: any, property: string): number{
+    if(link.source[property]){
+      return link.source[property];
+    } else {
+      return 0;
+    }
+  }
 
   endpointLessRadius(link, attr_name) { //  subtract radius away from line end
-   //  this.source = link.source;
-  //   this.target = link.target;
+    //  this.source = link.source;
+    //   this.target = link.target;
     const x1 =  link.source.x || 0;
     const y1 =  link.source.y || 0;
     const x2 =  link.target.x || 0;

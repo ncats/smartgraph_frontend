@@ -11,7 +11,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
 
 ## Build
-
+`npm i` to install dependencies
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
 ## Running unit tests
@@ -31,3 +31,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 1. Start neo4j instance with correct graph
 2. In a separate terminal execute `node backend.ts`
 3. Run `ng serve`
+
+
+sudo rsync -avz --delete-after smartgraph_frontend/dist/ /opt/smrtgraph
