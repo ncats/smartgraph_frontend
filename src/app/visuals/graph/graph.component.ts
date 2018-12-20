@@ -10,7 +10,7 @@ import * as d3 from 'd3';
 import {GraphDataService} from '../../services/graph-data.service';
 import {DownloadButtonComponent} from '../../download-button/download-button.component';
 import {LoadingService} from "../../services/loading.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -43,7 +43,9 @@ import {Subscription} from "rxjs/Subscription";
           </marker>
         </defs>
     </svg>
+<!--
           <download-button ></download-button>
+-->
   `,
   styleUrls: ['./graph.component.css']
 })

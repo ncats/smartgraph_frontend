@@ -7,7 +7,7 @@ import {Compound} from './node';
 import {Target} from './node';
 import {Pattern} from './node';
 
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class NodeService {

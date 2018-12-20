@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Observable} from 'rxjs';
 import {WebSocketService} from './websocket.service';
-import {Observable} from 'rxjs/Observable';
 import {map, share} from 'rxjs/operators';
 
 //const DATA_URL = 'ws://localhost:1337';

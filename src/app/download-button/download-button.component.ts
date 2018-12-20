@@ -84,14 +84,14 @@ downloadEdges(){
 }
 
   downloadPNG(data: any, options: any) {
-    console.log('downloading');
+/*    console.log('downloading');
     const svgString = this.getSVGString(data.node());
     this.svgString2Image( svgString, 2 * options.width, 2 * options.height, save ); //  passes Blob and filesize String to the callback
 
     function save( dataBlob ){
-      console.log(dataBlob);
+      console.log(dataBlob);*/
      //  saveAs( dataBlob, 'D3 vis exported to PNG.png' ); //  FileSaver.js function
-    }
+  //  }
    /* let image = new Image();
     image.src = 'data:image/svg+xml;base64,' + window.btoa(encodeURIComponent(svgString));
     console.log(image);
@@ -101,7 +101,7 @@ downloadEdges(){
     console.log(url);
     window.open(url);*/
   }
-
+/*
   //  Below are the functions that handle actual exporting:
   getSVGString(svgNode) {
     svgNode.setAttribute('xlink', 'http:// www.w3.org/1999/xlink');
@@ -219,11 +219,13 @@ console.log(context);
     return <File>theBlob;
   }
 
-    downloadFile():void{
-  console.log(this.file);
-      let url = window.URL.createObjectURL(this.file);
-      window.open(url);
-    }
+*/
+
+  downloadFile():void{
+    console.log(this.file);
+    let url = window.URL.createObjectURL(this.file);
+    window.open(url);
+  }
 
 }
 

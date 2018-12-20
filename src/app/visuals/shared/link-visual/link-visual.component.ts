@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import { Link } from '../../../d3/models/link';
 import { Node } from '../../../d3/models/node';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {SettingsService} from '../../../services/settings.service';
 
 
@@ -24,10 +24,10 @@ import {SettingsService} from '../../../services/settings.service';
         {{link?.type }}
       </svg:text>
       <svg:line class="clickable-area"
-                [attr.x1]= "getSource(link.source,'x')"
-                [attr.y1]= "getSource(link.source,'y')"
-                [attr.x2]= "getSource(link.target,'x')"
-                [attr.y2]= "getSource(link.target,'y')"
+                [attr.x1]= "getSource(link?.source,'x')"
+                [attr.y1]= "getSource(link?.source,'y')"
+                [attr.x2]= "getSource(link?.target,'x')"
+                [attr.y2]= "getSource(link?.target,'y')"
       />
     </svg:g>
   `,
@@ -49,9 +49,9 @@ export class LinkVisualComponent {
 
   }
 
-  getSource(link: any, property: string): number{
-    if(link.source[property]){
-      return link.source[property];
+  getSource(link: Node, property: string): number{
+    if(link[property]){
+      return link[property];
     } else {
       return 0;
     }
