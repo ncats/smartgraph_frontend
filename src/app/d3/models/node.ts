@@ -72,7 +72,7 @@ export class Compound extends Node {
   }
 
   private parseSmiles(smiles: string): string {
-    console.log(smiles);
+  //  console.log(smiles);
     const parsed = smiles
       .replace(/[;]/g, '%3B')
       .replace(/[#]/g, '%23')

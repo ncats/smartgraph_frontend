@@ -87,7 +87,6 @@ export class GraphDataService {
           this._graphHistorySource.next(this.graph);
           alert('no path found');
         } else {
-          console.log('done');
           this.makeGraph();
         }
         this.loadingService.toggleVisible(false);

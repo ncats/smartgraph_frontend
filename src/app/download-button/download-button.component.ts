@@ -222,7 +222,6 @@ console.log(context);
 */
 
   downloadFile():void{
-    console.log(this.file);
     let url = window.URL.createObjectURL(this.file);
     window.open(url);
   }

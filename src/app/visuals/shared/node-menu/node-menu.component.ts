@@ -98,7 +98,6 @@ export class NodeMenuComponent{
   }
 
   setLabel(): void{
-   console.log(this.settings);
    if(this.clickedNode) {
      switch (this.clickedNode.constructor.name) {
        case 'Target': {

@@ -52,7 +52,6 @@ this.linkSubscription = this.linkService.linkslist$
       copiedData.push(link);
       }
     }
-    console.log(copiedData);
   //  console.log(...new Set(copiedData));
   // let copiedData2 = [...new Set(copiedData)];
    // console.log(copiedData2);

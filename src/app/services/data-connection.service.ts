@@ -3,8 +3,10 @@ import {Subject, Observable} from 'rxjs';
 import {WebSocketService} from './websocket.service';
 import {map, share} from 'rxjs/operators';
 
-//const DATA_URL = 'ws://localhost:1337';
-const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
+// const DATA_URL = 'ws://localhost:1337';
+// const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
+const DATA_URL = 'ws://smrtgraphdb-dev.ncats.io:1337';
+
 
 @Injectable()
 export class DataConnectionService {
