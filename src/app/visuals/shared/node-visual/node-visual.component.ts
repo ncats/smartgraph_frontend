@@ -53,12 +53,12 @@ export class NodeVisualComponent {
     this.settingsService.dataChange
       .subscribe(settings => {
        // console.log(settings);
-        switch (this.node.constructor.name) {
-          case 'Target': {
+        switch (this.node._type) {
+          case 'target': {
             this.label = this.node[settings.targetLabel];
             break;
           }
-          case 'Compound': {
+          case 'compound': {
             if (settings.compoundLabel === 'structure'){
              this.label = settings.compoundLabel;
                 }else {
@@ -66,7 +66,7 @@ export class NodeVisualComponent {
             }
             break;
           }
-          case 'Pattern': {
+          case 'pattern': {
               this.label = settings.patternLabel ? settings.patternLabel : "";
             break;
           }

@@ -33,7 +33,7 @@ export class NodeDetailsVisualComponent implements OnInit {
   }
 
   getNodeType(node:Node): string {
-      return node.constructor.name;
+      return node._type;
   }
 
 }

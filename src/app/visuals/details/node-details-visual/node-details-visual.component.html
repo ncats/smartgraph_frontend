@@ -17,9 +17,9 @@
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
     <mat-cell *matCellDef="let row" > <div [ngSwitch]=getNodeType(row)>
-      <target-detail-view *ngSwitchCase="'Target'"  [node]="row"></target-detail-view>
-      <compound-detail-view *ngSwitchCase="'Compound'" [node]="row"></compound-detail-view>
-      <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row"></pattern-detail-view>
+      <target-detail-view *ngSwitchCase="'target'"  [node]="row"></target-detail-view>
+      <compound-detail-view *ngSwitchCase="'compound'" [node]="row"></compound-detail-view>
+      <pattern-detail-view *ngSwitchCase="'pattern'"  [node]="row"></pattern-detail-view>
       <div *ngSwitchDefault></div>
     </div>
     </mat-cell>

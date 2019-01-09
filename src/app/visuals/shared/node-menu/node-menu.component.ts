@@ -99,12 +99,12 @@ export class NodeMenuComponent{
 
   setLabel(): void{
    if(this.clickedNode) {
-     switch (this.clickedNode.constructor.name) {
-       case 'Target': {
+     switch (this.clickedNode._type) {
+       case 'target': {
          this.label = this.clickedNode[this.settings.targetLabel];
          break;
        }
-       case 'Compound': {
+       case 'compound': {
          if (this.label && this.settings.compoundLabel === 'structure') {
            this.label = this.settings.compoundLabel;
          } else {
@@ -112,7 +112,7 @@ export class NodeMenuComponent{
          }
          break;
        }
-       case 'Pattern': {
+       case 'pattern': {
          this.label = this.settings.patternLabel;
          break;
        }

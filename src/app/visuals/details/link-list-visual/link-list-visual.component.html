@@ -7,9 +7,9 @@
     <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
     <mat-cell *matCellDef="let row" >
       <div [ngSwitch]=getNodeType(row.source)>
-      <target-detail-view *ngSwitchCase="'Target'"  [node]="row.source"></target-detail-view>
-      <compound-detail-view *ngSwitchCase="'Compound'" [node]="row.source"></compound-detail-view>
-      <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row.source"></pattern-detail-view>
+      <target-detail-view *ngSwitchCase="'target'"  [node]="row.source"></target-detail-view>
+      <compound-detail-view *ngSwitchCase="'compound'" [node]="row.source"></compound-detail-view>
+      <pattern-detail-view *ngSwitchCase="'pattern'"  [node]="row.source"></pattern-detail-view>
       <div *ngSwitchDefault></div>
     </div>
     </mat-cell>
@@ -28,9 +28,9 @@
     <mat-header-cell *matHeaderCellDef >Target</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <div [ngSwitch]=getNodeType(row.target)>
-        <target-detail-view *ngSwitchCase="'Target'"  [node]="row.target"></target-detail-view>
-        <compound-detail-view *ngSwitchCase="'Compound'" [node]="row.target"></compound-detail-view>
-        <pattern-detail-view *ngSwitchCase="'Pattern'"  [node]="row.target"></pattern-detail-view>
+        <target-detail-view *ngSwitchCase="'target'"  [node]="row.target"></target-detail-view>
+        <compound-detail-view *ngSwitchCase="'compound'" [node]="row.target"></compound-detail-view>
+        <pattern-detail-view *ngSwitchCase="'pattern'"  [node]="row.target"></pattern-detail-view>
         <div *ngSwitchDefault></div>
       </div>
     </mat-cell>

@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {MatTableDataSource, MatSort} from "@angular/material";
 import {Link} from "../../../d3/models/link";
+import {Node} from "../../../d3/models/node";
 import {LinkService} from "../../../d3/models/link.service";
 import {Subscription} from "rxjs";
 
@@ -30,7 +31,7 @@ export class LinkListVisualComponent implements OnInit , AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  getNodeType(node:Node): string {
-    return node.constructor.name;
+  getNodeType(node: Node): string {
+    return node._type;
   }
 }

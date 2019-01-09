@@ -23,6 +23,7 @@ export class Node implements d3.SimulationNodeDatum {
   labels?: string[];
   linkCount = 0;
   params: Params;
+  _type: string;
   /*
   * Neo4j has their own uuid that will need to be used to track nodes, since some relationships are sepnt with the start
   * and end nodes notated solely by the Neo4j ids, rather than the full node object
@@ -60,6 +61,7 @@ export class Compound extends Node {
   smiles: string;
   compoundId: string;
   imageUrl: string;
+  _type = "compound";
 
   constructor (uuid, data) {
     super(uuid, data);
@@ -89,6 +91,7 @@ export class Target extends Node {
   fullname: string;
   synonyms: string[];
   genes: string;
+  _type = "target";
 
 
   constructor (uuid, data) {
@@ -107,6 +110,7 @@ export class Pattern extends Node {
   pattern_type: string;
   smiles: string;
   imageUrl: string;
+  _type = "pattern";
 
   constructor (uuid, data) {
     super(uuid, data);
