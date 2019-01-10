@@ -69,7 +69,7 @@ export class Compound extends Node {
     this.nostereo_hash = data.properties.nostereo_hash;
     this.smiles = data.properties.smiles;
     this.compoundId = data.properties.compound_id.low;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv16/?size=200&structure=' +
+    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv13?size=200&structure=' +
       this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg';
   }
 
@@ -81,6 +81,8 @@ export class Compound extends Node {
       .replace(/[@]/g, '%40')
       .replace(/[+]/g, '%2B')
       .replace(/[\\]/g, '%5C')
+      .replace(/[\[]/g, '%5B')
+      .replace(/[\]]/g, '%5D')
       .replace(/[|]/g, '%7C');
     return parsed;
   }
