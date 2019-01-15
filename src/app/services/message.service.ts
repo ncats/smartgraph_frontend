@@ -86,27 +86,34 @@ export class MessageService {
       case 'path': {
         const levels = properties.distance;
         // WHERE all(rel in r where rel.max_confidence_value > .3)
+        const compoundStart = 'MATCH p=shortestPath((t:Compound)-[r*..' + levels + ']->(q:Target)) WHERE ';
+        const targetStart = 'MATCH p=shortestPath((t:Target)-[r*..' + levels + ']->(q:Target)) WHERE ';
         const start = 'MATCH p=shortestPath((t)-[r*..' + levels + ']->(q:Target)) WHERE ';
         let confidence = '';
         let activity = '';
-        let similarity = '';
-        const where = '';
+       // let similarity = '';
+       // const where = '';
         const inStart = '  t.uuid IN {start}';
         const inEnd = ' AND q.uuid IN {end}';
 
         if (properties.confidence) {
-          confidence = ' all(rel in r where rel.max_confidence_value >=' + properties.confidence + ' OR rel.activity > 0 OR rel.ratio> 0) AND';
+          confidence = ' all(rel in r WHERE rel.max_confidence_value >=' + properties.confidence + ' OR rel.activity > 0 OR rel.ratio> 0) AND';
         }
         if (properties.activity) {
-          activity = ' all(rel in r where rel.activity <=' + properties.activity + ') AND';
+          activity = ' any(rel in r WHERE rel.activity <=' + properties.activity + ') AND';
         }
-        if (properties.similarity) {
+        /*if (properties.similarity) {
           similarity = ' all(rel in r where rel.ratio >=' + properties.similarity + ') AND';
-        }
+        }*/
         if(term.end.length > 0){
-          msg = start + confidence + activity + similarity + inStart + inEnd + ' AND q.uuid <> t.uuid return p';
+          const compoundFilter = compoundStart + activity + inStart + inEnd + ' AND q.uuid <> t.uuid return p';
+          const targetFilter = targetStart + confidence + inStart + inEnd + ' AND q.uuid <> t.uuid return p';
+          msg = `${compoundFilter} UNION ${targetFilter}`;
         }else {
-          msg = start + confidence + activity + similarity + inStart + ' AND q.uuid <> t.uuid return p';
+          const compoundFilter = compoundStart + activity + inStart + ' AND q.uuid <> t.uuid return p';
+          const targetFilter = targetStart + confidence + inStart + ' AND q.uuid <> t.uuid return p';
+          msg = `${compoundFilter} UNION ${targetFilter}`;
+         // msg = start + confidence + activity + similarity + inStart + ' AND q.uuid <> t.uuid return p';
         }
         params = {start: term.start, end: term.end};
         break;

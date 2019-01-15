@@ -151,12 +151,21 @@ export class SmrtgraphSearchComponent implements OnInit {
       const params: {} = {
         distance: this.distanceCtrl.value || 5,
         confidence: this.confidenceCtrl.value,
-        activity: this.activityCtrl.value,
+        activity: this._convert(this.activityCtrl.value),
         similarity: this.similarityCtrl.value,
       };
       const query: Message = this.messageService.getMessage(value, 'path', params);
      this.dataConnectionService.messages.next(query);
     }
+  }
+
+  _convert(val: number): number {
+  if(val){
+  const x = Math.pow(10, -val);
+    return x * 1000000;
+  } else {
+  return val
+  }
   }
 
   clearGraph():void{

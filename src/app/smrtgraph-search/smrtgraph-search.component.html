@@ -1,85 +1,123 @@
 <div class="container">
   <br>
-
-  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-      <mat-form-field fxFlex="95">
-        <textarea matInput matTextareaAutosize placeholder="Start Nodes" matAutosizeMaxRows = 15 [formControl]="startNodesCtrl"></textarea>
-      </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-form-field fxFlex="95">
+      <textarea matInput matTextareaAutosize placeholder="Start Nodes" matAutosizeMaxRows=15
+                [formControl]="startNodesCtrl"></textarea>
+    </mat-form-field>
   </div>
 
-  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-  <mat-form-field fxFlex="95">
-        <textarea matInput matTextareaAutosize placeholder="End Nodes (optional)" matAutosizeMaxRows = 15 [formControl]="endNodesCtrl"></textarea>
-      </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-form-field fxFlex="95">
+      <textarea matInput matTextareaAutosize placeholder="End Nodes (optional)" matAutosizeMaxRows=15
+                [formControl]="endNodesCtrl"></textarea>
+    </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <div fxFlex="95">
-      <label>Max Distance</label>
-      <mat-slider matInput fxLayoutAlign="center center"
-                 class="example-margin"
-                 aria-label = "max distance"
-                 [max]="10"
-                 [min]="1"
-                 [step]="1"
-                 [thumbLabel]="true"
-                 [formControl]="distanceCtrl"
-                 [value]="5">
-      </mat-slider>
-      <br>
-      <label>Confidence Level</label>
-      <mat-slider matInput fxLayoutAlign="center center"
-                 aria-label="confidence level"
-                 class="example-margin"
-                 [max]="1"
-                 [min]=".01"
-                 [step]=".01"
-                 [thumbLabel]="true"
-                 [formControl]="confidenceCtrl"
-                 [value]=".5">
-      </mat-slider>
-<!--
-      <br>
-      <label>Activity</label>
-      <mat-radio-group>
-        <mat-radio-button value="1">nM</mat-radio-button>
-        <mat-radio-button value="2" [checked] = true >uM</mat-radio-button>
-        <mat-radio-button value="3">mM</mat-radio-button>
-      </mat-radio-group>
-      <mat-slider matInput fxLayoutAlign="center center"
-                 aria-label="activity level"
-                 class="example-margin"
-                 [max]="100"
-                 [min]="0"
-                 [step]="1"
-                 [thumbLabel]="true"
-                 [formControl]="activityCtrl"
-                 [value]="500">
-      </mat-slider>
--->
-
-      <!--
-      [mat-steps]='[1,2,3,4,5,6,7,8,9,10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]'
--->
-
-      <br>
-      <label>Pattern Overlap</label>
-      <mat-slider matInput fxLayoutAlign="center center"
-                 aria-label="pattern overlap"
-                 class="example-margin"
-                 [max]="1"
-                 [min]="0"
-                 [step]=".01"
-                 [thumbLabel]="true"
-                 [formControl]="similarityCtrl"
-                 [value]="50">
-      </mat-slider>
-      <br>
-
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+    <div fxFlex="80">
+      <h4>Max Distance</h4>
+    </div>
+    <div fxFlex="10">
+      <button mat-icon-button color="accent" (click)="distanceCtrl.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
     </div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center center" >
-    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path<mat-icon>search</mat-icon><mat-icon>share</mat-icon></button> |
-    <button mat-button color="primary" (click)="clearGraph()">clear graph<mat-icon>delete</mat-icon></button>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="95">
+  <mat-slider matInput fxLayoutAlign="center center"
+                  class="example-margin"
+                  aria-label="max distance"
+                  [max]="10"
+                  [min]="1"
+                  [step]="1"
+                  [thumbLabel]="true"
+                  [formControl]="distanceCtrl"
+                  [value]="5">
+      </mat-slider>
+    </div>
   </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+    <div fxFlex="80">
+      <h4>PPI Confidence Level</h4>
+    </div>
+    <div fxFlex="10">
+      <button mat-icon-button color="accent" (click)="confidenceCtrl.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
   </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <mat-slider matInput fxLayoutAlign="center center"
+                  aria-label="confidence level"
+                  class="example-margin"
+                  [max]="1"
+                  [min]=".01"
+                  [step]=".01"
+                  [thumbLabel]="true"
+                  [formControl]="confidenceCtrl"
+                  [value]=".5">
+      </mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+    <div fxFlex="80">
+      <h4>Activity (pM)</h4>
+    </div>
+    <div fxFlex="10">
+      <button mat-icon-button color="accent" (click)="activityCtrl.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <mat-slider matInput fxLayoutAlign="center center"
+                  aria-label="activity level"
+                  class="example-margin"
+                  [max]="12"
+                  [min]="3"
+                  [step]=".1"
+                  [thumbLabel]="true"
+                  [formControl]="activityCtrl"
+                  [value]="500">
+      </mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+    <div fxFlex="80">
+      <h4 >Pattern Overlap</h4>
+    </div>
+    <div fxFlex="10">
+      <button mat-icon-button color="accent" (click)="similarityCtrl.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <mat-slider matInput fxLayoutAlign="center center"
+                  aria-label="pattern overlap"
+                  class="example-margin"
+                  [max]="1"
+                  [min]="0"
+                  [step]=".01"
+                  [thumbLabel]="true"
+                  [formControl]="similarityCtrl"
+                  [value]="50">
+      </mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path
+      <mat-icon>search</mat-icon>
+      <mat-icon>share</mat-icon>
+    </button>
+    |
+    <button mat-button color="primary" (click)="clearGraph()">clear graph
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
 

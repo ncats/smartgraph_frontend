@@ -55,7 +55,7 @@ export class ForceDirectedGraph {
         //  .distance(this.links.length*100))
         /* repels the nodes away from each other*/
         .force('charge', d3.forceManyBody()
-         .strength(d => FORCES.CHARGE * d['r']))
+         .strength(d => FORCES.CHARGE * d['r'] / 2))
         /** Updating the central force of the simulation */
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
         /* prevents node overlap*/

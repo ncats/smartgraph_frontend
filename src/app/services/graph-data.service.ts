@@ -191,6 +191,10 @@ export class GraphDataService {
     this._graphHistorySource.next(this.graph);
   }
 
+  getNodes(): string[] {
+    return this.graph.nodes.map(node => node.uuid);
+  }
+
   nodeExpand(id: string, type:string, properties: any): void {
     const message: Message = this.messageService.getMessage(id, type, properties);
     // right now this is only creating a skeleton map object without the diff
