@@ -97,10 +97,10 @@ export class MessageService {
         const inEnd = ' AND q.uuid IN {end}';
 
         if (properties.confidence) {
-          confidence = ' all(rel in r WHERE rel.max_confidence_value >=' + properties.confidence + ' OR rel.activity > 0 OR rel.ratio> 0) AND';
+          confidence = ' all(rel in r WHERE rel.max_confidence_value >= ' + properties.confidence + ') AND';
         }
         if (properties.activity) {
-          activity = ' any(rel in r WHERE rel.activity <=' + properties.activity + ') AND';
+           activity = ' any(rel in r WHERE rel.activity <= ' + properties.activity + ') AND';
         }
         /*if (properties.similarity) {
           similarity = ' all(rel in r where rel.ratio >=' + properties.similarity + ') AND';
@@ -148,12 +148,11 @@ export class MessageService {
     return message;
 
   }
-
 }
 
 export interface Message {
   type: string;
   message: string;
-  params: Object;
+  params: any;
 }
 

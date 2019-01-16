@@ -155,7 +155,9 @@ export class SmrtgraphSearchComponent implements OnInit {
         similarity: this.similarityCtrl.value,
       };
       const query: Message = this.messageService.getMessage(value, 'path', params);
-     this.dataConnectionService.messages.next(query);
+      console.log(this._getBrowserQuery(query));
+
+      this.dataConnectionService.messages.next(query);
     }
   }
 
@@ -170,5 +172,11 @@ export class SmrtgraphSearchComponent implements OnInit {
 
   clearGraph():void{
     this.graphDataService.clearGraph();
+  }
+
+  _getBrowserQuery(message: Message):string {
+    return message.message
+      .replace(/{start}/g, `[${message.params.start.map(q => `'${q}'`).join(',')}]`)
+      .replace(/{end}/g, `[${message.params.end.map(q => `'${q}'`).join(',')}]`);
   }
 }

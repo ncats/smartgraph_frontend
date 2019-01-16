@@ -15,6 +15,30 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
     <div fxFlex="80">
+      <h4>Activity (pM)</h4>
+    </div>
+    <div fxFlex="10">
+      <button mat-icon-button color="accent" (click)="activityCtrl.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <mat-slider matInput fxLayoutAlign="center center"
+                  aria-label="activity level"
+                  class="example-margin"
+                  [max]="12"
+                  [min]="3"
+                  [step]=".1"
+                  [thumbLabel]="true"
+                  [formControl]="activityCtrl"
+                  [value]="500">
+      </mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+    <div fxFlex="80">
       <h4>Max Distance</h4>
     </div>
     <div fxFlex="10">
@@ -61,31 +85,8 @@
       </mat-slider>
     </div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
-    <div fxFlex="80">
-      <h4>Activity (pM)</h4>
-    </div>
-    <div fxFlex="10">
-      <button mat-icon-button color="accent" (click)="activityCtrl.reset()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <div fxFlex="95">
-      <mat-slider matInput fxLayoutAlign="center center"
-                  aria-label="activity level"
-                  class="example-margin"
-                  [max]="12"
-                  [min]="3"
-                  [step]=".1"
-                  [thumbLabel]="true"
-                  [formControl]="activityCtrl"
-                  [value]="500">
-      </mat-slider>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
+
+ <!-- <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
     <div fxFlex="80">
       <h4 >Pattern Overlap</h4>
     </div>
@@ -108,7 +109,7 @@
                   [value]="50">
       </mat-slider>
     </div>
-  </div>
+  </div>-->
   <div fxLayout="row" fxLayoutAlign="center center">
     <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path
       <mat-icon>search</mat-icon>
