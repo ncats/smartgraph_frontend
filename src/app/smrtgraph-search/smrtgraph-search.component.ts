@@ -23,6 +23,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   endUUIDList: any[] = [];
   startNodes = false;
   endNodes = false;
+  hasCompound = false;
 
   constructor(
     private messageService: MessageService,
@@ -78,6 +79,9 @@ export class SmrtgraphSearchComponent implements OnInit {
       // todo: add validation rules: must have uniprot_id (for now)
       // todo: this is going to happen on any change, so i need to filter by response type
       res.nodes.filter(node => {
+        if (node._type === 'compound') {
+          this.hasCompound = true;
+        }
         const id = node.uniprot_id;
         if (this.startUUIDList.includes(node.uuid)) {
           // todo: this doesn't clear the parameters, just passes them.
@@ -94,6 +98,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     });
 
     this.startNodesCtrl.valueChanges.subscribe(value => {
+      this.hasCompound = false;
       this.getStartNodes(value.trim().split(/[\s,;]+/));
       if (this.endNodesCtrl.value) {
         this.getEndNodes(this.endNodesCtrl.value.trim().split(/[\s,;]+/));
@@ -150,10 +155,12 @@ export class SmrtgraphSearchComponent implements OnInit {
       };
       const params: {} = {
         distance: this.distanceCtrl.value || 5,
-        confidence: this.confidenceCtrl.value,
-        activity: this._convert(this.activityCtrl.value),
+        confidence: this.confidenceCtrl.value || 0,
+        activity: this._convert(this.activityCtrl.value) || 10,
         similarity: this.similarityCtrl.value,
+        hasCompound: this.hasCompound
       };
+      console.log(params);
       const query: Message = this.messageService.getMessage(value, 'path', params);
       console.log(this._getBrowserQuery(query));
 
@@ -170,7 +177,8 @@ export class SmrtgraphSearchComponent implements OnInit {
   }
   }
 
-  clearGraph():void{
+  clearGraph():void {
+    this.hasCompound = false;
     this.graphDataService.clearGraph();
   }
 
