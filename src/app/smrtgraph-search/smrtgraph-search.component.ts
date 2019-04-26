@@ -92,6 +92,7 @@ export class SmrtgraphSearchComponent implements OnInit {
           node.params.endNode = true;
         } else {
           node.params.startNode = false;
+          node.params.endNode = false;
         }
         this.nodeService.setNode(node);
       });
