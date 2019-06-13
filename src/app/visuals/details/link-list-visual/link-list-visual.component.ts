@@ -16,7 +16,7 @@ export class LinkListVisualComponent implements OnInit , AfterViewInit {
   linkSubscription: Subscription;
   data :  Link[] = [];
   dataSource = new MatTableDataSource<any>(this.data);
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private linkService: LinkService){
   }

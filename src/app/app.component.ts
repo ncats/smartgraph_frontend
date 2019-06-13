@@ -18,7 +18,7 @@ export class AppComponent {
 
   subscription: Subscription;
 
-  @ViewChild('settingsToggle') public settingsToggle;
+  @ViewChild('settingsToggle', { static: true }) public settingsToggle;
 
   constructor(
     private loadingService: LoadingService,

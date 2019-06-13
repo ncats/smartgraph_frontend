@@ -33,7 +33,7 @@ import {Node} from '../d3/models/node';
   styleUrls: ['./download-button.component.css']
 })
 export class DownloadButtonComponent implements OnInit {
-  @ViewChild('#svg') el: ElementRef;
+  @ViewChild('#svg', { static: false }) el: ElementRef;
 
   file: any;
   constructor(private rd: Renderer2,
