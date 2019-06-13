@@ -32,7 +32,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     private graphDataService: GraphDataService,
     private loadingService: LoadingService
   ) {
-    this.startNodesCtrl = new FormControl();
+    this.startNodesCtrl = new FormControl('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
     this.endNodesCtrl = new FormControl();
     this.distanceCtrl = new FormControl();
     this.confidenceCtrl = new FormControl();
@@ -57,8 +57,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   ngOnInit() {
     // todo: fix above description
     // todo: set all subscriptions to be variables to close on destroy
-    this.dataConnectionService.messages.subscribe(msg => {
-      const response = JSON.parse(msg);
+    this.dataConnectionService.messages.subscribe(response => {
       switch (response.type) {
         case 'startNodeSearch': {
           this.startUUIDList.push(response.data._fields[0].properties.uuid);

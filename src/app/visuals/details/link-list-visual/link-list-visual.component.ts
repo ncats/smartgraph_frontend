@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {MatTableDataSource, MatSort} from "@angular/material";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
 import {Link} from "../../../d3/models/link";
 import {Node} from "../../../d3/models/node";
 import {LinkService} from "../../../d3/models/link.service";

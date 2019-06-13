@@ -1,28 +1,30 @@
-import { Injectable } from '@angular/core';
-import {Subject, Observable} from 'rxjs';
-import {WebSocketService} from './websocket.service';
-import {map, share} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {webSocket, WebSocketSubject} from "rxjs/webSocket";
 
-// const DATA_URL = 'ws://localhost:1337';
-// const DATA_URL = 'ws://smrtgraphdb-dev.ncats.nih.gov:1337';
 const DATA_URL = 'ws://smrtgraphdb-dev.ncats.io:1337';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataConnectionService {
+  subject;
+  responses: WebSocketSubject<any>;
+
   public messages: Subject<any> = new Subject<any>();
-  private messagesEmitter: any;
-  constructor(private wsService: WebSocketService) {
 
-    //  subscribe to websocket
-    this.messagesEmitter  = <Subject<any>>this.wsService
-      .connect(DATA_URL).pipe(
-      map((response: MessageEvent): string => response.data)
-    //   error(error => Observable.empty())
-      );
+  constructor() {
+    this.responses = webSocket(DATA_URL);
 
-    this.messages = this.messagesEmitter.pipe(
-      share()
+    this.responses.subscribe(
+      msg => msg, // Called whenever there is a message from the server.
+      err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
+      () => console.log('complete') // Called when connection is closed (for whatever reason).
     );
+
+    this.messages.subscribe(message => {
+      console.log(message)
+      this.responses.next(message)})
   }
 } //  end class DataService

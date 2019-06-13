@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject, Observer} from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WebSocketService {
 
   constructor() { }
@@ -18,6 +20,7 @@ export class WebSocketService {
   }
 
   private create(url: string): Subject<MessageEvent> {
+    console.log("creating websocket")
     const ws = new WebSocket(url);
 
     const observable = Observable.create(

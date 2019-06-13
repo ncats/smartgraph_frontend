@@ -11,7 +11,9 @@ import {LoadingService} from './loading.service';
  import {WebWorkerService} from "./services/web-worker.service";
  */
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GraphDataService {
   graph = {
     nodes: [],
@@ -39,11 +41,11 @@ export class GraphDataService {
     private linkService: LinkService,
     private loadingService: LoadingService
   ){
-
+console.log("graph data service created");
     // todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
 
-    this.dataConnectionService.messages.subscribe(msg => {
-      const response = JSON.parse(msg);
+    this.dataConnectionService.responses.subscribe(response => {
+      console.log(response);
       if(response.data) {
         this.originalEvent = response.type.toString();
         const records = response.data._fields;
@@ -231,7 +233,7 @@ export class GraphDataService {
 }
 
 /*
-  this.dataConnectionService.messages.subscribe(msg => {
+  this.dataConnectionService.responses.subscribe(msg => {
     const response = JSON.parse(msg);
     if(response.data) {
       this.originalEvent = response.type.toString();

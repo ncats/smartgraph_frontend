@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Node} from '../../../d3/models/node';
 import {NodeService} from '../../../d3/models/node.service';
 import {Subscription} from 'rxjs';
-import {MatTableDataSource} from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: 'node-details-visual',

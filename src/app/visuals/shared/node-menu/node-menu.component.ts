@@ -70,8 +70,7 @@ export class NodeMenuComponent{
     });
 
 
-    this.dataConnectionService.messages.subscribe(msg => {
-      const response = JSON.parse(msg);
+    this.dataConnectionService.responses.subscribe(response => {
       if (response.type == 'counts') {
         this.counts[response.data._fields[0][0].toLowerCase()] = response.data._fields[1].low;
         this.counts.total = this.counts.total + response.data._fields[1].low;

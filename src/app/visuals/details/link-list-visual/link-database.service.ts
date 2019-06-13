@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {MatTableDataSource, MatSort} from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import { map, merge } from 'rxjs/operators';
 import {Link} from '../../../d3/models/link';
