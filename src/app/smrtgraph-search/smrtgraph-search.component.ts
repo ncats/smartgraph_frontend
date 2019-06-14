@@ -54,10 +54,6 @@ export class SmrtgraphSearchComponent implements OnInit {
   /*
   * Todo: this needs to be re-worked a bit-- the queries that are the result of the search inputs changing directly modify nodes
   * todo: while they do this thorugh a service, they subscribe to all graph change events, which is not optimal
-  * todo: there is also no function to remove the startNode and endNode parameters
-  *
-  *
-  *
   * */
 
 
@@ -66,7 +62,6 @@ export class SmrtgraphSearchComponent implements OnInit {
 
 
   ngOnInit() {
-    // todo: fix above description
     // todo: set all subscriptions to be variables to close on destroy
     this.dataConnectionService.responses.subscribe(response => {
       switch (response.type) {
@@ -140,10 +135,6 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.similarityCtrl.valueChanges.subscribe(value => {
       this.shortestPath();
     });
-
-   //  this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
-   // this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
-   // this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
     this.shortestPath();
   }
 
@@ -151,13 +142,11 @@ export class SmrtgraphSearchComponent implements OnInit {
   getStartNodes(values: string[]): void{
     const query: Message = this.messageService.getMessage(values, 'startNodeSearch');
     this.dataConnectionService.messages.next(query);
-   // setTimeout(() => this.dataConnectionService.messages.next(query), 0);
   }
 
   getEndNodes(values: string[]): void{
     const query: Message = this.messageService.getMessage(values, 'endNodeSearch');
     this.dataConnectionService.messages.next(query);
-   // setTimeout(() => this.dataConnectionService.messages.next(query), 0);
   }
 
   shortestPath(){
