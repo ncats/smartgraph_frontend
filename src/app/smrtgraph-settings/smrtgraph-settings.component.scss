@@ -1,0 +1,45 @@
+.vertical-group{
+  display: inline-flex;
+  flex-direction: column;
+}
+
+
+.circle{
+  width: 25px;
+  height: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  margin: 10px;
+}
+
+.target {
+  background-color: #ff5722;
+}
+
+.target-start {
+  background-color: #ff8a50;
+}
+
+.target-end {
+  background-color: #c41c00;
+}
+
+.compound {
+  background-color: #1E71A2;
+}
+
+.pattern {
+  background-color: #FF9C22;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row-close {
+  display: flex;
+  align-items: center;
+}

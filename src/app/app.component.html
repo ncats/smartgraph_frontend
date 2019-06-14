@@ -1,24 +1,27 @@
-<smrtgraph-menu></smrtgraph-menu>
-<mat-sidenav-container class = "upperSection">
+<div class="smartgraph"><smrtgraph-menu></smrtgraph-menu>
+<mat-sidenav-container class="upperSection">
   <button type="button" class="sidenavToggle" mat-raised-button [color]="'accent'" (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <mat-sidenav #sidenav [mode]="'side'" [opened]="true" class = "upperSection" >
+  <mat-sidenav #sidenav [mode]="'side'" [opened]="true" >
     <!-- sidenav content -->
-    <smrtgraph-search ></smrtgraph-search>
-  </mat-sidenav>
-  <!-- primary content -->
-  <graph class = "upperSection"></graph>
-
-  <mat-sidenav #settingsToggle [mode]="'over'" position="end">
-    <app-smrtgraph-settings></app-smrtgraph-settings>
+    <smrtgraph-search></smrtgraph-search>
   </mat-sidenav>
 
+    <div class="info-panel" [ngClass]="{'sidenav-opened': sidenav.opened === true }">
+      <app-node-details-box></app-node-details-box>
+    </div>
+    <!-- primary content -->
+    <graph class="upperSection"></graph>
+    <mat-sidenav #settingsToggle [mode]="'over'" position="end">
+      <app-smrtgraph-settings></app-smrtgraph-settings>
+    </mat-sidenav>
 </mat-sidenav-container>
 
-<div fxLayout="row" fxLayoutGap="10px" class = "link-list-row">
+<div fxLayout="row" fxLayoutGap="10px" class="link-list-row">
   <div fxFlex="100">
-<app-graph-details></app-graph-details>
+    <app-graph-details></app-graph-details>
   </div>
 </div>
 
+</div>

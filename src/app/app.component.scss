@@ -1,0 +1,57 @@
+mat-sidenav {
+  width: 25vw;
+}
+.upperSection {
+  overflow: visible;
+}
+
+.info-panel {
+ // height: 50%;
+  max-width: 20%;
+  background-color: rgba(255, 255, 255, .6);
+  border: #f1f1f1 1px solid;
+  position: absolute;
+  left: 75vw;
+  top: 5vh;
+}
+
+.smartgraph {
+  min-height: 100vh;
+}
+
+.info-panel.sidenav-opened {
+  left: 55vw;
+}
+
+.mat-drawer-container {
+  /*
+  height: 65vh;
+  */
+}
+
+.sidenavToggle{
+  position: absolute !important;
+}
+
+@media only screen and (max-width: 960px) {
+  mat-sidenav {
+    width: 50vw;
+  }
+
+  .info-panel {
+    height: 50%;
+    width: 30%;
+    right: 7vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  mat-sidenav {
+    width: 80vw;
+  }
+
+  .info-panel {
+    height: 60%;
+    width: 40%;
+  }
+}

@@ -35,6 +35,13 @@ export class D3Service {
     svg.call(zoom);
   }
 
+  /** A method to register clicks on the graph that aren't node or link clicks (resets those behaviors) */
+  applyClickOffBehaviour(svgElement) {
+    const d3element = d3.select(svgElement);
+    d3element.on('click',  () => { this._clearNodes()});
+
+  }
+
   /** A method to bind a draggable behaviour to an svg element */
   applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     const d3element = d3.select(element);
@@ -201,18 +208,18 @@ export class D3Service {
     // emits the link for other components to listen for
   applyClickableLinkBehaviour = (element, link: Link, graph: ForceDirectedGraph) =>  {
     const d3element = d3.select(element);
-    const svg = d3.select('svg');
-    let arrowType = 'connected';
+    let arrowType = 'clicked-arrow';
 
     const clickFunction = (): void => {
-      if (link.edgeType == 'up'){
-        arrowType = 'connectedflat';
+      if (link.edgeType === 'down'){
+        arrowType = 'clicked-flat';
       }
       let d3link = d3element.select('.link');
-      d3link.classed('clicked', !d3link.classed('clicked')).classed(arrowType, !d3link.classed(arrowType));
       if(d3link.classed('clicked')){
+        d3element.select('.link').classed('clicked', false).classed(arrowType, false);
         this.linkService.clickedLinks(link);
       }else{
+        d3element.select('.link').classed('clicked', true).classed(arrowType, true);
         this.linkService.removeClickedLink(link);
       }
     };
@@ -226,4 +233,80 @@ export class D3Service {
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
     return new ForceDirectedGraph(nodes, links, options);
   }
+
+  _clearNodes(): void {
+    d3.selectAll('.link')
+      //.classed('clicked', false)
+      .classed('not-related', false);
+    d3.selectAll('.node-child')
+      .classed('connected', false)
+      .classed('clicked-parent', false)
+      .classed('clicked-neighbor', false)
+      .classed('not-related', false)
+     // .classed('clicked', false);
+  };
+
+  _manualClick(node: Node, graph: ForceDirectedGraph){
+    console.log(node);
+    this._clearNodes();
+    let connectedLinks;
+    let nonConnectedLinks;
+    let connectedNodes;
+    let nonConnectedNodes;
+
+    const getNeighborLinks = (e: Link): boolean => {
+      return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        || node.uuid === (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNonNeighborLinks = (e: Link): boolean => {
+      return (node.uuid !== (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        && node.uuid !== (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNeighborNodes = (e: any): boolean => {
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) > -1) ||
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) > -1);
+    };
+
+    const getNotNeighborNodes = (e: any): boolean => {
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) === -1) &&
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1);
+    };
+
+    //highlight links
+    connectedLinks = d3.selectAll('.link')
+      .data(graph.links)
+      .filter(getNeighborLinks)
+      .classed('clicked', true);
+
+    nonConnectedLinks = d3.selectAll('.link')
+      .data(graph.links)
+      .filter(getNonNeighborLinks)
+      .classed('not-related', true);
+
+    nonConnectedNodes = d3.selectAll('.node-child')
+      .data(graph.nodes)
+      .filter(getNotNeighborNodes)
+      .classed('not-related', true);
+
+    // highlight neighbor nodes
+    connectedNodes = d3.selectAll('.node-child')
+      .data(graph.nodes)
+      .filter(getNeighborNodes)
+      .classed('clicked-neighbor', true);
+
+    // highlight parent
+    const parent = d3.selectAll('.node-child')
+      .data(graph.nodes)
+      .filter(d => d.uuid === node.uuid)
+      .classed('clicked-neighbor', true)
+      .classed('not-related', false);
+
+    // this.zoomFit(parent);
+    // console.log(parent);
+    // console.log(node);
+    // this.zoomFit2(node, parent);
+  };
+
 }

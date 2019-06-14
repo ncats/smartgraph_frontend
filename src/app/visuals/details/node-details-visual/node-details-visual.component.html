@@ -15,7 +15,7 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
   <ng-container matColumnDef="source">
-    <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>Node</mat-header-cell>
     <mat-cell *matCellDef="let row" > <div [ngSwitch]=getNodeType(row)>
       <target-detail-view *ngSwitchCase="'target'"  [node]="row"></target-detail-view>
       <compound-detail-view *ngSwitchCase="'compound'" [node]="row"></compound-detail-view>

@@ -20,11 +20,12 @@ import {Subscription} from "rxjs";
   <div *ngIf="loading" class = "loadingIcon" fxLayoutAlign="center center">
     <mat-spinner></mat-spinner>
   </div>
-    <svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
-      <g [zoomableOf]="svg" [draggableInGraph]="graph">
+    <svg #svg [attr.width]="_options.width"  [attr.height]="_options.height">
+      <g [zoomableOf]="svg" [draggableInGraph]="graph" pharosZoomable>
         <g [linkVisual]="link" [clickableLink] = "link" [hoverableLink]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
-        [clickableNode]="node" [draggableNode]="node" [draggableInGraph]="graph">
+        [clickableNode]="node" [draggableNode]="node" 
+           [draggableInGraph]="graph">
         </g>
         <svg:g menu-list #menu></svg:g>
       </g>
@@ -43,11 +44,11 @@ import {Subscription} from "rxjs";
           </marker>
         </defs>
     </svg>
-<!--
+  <!--
           <download-button ></download-button>
 -->
   `,
-  styleUrls: ['./graph.component.css']
+  styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent {
 /*  @ViewChild(DownloadButtonComponent)
@@ -56,6 +57,7 @@ export class GraphComponent {
   public links: Link[] = [];
   subscription: Subscription;
   loading: boolean = true;
+
 
 
   @HostListener('window:resize', ['$event'])
@@ -106,7 +108,7 @@ export class GraphComponent {
 
   get options() {
     return this._options = {
-      width: this.el.nativeElement.parentElement.offsetWidth,
+      width: this.el.nativeElement.parentElement.offsetWidth -50,
       height: window.innerHeight * .6
       //  height: window.innerHeight-(window.outerHeight-window.innerHeight)
     };

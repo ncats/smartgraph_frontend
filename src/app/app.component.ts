@@ -9,7 +9,7 @@ import {Message, MessageService} from "./services/message.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
 })
@@ -34,6 +34,7 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
+    console.log(this);
     this.settingsService.sidenav = this.settingsToggle;
     const value: {} = {
       end: ["bf76473e-a1dd-4198-8174-6fb5c92a4fee",

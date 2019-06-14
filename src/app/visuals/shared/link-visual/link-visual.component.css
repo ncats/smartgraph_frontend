@@ -62,6 +62,23 @@
   stroke-width: 3px;
 }
 
+.not-related {
+  stroke: #b7b7b7;
+  stroke-width: .5px !important;
+}
+
+.clicked-arrow {
+  stroke-width: 2 !important;
+  stroke: #595959;
+  marker-end: url(#hoverarrow);
+}
+
+.clicked-flat {
+  stroke-width: 2 !important;
+  stroke: #595959;
+  marker-end: url(#hoverflatarrow);
+}
+
 /*#arrow{
   stroke-width: 2;
   stroke: #A5A5A5;

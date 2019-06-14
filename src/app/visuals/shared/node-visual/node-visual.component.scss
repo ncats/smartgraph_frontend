@@ -36,6 +36,7 @@
   z-index: 666;
 }
 
+
 .relationship {
   color: #A5ABB6;
   shaft-width: 1px;
@@ -100,3 +101,25 @@ circle.node.Pattern {
   */
 }
 
+
+.clicked-parent {
+  stroke: #000;
+  stroke-width: 5px;
+}
+
+.clicked-neighbor {
+  stroke: #000;
+  stroke-width: 5px;
+}
+
+.not-related {
+  fill: #f6f6f6 !important;
+  stroke: #b7b7b7 !important;
+  stroke-width: .5px;
+}
+
+.not-related {
+&  + .node-text {
+     display: none;
+   }
+}

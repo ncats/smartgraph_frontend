@@ -9,7 +9,7 @@ import {LoadingService} from '../services/loading.service';
 @Component({
   selector: 'smrtgraph-search',
   templateUrl: './smrtgraph-search.component.html',
-  styleUrls: ['./smrtgraph-search.component.css']
+  styleUrls: ['./smrtgraph-search.component.scss']
 })
 export class SmrtgraphSearchComponent implements OnInit {
   startNodesCtrl: FormControl;

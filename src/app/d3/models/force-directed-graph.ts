@@ -50,9 +50,10 @@ export class ForceDirectedGraph {
 
     /** Creating the simulation */
     if (!this.simulation) {
+      console.log(this);
       this.simulation = d3.forceSimulation()
         .force('link', d3.forceLink(this.links).id(d => d['id']))
-        //  .distance(this.links.length*100))
+        //  .distance(this.links.length * 100))
         /* repels the nodes away from each other*/
         .force('charge', d3.forceManyBody()
          .strength(d => FORCES.CHARGE * d['r'] / 2))

@@ -32,4 +32,15 @@
   <mat-checkbox [formControl]="showLinkLabelCtrl">Show Relationship Types</mat-checkbox>
     </div>
   </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div fxFlex="95">
+      <h3>Legend</h3>
+  <div class="row-close"><div class="circle target"></div>: Target node</div>
+  <div class="row-close"><div class="circle target-start"></div>: Starting target node</div>
+  <div class="row-close"><div class="circle target-end"></div>: Ending target node</div>
+  <div class="row-close"><div class="circle compound"></div>: Compound</div>
+  <div class="row-close"><div class="circle pattern"></div>: Scaffold pattern</div>
+      <a mat-button (click) = openDisclaimer() [color]="'primary'">Disclaimer Info</a>
+    </div>
+  </div>
 </div>

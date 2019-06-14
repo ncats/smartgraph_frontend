@@ -19,7 +19,6 @@ import {WebSocketService} from './services/websocket.service';
 import {DataConnectionService} from './services/data-connection.service';
 import {MessageService} from './services/message.service';
 import { NodeDetailsVisualComponent } from './visuals/details/node-details-visual/node-details-visual.component';
-import {NodeMenuComponent} from './visuals/shared/node-menu/node-menu.component';
 import {NodeMenuControllerService} from './services/node-menu-controller.service';
 import {GraphDataService} from './services/graph-data.service';
 import { SmrtgraphSearchComponent } from './smrtgraph-search/smrtgraph-search.component';
@@ -42,6 +41,12 @@ import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-setti
 import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component";
 import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
 import {NodeExpandService} from "./services/node-expand.service";
+import {SearchComponent} from "./visuals/shared/search-component/search.component";
+import {NodeDetailsBoxComponent} from "./visuals/shared/node-details-box/node-details-box.component";
+import {HighlightPipe} from "./visuals/shared/search-component/highlight.pipe";
+import {GraphClickDirective} from "./d3/directives/graph-click.directive";
+import {NodeMenuComponent} from "./visuals/shared/node-menu/node-menu.component";
+import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/disclaimer-modal.component';
 
 
 @NgModule({
@@ -62,13 +67,18 @@ import {NodeExpandService} from "./services/node-expand.service";
     DraggableDirective,
     ClickableNodeDirective,
     ClickableLinkDirective,
+    GraphClickDirective,
     GraphDetailsComponent,
     TargetDetailViewComponent,
     CompoundDetailViewComponent,
     PatternDetailViewComponent,
     LinkListVisualComponent,
     ReactionVisualComponent,
-    SmrtgraphSettingsComponent
+    SmrtgraphSettingsComponent,
+    SearchComponent,
+    NodeDetailsBoxComponent,
+    HighlightPipe,
+    DisclaimerModalComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +100,9 @@ import {NodeExpandService} from "./services/node-expand.service";
     LoadingService,
     SettingsService,
     NodeExpandService
+  ],
+  entryComponents: [
+    DisclaimerModalComponent
   ],
   bootstrap: [AppComponent]
 })

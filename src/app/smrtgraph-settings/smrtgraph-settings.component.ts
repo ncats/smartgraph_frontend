@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {SettingsService} from '../services/settings.service';
+import {DisclaimerModalComponent} from "./disclaimer-modal/disclaimer-modal.component";
+import {MatDialog} from "@angular/material";
 
 @Component({
   selector: 'app-smrtgraph-settings',
   templateUrl: './smrtgraph-settings.component.html',
-  styleUrls: ['./smrtgraph-settings.component.css'],
+  styleUrls: ['./smrtgraph-settings.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class SmrtgraphSettingsComponent implements OnInit {
@@ -14,7 +16,9 @@ export class SmrtgraphSettingsComponent implements OnInit {
   patternLabelCtrl: FormControl;
   showLinkLabelCtrl: FormControl;
 
-  constructor(public settingsService: SettingsService) {
+  constructor(
+    public dialog: MatDialog,
+    public settingsService: SettingsService) {
     this.targetLabelCtrl = new FormControl();
     this.compoundLabelCtrl = new FormControl();
     this.patternLabelCtrl = new FormControl();
@@ -44,4 +48,9 @@ export class SmrtgraphSettingsComponent implements OnInit {
     });
   }
 
+  openDisclaimer() {
+      const dialogRef = this.dialog.open(DisclaimerModalComponent, {
+        width: '50vw'
+      });
+  }
 }

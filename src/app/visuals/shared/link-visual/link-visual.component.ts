@@ -16,7 +16,7 @@ import {SettingsService} from '../../../services/settings.service';
                 [attr.x2]="endpointLessRadius(link, 'x2') || 0"
                 [attr.y2]="endpointLessRadius(link, 'y2') || 0"
       />
-      <svg:text class="link-name" *ngIf="showLinkLabel"
+      <svg:text class="link-name" *ngIf="showLinkLabel === true"
                 [attr.font-size]= 10
                 [attr.x]="(link.source?.x + link.target?.x)/2 "
                 [attr.y]="(link.source?.y + link.target?.y)/2 "

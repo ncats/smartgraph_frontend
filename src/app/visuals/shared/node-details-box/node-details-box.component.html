@@ -1,0 +1,24 @@
+<div class = "details-pane">
+<search-component (selected)="foundNode($event)"></search-component>
+  <div *ngIf="node">
+    <div fxLayout="row">
+    <span><h1>{{node?.genes}}</h1></span>
+    </div>
+    <div fxLayout="row">
+    <a mat-stroked-button
+         *ngIf = "node._type === 'target'"
+         [color] = "'primary'"
+         href='https://pharos.nih.gov/idg/targets/{{node?.uniprot_id}}'
+         target="_blank"
+         aria-label="see more target info from Pharos">
+         See more info<mat-icon>open_in_new</mat-icon>
+      </a>
+    </div>
+    <div [ngSwitch]= node._type>
+      <target-detail-view *ngSwitchCase="'target'"  [node]="node"></target-detail-view>
+      <compound-detail-view *ngSwitchCase="'compound'" [node]="node"></compound-detail-view>
+      <pattern-detail-view *ngSwitchCase="'pattern'"  [node]="node"></pattern-detail-view>
+      <div *ngSwitchDefault></div>
+    </div>
+  </div>
+</div>
