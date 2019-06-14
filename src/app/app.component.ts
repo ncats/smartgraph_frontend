@@ -53,9 +53,8 @@ export class AppComponent {
       activity: 10,
       hasCompound: true
     };
-   // const query: Message = this.messageService.getMessage(value, 'path', params);
-console.log(query);
-  //  this.dataConnectionService.messages.next(query);
+    const query: Message = this.messageService.getMessage(value, 'path', params);
+    this.dataConnectionService.messages.next(query);
   }
 
 

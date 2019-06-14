@@ -115,7 +115,7 @@ export class MessageService {
         return p`
           } else {
             // there is a compound in start nodes and end nodes exist
-            console.log("has compound and end nodes");
+          //  console.log("has compound and end nodes");
             msg = `MATCH (c:Compound)-[a:TESTED_ON]-(t1:Target) WHERE a.activity < ${properties.activity} AND c.uuid IN {start}
             with t1, COLLECT(c) as compounds, COLLECT(t1) as targets
               MATCH p1=shortestPath((t1)-[r*..${properties.distance}]->(q:Target))
@@ -136,7 +136,7 @@ export class MessageService {
             return p`
 
           } else {
-            console.log(" has compound and no end nodes")
+          //  console.log(" has compound and no end nodes")
              msg =  `MATCH (c:Compound)-[a:TESTED_ON]-(t1:Target) WHERE a.activity < ${properties.activity} AND c.uuid IN {start}
             with t1, COLLECT(c) as compounds, COLLECT(t1) as targets
               MATCH p1=shortestPath((t1)-[r*..${properties.distance}]->(q:Target))

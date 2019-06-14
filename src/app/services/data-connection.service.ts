@@ -24,7 +24,6 @@ export class DataConnectionService {
     );
 
     this.messages.subscribe(message => {
-      console.log(message)
       this.responses.next(message)})
   }
 } //  end class DataService

@@ -19,10 +19,21 @@ export class SmrtgraphSearchComponent implements OnInit {
   activityCtrl: FormControl;
   similarityCtrl: FormControl;
 
-  startUUIDList: any[] = [];
-  endUUIDList: any[] = [];
-  startNodes = false;
-  endNodes = false;
+  startUUIDList: any[] = [
+    "489c2bf7-0333-454d-bec1-ff2ec2f7a450",
+    "d432258a-231a-4e64-89b3-71fbc3952942",
+    "604dbdc3-a1bd-46ad-b19f-d82afdee387f",
+    "953c70cf-d0f6-418c-8949-e105b0004fca",
+    "54c43ef8-3627-487b-b693-8ae17c135273"
+  ];
+  endUUIDList: any[] = [
+    "bf76473e-a1dd-4198-8174-6fb5c92a4fee",
+    "69b04e9f-1b42-4cd2-8e06-392ad61e024f",
+    "f363da85-23f0-4f49-8cb5-527c578f9a4d",
+    "9eeda47e-dcfa-4c23-95ff-996f1e54fc82"
+  ];
+  startNodes = true;
+  endNodes = true;
   hasCompound = false;
 
   constructor(
@@ -33,10 +44,10 @@ export class SmrtgraphSearchComponent implements OnInit {
     private loadingService: LoadingService
   ) {
     this.startNodesCtrl = new FormControl('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
-    this.endNodesCtrl = new FormControl();
-    this.distanceCtrl = new FormControl();
-    this.confidenceCtrl = new FormControl();
-    this.activityCtrl = new FormControl();
+    this.endNodesCtrl = new FormControl('P03372, P04035, P04150, P00519');
+    this.distanceCtrl = new FormControl(5);
+    this.confidenceCtrl = new FormControl(0);
+    this.activityCtrl = new FormControl(10);
     this.similarityCtrl = new FormControl();
   }
 
@@ -57,7 +68,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   ngOnInit() {
     // todo: fix above description
     // todo: set all subscriptions to be variables to close on destroy
-    this.dataConnectionService.messages.subscribe(response => {
+    this.dataConnectionService.responses.subscribe(response => {
       switch (response.type) {
         case 'startNodeSearch': {
           this.startUUIDList.push(response.data._fields[0].properties.uuid);
@@ -131,19 +142,22 @@ export class SmrtgraphSearchComponent implements OnInit {
     });
 
    //  this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB-UHFFFAOYSA-N, HVTCKKMWZDDWOY-UHFFFAOYSA-O');
-    this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
-    this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
+   // this.startNodesCtrl.setValue('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
+   // this.endNodesCtrl.setValue('P03372, P04035, P04150, P00519');
+    this.shortestPath();
   }
 
 
   getStartNodes(values: string[]): void{
     const query: Message = this.messageService.getMessage(values, 'startNodeSearch');
-    setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+    this.dataConnectionService.messages.next(query);
+   // setTimeout(() => this.dataConnectionService.messages.next(query), 0);
   }
 
   getEndNodes(values: string[]): void{
     const query: Message = this.messageService.getMessage(values, 'endNodeSearch');
-    setTimeout(() => this.dataConnectionService.messages.next(query), 0);
+    this.dataConnectionService.messages.next(query);
+   // setTimeout(() => this.dataConnectionService.messages.next(query), 0);
   }
 
   shortestPath(){
@@ -160,7 +174,6 @@ export class SmrtgraphSearchComponent implements OnInit {
         similarity: this.similarityCtrl.value,
         hasCompound: this.hasCompound
       };
-      console.log(params);
       const query: Message = this.messageService.getMessage(value, 'path', params);
       console.log(this._getBrowserQuery(query));
 

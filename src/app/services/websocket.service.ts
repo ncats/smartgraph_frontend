@@ -20,7 +20,6 @@ export class WebSocketService {
   }
 
   private create(url: string): Subject<MessageEvent> {
-    console.log("creating websocket")
     const ws = new WebSocket(url);
 
     const observable = Observable.create(
