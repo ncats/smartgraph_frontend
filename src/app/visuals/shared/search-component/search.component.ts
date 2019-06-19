@@ -42,7 +42,6 @@ export class SearchComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => this.isLoading = true),
         switchMap(term => {
-          console.log(term);
           return this.graphDataService.searchNodes(term.genes ? term.genes : term)
               .pipe(
                 finalize(() => this.isLoading = false),

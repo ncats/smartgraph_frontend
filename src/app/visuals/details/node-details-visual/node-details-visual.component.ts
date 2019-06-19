@@ -25,7 +25,7 @@ export class NodeDetailsVisualComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.nodeService.nodeList$
       .subscribe(res => {
-        this.dataSource.data = Array.from(res.clicked);
+        this.dataSource.data = Array.from(new Set(Array.from(res.clicked.reverse())));
       });
     if (this.data) {
       this.dataSource.data = [this.data];

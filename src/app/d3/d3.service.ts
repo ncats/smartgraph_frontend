@@ -247,7 +247,6 @@ export class D3Service {
   };
 
   _manualClick(node: Node, graph: ForceDirectedGraph){
-    console.log(node);
     this._clearNodes();
     let connectedLinks;
     let nonConnectedLinks;

@@ -34,7 +34,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   ];
   startNodes = true;
   endNodes = true;
-  hasCompound = false;
+  hasCompound = true;
 
   constructor(
     private messageService: MessageService,
@@ -47,7 +47,7 @@ export class SmrtgraphSearchComponent implements OnInit {
     this.endNodesCtrl = new FormControl('P03372, P04035, P04150, P00519');
     this.distanceCtrl = new FormControl(5);
     this.confidenceCtrl = new FormControl(0);
-    this.activityCtrl = new FormControl(10);
+    this.activityCtrl = new FormControl(5);
     this.similarityCtrl = new FormControl();
   }
 
