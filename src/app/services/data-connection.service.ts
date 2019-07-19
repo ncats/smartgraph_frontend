@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
+import {environment} from "../../environments/environment";
 
-const DATA_URL = 'ws://smrtgraphdb-dev.ncats.io:1337';
+
+const DATA_URL = environment.DATA_URL;
 
 
 @Injectable({
