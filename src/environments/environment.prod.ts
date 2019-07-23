@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  DATA_URL: 'wss://smartgraph.ncats.io:1338'
 };

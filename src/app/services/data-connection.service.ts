@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
+import {environment} from "../../environments/environment";
 
-const DATA_URL = 'wss://smartgraph.ncats.io:1338';
+const DATA_URL = environment.DATA_URL;
 
 
 @Injectable({
