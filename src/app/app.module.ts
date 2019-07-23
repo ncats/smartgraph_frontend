@@ -47,6 +47,7 @@ import {HighlightPipe} from "./visuals/shared/search-component/highlight.pipe";
 import {GraphClickDirective} from "./d3/directives/graph-click.directive";
 import {NodeMenuComponent} from "./visuals/shared/node-menu/node-menu.component";
 import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/disclaimer-modal.component';
+import {AboutModalComponent} from "./smrtgraph-menu/about-modal/about-modal.component";
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/
     SearchComponent,
     NodeDetailsBoxComponent,
     HighlightPipe,
-    DisclaimerModalComponent
+    DisclaimerModalComponent,
+    AboutModalComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +104,8 @@ import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/
     NodeExpandService
   ],
   entryComponents: [
-    DisclaimerModalComponent
+    DisclaimerModalComponent,
+    AboutModalComponent
   ],
   bootstrap: [AppComponent]
 })

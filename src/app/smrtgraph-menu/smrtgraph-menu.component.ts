@@ -1,5 +1,7 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SettingsService} from '../services/settings.service';
+import {AboutModalComponent} from "./about-modal/about-modal.component";
+import {MatDialog} from "@angular/material";
 
 @Component({
   selector: 'smrtgraph-menu',
@@ -9,13 +11,21 @@ import {SettingsService} from '../services/settings.service';
 export class SmrtgraphMenuComponent implements OnInit {
 title = 'smrtgraph';
 
-  constructor(public settingsService: SettingsService) { }
+  constructor(
+    public dialog: MatDialog,
+    public settingsService: SettingsService) { }
 
   ngOnInit() {
   }
 
   navOpen() {
     this.settingsService.sidenav.toggle();
+  }
+
+  aboutOpen() {
+    const dialogRef = this.dialog.open(AboutModalComponent, {
+      width: '50vw'
+    });
   }
 
 }

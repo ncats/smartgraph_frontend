@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
 
-const DATA_URL = 'ws://smrtgraphdb-dev.ncats.io:1337';
+const DATA_URL = 'wss://smartgraph.ncats.io:1338';
 
 
 @Injectable({
