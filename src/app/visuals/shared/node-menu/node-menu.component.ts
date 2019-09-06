@@ -14,7 +14,7 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
 @Component({
   selector: '[menu-list]',
   template: `
-<svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="17vw" height="100%" *ngIf="openMenu" >
+<svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="25%" height="100%" *ngIf="openMenu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" class="node-menu">
   <mat-list [class.mat-elevation-z1]="'true'" >
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>

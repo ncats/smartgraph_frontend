@@ -37,7 +37,7 @@ export class SmrtgraphSettingsComponent implements OnInit {
     this.patternLabelCtrl.valueChanges.subscribe(value => {
       if (value === true) {
         this.settingsService.settings.patternLabel = 'structure';
-      }else {
+      } else {
         this.settingsService.settings.patternLabel = value;
       }
        this.settingsService.dataChange.next(this.settingsService.settings);

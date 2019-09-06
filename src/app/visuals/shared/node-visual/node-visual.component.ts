@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Node, Pattern, Compound} from '../../../d3/models/node';
 import {SettingsService} from '../../../services/settings.service';
 import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
@@ -29,7 +29,7 @@ export class StructureViewer{
       </svg:circle>
        <svg:text class ="node-text">{{label}}</svg:text>
        </svg:g>
-        <svg:foreignObject width='7vh' height='7vh' *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
+        <svg:foreignObject [attr.width]="node.r * 2.1" [attr.height]="node.r *2.1" *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
     <structure-view [data]="node"></structure-view>
 </xhtml:div>
@@ -39,14 +39,14 @@ export class StructureViewer{
   styleUrls: ['./node-visual.component.scss']
 })
 export class NodeVisualComponent {
-  @Input('nodeVisual')
-  node: Node;
+  @Input('nodeVisual')node: Node;
   label: string;
-  nodeClicked: boolean= false;
+  nodeClicked = false;
 
   constructor(public settingsService: SettingsService,
               private nodeService: NodeService,
-              private nodeMenuController: NodeMenuControllerService
+              private nodeMenuController: NodeMenuControllerService,
+              private ref: ChangeDetectorRef
               ){}
 
   ngOnInit(): void{
@@ -59,11 +59,12 @@ export class NodeVisualComponent {
             break;
           }
           case 'compound': {
-            if (settings.compoundLabel === 'structure'){
+            if (settings.compoundLabel === 'structure') {
              this.label = settings.compoundLabel;
-                }else {
+                } else {
               this.label = this.node['hash'];
             }
+            this.ref.markForCheck();
             break;
           }
           case 'pattern': {
@@ -75,7 +76,7 @@ export class NodeVisualComponent {
       });
     }
 
-    toggleMenu(event){
+    toggleMenu(event) {
       // this is the only place where the menu is opened
       this.nodeClicked = !this.nodeClicked;
       this.nodeService.clickedNodes(this.node);

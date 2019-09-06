@@ -139,19 +139,21 @@ export class SmrtgraphSearchComponent implements OnInit {
   }
 
 
-  getStartNodes(values: string[]): void{
+  getStartNodes(values: string[]): void {
+    this.loadingService.toggleVisible(true);
     const query: Message = this.messageService.getMessage(values, 'startNodeSearch');
     this.dataConnectionService.messages.next(query);
   }
 
-  getEndNodes(values: string[]): void{
+  getEndNodes(values: string[]): void {
+    this.loadingService.toggleVisible(true);
     const query: Message = this.messageService.getMessage(values, 'endNodeSearch');
     this.dataConnectionService.messages.next(query);
   }
 
-  shortestPath(){
+  shortestPath() {
      this.loadingService.toggleVisible(true);
-    if (this.startNodesCtrl.value){
+    if (this.startNodesCtrl.value) {
       const value: {} = {
         start: this.startUUIDList,
         end: this.endUUIDList || []

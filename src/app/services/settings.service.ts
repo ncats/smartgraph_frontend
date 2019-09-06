@@ -17,7 +17,7 @@ export class SettingsService {
 
 }
 
-export class Settings{
+export class Settings {
   targetLabel: string;
   compoundLabel: string;
   patternLabel: string;
