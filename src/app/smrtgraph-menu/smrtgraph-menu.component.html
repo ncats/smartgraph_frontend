@@ -1,13 +1,13 @@
 <div class="container">
   <div fxLayout="row">
     <mat-toolbar color="primary">
-        <mat-icon>home</mat-icon>
-        {{title}}
-      <button mat-button (click)="aboutOpen()">About Smartgraph</button>
+ <!--       <mat-icon>home</mat-icon>
+        {{title}}-->
+      <button mat-button (click)="aboutOpen()">About SmartGraph</button>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
       <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <button mat-button (click)="navOpen()">Settings <mat-icon>settings</mat-icon></button>
+        <button mat-button (click)="navOpen()">Help & Settings <mat-icon>settings</mat-icon></button>
 <!--        <button mat-button routerLink="/products">Products</button>
         <button mat-button routerLink="/dashboard">Dashboard</button>-->
       </div>

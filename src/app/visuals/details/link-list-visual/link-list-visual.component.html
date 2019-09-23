@@ -4,7 +4,11 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
   <ng-container matColumnDef="source">
-    <mat-header-cell *matHeaderCellDef >Source</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef
+                     matTooltip="The protein target or compound that regulates the protein target in the “Target” column."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'"
+    >Source</mat-header-cell>
     <mat-cell *matCellDef="let row" >
       <div [ngSwitch]=getNodeType(row.source)>
       <target-detail-view *ngSwitchCase="'target'"  [node]="row.source"></target-detail-view>
@@ -16,7 +20,11 @@
   </ng-container>
 
   <ng-container matColumnDef="linkType">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Link Type </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+                     matTooltip="Provides information on the type of relationship between a given pair of nodes. Please
+          note, that the relationships (edges) are directed."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Link Type </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-list>
         <mat-list-item>{{row.type}}</mat-list-item>
@@ -25,7 +33,10 @@
   </ng-container>
 
   <ng-container matColumnDef="target">
-    <mat-header-cell *matHeaderCellDef >Target</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef
+                     matTooltip="The protein target regulated by the protein target or compound in the “Source” column."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Target</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <div [ngSwitch]=getNodeType(row.target)>
         <target-detail-view *ngSwitchCase="'target'"  [node]="row.target"></target-detail-view>
@@ -37,7 +48,13 @@
   </ng-container>
 
   <ng-container matColumnDef="details">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Details</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+                     matTooltip="A protein-protein interaction between protein targets A and B, i.e. PPI(A, B), is annotated
+          by the mechanism of the regulation. A given PPI(A,B) might be associated by multiple
+          mechanisms which are displayed in individual rows along with the respective confidence
+          score and references."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Details</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <div *ngFor="let reaction of row.reactions trackById">
@@ -52,7 +69,11 @@
   </ng-container>
 
   <ng-container matColumnDef="reference">
-    <mat-header-cell *matHeaderCellDef>Reference</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef
+                     matTooltip="PubMed identifier (PMID) of the reference associated with a given protein-protein
+          interaction (PPI)."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Reference</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <mat-list>
@@ -65,7 +86,13 @@
   </ng-container>
 
   <ng-container matColumnDef="score">
-    <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef
+                     matTooltip="Drug-target interactions (DTIs), protein-protein interactions (PPI) and a
+          pattern-compound relationship are attributed by a bioactivity, confidence value, and
+          pattern overlap ratio, respectively. The appropriate attribute is shown in this column
+          depending the relationship type at hand."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Score</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <div *ngIf = 'row.reactions && row.reactions.length>0'>
         <mat-list>
@@ -74,16 +101,22 @@
         </mat-list-item>
         </mat-list>
       </div>
-      <div *ngIf = 'row.properties && row.properties.activity'><br/>Activity: {{row.properties.activity}}</div>
+      <div *ngIf = 'row.properties && row.properties.activity'><br/>Activity: {{row.properties.activity.toFixed(2)}} uM</div>
       <div *ngIf = 'row.properties && row.properties.ratio'><br/>Overlap Ratio: {{row.properties.ratio}}</div>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="confidence">
-    <mat-header-cell *matHeaderCellDef >Confidence</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef
+                     matTooltip="The ‘Max.
+          Confidence’ value reflects the maximal observed confidence value among any
+          interaction defined between protein targets A and B, where A is the regulator and B is
+          regulated by A."
+                     [matTooltipPosition]="'above'"
+                     [matTooltipClass] = "'smrtgraph-tooltip'">Max Confidence (0 to 1 scale)</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-list>
-        <mat-list-item> {{row.max_confidence_value}}</mat-list-item>
+        <mat-list-item> {{row.max_confidence_value?.toFixed(2)}}</mat-list-item>
       </mat-list>
      </mat-cell>
   </ng-container>

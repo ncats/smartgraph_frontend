@@ -20,6 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatTooltipModule} from "@angular/material";
 
 
 
@@ -27,11 +28,11 @@ import {MatDialogModule} from '@angular/material/dialog';
   imports: [MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule,
     MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
     MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
-    MatTabsModule, MatCheckboxModule, DragDropModule, MatDialogModule],
+    MatTabsModule, MatCheckboxModule, DragDropModule, MatDialogModule, MatTooltipModule],
   exports: [MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule,
     MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
     MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
-    MatTabsModule, MatCheckboxModule, DragDropModule, MatDialogModule],
+    MatTabsModule, MatCheckboxModule, DragDropModule, MatDialogModule, MatTooltipModule],
 })
 export class MaterialModule { }
 

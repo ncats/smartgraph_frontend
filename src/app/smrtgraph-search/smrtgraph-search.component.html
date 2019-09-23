@@ -3,6 +3,11 @@
   <div fxLayout="row" fxLayoutAlign="center center">
     <mat-form-field fxFlex="95">
       <textarea matInput matTextareaAutosize placeholder="Start Nodes" matAutosizeMaxRows=15
+                matTooltip="Please enter a list of NS-InChi keys (first block of standard InChi key) of compounds
+          and/or UniProt identifiers of targets. The list can be separated by spaces, commas and
+          line separator."
+                [matTooltipPosition]="'above'"
+                [matTooltipClass] = "'smrtgraph-tooltip'"
                 [formControl]="startNodesCtrl"></textarea>
     </mat-form-field>
   </div>
@@ -10,11 +15,19 @@
   <div fxLayout="row" fxLayoutAlign="center center">
     <mat-form-field fxFlex="95">
       <textarea matInput matTextareaAutosize placeholder="End Nodes (optional)" matAutosizeMaxRows=15
+                matTooltip="Please enter a list of UniProt IDs of destination targets. The list can be separated by
+          spaces, commas and line separator. Providing end node(s) is optional."
+                [matTooltipPosition]="'above'"
+                [matTooltipClass] = "'smrtgraph-tooltip'"
                 [formControl]="endNodesCtrl"></textarea>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
-    <div fxFlex="80">
+    <div fxFlex="80" matTooltip="Bioactivity filter: controls which drug-target interactions (DTIs) to consider in path
+          discovery. DTIs of aggregated bioactivity value greater than or equal to this value will be
+          considered other DTIs will be filtered out."
+         [matTooltipPosition]="'above'"
+         [matTooltipClass] = "'smrtgraph-tooltip'">
       <h4>Activity (-log(M))</h4>
     </div>
     <div fxFlex="10">
@@ -38,7 +51,10 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
-    <div fxFlex="80">
+    <div fxFlex="80" matTooltip="Parameter to control the “depth” of network perturbation analysis, i.e. path discovery
+          process."
+         [matTooltipPosition]="'above'"
+         [matTooltipClass] = "'smrtgraph-tooltip'">
       <h4>Max Distance</h4>
     </div>
     <div fxFlex="10">
@@ -62,7 +78,11 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
-    <div fxFlex="80">
+    <div fxFlex="80" matTooltip="Each protein-protein interaction (PPI) is attributed by a confidence value defined by the
+          authors of the  SIGNOR 2.0 database. PPIs of greater than or
+    equal to this parameter will be only considered in the path discovery process."
+         [matTooltipPosition]="'above'"
+         [matTooltipClass] = "'smrtgraph-tooltip'">
       <h4>PPI Confidence Level</h4>
     </div>
     <div fxFlex="10">
@@ -120,5 +140,6 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
+
 </div>
 

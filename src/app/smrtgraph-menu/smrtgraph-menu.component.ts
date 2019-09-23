@@ -9,7 +9,6 @@ import {MatDialog} from "@angular/material";
   styleUrls: ['./smrtgraph-menu.component.css']
 })
 export class SmrtgraphMenuComponent implements OnInit {
-title = 'smrtgraph';
 
   constructor(
     public dialog: MatDialog,

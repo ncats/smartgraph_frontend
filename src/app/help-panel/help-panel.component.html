@@ -1,0 +1,189 @@
+<div class="help-panel-content">
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-headline"> <strong>Control Panel</strong></span>
+    </div>
+  </div>
+  <span class="mat-headline">Descriptions and Definitions</span>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Start nodes:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Please enter a list of NS-InChi keys (first block of standard InChi key) of compounds
+          and/or UniProt identifiers of targets. The list can be separated by spaces, commas and
+          line separator.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong> End nodes (optional):</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Please enter a list of UniProt IDs of destination targets. The list can be separated by
+          spaces, commas and line separator. Providing end node(s) is optional.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Activity (-log(M)):</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Bioactivity filter controls which drug-target interactions (DTIs) to consider in path
+          discovery. DTIs with aggregated bioactivity value greater than or equal to this value will be
+          considered, other DTIs will be filtered out. This feature provides the option to include or
+          exclude weak DTIs in network perturbation analysis. The unit of the bioactivity filter is
+          -log(M), which is often denoted by pChEMBL.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Max Distance:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Parameter to control the “depth” of network perturbation analysis, i.e. path discovery
+          process. While high values will allow for finding relatively long paths between the ‘Start
+          Nodes’ (small molecule(s) and/or target(s)), and the ‘Destination Nodes’, it should be
+          considered that long-distance effects might be less and less deterministic.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>PPI Confidence Level:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Each protein-protein interaction (PPI) is attributed by a confidence value defined by the
+          authors of the <a href="https://signor.uniroma2.it/" target="_blank" rel="noreferrer">SIGNOR 2.0 database</a>.
+          PPIs of greater than or
+          equal to this parameter will be only considered in the path discovery process.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="help-panel-content">
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-headline"> <strong>Link View Column Headers</strong></span>
+    </div>
+  </div>
+  <span class="mat-headline">Descriptions and Definitions</span>
+
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Source:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">The protein target or compound that regulates the protein target in the “Target” column.
+        </p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Link Type:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Provides information on the type of relationship between a given pair of nodes. Please
+          note, that the relationships (edges) are directed.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Target:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">The protein target regulated by the protein target or compound in the “Source” column.
+        </p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Details:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">A protein-protein interaction between protein targets A and B, i.e. PPI(A, B), is annotated
+          by the mechanism of the regulation. A given PPI(A,B) might be associated by multiple
+          mechanisms which are displayed in individual rows along with the respective confidence
+          score and references. Source: <a href="https://signor.uniroma2.it/" target="_blank" rel="noreferrer">SIGNOR
+            2.0 database</a>.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Reference:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">PubMed identifier (PMID) of the reference associated with a given protein-protein
+          interaction (PPI). Source: <a href="https://signor.uniroma2.it/" target="_blank" rel="noreferrer">SIGNOR 2.0
+            database</a>.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Score:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Drug-target interactions (DTIs), protein-protein interactions (PPI) and a
+          pattern-compound relationship are attributed by a bioactivity, confidence value, and
+          pattern overlap ratio, respectively. The appropriate attribute is shown in this column
+          depending the relationship type at hand. Bioactivity is expressed in units of micromolar
+          (denoted: uM)and were collected from the <a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noreferrer">ChEMBL database</a>
+          and aggregated according to the workflow presented in
+          the SmartGraph paper. A confidence value of a PPI (range: 0-1, 1 being highest
+          confidence) was defined by the authors of the <a href="https://signor.uniroma2.it/" target="_blank"
+                                                           rel="noreferrer">SIGNOR 2.0 database</a> as
+          the overlap ratio between a pattern and a compound</p>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="description-row">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span class="mat-subheading-1"> <strong>Max. Confidence:</strong></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+      <div fxFlex="95">
+        <p class="mat-body">Between two targets multiple types of interactions may have been identified by the
+          authors of the <a href="https://signor.uniroma2.it/" target="_blank" rel="noreferrer">SIGNOR 2.0 database</a>. Interactions are
+          associated with a confidence score (0-1, 1 indicating highest confidence). The ‘Max.
+          Confidence’ value reflects the maximal observed confidence value among any
+          interaction defined between protein targets A and B, where A is the regulator and B is
+          regulated by A.</p>
+        <br>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+

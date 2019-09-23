@@ -1,7 +1,9 @@
 <!-- sidenav content -->
 <div class="container">
-  <h1>Settings</h1>
-  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+  <mat-tab-group>
+    <mat-tab label="Settings">
+      <div class="panel-content">
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center" >
 <div fxFlex="95">
   <h3>Target Labels</h3>
   <mat-radio-group class="vertical-group" [formControl]="targetLabelCtrl">
@@ -43,4 +45,10 @@
       <a mat-button (click) = openDisclaimer() [color]="'primary'">Disclaimer Info</a>
     </div>
   </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Help">
+      <smrtgraph-help-panel></smrtgraph-help-panel>
+    </mat-tab>
+  </mat-tab-group>
 </div>
