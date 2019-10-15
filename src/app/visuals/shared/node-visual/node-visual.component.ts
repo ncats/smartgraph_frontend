@@ -29,7 +29,8 @@ export class StructureViewer{
       </svg:circle>
        <svg:text class ="node-text">{{label}}</svg:text>
        </svg:g>
-        <svg:foreignObject [attr.width]="node.r * 2.1" [attr.height]="node.r *2.1" *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
+        <svg:foreignObject (click)="toggleMenu($event)"
+          [attr.width]="node.r * 2.1" [attr.height]="node.r *2.1" *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
     <structure-view [data]="node"></structure-view>
 </xhtml:div>
