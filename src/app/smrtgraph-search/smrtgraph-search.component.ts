@@ -5,6 +5,7 @@ import {Message, MessageService} from '../services/message.service';
 import { GraphDataService} from '../services/graph-data.service';
 import {NodeService} from '../d3/models/node.service';
 import {LoadingService} from '../services/loading.service';
+import {NodeExpandService} from "../services/node-expand.service";
 
 @Component({
   selector: 'smrtgraph-search',
@@ -41,7 +42,8 @@ export class SmrtgraphSearchComponent implements OnInit {
     private nodeService: NodeService,
     private dataConnectionService: DataConnectionService,
     private graphDataService: GraphDataService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private nodeExpandService: NodeExpandService
   ) {
     this.startNodesCtrl = new FormControl('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
     this.endNodesCtrl = new FormControl('P03372, P04035, P04150, P00519');
@@ -184,6 +186,7 @@ export class SmrtgraphSearchComponent implements OnInit {
   clearGraph():void {
     this.hasCompound = false;
     this.graphDataService.clearGraph();
+    this.nodeExpandService.clearNodes();
   }
 
   _getBrowserQuery(message: Message):string {

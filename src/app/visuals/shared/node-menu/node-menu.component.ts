@@ -51,7 +51,8 @@ export class NodeMenuComponent{
    private nodeMenuController: NodeMenuControllerService,
    private graphDataService: GraphDataService,
    public settingsService: SettingsService,
-   public nodeExpandService: NodeExpandService
+   public nodeExpandService: NodeExpandService,
+   private loadingService: LoadingService
  ) { }
 
 
@@ -120,6 +121,7 @@ export class NodeMenuComponent{
   }
 
   expand(label): void {
+   this.loadingService.toggleVisible(true);
    const params = {
      'origin': this.clickedNode.labels[0],
      'target': label

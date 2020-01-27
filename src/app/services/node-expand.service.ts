@@ -19,6 +19,10 @@ export class NodeExpandService {
     this.expandMap.set(node, expand);
   }
 
+  clearNodes() {
+    this.expandMap.clear();
+  }
+
   constructor() { }
 
 }

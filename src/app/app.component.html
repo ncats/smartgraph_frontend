@@ -12,7 +12,8 @@
     </div>
     <!-- primary content -->
     <graph class="upperSection"></graph>
-    <mat-sidenav #settingsToggle [mode]="'over'" position="end">
+  <div class="reset-holder"><button mat-flat-button (click)="reset()" [color]="'primary'">Reset Zoom</button></div>
+  <mat-sidenav #settingsToggle [mode]="'over'" position="end">
       <app-smrtgraph-settings></app-smrtgraph-settings>
     </mat-sidenav>
 </mat-sidenav-container>

@@ -12,6 +12,7 @@ export class D3Service {
   /** This service will provide methods to enable user interaction with elements
    * while maintaining the d3 simulations physics
    */
+  zoom: any = {};
 
   constructor(
     private nodeService: NodeService,
@@ -30,9 +31,10 @@ export class D3Service {
       container.attr('transform', d3.event.transform);
     };
 
-    zoom = d3.zoom()
+    this.zoom = d3.zoom()
+      .scaleExtent([.1, 100])
       .on('zoom', zoomed);
-    svg.call(zoom);
+    svg.call(this.zoom);
   }
 
   /** A method to register clicks on the graph that aren't node or link clicks (resets those behaviors) */

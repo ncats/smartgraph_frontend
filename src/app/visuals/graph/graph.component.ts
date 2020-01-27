@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectorRef, ElementRef, HostListener, ChangeDetectionStrategy,
-  ViewChild
+  ViewChild, Input
 } from '@angular/core';
 import {D3Service} from '../../d3/d3.service';
 import {ForceDirectedGraph} from '../../d3/models/force-directed-graph';
@@ -56,7 +56,7 @@ export class GraphComponent {
   public nodes: Node[] = [];
   public links: Link[] = [];
   subscription: Subscription;
-  loading: boolean = true;
+  @Input() loading: boolean = true;
 
 
 
@@ -67,9 +67,9 @@ export class GraphComponent {
 
   graph: ForceDirectedGraph;
 
-  constructor(private d3Service: D3Service,
+  constructor(public d3Service: D3Service,
               private ref: ChangeDetectorRef,
-              private el: ElementRef,
+              public el: ElementRef,
               private graphDataService: GraphDataService,
               private loadingService: LoadingService) {
   }
