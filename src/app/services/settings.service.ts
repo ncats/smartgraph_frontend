@@ -24,5 +24,5 @@ export class Settings {
   showLinkLabel: boolean;
   databases: [string];
 
-  constructor(){}
+  constructor() {}
 }

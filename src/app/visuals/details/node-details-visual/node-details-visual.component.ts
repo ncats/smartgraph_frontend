@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Node} from '../../../d3/models/node';
 import {NodeService} from '../../../d3/models/node.service';
 import {Subscription} from 'rxjs';
-import { MatTableDataSource } from "@angular/material/table";
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'node-details-visual',
@@ -32,7 +32,7 @@ export class NodeDetailsVisualComponent implements OnInit {
     }
   }
 
-  getNodeType(node:Node): string {
+  getNodeType(node: Node): string {
       return node._type;
   }
 

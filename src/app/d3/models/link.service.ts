@@ -17,7 +17,7 @@ private hoveredLinkList: Link[] = [];
   linkslist$ = this._linkSource.asObservable();
 
   //  service command
-  clickedLinks(link: Link):void {
+  clickedLinks(link: Link): void {
     this.clickedLinkList.push(link);
     this._linkSource.next({
       clicked: this.clickedLinkList,
@@ -25,8 +25,8 @@ private hoveredLinkList: Link[] = [];
     });
   }
 
-  hoveredLink(link: Link[]):void {
-    if(this.hoveredLinkList.length > 0){
+  hoveredLink(link: Link[]): void {
+    if (this.hoveredLinkList.length > 0) {
       this.hoveredLinkList = [];
     }
     this.hoveredLinkList.push(...link);
@@ -36,7 +36,7 @@ private hoveredLinkList: Link[] = [];
     });
   }
 
-  removeClickedLink(link:Link):void{
+  removeClickedLink(link: Link): void {
     this.clickedLinkList.splice( this.clickedLinkList.indexOf(link), 1);
     this._linkSource.next({
       clicked: this.clickedLinkList,

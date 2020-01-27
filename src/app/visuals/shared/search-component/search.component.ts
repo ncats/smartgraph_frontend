@@ -1,9 +1,9 @@
 import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {finalize, tap} from "rxjs/operators";
-import {Compound, Node, Pattern, Target} from "../../../d3/models/node";
-import {GraphDataService} from "../../../services/graph-data.service";
+import {finalize, tap} from 'rxjs/operators';
+import {Compound, Node, Pattern, Target} from '../../../d3/models/node';
+import {GraphDataService} from '../../../services/graph-data.service';
 
 @Component({
   selector: 'search-component',
@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit {
           return this.graphDataService.searchNodes(term.genes ? term.genes : term)
               .pipe(
                 finalize(() => this.isLoading = false),
-              )
+              );
           }
         ))
       .subscribe(res => {

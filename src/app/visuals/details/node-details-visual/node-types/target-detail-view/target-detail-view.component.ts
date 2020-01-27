@@ -21,7 +21,7 @@ export class TargetDetailViewComponent implements OnInit {
       //  this.uniprotUrl = "https://www.ebi.ac.uk/chembl/target/inspect/" + data.node.uniprot_id;
     }
 
-  ngOnChanges(changes){
+  ngOnChanges(changes) {
     //  this.uniprotUrl = "https://www.ebi.ac.uk/chembl/target/inspect/" + data.node.uniprot_id;
   }
 }

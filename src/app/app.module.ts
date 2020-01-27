@@ -38,17 +38,17 @@ import { LinkListVisualComponent } from './visuals/details/link-list-visual/link
 import { ReactionVisualComponent } from './visuals/details/link-list-visual/reaction-visual/reaction-visual.component';
 import {SettingsService} from './services/settings.service';
 import { SmrtgraphSettingsComponent } from './smrtgraph-settings/smrtgraph-settings.component';
-import {TargetDetailViewComponent} from "./visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component";
-import {ClickableLinkDirective} from "./d3/directives/clickable-link.directive";
-import {NodeExpandService} from "./services/node-expand.service";
-import {SearchComponent} from "./visuals/shared/search-component/search.component";
-import {NodeDetailsBoxComponent} from "./visuals/shared/node-details-box/node-details-box.component";
-import {HighlightPipe} from "./visuals/shared/search-component/highlight.pipe";
-import {GraphClickDirective} from "./d3/directives/graph-click.directive";
-import {NodeMenuComponent} from "./visuals/shared/node-menu/node-menu.component";
+import {TargetDetailViewComponent} from './visuals/details/node-details-visual/node-types/target-detail-view/target-detail-view.component';
+import {ClickableLinkDirective} from './d3/directives/clickable-link.directive';
+import {NodeExpandService} from './services/node-expand.service';
+import {SearchComponent} from './visuals/shared/search-component/search.component';
+import {NodeDetailsBoxComponent} from './visuals/shared/node-details-box/node-details-box.component';
+import {HighlightPipe} from './visuals/shared/search-component/highlight.pipe';
+import {GraphClickDirective} from './d3/directives/graph-click.directive';
+import {NodeMenuComponent} from './visuals/shared/node-menu/node-menu.component';
 import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/disclaimer-modal.component';
-import {AboutModalComponent} from "./smrtgraph-menu/about-modal/about-modal.component";
-import {HelpPanelComponent} from "./help-panel/help-panel.component";
+import {AboutModalComponent} from './smrtgraph-menu/about-modal/about-modal.component';
+import {HelpPanelComponent} from './help-panel/help-panel.component';
 
 
 @NgModule({

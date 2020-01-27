@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class NodeExpandService {
   private  expandMap: Map<string, Expand> = new Map();
 
-  fetchExpand(node: string):Expand{
+  fetchExpand(node: string): Expand {
     return this.expandMap.get(node) || new Expand();
   }
 /*
@@ -15,7 +15,7 @@ export class NodeExpandService {
   return new Expand();
 }*/
 
-  setExpand(node:string, expand: Expand):void{
+  setExpand(node: string, expand: Expand): void {
     this.expandMap.set(node, expand);
   }
 
@@ -28,11 +28,11 @@ export class NodeExpandService {
 }
 
 export class Expand {
-  all:boolean = false;
-  compound: boolean = false;
-  pattern: boolean = false;
-  predictions: boolean = false;
-  target: boolean = false;
+  all = false;
+  compound = false;
+  pattern = false;
+  predictions = false;
+  target = false;
 
   constructor() {}
 }

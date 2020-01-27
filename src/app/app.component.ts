@@ -2,9 +2,9 @@ import {Component, ViewEncapsulation, ViewChild, AfterViewInit} from '@angular/c
 import {Subscription} from 'rxjs';
 import {LoadingService} from './services/loading.service';
 import {SettingsService} from './services/settings.service';
-import {DataConnectionService} from "./services/data-connection.service";
-import {Message, MessageService} from "./services/message.service";
-import {GraphComponent} from "./visuals/graph/graph.component";
+import {DataConnectionService} from './services/data-connection.service';
+import {Message, MessageService} from './services/message.service';
+import {GraphComponent} from './visuals/graph/graph.component';
 import * as d3 from 'd3';
 
 
@@ -40,14 +40,14 @@ export class AppComponent implements AfterViewInit {
 
   reset() {
     console.log(this);
-console.log("reset");
+console.log('reset');
 console.log(this.graphInstance.el.nativeElement);
 console.log(d3.select(this.graphInstance.el.nativeElement).select('svg'));
     d3.select(this.graphInstance.el.nativeElement)
       .select('svg')
       .transition()
       .duration(750)
-      .call(this.graphInstance.d3Service.zoom.transform, d3.zoomIdentity)
+      .call(this.graphInstance.d3Service.zoom.transform, d3.zoomIdentity);
 /*    this.k = 1;
     this.voronoiGroup.transition()
       .duration(750)

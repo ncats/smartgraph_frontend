@@ -40,7 +40,7 @@ export class D3Service {
   /** A method to register clicks on the graph that aren't node or link clicks (resets those behaviors) */
   applyClickOffBehaviour(svgElement) {
     const d3element = d3.select(svgElement);
-    d3element.on('click',  () => { this._clearNodes()});
+    d3element.on('click',  () => { this._clearNodes(); });
 
   }
 
@@ -93,8 +93,8 @@ export class D3Service {
         .data(graph.links)
         .filter(getNeighborLinks)
         .classed('hovering', true)
-        .classed('connected', function(link) {return link.edgeType != "down";})
-        .classed('connectedflat', function(link) {return link.edgeType === "down";});
+        .classed('connected', function(link) {return link.edgeType != 'down'; })
+        .classed('connectedflat', function(link) {return link.edgeType === 'down'; });
 
        connectedNodes = d3.selectAll('circle')
         .data(graph.nodes)
@@ -123,7 +123,7 @@ export class D3Service {
 
     // todo: this is kind of piggybacking on the filter function
     const getNeighborLinks = (e: Link): boolean => {
-      const neighbor = (node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source) || node.uuid ===(typeof (e.target) == 'object' ? e.target.uuid : e.target));
+      const neighbor = (node.uuid === (typeof (e.source) == 'object' ? e.source.uuid : e.source) || node.uuid === (typeof (e.target) == 'object' ? e.target.uuid : e.target));
       if (neighbor == true) {
         neighbors.push(e);
       }
@@ -136,10 +136,10 @@ export class D3Service {
     };
 
     const findMaximalLinks = (e: any): boolean => {
-      if (e.properties && e.properties.islargest){
+      if (e.properties && e.properties.islargest) {
         maximalLinks = maximalLinks.concat([e.source.uuid, e.target.uuid]).reduce((x, y) => x.includes(y) ? x : [...x, y], []);
         return true;
-      }else{
+      } else {
         return false;
       }
     };
@@ -150,10 +150,10 @@ export class D3Service {
 
     // todo: this is called on drag and iterates over the entire graph
     const mouseOverFunction = (): void => {
-      if (d3.event.defaultPrevented) return;
+      if (d3.event.defaultPrevented) { return; }
       decorateNodes();
       this.nodeService.hoveredNode([node]);
-      if(neighbors.length>0) {
+      if (neighbors.length > 0) {
         this.linkService.hoveredLink(neighbors);
       }
     };
@@ -173,7 +173,7 @@ export class D3Service {
     let arrowType = 'connected';
 
     const mouseOverFunction = (): void => {
-      if (link.edgeType === 'down'){
+      if (link.edgeType === 'down') {
         arrowType = 'connectedflat';
       }
       d3element.select('.link').classed('hovering', true).classed(arrowType, true);
@@ -204,7 +204,7 @@ export class D3Service {
     };
 
     svg.on('mousedown', clickFunction);*/
-  };
+  }
 
   /** A method to bind click events to an svg element */
     // emits the link for other components to listen for
@@ -213,21 +213,21 @@ export class D3Service {
     let arrowType = 'clicked-arrow';
 
     const clickFunction = (): void => {
-      if (link.edgeType === 'down'){
+      if (link.edgeType === 'down') {
         arrowType = 'clicked-flat';
       }
-      let d3link = d3element.select('.link');
-      if(d3link.classed('clicked')){
+      const d3link = d3element.select('.link');
+      if (d3link.classed('clicked')) {
         d3element.select('.link').classed('clicked', false).classed(arrowType, false);
         this.linkService.clickedLinks(link);
-      }else{
+      } else {
         d3element.select('.link').classed('clicked', true).classed(arrowType, true);
         this.linkService.removeClickedLink(link);
       }
     };
 
     d3element.on('click', clickFunction);
-  };
+  }
 
   /** The interactable graph we will return
    * This method does not interact with the document, purely physical calculations with d3
@@ -238,17 +238,17 @@ export class D3Service {
 
   _clearNodes(): void {
     d3.selectAll('.link')
-      //.classed('clicked', false)
+      // .classed('clicked', false)
       .classed('not-related', false);
     d3.selectAll('.node-child')
       .classed('connected', false)
       .classed('clicked-parent', false)
       .classed('clicked-neighbor', false)
-      .classed('not-related', false)
+      .classed('not-related', false);
      // .classed('clicked', false);
-  };
+  }
 
-  _manualClick(node: Node, graph: ForceDirectedGraph){
+  _manualClick(node: Node, graph: ForceDirectedGraph) {
     this._clearNodes();
     let connectedLinks;
     let nonConnectedLinks;
@@ -275,7 +275,7 @@ export class D3Service {
         (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1);
     };
 
-    //highlight links
+    // highlight links
     connectedLinks = d3.selectAll('.link')
       .data(graph.links)
       .filter(getNeighborLinks)
@@ -308,6 +308,6 @@ export class D3Service {
     // console.log(parent);
     // console.log(node);
     // this.zoomFit2(node, parent);
-  };
+  }
 
 }

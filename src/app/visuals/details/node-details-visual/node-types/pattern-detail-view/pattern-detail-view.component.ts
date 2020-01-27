@@ -17,7 +17,7 @@ export class PatternDetailViewComponent implements OnInit {
 
   ngOnInit() {
    }
-  
-  ngOnChanges(changes){
+
+  ngOnChanges(changes) {
   }
 }

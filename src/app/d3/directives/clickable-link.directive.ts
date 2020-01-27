@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef } from '@angular/core';
 import { D3Service } from '../d3.service';
 import {ForceDirectedGraph} from '../models/force-directed-graph';
-import {Link} from "../models/link";
+import {Link} from '../models/link';
 
 
 @Directive({

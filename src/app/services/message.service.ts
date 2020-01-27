@@ -25,7 +25,7 @@ export class MessageService {
       }
 
       case 'counts': {
-        switch (properties){
+        switch (properties) {
           case 'Target': {
             msg = 'MATCH (n:Target) WHERE n.uuid = {qParam}  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
             break;
@@ -86,7 +86,7 @@ export class MessageService {
       case 'path': {
         //  const levels = properties.distance;
 
-        if(term.end.length > 0) {
+        if (term.end.length > 0) {
           /**
            * gets targets of compounds in the start nodes list, filtered by < activity. default activity is 10
            * get path from above targets to end targets, filtered by >= confidence. defualt confidence is 0, removing
@@ -105,14 +105,14 @@ export class MessageService {
                     }
                       AS ret
                     return ret`*/
-          if(!properties.hasCompound) {
+          if (!properties.hasCompound) {
             msg =
               `MATCH p = shortestPath((t2)-[w*..${properties.distance}]->(q:Target))
         WHERE all(rel in w WHERE rel.max_confidence_value >= ${properties.confidence})
         AND t2.uuid IN {start}
-        AND q.uuid IN {end} 
+        AND q.uuid IN {end}
         AND t2.uuid<>q.uuid
-        return p`
+        return p`;
           } else {
             // there is a compound in start nodes and end nodes exist
           //  console.log("has compound and end nodes");
@@ -125,15 +125,15 @@ export class MessageService {
             UNWIND compounds as x
             UNWIND targets as y
             MATCH p2=shortestPath((x)-[z:TESTED_ON]-(y))
-            RETURN p1,p2`
+            RETURN p1,p2`;
           }
         } else {
-          if(!properties.hasCompound) {
+          if (!properties.hasCompound) {
             msg = `MATCH p = shortestPath((t2)-[w*..${properties.distance}]->(q:Target))
             WHERE all(rel in w WHERE rel.max_confidence_value >= ${properties.confidence})
             AND t2.uuid IN {start}
             AND t2.uuid<>q.uuid
-            return p`
+            return p`;
 
           } else {
           //  console.log(" has compound and no end nodes")
@@ -145,7 +145,7 @@ export class MessageService {
             UNWIND compounds as x
             UNWIND targets as y
             MATCH p2=shortestPath((x)-[z:TESTED_ON]-(y))
-            RETURN p1,p2`
+            RETURN p1,p2`;
           }
         }
 
@@ -189,7 +189,7 @@ export class MessageService {
       }
 
       case 'prediction': {
-        //msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN t, r1, p, r2, c LIMIT 300';
+        // msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN t, r1, p, r2, c LIMIT 300';
         msg = 'MATCH (t:Target) WHERE t.uuid= {qParam} MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t))' +
           'with {segments:[{start: startNode(r1), relationship:r1, end: endNode(r1)},{start: startNode(r2), relationship:r2, end: endNode(r2)}]} AS ret RETURN ret LIMIT 300';
         params = {qParam: term};

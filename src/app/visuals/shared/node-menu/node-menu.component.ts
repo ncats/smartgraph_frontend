@@ -6,9 +6,9 @@ import {DataConnectionService} from '../../../services/data-connection.service';
 import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
 import {GraphDataService} from '../../../services/graph-data.service';
 import {SettingsService, Settings} from '../../../services/settings.service';
-import {LoadingService} from "../../../services/loading.service";
+import {LoadingService} from '../../../services/loading.service';
 import {Node} from '../../../d3/models/node';
-import {NodeExpandService, Expand} from "../../../services/node-expand.service";
+import {NodeExpandService, Expand} from '../../../services/node-expand.service';
 
 
 @Component({
@@ -35,13 +35,13 @@ import {NodeExpandService, Expand} from "../../../services/node-expand.service";
 `,
   styleUrls: ['./node-menu.component.scss']
 })
-export class NodeMenuComponent{
+export class NodeMenuComponent {
   clickedNode: Node;
   counts: any = {total: 0};
   subscription: Subscription;
   settings: Settings;
   label: string;
-  openMenu: boolean = false;
+  openMenu = false;
   expanded: Expand = new Expand();
 
  constructor(
@@ -79,7 +79,7 @@ export class NodeMenuComponent{
     });
 
     this.nodeMenuController.clickedmenu$.subscribe(res => {
-      if(this.clickedNode) {
+      if (this.clickedNode) {
         if (res && this.openMenu === res) {
           this.nodeMenuController.hideMenus();
           this.openMenu = res;
@@ -97,8 +97,8 @@ export class NodeMenuComponent{
     });
   }
 
-  setLabel(): void{
-   if(this.clickedNode) {
+  setLabel(): void {
+   if (this.clickedNode) {
      switch (this.clickedNode._type) {
        case 'target': {
          this.label = this.clickedNode[this.settings.targetLabel];
@@ -126,9 +126,9 @@ export class NodeMenuComponent{
      'origin': this.clickedNode.labels[0],
      'target': label
    };
-   if(label =="Predictions"){
+   if (label == 'Predictions') {
      this.graphDataService.nodeExpand(this.clickedNode.uuid, 'prediction', params);
-   }else{
+   } else {
      this.graphDataService.nodeExpand(this.clickedNode.uuid, 'expand', params);
    }
     this.expanded[label.toLowerCase()] = true;
@@ -143,7 +143,7 @@ export class NodeMenuComponent{
     this.closeMenu();
   }
 
-  closeMenu():void{
+  closeMenu(): void {
     this.nodeMenuController.hideMenus();
     this.openMenu = false;
   }

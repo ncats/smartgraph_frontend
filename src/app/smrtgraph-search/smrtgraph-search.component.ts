@@ -5,7 +5,7 @@ import {Message, MessageService} from '../services/message.service';
 import { GraphDataService} from '../services/graph-data.service';
 import {NodeService} from '../d3/models/node.service';
 import {LoadingService} from '../services/loading.service';
-import {NodeExpandService} from "../services/node-expand.service";
+import {NodeExpandService} from '../services/node-expand.service';
 
 @Component({
   selector: 'smrtgraph-search',
@@ -21,17 +21,17 @@ export class SmrtgraphSearchComponent implements OnInit {
   similarityCtrl: FormControl;
 
   startUUIDList: any[] = [
-    "489c2bf7-0333-454d-bec1-ff2ec2f7a450",
-    "d432258a-231a-4e64-89b3-71fbc3952942",
-    "604dbdc3-a1bd-46ad-b19f-d82afdee387f",
-    "953c70cf-d0f6-418c-8949-e105b0004fca",
-    "54c43ef8-3627-487b-b693-8ae17c135273"
+    '489c2bf7-0333-454d-bec1-ff2ec2f7a450',
+    'd432258a-231a-4e64-89b3-71fbc3952942',
+    '604dbdc3-a1bd-46ad-b19f-d82afdee387f',
+    '953c70cf-d0f6-418c-8949-e105b0004fca',
+    '54c43ef8-3627-487b-b693-8ae17c135273'
   ];
   endUUIDList: any[] = [
-    "bf76473e-a1dd-4198-8174-6fb5c92a4fee",
-    "69b04e9f-1b42-4cd2-8e06-392ad61e024f",
-    "f363da85-23f0-4f49-8cb5-527c578f9a4d",
-    "9eeda47e-dcfa-4c23-95ff-996f1e54fc82"
+    'bf76473e-a1dd-4198-8174-6fb5c92a4fee',
+    '69b04e9f-1b42-4cd2-8e06-392ad61e024f',
+    'f363da85-23f0-4f49-8cb5-527c578f9a4d',
+    '9eeda47e-dcfa-4c23-95ff-996f1e54fc82'
   ];
   startNodes = true;
   endNodes = true;
@@ -175,21 +175,21 @@ export class SmrtgraphSearchComponent implements OnInit {
   }
 
   _convert(val: number): number {
-  if(val){
+  if (val) {
   const x = Math.pow(10, -val);
     return x * 1000000;
   } else {
-  return val
+  return val;
   }
   }
 
-  clearGraph():void {
+  clearGraph(): void {
     this.hasCompound = false;
     this.graphDataService.clearGraph();
     this.nodeExpandService.clearNodes();
   }
 
-  _getBrowserQuery(message: Message):string {
+  _getBrowserQuery(message: Message): string {
     return message.message
       .replace(/{start}/g, `[${message.params.start.map(q => `'${q}'`).join(',')}]`)
       .replace(/{end}/g, `[${message.params.end.map(q => `'${q}'`).join(',')}]`);

@@ -49,8 +49,8 @@ export class LinkVisualComponent {
 
   }
 
-  getSource(link: Node, property: string): number{
-    if(link[property]){
+  getSource(link: Node, property: string): number {
+    if (link[property]) {
       return link[property];
     } else {
       return 0;
@@ -69,10 +69,10 @@ export class LinkVisualComponent {
     const radius1 =  link.source.r || 0;
     const radius2 =  link.target.r || 0;
 
-    if (attr_name === 'x1') return x1 + (x2 - x1) * radius1 / distance;
-    if (attr_name === 'y1') return y1 + (y2 - y1) * radius1 / distance;
-    if (attr_name === 'x2') return x2 + (x1 - x2) * radius2 / distance;
-    if (attr_name === 'y2') return y2 + (y1 - y2) * radius2 / distance;
+    if (attr_name === 'x1') { return x1 + (x2 - x1) * radius1 / distance; }
+    if (attr_name === 'y1') { return y1 + (y2 - y1) * radius1 / distance; }
+    if (attr_name === 'x2') { return x2 + (x1 - x2) * radius2 / distance; }
+    if (attr_name === 'y2') { return y2 + (y1 - y2) * radius2 / distance; }
   }
 
 }

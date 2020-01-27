@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {SettingsService} from '../services/settings.service';
-import {DisclaimerModalComponent} from "./disclaimer-modal/disclaimer-modal.component";
-import {MatDialog} from "@angular/material";
+import {DisclaimerModalComponent} from './disclaimer-modal/disclaimer-modal.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-smrtgraph-settings',

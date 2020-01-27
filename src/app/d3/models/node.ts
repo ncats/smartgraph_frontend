@@ -2,7 +2,7 @@ import APP_CONFIG from '../../app.config';
 
 export class Params {
   startNode = false;
-  endNode= false;
+  endNode = false;
 
   constructor() {}
 }
@@ -61,7 +61,7 @@ export class Compound extends Node {
   smiles: string;
   compoundId: string;
   imageUrl: string;
-  _type = "compound";
+  _type = 'compound';
 
   constructor (uuid, data) {
     super(uuid, data);
@@ -93,7 +93,7 @@ export class Target extends Node {
   fullname: string;
   synonyms: string[];
   genes: string;
-  _type = "target";
+  _type = 'target';
 
 
   constructor (uuid, data) {
@@ -112,7 +112,7 @@ export class Pattern extends Node {
   pattern_type: string;
   smiles: string;
   imageUrl: string;
-  _type = "pattern";
+  _type = 'pattern';
 
   constructor (uuid, data) {
     super(uuid, data);

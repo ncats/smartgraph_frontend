@@ -9,8 +9,8 @@ import {Link} from '../../d3/models/link';
 import * as d3 from 'd3';
 import {GraphDataService} from '../../services/graph-data.service';
 import {DownloadButtonComponent} from '../../download-button/download-button.component';
-import {LoadingService} from "../../services/loading.service";
-import {Subscription} from "rxjs";
+import {LoadingService} from '../../services/loading.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -24,7 +24,7 @@ import {Subscription} from "rxjs";
       <g [zoomableOf]="svg" [draggableInGraph]="graph" pharosZoomable>
         <g [linkVisual]="link" [clickableLink] = "link" [hoverableLink]="link" *ngFor="let link of links"></g>
         <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
-        [clickableNode]="node" [draggableNode]="node" 
+        [clickableNode]="node" [draggableNode]="node"
            [draggableInGraph]="graph">
         </g>
         <svg:g menu-list #menu></svg:g>
@@ -51,27 +51,41 @@ import {Subscription} from "rxjs";
   styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent {
-/*  @ViewChild(DownloadButtonComponent)
-  private downloader: DownloadButtonComponent;*/
-  public nodes: Node[] = [];
-  public links: Link[] = [];
-  subscription: Subscription;
-  @Input() loading: boolean = true;
-
-
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.graph.initSimulation(this.options);
-  }
-
-  graph: ForceDirectedGraph;
 
   constructor(public d3Service: D3Service,
               private ref: ChangeDetectorRef,
               public el: ElementRef,
               private graphDataService: GraphDataService,
               private loadingService: LoadingService) {
+  }
+
+  get options() {
+    return this._options = {
+      width: this.el.nativeElement.parentElement.offsetWidth - 50,
+      height: window.innerHeight * .6
+      //  height: window.innerHeight-(window.outerHeight-window.innerHeight)
+    };
+  }
+/*  @ViewChild(DownloadButtonComponent)
+  private downloader: DownloadButtonComponent;*/
+  public nodes: Node[] = [];
+  public links: Link[] = [];
+  subscription: Subscription;
+  @Input() loading = true;
+
+  graph: ForceDirectedGraph;
+
+/*  downloadGraph(): void {
+    this.downloader.downloadFile(d3.select('svg'), this.options);
+  }*/
+
+  _options: {width, height} = {width: 600, height: 600};
+
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.graph.initSimulation(this.options);
   }
 
   ngOnInit() {
@@ -98,19 +112,5 @@ export class GraphComponent {
 
   ngAfterViewInit() {
     this.graph.initSimulation(this.options);
-  }
-
-/*  downloadGraph(): void {
-    this.downloader.downloadFile(d3.select('svg'), this.options);
-  }*/
-
-  _options: {width, height} = {width: 600, height: 600};
-
-  get options() {
-    return this._options = {
-      width: this.el.nativeElement.parentElement.offsetWidth -50,
-      height: window.innerHeight * .6
-      //  height: window.innerHeight-(window.outerHeight-window.innerHeight)
-    };
   }
 }

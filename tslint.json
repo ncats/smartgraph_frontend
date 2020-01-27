@@ -11,6 +11,9 @@
       "check-space"
     ],
     "curly": true,
+    "deprecation": {
+      "severity": "warn"
+    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [
@@ -66,7 +69,7 @@
     "no-string-literal": false,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
-    "no-trailing-whitespace": true,
+    "no-trailing-whitespace": false,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-use-before-declare": true,
@@ -103,9 +106,13 @@
         "variable-declaration": "nospace"
       }
     ],
-    "typeof-compare": true,
     "unified-signatures": true,
-    "variable-name": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
     "whitespace": [
       true,
       "check-branch",
@@ -117,15 +124,16 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      ["ncats", "app"],
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      ["ncats", "app"],
       "kebab-case"
     ],
+    "no-output-on-prefix": true,
     "no-inputs-metadata-property": true,
     "no-outputs-metadata-property": true,
     "no-host-metadata-property": true,
@@ -134,7 +142,6 @@
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true,
-    "invoke-injectable": true
+    "directive-class-suffix": true
   }
 }

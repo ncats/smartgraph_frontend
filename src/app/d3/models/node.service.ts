@@ -27,7 +27,7 @@ export class NodeService {
   private hoveredNodeList: Node[] = [];
 
   //  service command
-  clickedNodes(node: Node):void {
+  clickedNodes(node: Node): void {
     this.clickedNodeList.push(node);
     this._nodeSource.next({
       clicked: this.clickedNodeList,
@@ -37,8 +37,8 @@ export class NodeService {
     this.changeNode(node);
   }
 
-  hoveredNode(node: Node[]):void {
-    if(this.hoveredNodeList.length > 0){
+  hoveredNode(node: Node[]): void {
+    if (this.hoveredNodeList.length > 0) {
       this.hoveredNodeList = [];
     }
     this.hoveredNodeList.push(...node);
@@ -48,7 +48,7 @@ export class NodeService {
     });
   }
 
-  removeClickedNode(node:Node):void{
+  removeClickedNode(node: Node): void {
     this.clickedNodeList.splice( this.clickedNodeList.indexOf(node), 1);
     this._nodeSource.next({
       clicked: this.clickedNodeList,
@@ -105,7 +105,7 @@ export class NodeService {
         default:
           n = new Node(id, data);
       }
-    }else {
+    } else {
         n = new Node(id, data);
       }
     }

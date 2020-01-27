@@ -28,8 +28,8 @@ export class GraphDataService {
   historyMap: Map<string, any> = new Map();
   graphhistory$ = this._graphHistorySource.asObservable();
   originalEvent: string;
-  noResults: boolean = false;
-  filter: boolean = false;
+  noResults = false;
+  filter = false;
   nodeList: any = [];
   linkList: any = [];
   nodes: any  = [];
@@ -40,11 +40,11 @@ export class GraphDataService {
     private nodeService: NodeService,
     private linkService: LinkService,
     private loadingService: LoadingService
-  ){
+  ) {
     // todo: with the added search variables, it is extremely likely no results will come back. this needs to be shown
 
     this.dataConnectionService.responses.subscribe(response => {
-      if(response.data) {
+      if (response.data) {
         this.originalEvent = response.type.toString();
         const records = response.data._fields;
         if (records.length == 0) {
@@ -79,8 +79,8 @@ export class GraphDataService {
             }
           }
         }
-      }else{
-        //no new results added
+      } else {
+        // no new results added
         // todo: still want an alert if no predictions are found.
         if (this.noResults && (this.nodeList.length === 0 && this.linkList.length === 0)) {
           this.clearGraph();
@@ -147,7 +147,7 @@ export class GraphDataService {
       addedLinks: newLinks.filter(link => this.graph.links.indexOf(link) === -1)
     };
 
-    if (this.eventData){
+    if (this.eventData) {
         this.historyMap.set(this.eventData.id, diff);
     }
     // apply diff to current graph
@@ -160,7 +160,7 @@ export class GraphDataService {
     this.filter = false;
   }
 
-  applyDiff(diff: any): void{
+  applyDiff(diff: any): void {
     // todo: it is possible to expand a node connected to an expanded node. If the original node is closed, the second expanded nodes are still visible
     // todo: need to iterate over remaining nodes and links and remove them
     if (this.filter == true) {
@@ -177,7 +177,7 @@ export class GraphDataService {
     });
   }
 
-  countLinks(): void{
+  countLinks(): void {
     this.graph.nodes.forEach(node => node.linkCount = 1);
     for (const l of this.graph.links) {
       l.source.linkCount ++;
@@ -185,7 +185,7 @@ export class GraphDataService {
     }
   }
 
-  clearGraph(): void{
+  clearGraph(): void {
     this.graph.links = [];
     this.graph.nodes = [];
     this._graphHistorySource.next(this.graph);
@@ -195,15 +195,15 @@ export class GraphDataService {
     return this.graph.nodes.map(node => node.uuid);
   }
 
-  nodeExpand(id: string, type:string, properties: any): void {
+  nodeExpand(id: string, type: string, properties: any): void {
     const message: Message = this.messageService.getMessage(id, type, properties);
     // right now this is only creating a skeleton map object without the diff
     // this happens here because node id and label is needed for tracking.
-    this.eventData = {id: id, diff:{}};
+    this.eventData = {id: id, diff: {}};
     this.dataConnectionService.messages.next(message);
   }
 
-  nodeCollapse(node: Node): void{
+  nodeCollapse(node: Node): void {
     this.filter = true;
 // get the expand object to delete the nodes added
     const diff = this.historyMap.get(node.uuid);
@@ -225,7 +225,7 @@ export class GraphDataService {
   }
 
   // download button uses this
-  returnGraph():any{
+  returnGraph(): any {
     return this.graph;
   }
 

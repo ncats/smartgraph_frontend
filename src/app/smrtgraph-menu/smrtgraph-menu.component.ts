@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SettingsService} from '../services/settings.service';
-import {AboutModalComponent} from "./about-modal/about-modal.component";
-import {MatDialog} from "@angular/material";
+import {AboutModalComponent} from './about-modal/about-modal.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'smrtgraph-menu',

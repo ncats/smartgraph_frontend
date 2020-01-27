@@ -1,7 +1,7 @@
 import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {Renderer2} from '@angular/core';
 import {unescape} from 'querystring';
-import {GraphDataService} from "../services/graph-data.service";
+import {GraphDataService} from '../services/graph-data.service';
 import {Link} from '../d3/models/link';
 import {Node} from '../d3/models/node';
 
@@ -54,32 +54,32 @@ export class DownloadButtonComponent implements OnInit {
 
   //
 
-downloadJSON(){
-    let cyto = new CytoJSON();
-    let graph = this.graphDataService.returnGraph();
-  for (let node of graph.nodes) {
+downloadJSON() {
+    const cyto = new CytoJSON();
+    const graph = this.graphDataService.returnGraph();
+  for (const node of graph.nodes) {
     cyto.elements.nodes.push(new CytoNode(node));
   }
-  for (let link of graph.links) {
+  for (const link of graph.links) {
     cyto.elements.edges.push(new CytoEdge(link));
   }
-this.file = new Blob([JSON.stringify(cyto)], { type: "type: 'text/json'"});
+this.file = new Blob([JSON.stringify(cyto)], { type: 'type: \'text/json\''});
   this.downloadFile();
 }
 
-downloadCSV(){}
+downloadCSV() {}
 
 
-downloadEdges(){
-  let graph = this.graphDataService.returnGraph();
-  let edgeList ='edge,source,target \n';
-  for (let link of graph.links) {
-    let src = link.source.uuid;
-    let tgt = link.target.uuid;
-    let edge = link.uuid;
-    edgeList = edgeList + edge + "," + src +"," +tgt +'\n';
+downloadEdges() {
+  const graph = this.graphDataService.returnGraph();
+  let edgeList = 'edge,source,target \n';
+  for (const link of graph.links) {
+    const src = link.source.uuid;
+    const tgt = link.target.uuid;
+    const edge = link.uuid;
+    edgeList = edgeList + edge + ',' + src + ',' + tgt + '\n';
   }
-  this.file = new Blob([edgeList], { type: "type: 'text/csv'"});
+  this.file = new Blob([edgeList], { type: 'type: \'text/csv\''});
   this.downloadFile();
 }
 
@@ -221,20 +221,20 @@ console.log(context);
 
 */
 
-  downloadFile():void{
-    let url = window.URL.createObjectURL(this.file);
+  downloadFile(): void {
+    const url = window.URL.createObjectURL(this.file);
     window.open(url);
   }
 
 }
 
-export class CytoJSON{
-  format_version ="1.0";
-  "generated_by" = "cytoscape-3.6.0";
-  target_cytoscapejs_version = "~2.1";
+export class CytoJSON {
+  format_version = '1.0';
+  'generated_by' = 'cytoscape-3.6.0';
+  target_cytoscapejs_version = '~2.1';
   data: Object = {
-    shared_name: "smrtgraph.csv",
-    name : "smrtgraph.csv",
+    shared_name: 'smrtgraph.csv',
+    name : 'smrtgraph.csv',
     SUID : 64,
     __Annotations: [],
     selected: false
@@ -244,36 +244,36 @@ elements = {
   nodes: []
 };
 
-constructor(){}
+constructor() {}
 }
 
-export class CytoNode{
-  data={id:"", node:{}};
+export class CytoNode {
+  data = {id: '', node: {}};
   position = {
     x : 0,
     y : 0
   };
-  selected : boolean;
+  selected: boolean;
 
-  constructor(node: Node){
+  constructor(node: Node) {
     this.data.id = node.uuid;
     this.data.node = node;
-    this.position.x= node['x'] || 0;
-    this.position.y= node['y'] || 0;
+    this.position.x = node['x'] || 0;
+    this.position.y = node['y'] || 0;
     this.selected = false;
   }
 
 }
-export class CytoEdge{
+export class CytoEdge {
   data = {
     id : '',
     source : '',
     target : '',
     properties: {}
   };
-  selected : boolean;
+  selected: boolean;
 
-  constructor(link:Link){
+  constructor(link: Link) {
     this.data.id = link.uuid;
     this.data.properties = link;
     this.data.source = link.source['uuid'] || link.source;

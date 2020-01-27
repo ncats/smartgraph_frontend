@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Node, Pattern, Compound} from '../../../d3/models/node';
 import {SettingsService} from '../../../services/settings.service';
-import {NodeMenuControllerService} from "../../../services/node-menu-controller.service";
-import {NodeService} from "../../../d3/models/node.service";
+import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
+import {NodeService} from '../../../d3/models/node.service';
 
 @Component({
   selector: 'structure-view',
@@ -12,7 +12,7 @@ import {NodeService} from "../../../d3/models/node.service";
 `
 })
 
-export class StructureViewer{
+export class StructureViewer {
 @Input() data: Compound | Pattern;
 }
 
@@ -48,9 +48,9 @@ export class NodeVisualComponent {
               private nodeService: NodeService,
               private nodeMenuController: NodeMenuControllerService,
               private ref: ChangeDetectorRef
-              ){}
+              ) {}
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.settingsService.dataChange
       .subscribe(settings => {
        // console.log(settings);
@@ -69,7 +69,7 @@ export class NodeVisualComponent {
             break;
           }
           case 'pattern': {
-              this.label = settings.patternLabel ? settings.patternLabel : "";
+              this.label = settings.patternLabel ? settings.patternLabel : '';
             break;
           }
         }
