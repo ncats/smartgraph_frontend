@@ -1,7 +1,14 @@
-import { TestBed, async } from '@angular/core/testing';
+import {async, TestBed} from '@angular/core/testing';
 
-import { AppComponent } from './app.component';
-import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from "@angular/core";
+import {AppComponent} from './app.component';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {LoadingService} from './services/loading.service';
+import {NodeService} from './d3/models/node.service';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MaterialModule} from '../assets/material/material.module';
+import {LinkService} from './d3/models/link.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MessageService} from './services/message.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

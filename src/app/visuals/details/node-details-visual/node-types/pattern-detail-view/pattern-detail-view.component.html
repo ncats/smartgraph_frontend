@@ -9,12 +9,12 @@
     </div>
   </div>
   <div fxLayoutWrap="row">
-    <h3 class="smiles">Smiles: {{node.smiles}}</h3><br/>
+    <h3 class="smiles">Smiles: {{node?.smiles}}</h3><br/>
     <img [src] = node?.imageUrl>
     <mat-list>
-      <mat-list-item>InChI Key: {{node.hash}}</mat-list-item>
-      <mat-list-item>Pattern Type: {{node.pattern_type}}</mat-list-item>
-      <mat-list-item>Pattern Id: {{node.pattern_id}}</mat-list-item>
+      <mat-list-item>InChI Key: {{node?.hash}}</mat-list-item>
+      <mat-list-item>Pattern Type: {{node?.pattern_type}}</mat-list-item>
+      <mat-list-item>Pattern Id: {{node?.pattern_id}}</mat-list-item>
     </mat-list>
   </div>
 </div>
