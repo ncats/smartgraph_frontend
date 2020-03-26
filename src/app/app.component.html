@@ -12,7 +12,10 @@
     </div>
     <!-- primary content -->
     <graph class="upperSection"></graph>
-  <div class="reset-holder"><button mat-flat-button (click)="reset()" [color]="'primary'">Reset Zoom</button></div>
+  <div class="reset-holder">
+    <button mat-flat-button (click)="reset()" [color]="'primary'">Reset Zoom</button>
+    <download-button></download-button>
+  </div>
   <mat-sidenav #settingsToggle [mode]="'over'" position="end">
       <app-smrtgraph-settings></app-smrtgraph-settings>
     </mat-sidenav>

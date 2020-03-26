@@ -1,0 +1,21 @@
+<button mat-button [matMenuTriggerFor]="menu">
+  Download graph <mat-icon>file_download</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)=" downloadJSON()">
+    <mat-icon>code</mat-icon>
+    <span>Cytoscape JSON</span>
+  </button>
+  <button mat-menu-item (click)=" downloadEdges()">
+    <mat-icon>list</mat-icon>
+    <span>Edge List</span>
+  </button>
+<!--  <button mat-menu-item (click)=" downloadCSV()" disabled>
+    <mat-icon>border_all</mat-icon>
+    <span>CSV</span>
+  </button>-->
+  <!--  <button mat-menu-item (click)=" downloadGraph()" disabled>
+      <mat-icon>photo</mat-icon>
+      <span>PNG</span>
+    </button>-->
+</mat-menu>
