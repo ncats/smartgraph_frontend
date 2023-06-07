@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {finalize, tap} from 'rxjs/operators';
 import {Compound, Node, Pattern, Target} from '../../../d3/models/node';
@@ -14,12 +14,12 @@ import {GraphDataService} from '../../../services/graph-data.service';
 export class SearchComponent implements OnInit {
 @Output()
   public selected: EventEmitter<Node> = new EventEmitter();
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
   options: any;
   isLoading = false;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private graphDataService: GraphDataService
   ) {  }
 

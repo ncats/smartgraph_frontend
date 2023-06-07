@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
 import {SettingsService} from '../services/settings.service';
 import {DisclaimerModalComponent} from './disclaimer-modal/disclaimer-modal.component';
-import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-smrtgraph-settings',
@@ -11,18 +11,18 @@ import {MatDialog} from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class SmrtgraphSettingsComponent implements OnInit {
-  targetLabelCtrl: FormControl;
-  compoundLabelCtrl: FormControl;
-  patternLabelCtrl: FormControl;
-  showLinkLabelCtrl: FormControl;
+  targetLabelCtrl: UntypedFormControl;
+  compoundLabelCtrl: UntypedFormControl;
+  patternLabelCtrl: UntypedFormControl;
+  showLinkLabelCtrl: UntypedFormControl;
 
   constructor(
     public dialog: MatDialog,
     public settingsService: SettingsService) {
-    this.targetLabelCtrl = new FormControl();
-    this.compoundLabelCtrl = new FormControl();
-    this.patternLabelCtrl = new FormControl();
-    this.showLinkLabelCtrl = new FormControl();
+    this.targetLabelCtrl = new UntypedFormControl();
+    this.compoundLabelCtrl = new UntypedFormControl();
+    this.patternLabelCtrl = new UntypedFormControl();
+    this.showLinkLabelCtrl = new UntypedFormControl();
   }
 
   ngOnInit() {

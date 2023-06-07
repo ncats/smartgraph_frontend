@@ -1,6 +1,6 @@
-import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Component, OnInit, ElementRef, ViewChild, Inject} from '@angular/core';
 import {Renderer2} from '@angular/core';
-import {unescape} from 'querystring';
 import {GraphDataService} from '../services/graph-data.service';
 import {Link} from '../d3/models/link';
 import {Node} from '../d3/models/node';
@@ -14,7 +14,7 @@ export class DownloadButtonComponent implements OnInit {
   @ViewChild('#svg', { static: false }) el: ElementRef;
 
   file: any;
-  constructor(private rd: Renderer2,
+  constructor(@Inject(DOCUMENT) private dom: Document,
   private graphDataService: GraphDataService) {
   }
 
@@ -42,7 +42,7 @@ downloadJSON() {
     cyto.elements.edges.push(new CytoEdge(link));
   }
 this.file = new Blob([JSON.stringify(cyto)], { type: 'type: \'text/json\''});
-  this.downloadFile();
+  this.downloadFile("smartgraph.json");
 }
 
 downloadCSV() {}
@@ -58,15 +58,26 @@ downloadEdges() {
     edgeList = edgeList + edge + ',' + src + ',' + tgt + '\n';
   }
   this.file = new Blob([edgeList], { type: 'type: \'text/csv\''});
-  this.downloadFile();
+  this.downloadFile("smartgraph.csv");
 }
 
   downloadPNG(data: any, options: any) {
   }
 
-  downloadFile(): void {
-    window.location.href = window.URL.createObjectURL(this.file);
-  //  window.open(url);
+  downloadFile(filename: string): void {
+  //  window.location.href = window.URL.createObjectURL(this.file);
+    var link = this.dom.createElement('a');
+    if (link.download !== undefined) {
+      // feature detection
+      // Browsers that support HTML5 download attribute
+      var url = URL.createObjectURL(this.file);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      this.dom.body.appendChild(link);
+      link.click();
+      this.dom.body.removeChild(link);
+    }
   }
 
 }

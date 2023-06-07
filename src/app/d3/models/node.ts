@@ -69,8 +69,9 @@ export class Compound extends Node {
     this.nostereo_hash = data.properties.nostereo_hash;
     this.smiles = data.properties.smiles;
     this.compoundId = data.properties.compound_id.low;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv13?size=200&structure=' +
-      this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg';
+    this.imageUrl = `https://opendata.ncats.nih.gov/renderer/render(${this.parseSmiles(data.properties.smiles)})?size=200`
+    /*this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv13?size=200&structure=' +
+      this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg';*/
   }
 
   private parseSmiles(smiles: string): string {
@@ -120,9 +121,10 @@ export class Pattern extends Node {
     this.pattern_id = data.properties.pattern_id;
     this.pattern_type = data.properties.pattern_type;
     this.smiles = data.properties.smiles;
-    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?size=200&structure=' +
+    this.imageUrl = `https://opendata.ncats.nih.gov/renderer/render(${this.parseSmiles(data.properties.smiles)})?size=200&context=${data.properties.smiles.split('').map((a, i) => i).join(',')}`
+/*    this.imageUrl = 'https://tripod.nih.gov/servlet/renderServletv12/?size=200&structure=' +
       this.parseSmiles(data.properties.smiles) + '&standardize=true&format=svg&preset=HIGHLIGHT&amap=' +
-      data.properties.smiles.split('').map((a, i) => i).join(',');
+      data.properties.smiles.split('').map((a, i) => i).join(',');*/
   }
 
   private parseSmiles(smiles: string): string {

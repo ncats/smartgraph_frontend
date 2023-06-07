@@ -4,17 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from '../assets/material/material.module';
-
-
 import {D3Service} from './d3/d3.service';
 import {NodeService} from './d3/models/node.service';
-
 import { AppComponent } from './app.component';
-
 import { GraphComponent } from './visuals/graph/graph.component';
 import {NodeVisualComponent, StructureViewer} from './visuals/shared/node-visual/node-visual.component';
 import { LinkVisualComponent } from './visuals/shared/link-visual/link-visual.component';
-
 import {WebSocketService} from './services/websocket.service';
 import {DataConnectionService} from './services/data-connection.service';
 import {MessageService} from './services/message.service';
@@ -52,63 +47,59 @@ import {HelpPanelComponent} from './help-panel/help-panel.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    GraphComponent,
-    NodeDetailsVisualComponent,
-    NodeMenuComponent,
-    StructureViewer,
-    SmrtgraphMenuComponent,
-    SmrtgraphSearchComponent,
-    DownloadButtonComponent,
-    NodeVisualComponent,
-    LinkVisualComponent,
-    ZoomableDirective,
-    HoverableLinkDirective,
-    HoverableNodeDirective,
-    DraggableDirective,
-    ClickableNodeDirective,
-    ClickableLinkDirective,
-    GraphClickDirective,
-    GraphDetailsComponent,
-    TargetDetailViewComponent,
-    CompoundDetailViewComponent,
-    PatternDetailViewComponent,
-    LinkListVisualComponent,
-    ReactionVisualComponent,
-    SmrtgraphSettingsComponent,
-    SearchComponent,
-    NodeDetailsBoxComponent,
-    HighlightPipe,
-    DisclaimerModalComponent,
-    AboutModalComponent,
-    HelpPanelComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    FlexLayoutModule
-  ],
-  providers: [
-    WebSocketService,
-    DataConnectionService,
-    D3Service,
-    NodeService,
-    LinkService,
-    MessageService,
-    GraphDataService,
-    NodeMenuControllerService,
-    LoadingService,
-    SettingsService,
-    NodeExpandService
-  ],
-  entryComponents: [
-    DisclaimerModalComponent,
-    AboutModalComponent
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        GraphComponent,
+        NodeDetailsVisualComponent,
+        NodeMenuComponent,
+        StructureViewer,
+        SmrtgraphMenuComponent,
+        SmrtgraphSearchComponent,
+        DownloadButtonComponent,
+        NodeVisualComponent,
+        LinkVisualComponent,
+        ZoomableDirective,
+        HoverableLinkDirective,
+        HoverableNodeDirective,
+        DraggableDirective,
+        ClickableNodeDirective,
+        ClickableLinkDirective,
+        GraphClickDirective,
+        GraphDetailsComponent,
+        TargetDetailViewComponent,
+        CompoundDetailViewComponent,
+        PatternDetailViewComponent,
+        LinkListVisualComponent,
+        ReactionVisualComponent,
+        SmrtgraphSettingsComponent,
+        SearchComponent,
+        NodeDetailsBoxComponent,
+        HighlightPipe,
+        DisclaimerModalComponent,
+        AboutModalComponent,
+        HelpPanelComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        FlexLayoutModule
+    ],
+    providers: [
+        WebSocketService,
+        DataConnectionService,
+        D3Service,
+        NodeService,
+        LinkService,
+        MessageService,
+        GraphDataService,
+        NodeMenuControllerService,
+        LoadingService,
+        SettingsService,
+        NodeExpandService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

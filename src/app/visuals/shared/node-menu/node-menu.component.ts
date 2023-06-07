@@ -16,7 +16,7 @@ import {NodeExpandService, Expand} from '../../../services/node-expand.service';
   template: `
 <svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="25%" height="100%" *ngIf="openMenu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" class="node-menu">
-  <mat-list [class.mat-elevation-z1]="'true'" >
+  <mat-action-list>
     <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
     <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
     <button mat-menu-item class = "expand-list" *ngIf="!expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
@@ -29,7 +29,7 @@ import {NodeExpandService, Expand} from '../../../services/node-expand.service';
     <button mat-menu-item class = "expand-list" *ngIf="expanded.all===true" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
     <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target' && !expanded.predictions" (click)="expand('Predictions')">Get Predictions</button>
     <button mat-menu-item class = "expand-list" *ngIf="expanded.predictions===true" (click)="collapse('Predictions')">Remove Predictions</button>
-  </mat-list>
+  </mat-action-list>
 </xhtml:div>
 </svg:foreignObject>
 `,
@@ -147,6 +147,4 @@ export class NodeMenuComponent {
     this.nodeMenuController.hideMenus();
     this.openMenu = false;
   }
-
-
 }

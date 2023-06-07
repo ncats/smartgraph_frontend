@@ -8,7 +8,7 @@ import {NodeService} from '../../../d3/models/node.service';
   selector: 'structure-view',
   styleUrls: ['./node-visual.component.scss'],
   template: `
-    <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl>
+    <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl [alt]="'structure image for this node'">
 `
 })
 
@@ -53,7 +53,6 @@ export class NodeVisualComponent {
   ngOnInit(): void {
     this.settingsService.dataChange
       .subscribe(settings => {
-       // console.log(settings);
         switch (this.node._type) {
           case 'target': {
             this.label = this.node[settings.targetLabel];

@@ -38,15 +38,14 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="95">
-      <mat-slider matInput fxLayoutAlign="center center"
+      <mat-slider discrete
+                  fxLayoutAlign="center center"
                   aria-label="activity level"
                   class="example-margin"
                   [max]="12"
                   [min]="3"
-                  [step]=".1"
-                  [thumbLabel]="true"
-                  [formControl]="activityCtrl"
-                  [value]="500">
+                  [step]=".1">
+        <input matSliderThumb [formControl]="activityCtrl">
       </mat-slider>
     </div>
   </div>
@@ -65,16 +64,15 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="95">
-  <mat-slider matInput fxLayoutAlign="center center"
+  <mat-slider discrete
+              fxLayoutAlign="center center"
                   class="example-margin"
                   aria-label="max distance"
                   [max]="10"
                   [min]="1"
-                  [step]="1"
-                  [thumbLabel]="true"
-                  [formControl]="distanceCtrl"
-                  [value]="5">
-      </mat-slider>
+                  [step]="1">
+    <input matSliderThumb [formControl]="distanceCtrl">
+  </mat-slider>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" class="slider-header">
@@ -93,15 +91,14 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="95">
-      <mat-slider matInput fxLayoutAlign="center center"
+      <mat-slider discrete
+                  fxLayoutAlign="center center"
                   aria-label="confidence level"
                   class="example-margin"
                   [max]="1"
                   [min]=".01"
-                  [step]=".01"
-                  [thumbLabel]="true"
-                  [formControl]="confidenceCtrl"
-                  [value]=".5">
+                  [step]=".01">
+        <input matSliderThumb [formControl]="confidenceCtrl">
       </mat-slider>
     </div>
   </div>
@@ -131,8 +128,9 @@
     </div>
   </div>-->
   <div fxLayout="row" fxLayoutAlign="center center">
-    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">find shortest path
+    <button mat-button color="primary" [disabled]="!startNodes || !endNodes" (click)="shortestPath()">
       <mat-icon>search</mat-icon>
+      find shortest path
       <mat-icon>share</mat-icon>
     </button>
     |
@@ -140,6 +138,5 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-
 </div>
 

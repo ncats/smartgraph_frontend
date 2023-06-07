@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {DataConnectionService} from '../services/data-connection.service';
 import {Message, MessageService} from '../services/message.service';
 import { GraphDataService} from '../services/graph-data.service';
@@ -13,12 +13,12 @@ import {NodeExpandService} from '../services/node-expand.service';
   styleUrls: ['./smrtgraph-search.component.scss']
 })
 export class SmrtgraphSearchComponent implements OnInit {
-  startNodesCtrl: FormControl;
-  endNodesCtrl: FormControl;
-  distanceCtrl: FormControl;
-  confidenceCtrl: FormControl;
-  activityCtrl: FormControl;
-  similarityCtrl: FormControl;
+  startNodesCtrl: UntypedFormControl;
+  endNodesCtrl: UntypedFormControl;
+  distanceCtrl: UntypedFormControl;
+  confidenceCtrl: UntypedFormControl;
+  activityCtrl: UntypedFormControl;
+  similarityCtrl: UntypedFormControl;
 
   startUUIDList: any[] = [
     '489c2bf7-0333-454d-bec1-ff2ec2f7a450',
@@ -45,23 +45,18 @@ export class SmrtgraphSearchComponent implements OnInit {
     private loadingService: LoadingService,
     private nodeExpandService: NodeExpandService
   ) {
-    this.startNodesCtrl = new FormControl('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
-    this.endNodesCtrl = new FormControl('P03372, P04035, P04150, P00519');
-    this.distanceCtrl = new FormControl(5);
-    this.confidenceCtrl = new FormControl(0);
-    this.activityCtrl = new FormControl(5);
-    this.similarityCtrl = new FormControl();
+    this.startNodesCtrl = new UntypedFormControl('P35968, P12931, P00533, AHLNGYPZYMUEFB, HVTCKKMWZDDWOY');
+    this.endNodesCtrl = new UntypedFormControl('P03372, P04035, P04150, P00519');
+    this.distanceCtrl = new UntypedFormControl(5);
+    this.confidenceCtrl = new UntypedFormControl(.01);
+    this.activityCtrl = new UntypedFormControl(5);
+    this.similarityCtrl = new UntypedFormControl();
   }
 
   /*
   * Todo: this needs to be re-worked a bit-- the queries that are the result of the search inputs changing directly modify nodes
   * todo: while they do this thorugh a service, they subscribe to all graph change events, which is not optimal
   * */
-
-
-
-
-
 
   ngOnInit() {
     // todo: set all subscriptions to be variables to close on destroy
@@ -168,7 +163,7 @@ export class SmrtgraphSearchComponent implements OnInit {
         hasCompound: this.hasCompound
       };
       const query: Message = this.messageService.getMessage(value, 'path', params);
-      console.log(this._getBrowserQuery(query));
+     // console.log(this._getBrowserQuery(query));
 
       this.dataConnectionService.messages.next(query);
     }

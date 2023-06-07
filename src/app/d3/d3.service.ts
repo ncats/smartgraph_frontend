@@ -27,8 +27,8 @@ export class D3Service {
     svg = d3.select(svgElement);
     container = d3.select(containerElement);
 
-    zoomed = () => {
-      container.attr('transform', d3.event.transform);
+    zoomed = (event: { transform: any; }) => {
+      container.attr('transform', event.transform);
     };
 
     this.zoom = d3.zoom()
@@ -48,21 +48,21 @@ export class D3Service {
   applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     const d3element = d3.select(element);
 
-    const started = (): void => {
-      d3.event.sourceEvent.stopPropagation();
-      if (!d3.event.active) {
+    const started = (event): void => {
+      event.sourceEvent.stopPropagation();
+      if (!event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
     };
 
-      function dragged() {
-        node.fx = d3.event.x;
-        node.fy = d3.event.y;
+      function dragged(event) {
+        node.fx = event.x;
+        node.fy = event.y;
       }
 
-      const ended = (): void => {
-        d3.event.sourceEvent.stopPropagation();
-        if (!d3.event.active) {
+      const ended = (event): void => {
+        event.sourceEvent.stopPropagation();
+        if (!event.active) {
           graph.simulation.alphaTarget(0);
         }
 
@@ -149,8 +149,8 @@ export class D3Service {
     };
 
     // todo: this is called on drag and iterates over the entire graph
-    const mouseOverFunction = (): void => {
-      if (d3.event.defaultPrevented) { return; }
+    const mouseOverFunction = (event): void => {
+      if (event.defaultPrevented) { return; }
       decorateNodes();
       this.nodeService.hoveredNode([node]);
       if (neighbors.length > 0) {

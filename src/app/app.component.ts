@@ -39,10 +39,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   reset() {
-    console.log(this);
-console.log('reset');
-console.log(this.graphInstance.el.nativeElement);
-console.log(d3.select(this.graphInstance.el.nativeElement).select('svg'));
     d3.select(this.graphInstance.el.nativeElement)
       .select('svg')
       .transition()

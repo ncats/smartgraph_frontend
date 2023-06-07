@@ -1,23 +1,18 @@
 <div class="container">
   <div fxLayout="row">
     <mat-toolbar color="primary">
- <!--       <mat-icon>home</mat-icon>
-        {{title}}-->
       <button mat-button (click)="aboutOpen()">About SmartGraph</button>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
       <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <button mat-button (click)="navOpen()">Help & Settings <mat-icon>settings</mat-icon></button>
-<!--        <button mat-button routerLink="/products">Products</button>
-        <button mat-button routerLink="/dashboard">Dashboard</button>-->
+        <button mat-button (click)="navOpen()">Help & Settings</button>
       </div>
       <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
         <mat-icon>menu</mat-icon>
       </button>
-
     </mat-toolbar>
     <mat-menu x-position="before" #menu="matMenu">
-      <button mat-menu-item (click)="navOpen()"><mat-icon>settings</mat-icon></button>
+      <button mat-menu-item (click)="navOpen()">Settings</button>
     </mat-menu>
   </div>
 </div>
