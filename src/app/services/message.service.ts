@@ -13,13 +13,13 @@ export class MessageService {
 
       case 'chembl':
       case 'target': {
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id= $qParam MATCH (n)-[r:REGULATES]-(b) RETURN n, r, b';
+        msg = 'MATCH (n:Target {uniprot_id: $qParam})-[r:REGULATES]-(b) RETURN n, r, b';
         params = {qParam: term};
         break;
       }
 
       case 'compound': {
-        msg = 'MATCH (n:Compound) WHERE n.compound= $qParam MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        msg = 'MATCH (n:Compound {compound: $qParam})-[r]-(b) RETURN n, r, b LIMIT 5';
         params = {qParam: term};
         break;
       }
@@ -27,15 +27,15 @@ export class MessageService {
       case 'counts': {
         switch (properties) {
           case 'Target': {
-            msg = 'MATCH (n:Target) WHERE n.uuid = $qParam  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            msg = 'MATCH (n:Target {uuid: $qParam})-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
             break;
           }
           case 'Compound': {
-            msg = 'MATCH (n:Compound) WHERE n.uuid = $qParam  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            msg = 'MATCH (n:Compound {uuid: $qParam})-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
             break;
           }
           case 'Pattern': {
-            msg = 'MATCH (n:Pattern) WHERE n.uuid = $qParam  MATCH (n)-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
+            msg = 'MATCH (n:Pattern {uuid: $qParam})-[r]-(b) RETURN DISTINCT labels(b),COUNT(labels(b))';
             break;
           }
         }
@@ -46,7 +46,7 @@ export class MessageService {
       case 'endNodeSearch':
       case 'startNodeSearch': {
         // todo: convern nostereo_hash to a contains in hash search
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id IN $qParam RETURN n AS data UNION MATCH (c:Compound) WHERE c.nostereo_hash IN $qParam RETURN c AS data';
+        msg = 'MATCH (n:Target {uniprot_id: $qParam}) RETURN n AS data UNION MATCH (c:Compound {nostereo_hash: $qParam}) RETURN c AS data';
         //   msg = 'MATCH (n:Target) WHERE n.uniprot_id IN $qParam RETURN n UNION MATCH (n:Compound) WHERE n.hash IN $qParam RETURN n';
         params = {qParam: term};
         break;
@@ -78,7 +78,7 @@ export class MessageService {
       }
 
       case 'node': {
-        msg = 'MATCH (n:Target) WHERE n.uniprot_id= $qParam RETURN n';
+        msg = 'MATCH (n:Target {uniprot_id: $qParam}) RETURN n';
         params = {qParam: term};
         break;
       }
@@ -197,13 +197,13 @@ export class MessageService {
       }
 
       case 'smiles': {
-        msg = 'MATCH (n:Pattern) WHERE n.pid= $qParam MATCH (n)-[r]-(b) RETURN n, r, b LIMIT 5';
+        msg = 'MATCH (n:Pattern {pid: $qParam})-[r]-(b) RETURN n, r, b LIMIT 5';
         params = {qParam: term};
         break;
       }
 
       case 'uuid': {
-        msg = 'MATCH (n) WHERE n.uuid= $qParam RETURN n';
+        msg = 'MATCH (n {uuid: $qParam}) RETURN n';
         params = {qParam: term};
         break;
       }
