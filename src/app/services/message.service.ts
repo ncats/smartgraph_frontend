@@ -120,7 +120,7 @@ export class MessageService {
             with t1, COLLECT(c) as compounds, COLLECT(t1) as targets
               MATCH p1=shortestPath((t1)-[r*..${properties.distance}]->(q:Target))
             WHERE  all(rel in r WHERE rel.max_confidence_value >= ${properties.confidence}) AND
-            q.uuid IN {end}
+            q.uuid IN $end
             AND t1.uuid<>q.uuid
             UNWIND compounds as x
             UNWIND targets as y
