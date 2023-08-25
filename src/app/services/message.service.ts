@@ -110,7 +110,7 @@ export class MessageService {
               `MATCH p = shortestPath((t2)-[w*..${properties.distance}]->(q:Target))
         WHERE all(rel in w WHERE rel.max_confidence_value >= ${properties.confidence})
         AND t2.uuid IN $start
-        AND q.uuid IN {end}
+        AND q.uuid IN $end
         AND t2.uuid<>q.uuid
         return p`;
           } else {
