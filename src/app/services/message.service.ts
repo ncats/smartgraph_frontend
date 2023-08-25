@@ -190,7 +190,7 @@ export class MessageService {
 
       case 'prediction': {
         // msg = 'MATCH (t:Target) WHERE t.uuid= $qParam MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t)) RETURN t, r1, p, r2, c LIMIT 300';
-        msg = 'MATCH (t:Target) WHERE t.uuid= $qParam MATCH (t)<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t))' +
+        msg = 'MATCH (t:Target {uuid: $qParam})<-[r1:POTENT_PATTERN_OF]-(p:Pattern) MATCH (p)-[r2:PATTERN_OF]->(c:Compound) WHERE NOT ((c)-[:TESTED_ON]->(t))' +
           'with {segments:[{start: startNode(r1), relationship:r1, end: endNode(r1)},{start: startNode(r2), relationship:r2, end: endNode(r2)}]} AS ret RETURN ret LIMIT 300';
         params = {qParam: term};
         break;
