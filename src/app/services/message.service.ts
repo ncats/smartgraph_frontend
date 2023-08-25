@@ -109,7 +109,7 @@ export class MessageService {
             msg =
               `MATCH p = shortestPath((t2)-[w*..${properties.distance}]->(q:Target))
         WHERE all(rel in w WHERE rel.max_confidence_value >= ${properties.confidence})
-        AND t2.uuid IN {start}
+        AND t2.uuid IN $start
         AND q.uuid IN {end}
         AND t2.uuid<>q.uuid
         return p`;
@@ -131,13 +131,13 @@ export class MessageService {
           if (!properties.hasCompound) {
             msg = `MATCH p = shortestPath((t2)-[w*..${properties.distance}]->(q:Target))
             WHERE all(rel in w WHERE rel.max_confidence_value >= ${properties.confidence})
-            AND t2.uuid IN {start}
+            AND t2.uuid IN $start
             AND t2.uuid<>q.uuid
             return p`;
 
           } else {
           //  console.log(" has compound and no end nodes")
-             msg =  `MATCH (c:Compound)-[a:TESTED_ON]-(t1:Target) WHERE a.activity < ${properties.activity} AND c.uuid IN {start}
+             msg =  `MATCH (c:Compound)-[a:TESTED_ON]-(t1:Target) WHERE a.activity < ${properties.activity} AND c.uuid IN $start
             with t1, COLLECT(c) as compounds, COLLECT(t1) as targets
               MATCH p1=shortestPath((t1)-[r*..${properties.distance}]->(q:Target))
             WHERE  all(rel in r WHERE rel.max_confidence_value >= ${properties.confidence})
