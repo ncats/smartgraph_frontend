@@ -102,7 +102,7 @@ export class Target extends Node {
     this.uniprot_id = data.properties.uniprot_id;
     this.fullname = data.properties.fullname;
     this.synonyms = data.properties.synonyms;
-    this.genes = data.properties.gene_symbols.join(', ') || [];
+    this.genes = data.properties.gene_symbols.join(', ');
 
   }
 }

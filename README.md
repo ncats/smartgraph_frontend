@@ -1,47 +1,37 @@
-# SmartGraph UI
-
-## Overview 
+# Smrtgraph
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.3.
 
-This code is meant to run in tandem with the SmartGraph backend which contains the SmartGraph API, Neo4j instance and Websocket server. The repository for that project can be found [here](https://github.com/ncats/smartgraph_api/tree/dev).
-
 ## To Cite
-
 Zahoránszky-Kőhalmi, G., Sheils, T. & Oprea, T.I. SmartGraph: a network pharmacology investigation platform. J Cheminform 12, 5 (2020). [https://doi.org/10.1186/s13321-020-0409-9]( https://doi.org/10.1186/s13321-020-0409-9)
 
-## Configuration
+## Development server
 
-The SmartGraph UI is set up with multiple build configurations that set the code up to link to different websocket urls. By default, for development, the code will hit a local websocket URL at 'ws://localhost:1338'. The production build hits the deployed SmartGraph websocket. There is also an environment file which is setup to run the code in development mode while hitting the deployed websocket.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-All of the available configurations can be found in the 'src/environments' folder.
+## Code scaffolding
 
-## Installation
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
 
-To get the code running locally, use the following command to install the needed dependencies:
+## Build
+`npm i` to install dependencies
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-`npm install -g @angular/cli && npm install`
+## Running unit tests
 
-## Running locally
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-The code base can be run locally using the following commands:
+## Running end-to-end tests
 
-`ng serve` - To run with default local configuration
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
 
-`ng serve --configuration={production|local|local-deployedws}` - To run with a specified configuration
+## Further help
 
-## Building the code
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-The code base can be built locally using the following commands:
-
-`ng build` - To run with default local configuration
-
-`ng build --configuration={production|local|local-deployedws}` - To run with a specified configuration
-
-## Building and Running the container
-
-The docker container for the UI runs the application out of a NGINX server on port 4200.
-
-To build this container you can either build the docker compose file with `docker compose -f docker-compose.yml build` or `docker build -t smartgraph-ui .`
-
-The container can than be run with either `docker compose -f docker-compose.yml up` or `docker run -p 4200:4200 smartgraph-ui`
+## Running with neo4j
+1. Start neo4j instance with correct graph
+2. Update `neo4jUser` and `neo4jPassword` constants in `backend.ts`
+3. In a separate terminal execute `node backend.ts`
+4. Run `ng serve`
