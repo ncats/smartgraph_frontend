@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  DATA_URL: 'ws://localhost:1338'
+  DATA_URL: 'wss://smartgraph.ncats.io:1338'
 };
