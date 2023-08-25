@@ -1,0 +1,11 @@
+version: "3.3"
+
+services:
+  smartgraph-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - ENV=production # default build environment, change as needed. Use 'local' to build for local development
+    ports:
+      - "4200:4200"
