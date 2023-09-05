@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  DATA_URL: 'ws://localhost:1338'
+    production: true,
+    DATA_URL: 'ws://localhost:1338/socket.io'
 };

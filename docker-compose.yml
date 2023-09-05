@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - ENV=production # default build environment, change as needed. Use 'local' to build for local development
+        - ENV=local # default build environment, change as needed. Use 'local' to build for local development
     ports:
       - "4200:4200"
