@@ -67,7 +67,7 @@ pipeline {
                         sh '''#!/bin/bash
                             source prepare.sh
                             docker login https://index.docker.io/v1/ -u "${DOCKERLOGIN}" -p "${DOCKERPASSWORD}"
-                            docker build --no-cache -f ./Dockerfile --build-arg NPM_TOKEN=${NPMTOKEN} --build-arg BUILD_VERSION=${BUILD_VERSION} -t ${DOCKER_REPO_NAME} .
+                            docker build --no-cache -f ./Dockerfile --build-arg ENV=ci --build-arg NPM_TOKEN=${NPMTOKEN} --build-arg BUILD_VERSION=${BUILD_VERSION} -t ${DOCKER_REPO_NAME} .
                             docker tag ${DOCKER_REPO_NAME}:latest ${DOCKER_REPO_NAME}:${BUILD_VERSION}
                             docker push ${DOCKER_REPO_NAME}:${BUILD_VERSION}
                            '''
