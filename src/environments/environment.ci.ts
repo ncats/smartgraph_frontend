@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
+    production: false,
     DATA_URL: 'wss://smartgraph-socket.ci.ncats.io/socket.io'
 };
   
