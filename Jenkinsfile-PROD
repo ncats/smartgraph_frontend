@@ -10,6 +10,7 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
     parameters {
+        string(name: 'BUILD_VERSION', defaultValue: '', description: '')
         string(name: 'ENVIRONMENT', defaultValue: 'prod', description: 'Role Name (mandatory)')
     }
     environment {
