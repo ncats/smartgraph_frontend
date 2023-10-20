@@ -34,7 +34,7 @@ pipeline {
                         git clone https://$SPHINX_TOKEN@github.com/Sphinx-Automation/devops-pipeline-artifacts.git
 
                         ### Running the script with Env specific to Authenticate Vault & Get Application Secrets  ###
-                        cd devops-pipeline-artifacts/application && /bin/bash getAppSecretsByRole.sh && /bin/bash getNcatsDockerSecretsByRole.sh && /bin/bash getNpmJsSecretsByRole.sh       
+                        cd devops-pipeline-artifacts/application && /bin/bash getNpmJsSecretsByRole.sh       
                     '''
                 }
             }
@@ -66,7 +66,7 @@ pipeline {
                             docker pull $DOCKER_REPO_NAME:$BUILD_VERSION
                             docker rmi $DOCKER_REPO_NAME:current | xargs echo
                             docker tag $DOCKER_REPO_NAME:$BUILD_VERSION $DOCKER_REPO_NAME:current
-                            docker-compose -p $PROJECT_NAME up -d
+                            docker-compose up -d
                             '''
                         }
                     }
