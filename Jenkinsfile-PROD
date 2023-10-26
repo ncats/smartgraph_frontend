@@ -1,0 +1,80 @@
+pipeline {
+    options {
+        skipDefaultCheckout()
+        timestamps()
+    }
+    agent {
+        node { label 'smartgraph-prod' }
+    }
+    parameters {
+        string(name: 'BUILD_VERSION', defaultValue: '', description: '')
+        string(name: 'ENVIRONMENT', defaultValue: 'prod', description: 'Role Name (mandatory)')
+    }
+    environment {
+        PROJECT_NAME = 'smartgraph'
+        INIT_TOKEN   = credentials('Vault-Access')                                   // OIDC provider this token is Auto Generated //
+        SPHINX_TOKEN = credentials('ncatssvcdvops-sphinx')                           // PatToken Read Only Access for the DevOps Artifacts Repo https://github.com/Sphinx-Automation/devops-pipeline-artifacts.git //
+        NCATS_TOKEN = credentials('ncatssvcdvops-ncats')                             // PatToken Read Only Access for Settings Repo https://github.com/Sphinx-Automation/devops-pipeline-artifacts.git for facilities.json //
+        ROLE_NAME    = "$ENVIRONMENT-$PROJECT_NAME"
+        APP_TYPE     = "ui"
+        ENVIRONMENT = 'prod'
+        ENV = 'prod' 
+    }
+    stages {
+        stage('Docker/NpmJs Secrets By Role') {
+            steps {
+                cleanWs()
+                checkout scm
+                script {
+                sh '''
+                        ### Cloning the Artifacts from DevOps Artifacts Repo ###
+                        git clone https://$SPHINX_TOKEN@github.com/Sphinx-Automation/devops-pipeline-artifacts.git
+
+                        ### Running the script with Env specific to Authenticate Vault & Get Application Secrets  ###
+                        cd devops-pipeline-artifacts/application && /bin/bash getNpmJsSecretsByRole.sh       
+                    '''
+                }
+            }
+        }
+        stage('deploy docker') {
+            agent {
+                node { label 'smartgraph-prod'}
+            }
+            steps {
+                cleanWs()
+                checkout scm
+                // Passing Varibles prepare.sh to retrive NPMJS TOKEN & DOCKER AUTHENTICATION //
+                configFileProvider(
+                [configFile(fileId: 'aicp-smartgraph-ui-docker-compose-prod.yml', targetLocation: 'docker-compose.yml'),
+                 configFile(fileId: 'prepare.sh', targetLocation: 'prepare.sh')]) {
+                    withEnv([
+                            "PROJECT_NAME=smartgraph",
+                            "ENVIRONMENT=prod",
+                            "ENV=prod",
+                            "BUILD_VERSION=" + (params.BUILD_VERSION ?: env.BUILD_VERSION),                          
+                            "ROLE_NAME=$ENV-$PROJECT_NAME",
+                            "APP_TYPE=ui",
+                            "DOCKER_REPO_NAME=ncats/smartgraph_frontend"
+                        ]) {
+                    script {
+                        sh '''#!/bin/bash
+                            source prepare.sh
+                            docker-compose -p $PROJECT_NAME down -v --rmi all | xargs echo
+                            docker pull $DOCKER_REPO_NAME:$BUILD_VERSION
+                            docker rmi $DOCKER_REPO_NAME:current | xargs echo
+                            docker tag $DOCKER_REPO_NAME:$BUILD_VERSION $DOCKER_REPO_NAME:current
+                            docker-compose up -d
+                            '''
+                        }
+                    }
+                }
+            }
+            post {
+               always {
+                    echo " Clean up the workspace in deploy node!"
+                    //cleanWs()
+                }
+            }
+        }
+    }
+}
