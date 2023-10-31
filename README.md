@@ -28,15 +28,11 @@ The code base can be run locally using the following commands:
 
 `ng serve` - To run with default local configuration
 
-`ng serve --configuration={production|local|local-deployedws}` - To run with a specified configuration
-
 ## Building the code
 
 The code base can be built locally using the following commands:
 
 `ng build` - To run with default local configuration
-
-`ng build --configuration={production|local|local-deployedws}` - To run with a specified configuration
 
 ## Building and Running the container
 
@@ -45,3 +41,12 @@ The docker container for the UI runs the application out of a NGINX server on po
 To build this container you can either build the docker compose file with `docker compose -f docker-compose.yml build` or `docker build -t smartgraph-ui .`
 
 The container can than be run with either `docker compose -f docker-compose.yml up` or `docker run -p 4200:4200 smartgraph-ui`
+
+## Configuring at Runtime
+
+The application reads settings from `/assets/config.json`. While using the docker run option this file can be generated at runtime by setting the following environment variables:
+
+- `WRITE_CONFIG` - Tells the entrypoint script to write a new config.json
+- `ENVIRONMENT` - Environment label
+- `DATA_URL` - Websocket URL for the app to utilize
+- `API_SWAGGER_URL` - Link to API swagger page

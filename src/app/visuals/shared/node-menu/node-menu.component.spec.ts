@@ -11,10 +11,17 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from '../../../services/message.service';
 import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
 import {NodeExpandService} from '../../../services/node-expand.service';
+import { ConfigService } from 'src/app/services/config.service';
+import { DataConnectionService } from 'src/app/services/data-connection.service';
 
 describe('NodeMenuComponent', () => {
   let component: NodeMenuComponent;
   let fixture: ComponentFixture<NodeMenuComponent>;
+
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,6 +32,8 @@ describe('NodeMenuComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,

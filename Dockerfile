@@ -1,14 +1,11 @@
 # Stage 1: Build the Angular application
-FROM node:18 as build
+FROM node:20.4 as build
 
 # Set the working directory
 WORKDIR /app
 
 # Copy the package.json and package-lock.json
 COPY package*.json ./
-
-# Set default build environment
-ARG ENV=production
 
 # Install the Angular CLI and application's npm dependencies
 RUN npm install -g @angular/cli && npm install
@@ -17,7 +14,7 @@ RUN npm install -g @angular/cli && npm install
 COPY . .
 
 # Build the application
-RUN ng build --configuration=$ENV
+RUN ng build --configuration=production
 
 # Stage 2: Setup NGINX
 FROM nginx:alpine
@@ -28,8 +25,12 @@ COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
 # Copy the build output from Stage 1 to the NGINX html directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Copy the entrypoint script
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expose port 4200
 EXPOSE 4200
 
-# Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Use the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]

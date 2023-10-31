@@ -11,10 +11,17 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from '../services/message.service';
 import {NodeExpandService} from '../services/node-expand.service';
 import {NodeMenuControllerService} from '../services/node-menu-controller.service';
+import { ConfigService } from '../services/config.service';
+import { DataConnectionService } from '../services/data-connection.service';
 
 describe('SmrtgraphSearchComponent', () => {
   let component: SmrtgraphSearchComponent;
   let fixture: ComponentFixture<SmrtgraphSearchComponent>;
+
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,6 +32,8 @@ describe('SmrtgraphSearchComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,
