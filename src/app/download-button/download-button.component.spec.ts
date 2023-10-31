@@ -9,10 +9,17 @@ import {MaterialModule} from '../../assets/material/material.module';
 import {LinkService} from '../d3/models/link.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from '../services/message.service';
+import { ConfigService } from '../services/config.service';
+import { DataConnectionService } from '../services/data-connection.service';
 
 describe('DownloadButtonComponent', () => {
   let component: DownloadButtonComponent;
   let fixture: ComponentFixture<DownloadButtonComponent>;
+
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,6 +30,8 @@ describe('DownloadButtonComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,

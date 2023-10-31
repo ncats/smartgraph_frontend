@@ -12,10 +12,17 @@ import {MessageService} from '../../../services/message.service';
 import {D3Service} from '../../../d3/d3.service';
 import {NodeMenuControllerService} from '../../../services/node-menu-controller.service';
 import {NodeExpandService} from '../../../services/node-expand.service';
+import { ConfigService } from 'src/app/services/config.service';
+import { DataConnectionService } from 'src/app/services/data-connection.service';
 
 describe('NodeDetailsBoxComponent', () => {
   let component: NodeDetailsBoxComponent;
   let fixture: ComponentFixture<NodeDetailsBoxComponent>;
+  
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,6 +33,8 @@ describe('NodeDetailsBoxComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,

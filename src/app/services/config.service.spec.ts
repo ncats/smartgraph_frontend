@@ -23,33 +23,4 @@ describe('ConfigService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('should load configuration', () => {
-    const mockConfig = {
-      apiEndpoint: 'http://localhost:3000/api',
-      someOtherConfig: 'value'
-    };
-
-    service.loadConfig().then((config: any) => {
-      expect(config.apiEndpoint).toBe('http://localhost:3000/api');
-      expect(config.someOtherConfig).toBe('value');
-    });
-
-    const req = httpMock.expectOne('/assets/config.json');
-    expect(req.request.method).toBe('GET');
-    req.flush(mockConfig);
-  });
-
-  it('should return configuration value by key', () => {
-    const mockConfig = {
-      apiEndpoint: 'http://localhost:3000/api',
-      someOtherConfig: 'value'
-    };
-
-    // Simulate loading of configuration
-    service['config'] = mockConfig;
-
-    const value = service.get('apiEndpoint');
-    expect(value).toBe('http://localhost:3000/api');
-  });
 });

@@ -9,9 +9,16 @@ import {MaterialModule} from '../assets/material/material.module';
 import {LinkService} from './d3/models/link.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from './services/message.service';
+import {ConfigService} from './services/config.service';
+import { DataConnectionService } from './services/data-connection.service';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
@@ -22,6 +29,8 @@ describe('AppComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,
@@ -32,7 +41,7 @@ describe('AppComponent', () => {
         CUSTOM_ELEMENTS_SCHEMA
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);

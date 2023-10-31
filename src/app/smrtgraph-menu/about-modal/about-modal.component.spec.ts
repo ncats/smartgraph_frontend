@@ -8,10 +8,16 @@ import {LinkService} from '../../d3/models/link.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from '../../services/message.service';
 import {DisclaimerModalComponent} from '../../smrtgraph-settings/disclaimer-modal/disclaimer-modal.component';
+import { ConfigService } from 'src/app/services/config.service';
 
 describe('DisclaimerModalComponent', () => {
   let component: DisclaimerModalComponent;
   let fixture: ComponentFixture<DisclaimerModalComponent>;
+
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('http://localhost:5007')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,6 +28,7 @@ describe('DisclaimerModalComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
         MessageService,
         NodeService,
         LinkService,

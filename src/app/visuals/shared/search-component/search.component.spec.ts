@@ -14,10 +14,17 @@ import {NodeService} from '../../../d3/models/node.service';
 import {MessageService} from '../../../services/message.service';
 import {LoadingService} from '../../../services/loading.service';
 import {MaterialModule} from '../../../../assets/material/material.module';
+import { ConfigService } from 'src/app/services/config.service';
+import { DataConnectionService } from 'src/app/services/data-connection.service';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
+
+  // Mock ConfigService
+  const mockConfigService = {
+    get: jasmine.createSpy('get').and.returnValue('ws://localhost:1234/socket')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,6 +39,8 @@ describe('SearchComponent', () => {
         FlexLayoutModule
       ],
       providers: [
+        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        DataConnectionService,
         MessageService,
         NodeService,
         LinkService,
