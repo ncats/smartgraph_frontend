@@ -1,0 +1,6 @@
+{
+    "ENV": "local",
+    "DATA_URL": "ws://localhost:1338/socket.io",
+    "API_SWAGGER_URL": "http://localhost:5070/docs"
+}
+  

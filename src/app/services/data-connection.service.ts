@@ -1,21 +1,25 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import {environment} from '../../environments/environment';
+import { ConfigService } from './config.service';
 
-const DATA_URL = environment.DATA_URL;
+// const DATA_URL = environment.DATA_URL;
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataConnectionService {
+
   subject;
   responses: WebSocketSubject<any>;
 
   public messages: Subject<any> = new Subject<any>();
 
-  constructor() {
+  constructor(private configService: ConfigService) {
+    const DATA_URL = this.configService.get('DATA_URL');
+
     this.responses = webSocket(DATA_URL);
 
     this.responses.subscribe(

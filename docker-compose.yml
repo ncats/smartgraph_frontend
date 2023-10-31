@@ -5,7 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - ENV=local # default build environment, change as needed. Use 'local' to build for local development
     ports:
       - "4200:4200"
+    environment:
+      - WRITE_CONFIG=true
+      - ENVIRONMENT=local
+      - DATA_URL=ws://localhost:1338/socket.io
+      - API_SWAGGER_URL=http://localhost:1337/docs/

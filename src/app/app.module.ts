@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -44,6 +44,8 @@ import {NodeMenuComponent} from './visuals/shared/node-menu/node-menu.component'
 import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/disclaimer-modal.component';
 import {AboutModalComponent} from './smrtgraph-menu/about-modal/about-modal.component';
 import {HelpPanelComponent} from './help-panel/help-panel.component';
+import { ConfigService } from './services/config.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -85,9 +87,17 @@ import {HelpPanelComponent} from './help-panel/help-panel.component';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        HttpClientModule
     ],
     providers: [
+        ConfigService,
+        {
+          provide: APP_INITIALIZER,
+          useFactory: (config: ConfigService) => () => config.loadConfig(),
+          deps: [ConfigService],
+          multi: true
+        },
         WebSocketService,
         DataConnectionService,
         D3Service,
