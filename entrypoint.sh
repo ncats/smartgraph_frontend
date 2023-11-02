@@ -19,6 +19,7 @@ else
   "API_SWAGGER_URL": "$API_SWAGGER_URL"
 }
 EOF
+  chmod og+r /usr/share/nginx/html/assets/config.json
 fi
 
 # Start NGINX
