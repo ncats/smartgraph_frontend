@@ -14,7 +14,7 @@ RUN npm install -g @angular/cli && npm install
 COPY . .
 
 # Build the application
-RUN ng build --configuration=production
+RUN ng build --configuration=production --base-href /ui/
 
 # Stage 2: Setup NGINX
 FROM nginx:alpine
@@ -23,13 +23,15 @@ FROM nginx:alpine
 COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build output from Stage 1 to the NGINX html directory
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/app
+RUN chmod og+r -R /usr/share/nginx/app
 
 # Copy the entrypoint script
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Expose port 4200
+# Expose port 80 & 4200
+EXPOSE 80
 EXPOSE 4200
 
 # Use the entrypoint script
