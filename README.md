@@ -42,6 +42,8 @@ To build this container you can either build the docker compose file with `docke
 
 The container can than be run with either `docker compose -f docker-compose.yml up` or `docker run -p 4200:4200 smartgraph-ui`
 
+When running the container the application runs at `http://localhost:4200/ui/`
+
 ## Configuring at Runtime
 
 The application reads settings from `/assets/config.json`. While using the docker run option this file can be generated at runtime by setting the following environment variables:
