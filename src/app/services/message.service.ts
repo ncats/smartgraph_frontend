@@ -46,8 +46,10 @@ export class MessageService {
       case 'endNodeSearch':
       case 'startNodeSearch': {
         // todo: convern nostereo_hash to a contains in hash search
-        msg = 'MATCH (n:Target {uniprot_id: $qParam}) RETURN n AS data UNION MATCH (c:Compound {nostereo_hash: $qParam}) RETURN c AS data';
+        // msg = 'MATCH (n:Target {uniprot_id: $qParam}) RETURN n AS data UNION MATCH (c:Compound {nostereo_hash: $qParam}) RETURN c AS data';
         //   msg = 'MATCH (n:Target) WHERE n.uniprot_id IN $qParam RETURN n UNION MATCH (n:Compound) WHERE n.hash IN $qParam RETURN n';
+        // New command must use 'UNWIND' to unpack the array parameters
+        msg = 'UNWIND $qParam AS qValue MATCH (n:Target {uniprot_id: qValue}) RETURN n AS data UNION UNWIND $qParam AS qValue MATCH (c:Compound {nostereo_hash: qValue}) RETURN c AS data';
         params = {qParam: term};
         break;
       }
