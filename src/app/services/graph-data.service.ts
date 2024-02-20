@@ -85,7 +85,8 @@ export class GraphDataService {
         if (this.noResults && (this.nodeList.length === 0 && this.linkList.length === 0)) {
           this.clearGraph();
           this._graphHistorySource.next(this.graph);
-          alert('no path found');
+          console.log('No path found.')
+          alert('No path found.');
         } else {
           this.makeGraph();
         }
