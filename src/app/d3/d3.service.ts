@@ -93,8 +93,8 @@ export class D3Service {
         .data(graph.links)
         .filter(getNeighborLinks)
         .classed('hovering', true)
-        .classed('connected', function(link) {return link.edgeType != 'down'; })
-        .classed('connectedflat', function(link) {return link.edgeType === 'down'; });
+        .classed('connected', function(link) {return link.edge_type != 'down'; })
+        .classed('connectedflat', function(link) {return link.edge_type === 'down'; });
 
        connectedNodes = d3.selectAll('circle')
         .data(graph.nodes)
@@ -173,7 +173,7 @@ export class D3Service {
     let arrowType = 'connected';
 
     const mouseOverFunction = (): void => {
-      if (link.edgeType === 'down') {
+      if (link.edge_type === 'down') {
         arrowType = 'connectedflat';
       }
       d3element.select('.link').classed('hovering', true).classed(arrowType, true);
@@ -213,7 +213,7 @@ export class D3Service {
     let arrowType = 'clicked-arrow';
 
     const clickFunction = (): void => {
-      if (link.edgeType === 'down') {
+      if (link.edge_type === 'down') {
         arrowType = 'clicked-flat';
       }
       const d3link = d3element.select('.link');

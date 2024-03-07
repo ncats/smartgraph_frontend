@@ -12,7 +12,7 @@ export class WebSocketService {
   public connect(url: string): Subject<MessageEvent> {
     if (!this.subject) {
       this.subject = this.create(url);
-      console.log('connected');
+      console.log('Connected.');
     }
     return this.subject;
   }

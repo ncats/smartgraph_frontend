@@ -24,7 +24,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
   type?: string;
   properties?: any;
   uuid: string;
-  edgeType: string;
+  edge_type: string;
   reactions: Reaction[] = [];
   max_confidence_value: string;
 
@@ -34,10 +34,10 @@ export class Link implements d3.SimulationLinkDatum<Node> {
     this.type = data.type || '';
     this.properties = data.properties;
     this.uuid = data.properties.uuid;
-    this.edgeType = data.properties.edgeType;
+    this.edge_type = data.properties.edge_type;
     this.max_confidence_value = data.properties.max_confidence_value;
-    if (data.properties.edgeInfo && data.properties.edgeInfo.length > 0) {
-      for (const reaction of data.properties.edgeInfo) {
+    if (data.properties.edge_info && data.properties.edge_info.length > 0) {
+      for (const reaction of data.properties.edge_info) {
         this.reactions.push(new Reaction(reaction));
       }
     }
