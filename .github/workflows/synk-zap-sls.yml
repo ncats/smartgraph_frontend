@@ -5,10 +5,10 @@ name: snyk-zap
 on:
   push:
     branches:
-      - SLS
+      - development
   pull_request:
     branches:
-      - SLS
+      - development
   workflow_dispatch:
 
 # Define the jobs that will be executed as part of the workflow 
