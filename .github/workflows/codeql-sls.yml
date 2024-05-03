@@ -5,8 +5,12 @@ name: "CodeQL SLS"
 on:
   push:
     branches:
-      - SLS
-
+      - development
+  pull_request:
+    branches:
+      - development
+  workflow_dispatch:
+  
 # Define the jobs that will be executed as part of the workflow
 jobs:
   analyze:
