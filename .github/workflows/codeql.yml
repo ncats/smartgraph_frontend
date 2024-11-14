@@ -5,10 +5,10 @@ name: "CodeQL-Advanced"
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 # Define the jobs that will be executed as part of the workflow
 jobs:
   analyze:
