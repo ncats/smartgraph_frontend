@@ -1,7 +1,6 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-import {environment} from '../../environments/environment';
 import { ConfigService } from './config.service';
 
 // const DATA_URL = environment.DATA_URL;
@@ -29,6 +28,8 @@ export class DataConnectionService {
     );
 
     this.messages.subscribe(message => {
-      this.responses.next(message); });
+      this.responses.next(message); 
+    });
+
   }
 } //  end class DataService

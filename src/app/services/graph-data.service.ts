@@ -82,11 +82,12 @@ export class GraphDataService {
       } else {
         // no new results added
         // todo: still want an alert if no predictions are found.
+        let shown_alert = false;
         if (this.noResults && (this.nodeList.length === 0 && this.linkList.length === 0)) {
           this.clearGraph();
           this._graphHistorySource.next(this.graph);
           console.log('No path found.')
-          alert('No path found.');
+          // alert('No path found.');
         } else {
           this.makeGraph();
         }
