@@ -1,9 +1,7 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-import {environment} from '../../environments/environment';
 import { ConfigService } from './config.service';
-import { tap } from 'rxjs/operators';
 
 // const DATA_URL = environment.DATA_URL;
 
