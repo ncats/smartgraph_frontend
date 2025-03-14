@@ -24,16 +24,12 @@ export class DataConnectionService {
     this.responses = webSocket(DATA_URL);
 
     this.responses.subscribe(
-      msg => {
-        console.log(msg);
-        return msg;
-      }, // Called whenever there is a message from the server.
+      msg => msg, // Called whenever there is a message from the server.
       err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
       () => console.log('complete') // Called when connection is closed (for whatever reason).
     );
 
     this.messages.subscribe(message => {
-      console.log(message);
       this.responses.next(message); 
     });
 
