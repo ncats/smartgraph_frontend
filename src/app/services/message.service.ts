@@ -208,9 +208,9 @@ export class MessageService {
           '  {start: startNode(r2), relationship: r2, end: endNode(r2)}',
           ']} AS ret',
           'RETURN ret',
-          'LIMIT $limit'
+          'LIMIT 300'
         ].join(' ');
-        params = { qParam: term, limit: 300 };
+        params = { qParam: term };
         break;
       }
 
