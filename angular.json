@@ -55,18 +55,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "smrtgraph:build"
+            "buildTarget": "smrtgraph:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "smrtgraph:build:production"
+              "buildTarget": "smrtgraph:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "smrtgraph:build"
+            "buildTarget": "smrtgraph:build"
           }
         },
         "test": {
