@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from '../assets/material/material.module';
 import {D3Service} from './d3/d3.service';

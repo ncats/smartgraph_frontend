@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SearchComponent} from './search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@ngbracket/ngx-layout';
 import {CommonModule} from '@angular/common';
 import {HighlightPipe} from './highlight.pipe';
 import {RouterTestingModule} from '@angular/router/testing';
