@@ -4,9 +4,10 @@ import {SettingsService} from '../services/settings.service';
 import {AboutModalComponent} from './about-modal/about-modal.component';
 
 @Component({
-  selector: 'smrtgraph-menu',
-  templateUrl: './smrtgraph-menu.component.html',
-  styleUrls: ['./smrtgraph-menu.component.css']
+    selector: 'smrtgraph-menu',
+    templateUrl: './smrtgraph-menu.component.html',
+    styleUrls: ['./smrtgraph-menu.component.css'],
+    standalone: false
 })
 export class SmrtgraphMenuComponent implements OnInit {
 

@@ -14,9 +14,9 @@ import {Subscription} from 'rxjs';
 
 
 @Component({
-  selector: 'graph',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'graph',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
   <div *ngIf="loading" class = "loadingIcon" fxLayoutAlign="center center">
     <mat-spinner></mat-spinner>
   </div>
@@ -48,7 +48,8 @@ import {Subscription} from 'rxjs';
           <download-button ></download-button>
 -->
   `,
-  styleUrls: ['./graph.component.scss']
+    styleUrls: ['./graph.component.scss'],
+    standalone: false
 })
 export class GraphComponent {
 

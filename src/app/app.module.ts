@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -87,12 +87,10 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         MaterialModule,
         FlexLayoutModule], providers: [
         ConfigService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: (config: ConfigService) => () => config.loadConfig(),
-            deps: [ConfigService],
-            multi: true
-        },
+        provideAppInitializer(() => {
+        const initializerFn = ((config: ConfigService) => () => config.loadConfig())(inject(ConfigService));
+        return initializerFn();
+      }),
         WebSocketService,
         DataConnectionService,
         D3Service,

@@ -3,9 +3,10 @@ import {Link} from '../../../../../d3/models/link';
 import {Target} from '../../../../../d3/models/node';
 
 @Component({
-  selector: 'target-detail-view',
-  templateUrl: 'target-detail-view.component.html',
-  styleUrls: ['target-detail-view.component.css']
+    selector: 'target-detail-view',
+    templateUrl: 'target-detail-view.component.html',
+    styleUrls: ['target-detail-view.component.css'],
+    standalone: false
 })
 export class TargetDetailViewComponent implements OnInit {
   @Input()

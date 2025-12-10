@@ -6,8 +6,8 @@ import {SettingsService} from '../../../services/settings.service';
 
 
 @Component({
-  selector: '[linkVisual]',
-  template: `
+    selector: '[linkVisual]',
+    template: `
     <svg:g class ="link-group">
       <svg:line class="link end"
                 [ngClass]="{arrow: link.edge_type != 'down', flatarrow: link.edge_type === 'down'}"
@@ -31,7 +31,8 @@ import {SettingsService} from '../../../services/settings.service';
       />
     </svg:g>
   `,
-  styleUrls: ['./link-visual.component.css']
+    styleUrls: ['./link-visual.component.css'],
+    standalone: false
 })
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;

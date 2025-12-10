@@ -5,11 +5,12 @@ import {NodeMenuControllerService} from '../../../services/node-menu-controller.
 import {NodeService} from '../../../d3/models/node.service';
 
 @Component({
-  selector: 'structure-view',
-  styleUrls: ['./node-visual.component.scss'],
-  template: `
+    selector: 'structure-view',
+    styleUrls: ['./node-visual.component.scss'],
+    template: `
     <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl [alt]="'structure image for this node'">
-`
+`,
+    standalone: false
 })
 
 export class StructureViewer {
@@ -17,8 +18,8 @@ export class StructureViewer {
 }
 
 @Component({
-  selector: '[nodeVisual]',
-  template: `
+    selector: '[nodeVisual]',
+    template: `
     <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'" (click)="toggleMenu($event)" >
       <svg:circle
           class="node {{node.labels[0]}} node-child"
@@ -37,7 +38,8 @@ export class StructureViewer {
       </svg:foreignObject>
 
   `,
-  styleUrls: ['./node-visual.component.scss']
+    styleUrls: ['./node-visual.component.scss'],
+    standalone: false
 })
 export class NodeVisualComponent {
   @Input('nodeVisual')node: Node;

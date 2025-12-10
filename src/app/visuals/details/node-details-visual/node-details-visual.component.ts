@@ -5,9 +5,10 @@ import {Subscription} from 'rxjs';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 
 @Component({
-  selector: 'node-details-visual',
-  templateUrl: 'node-details-visual.component.html',
-  styleUrls: ['node-details-visual.component.css']
+    selector: 'node-details-visual',
+    templateUrl: 'node-details-visual.component.html',
+    styleUrls: ['node-details-visual.component.css'],
+    standalone: false
 })
 export class NodeDetailsVisualComponent implements OnInit {
   @Input() data: Node;

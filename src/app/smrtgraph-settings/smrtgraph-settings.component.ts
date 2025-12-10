@@ -5,10 +5,11 @@ import {SettingsService} from '../services/settings.service';
 import {DisclaimerModalComponent} from './disclaimer-modal/disclaimer-modal.component';
 
 @Component({
-  selector: 'app-smrtgraph-settings',
-  templateUrl: './smrtgraph-settings.component.html',
-  styleUrls: ['./smrtgraph-settings.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-smrtgraph-settings',
+    templateUrl: './smrtgraph-settings.component.html',
+    styleUrls: ['./smrtgraph-settings.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SmrtgraphSettingsComponent implements OnInit {
   targetLabelCtrl: UntypedFormControl;

@@ -4,7 +4,8 @@ import {Node} from '../models/node';
 import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 @Directive({
-    selector: '[hoverableNode]'
+    selector: '[hoverableNode]',
+    standalone: false
 })
 export class HoverableNodeDirective {
     @Input('hoverableNode') node: Node;

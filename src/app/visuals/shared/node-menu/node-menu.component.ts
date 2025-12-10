@@ -12,8 +12,8 @@ import {NodeExpandService, Expand} from '../../../services/node-expand.service';
 
 
 @Component({
-  selector: '[menu-list]',
-  template: `
+    selector: '[menu-list]',
+    template: `
 <svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="25%" height="100%" *ngIf="openMenu" >
  <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" class="node-menu">
   <mat-action-list>
@@ -33,7 +33,8 @@ import {NodeExpandService, Expand} from '../../../services/node-expand.service';
 </xhtml:div>
 </svg:foreignObject>
 `,
-  styleUrls: ['./node-menu.component.scss']
+    styleUrls: ['./node-menu.component.scss'],
+    standalone: false
 })
 export class NodeMenuComponent {
   clickedNode: Node;

@@ -6,7 +6,8 @@ import {D3Service} from '../d3.service';
  * directive to apply d3 zoomable behavior to graph
  */
 @Directive({
-    selector: '[pharosZoomable]'
+    selector: '[pharosZoomable]',
+    standalone: false
 })
 export class GraphClickDirective implements OnInit {
   /**

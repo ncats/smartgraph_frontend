@@ -8,9 +8,10 @@ import {Subscription} from 'rxjs';
 
 
 @Component({
-  selector: 'link-list-visual',
-  templateUrl: './link-list-visual.component.html',
-  styleUrls: ['./link-list-visual.component.css']
+    selector: 'link-list-visual',
+    templateUrl: './link-list-visual.component.html',
+    styleUrls: ['./link-list-visual.component.css'],
+    standalone: false
 })
 export class LinkListVisualComponent implements OnInit , AfterViewInit {
   displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score', 'confidence'];
