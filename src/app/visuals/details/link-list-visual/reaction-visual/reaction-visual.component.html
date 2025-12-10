@@ -1,4 +1,4 @@
-@for (reaction of reactions trackById; track reaction) {
+@for (reaction of reactions; track $index) {
   <mat-list>
     <mat-list-item >
       {{reaction.mechanism}}
