@@ -69,7 +69,7 @@ export class NodeService {
   }*/
 
   clearNode(): void {
-  this._hoveredNodeSource.next();
+  this._hoveredNodeSource.next(null);
 }
 
   getNodes(): Map<string, Node> {
