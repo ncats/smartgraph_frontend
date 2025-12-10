@@ -45,11 +45,10 @@ import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/
 import {AboutModalComponent} from './smrtgraph-menu/about-modal/about-modal.component';
 import {HelpPanelComponent} from './help-panel/help-panel.component';
 import { ConfigService } from './services/config.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         GraphComponent,
         NodeDetailsVisualComponent,
@@ -81,22 +80,18 @@ import { HttpClientModule } from '@angular/common/http';
         AboutModalComponent,
         HelpPanelComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexLayoutModule,
-        HttpClientModule
-    ],
-    providers: [
+        FlexLayoutModule], providers: [
         ConfigService,
         {
-          provide: APP_INITIALIZER,
-          useFactory: (config: ConfigService) => () => config.loadConfig(),
-          deps: [ConfigService],
-          multi: true
+            provide: APP_INITIALIZER,
+            useFactory: (config: ConfigService) => () => config.loadConfig(),
+            deps: [ConfigService],
+            multi: true
         },
         WebSocketService,
         DataConnectionService,
@@ -108,8 +103,7 @@ import { HttpClientModule } from '@angular/common/http';
         NodeMenuControllerService,
         LoadingService,
         SettingsService,
-        NodeExpandService
-    ],
-    bootstrap: [AppComponent]
-})
+        NodeExpandService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
