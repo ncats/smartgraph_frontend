@@ -55,3 +55,42 @@ mat-sidenav {
     width: 40%;
   }
 }
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  
+  .footer-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 56px;
+  }
+  
+  .footer-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .footer-link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .footer-divider {
+    color: white;
+    font-size: 14px;
+  }
+}
