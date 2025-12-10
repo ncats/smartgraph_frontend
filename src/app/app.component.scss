@@ -1,6 +1,12 @@
 mat-sidenav {
   width: 25vw;
 }
+
+.search-sidenav {
+  width: 25vw !important;
+  min-width: 300px !important;
+}
+
 .upperSection {
   overflow: visible;
 }
