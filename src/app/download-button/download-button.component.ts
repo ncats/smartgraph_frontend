@@ -1,5 +1,5 @@
-import {DOCUMENT} from '@angular/common';
-import {Component, OnInit, ElementRef, ViewChild, Inject} from '@angular/core';
+
+import {Component, OnInit, ElementRef, ViewChild, Inject, DOCUMENT} from '@angular/core';
 import {Renderer2} from '@angular/core';
 import {GraphDataService} from '../services/graph-data.service';
 import {Link} from '../d3/models/link';

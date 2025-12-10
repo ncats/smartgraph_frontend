@@ -10,11 +10,15 @@
   </div>
   <div fxLayoutWrap="row">
     <h3>{{node?.fullname}}</h3>
-</div>
-  <div *ngIf = "node?.synonyms.length > 0" fxLayoutWrap="row">
-    <h3>Synonyms:</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let syn of node?.synonyms">{{syn}}</mat-list-item>
-    </mat-list>
   </div>
+  @if (node?.synonyms.length > 0) {
+    <div fxLayoutWrap="row">
+      <h3>Synonyms:</h3>
+      <mat-list>
+        @for (syn of node?.synonyms; track syn) {
+          <mat-list-item>{{syn}}</mat-list-item>
+        }
+      </mat-list>
+    </div>
+  }
 </div>

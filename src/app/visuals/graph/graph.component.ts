@@ -17,36 +17,42 @@ import {Subscription} from 'rxjs';
     selector: 'graph',
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-  <div *ngIf="loading" class = "loadingIcon" fxLayoutAlign="center center">
-    <mat-spinner></mat-spinner>
-  </div>
-    <svg #svg [attr.width]="_options.width"  [attr.height]="_options.height">
-      <g [zoomableOf]="svg" [draggableInGraph]="graph" pharosZoomable>
-        <g [linkVisual]="link" [clickableLink] = "link" [hoverableLink]="link" *ngFor="let link of links"></g>
-        <g [nodeVisual]="node" *ngFor="let node of nodes" [hoverableNode]="node"
-        [clickableNode]="node" [draggableNode]="node"
-           [draggableInGraph]="graph">
+  @if (loading) {
+    <div class = "loadingIcon" fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+  <svg #svg [attr.width]="_options.width"  [attr.height]="_options.height">
+    <g [zoomableOf]="svg" [draggableInGraph]="graph" pharosZoomable>
+      @for (link of links; track link) {
+        <g [linkVisual]="link" [clickableLink] = "link" [hoverableLink]="link"></g>
+      }
+      @for (node of nodes; track node) {
+        <g [nodeVisual]="node" [hoverableNode]="node"
+          [clickableNode]="node" [draggableNode]="node"
+          [draggableInGraph]="graph">
         </g>
-        <svg:g menu-list #menu></svg:g>
+      }
+      <svg:g menu-list #menu></svg:g>
       </g>
-        <defs>
-          <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
-          </marker>
-          <marker id="hoverarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#595959" stroke ="#595959" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
-          </marker>
-          <marker id="flatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
-          </marker>
-          <marker id="hoverflatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
-            <path fill = "#595959" stroke ="#595959" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
-          </marker>
-        </defs>
+      <defs>
+        <marker id="arrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
+          <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
+        </marker>
+        <marker id="hoverarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
+          <path fill = "#595959" stroke ="#595959" stroke-width="2" d = "M0,-5L10,0L0,5"></path>
+        </marker>
+        <marker id="flatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
+          <path fill = "#A5A5A5" stroke ="#A5A5A5" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
+        </marker>
+        <marker id="hoverflatarrow" viewBox="0 -5 10 10" refX= '8.75' refY = '0' markerWidth="8" markerHeight ="8" orient="auto">
+          <path fill = "#595959" stroke ="#595959" stroke-width="2" stroke-width="3" d = "M 8,-8 L 8, 8"></path>
+        </marker>
+      </defs>
     </svg>
-  <!--
-          <download-button ></download-button>
--->
+    <!--
+    <download-button ></download-button>
+    -->
   `,
     styleUrls: ['./graph.component.scss'],
     standalone: false

@@ -1,7 +1,7 @@
 // src/app/config.service.ts
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'

@@ -14,24 +14,46 @@ import {NodeExpandService, Expand} from '../../../services/node-expand.service';
 @Component({
     selector: '[menu-list]',
     template: `
-<svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="25%" height="100%" *ngIf="openMenu" >
- <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" class="node-menu">
-  <mat-action-list>
-    <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
-    <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
-    <button mat-menu-item class = "expand-list" *ngIf="!expanded.target" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="expanded.target===true" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
-    <button mat-menu-item class = "expand-list"  *ngIf="!expanded.compound" (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="expanded.compound===true" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="!expanded.pattern" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="expanded.pattern===true" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="!expanded.all" (click)="expand('All')">Expand All {{counts?.total}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="expanded.all===true" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
-    <button mat-menu-item class = "expand-list" *ngIf="clickedNode.labels[0]=='Target' && !expanded.predictions" (click)="expand('Predictions')">Get Predictions</button>
-    <button mat-menu-item class = "expand-list" *ngIf="expanded.predictions===true" (click)="collapse('Predictions')">Remove Predictions</button>
-  </mat-action-list>
-</xhtml:div>
-</svg:foreignObject>
+@if (openMenu) {
+  <svg:foreignObject class="foreignObjectMenu" [attr.x]="clickedNode.x" [attr.y]="clickedNode.y" width="25%" height="100%" >
+    <xhtml:div xmlns="http:// www.w3.org/1999/xhtml" class="node-menu">
+      <mat-action-list>
+        <button mat-menu-item class = "expand-list" fxLayoutAlign="end center"  (click)="closeMenu()"><span><mat-icon>clear</mat-icon></span></button>
+        <button mat-menu-item class = "expand-list" [disabled]="true"><b>{{label}}</b></button>
+        @if (!expanded.target) {
+          <button mat-menu-item class = "expand-list" (click)="expand('Target')" [disabled]="!counts.target">Expand Targets {{counts?.target}}</button>
+        }
+        @if (expanded.target===true) {
+          <button mat-menu-item class = "expand-list" (click)="collapse('Target')" [disabled]="!counts.target">Collapse Targets {{counts?.target}}</button>
+        }
+        @if (!expanded.compound) {
+          <button mat-menu-item class = "expand-list"  (click)="expand('Compound')" [disabled]="!counts.compound">Expand Compounds {{counts?.compound}}</button>
+        }
+        @if (expanded.compound===true) {
+          <button mat-menu-item class = "expand-list" (click)="collapse('Compound')" [disabled]="!counts.compound">Collapse Compounds {{counts?.compound}}</button>
+        }
+        @if (!expanded.pattern) {
+          <button mat-menu-item class = "expand-list" (click)="expand('Pattern')" [disabled]="!counts.pattern">Expand Patterns {{counts?.pattern}}</button>
+        }
+        @if (expanded.pattern===true) {
+          <button mat-menu-item class = "expand-list" (click)="collapse('Pattern')" [disabled]="!counts.pattern">Collapse Patterns {{counts?.pattern}}</button>
+        }
+        @if (!expanded.all) {
+          <button mat-menu-item class = "expand-list" (click)="expand('All')">Expand All {{counts?.total}}</button>
+        }
+        @if (expanded.all===true) {
+          <button mat-menu-item class = "expand-list" (click)="collapse('All')">Collapse All {{counts?.total}}</button>
+        }
+        @if (clickedNode.labels[0]=='Target' && !expanded.predictions) {
+          <button mat-menu-item class = "expand-list" (click)="expand('Predictions')">Get Predictions</button>
+        }
+        @if (expanded.predictions===true) {
+          <button mat-menu-item class = "expand-list" (click)="collapse('Predictions')">Remove Predictions</button>
+        }
+      </mat-action-list>
+      </xhtml:div>
+      </svg:foreignObject>
+    }
 `,
     styleUrls: ['./node-menu.component.scss'],
     standalone: false

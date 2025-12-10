@@ -1,13 +1,15 @@
-<mat-list *ngFor="let reaction of reactions trackById">
-  <mat-list-item >
-    {{reaction.mechanism}}
-  </mat-list-item>
-  <mat-list-item >
-    {{reaction.causal}}
-  </mat-list-item>
-  <mat-list-item >
-    <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference.split(':')[0]}}</a>
-  </mat-list-item>
-</mat-list>
+@for (reaction of reactions trackById; track reaction) {
+  <mat-list>
+    <mat-list-item >
+      {{reaction.mechanism}}
+    </mat-list-item>
+    <mat-list-item >
+      {{reaction.causal}}
+    </mat-list-item>
+    <mat-list-item >
+      <a href = "https://www.ncbi.nlm.nih.gov/pubmed/{{reaction.reference.split(':')[1]}}" target="_blank">{{reaction.reference.split(':')[0]}}</a>
+    </mat-list-item>
+  </mat-list>
+}
 
 {{reactions|json}}
