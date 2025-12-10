@@ -3,9 +3,10 @@ import {Pattern} from '../../../../../d3/models/node';
 import {Link} from '../../../../../d3/models/link';
 
 @Component({
-  selector: 'pattern-detail-view',
-  templateUrl: 'pattern-detail-view.component.html',
-  styleUrls: ['pattern-detail-view.component.css']
+    selector: 'pattern-detail-view',
+    templateUrl: 'pattern-detail-view.component.html',
+    styleUrls: ['pattern-detail-view.component.css'],
+    standalone: false
 })
 export class PatternDetailViewComponent implements OnInit {
   @Input()

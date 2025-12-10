@@ -4,7 +4,8 @@ import {Link} from '../models/link';
 import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 @Directive({
-    selector: '[hoverableLink]'
+    selector: '[hoverableLink]',
+    standalone: false
 })
 export class HoverableLinkDirective {
     @Input('hoverableLink') link: Link;

@@ -1,14 +1,15 @@
-import {DOCUMENT} from '@angular/common';
-import {Component, OnInit, ElementRef, ViewChild, Inject} from '@angular/core';
+
+import {Component, OnInit, ElementRef, ViewChild, Inject, DOCUMENT} from '@angular/core';
 import {Renderer2} from '@angular/core';
 import {GraphDataService} from '../services/graph-data.service';
 import {Link} from '../d3/models/link';
 import {Node} from '../d3/models/node';
 
 @Component({
-  selector: 'download-button',
-  templateUrl: './download-button.component.html',
-  styleUrls: ['./download-button.component.scss']
+    selector: 'download-button',
+    templateUrl: './download-button.component.html',
+    styleUrls: ['./download-button.component.scss'],
+    standalone: false
 })
 export class DownloadButtonComponent implements OnInit {
   @ViewChild('#svg', { static: false }) el: ElementRef;

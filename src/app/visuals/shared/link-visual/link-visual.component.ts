@@ -6,32 +6,35 @@ import {SettingsService} from '../../../services/settings.service';
 
 
 @Component({
-  selector: '[linkVisual]',
-  template: `
+    selector: '[linkVisual]',
+    template: `
     <svg:g class ="link-group">
       <svg:line class="link end"
-                [ngClass]="{arrow: link.edge_type != 'down', flatarrow: link.edge_type === 'down'}"
-                [attr.x1]="endpointLessRadius(link, 'x1') || 0"
-                [attr.y1]="endpointLessRadius(link, 'y1') || 0"
-                [attr.x2]="endpointLessRadius(link, 'x2') || 0"
-                [attr.y2]="endpointLessRadius(link, 'y2') || 0"
-      />
-      <svg:text class="link-name" *ngIf="showLinkLabel === true"
-                [attr.font-size]= 10
-                [attr.x]="(link.source?.x + link.target?.x)/2 "
-                [attr.y]="(link.source?.y + link.target?.y)/2 "
-      >
-        {{link?.type }}
-      </svg:text>
-      <svg:line class="clickable-area"
-                [attr.x1]= "getSource(link?.source,'x')"
-                [attr.y1]= "getSource(link?.source,'y')"
-                [attr.x2]= "getSource(link?.target,'x')"
-                [attr.y2]= "getSource(link?.target,'y')"
-      />
-    </svg:g>
-  `,
-  styleUrls: ['./link-visual.component.css']
+        [ngClass]="{arrow: link.edge_type != 'down', flatarrow: link.edge_type === 'down'}"
+        [attr.x1]="endpointLessRadius(link, 'x1') || 0"
+        [attr.y1]="endpointLessRadius(link, 'y1') || 0"
+        [attr.x2]="endpointLessRadius(link, 'x2') || 0"
+        [attr.y2]="endpointLessRadius(link, 'y2') || 0"
+        />
+      @if (showLinkLabel === true) {
+        <svg:text class="link-name"
+          [attr.font-size]= 10
+          [attr.x]="(link.source?.x + link.target?.x)/2 "
+          [attr.y]="(link.source?.y + link.target?.y)/2 "
+          >
+          {{link?.type }}
+          </svg:text>
+        }
+        <svg:line class="clickable-area"
+          [attr.x1]= "getSource(link?.source,'x')"
+          [attr.y1]= "getSource(link?.source,'y')"
+          [attr.x2]= "getSource(link?.target,'x')"
+          [attr.y2]= "getSource(link?.target,'y')"
+          />
+        </svg:g>
+    `,
+    styleUrls: ['./link-visual.component.css'],
+    standalone: false
 })
 export class LinkVisualComponent {
   @Input('linkVisual') link: Link;

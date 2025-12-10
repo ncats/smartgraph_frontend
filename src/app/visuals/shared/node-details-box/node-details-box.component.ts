@@ -8,9 +8,10 @@ import {D3Service} from '../../../d3/d3.service';
 import {GraphDataService} from '../../../services/graph-data.service';
 
 @Component({
-  selector: 'app-node-details-box',
-  templateUrl: './node-details-box.component.html',
-  styleUrls: ['./node-details-box.component.scss']
+    selector: 'app-node-details-box',
+    templateUrl: './node-details-box.component.html',
+    styleUrls: ['./node-details-box.component.scss'],
+    standalone: false
 })
 export class NodeDetailsBoxComponent implements OnInit {
 

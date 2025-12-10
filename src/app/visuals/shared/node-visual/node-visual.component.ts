@@ -5,11 +5,12 @@ import {NodeMenuControllerService} from '../../../services/node-menu-controller.
 import {NodeService} from '../../../d3/models/node.service';
 
 @Component({
-  selector: 'structure-view',
-  styleUrls: ['./node-visual.component.scss'],
-  template: `
+    selector: 'structure-view',
+    styleUrls: ['./node-visual.component.scss'],
+    template: `
     <img class="structureImage {{data.labels[0]}}" [src] = data.imageUrl [alt]="'structure image for this node'">
-`
+`,
+    standalone: false
 })
 
 export class StructureViewer {
@@ -17,27 +18,32 @@ export class StructureViewer {
 }
 
 @Component({
-  selector: '[nodeVisual]',
-  template: `
-    <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'" (click)="toggleMenu($event)" >
-      <svg:circle
+    selector: '[nodeVisual]',
+    template: `
+    @if (label !='structure') {
+      <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  (click)="toggleMenu($event)" >
+        <svg:circle
           class="node {{node.labels[0]}} node-child"
           [ngClass]="{startNode: node.params.startNode, endNode: node.params.endNode, clicked: nodeClicked}"
           cx="0"
           cy="0"
           [attr.r]="node.r">
-      </svg:circle>
-       <svg:text class ="node-text">{{label}}</svg:text>
-       </svg:g>
-        <svg:foreignObject (click)="toggleMenu($event)"
-          [attr.width]="node.r * 2.1" [attr.height]="node.r *2.1" *ngIf="label ==='structure'" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
- <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
-    <structure-view [data]="node"></structure-view>
-</xhtml:div>
-      </svg:foreignObject>
-
-  `,
-  styleUrls: ['./node-visual.component.scss']
+          </svg:circle>
+          <svg:text class ="node-text">{{label}}</svg:text>
+            </svg:g>
+          }
+          @if (label ==='structure') {
+            <svg:foreignObject (click)="toggleMenu($event)"
+              [attr.width]="node.r * 2.1" [attr.height]="node.r *2.1" [attr.x]="node.x - (node.r+.5*node.r)" [attr.y]="node.y -(node.r+.5*node.r)">
+              <xhtml:div xmlns="http:// www.w3.org/1999/xhtml">
+                <structure-view [data]="node"></structure-view>
+                </xhtml:div>
+                </svg:foreignObject>
+              }
+    
+    `,
+    styleUrls: ['./node-visual.component.scss'],
+    standalone: false
 })
 export class NodeVisualComponent {
   @Input('nodeVisual')node: Node;

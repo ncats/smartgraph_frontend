@@ -2,8 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SearchComponent} from './search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {FlexLayoutModule} from '@ngbracket/ngx-layout';
 import {CommonModule} from '@angular/common';
 import {HighlightPipe} from './highlight.pipe';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -28,33 +28,31 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
+    schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+    ],
+    declarations: [
+        SearchComponent,
+        HighlightPipe
+    ],
+    imports: [BrowserAnimationsModule,
         RouterTestingModule,
         CommonModule,
-        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
-        FlexLayoutModule
-      ],
-      providers: [
-        { provide: ConfigService, useValue: mockConfigService },  // Provide the mock
+        FlexLayoutModule],
+    providers: [
+        { provide: ConfigService, useValue: mockConfigService }, // Provide the mock
         DataConnectionService,
         MessageService,
         NodeService,
         LinkService,
-        LoadingService
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-        CUSTOM_ELEMENTS_SCHEMA
-      ],
-      declarations: [
-        SearchComponent,
-        HighlightPipe
-      ]
-    })
+        LoadingService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+})
     .compileComponents();
   }));
 

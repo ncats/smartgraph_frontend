@@ -5,7 +5,8 @@ import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 
 @Directive({
-    selector: '[clickableNode]'
+    selector: '[clickableNode]',
+    standalone: false
 })
 export class ClickableNodeDirective {
     @Input('clickableNode') node: Node;

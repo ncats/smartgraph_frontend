@@ -4,9 +4,10 @@ import {Link} from '../../../../../d3/models/link';
 
 
 @Component({
-  selector: 'compound-detail-view',
-  templateUrl: 'compound-detail-view.component.html',
-  styleUrls: ['compound-detail-view.component.css']
+    selector: 'compound-detail-view',
+    templateUrl: 'compound-detail-view.component.html',
+    styleUrls: ['compound-detail-view.component.css'],
+    standalone: false
 })
 export class CompoundDetailViewComponent implements OnInit {
 @Input()

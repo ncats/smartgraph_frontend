@@ -3,7 +3,8 @@ import { D3Service } from '../d3.service';
 import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 @Directive({
-    selector: '[zoomableOf]'
+    selector: '[zoomableOf]',
+    standalone: false
 })
 export class ZoomableDirective {
     @Input('zoomableOf') containerElement: ElementRef;

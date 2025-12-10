@@ -8,9 +8,10 @@ import {LoadingService} from '../services/loading.service';
 import {NodeExpandService} from '../services/node-expand.service';
 
 @Component({
-  selector: 'smrtgraph-search',
-  templateUrl: './smrtgraph-search.component.html',
-  styleUrls: ['./smrtgraph-search.component.scss']
+    selector: 'smrtgraph-search',
+    templateUrl: './smrtgraph-search.component.html',
+    styleUrls: ['./smrtgraph-search.component.scss'],
+    standalone: false
 })
 export class SmrtgraphSearchComponent implements OnInit {
   startNodesCtrl: UntypedFormControl;

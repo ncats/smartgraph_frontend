@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import {Link} from '../../../d3/models/link';
 import {Node} from '../../../d3/models/node';
 import {LinkService} from '../../../d3/models/link.service';
@@ -8,9 +8,10 @@ import {Subscription} from 'rxjs';
 
 
 @Component({
-  selector: 'link-list-visual',
-  templateUrl: './link-list-visual.component.html',
-  styleUrls: ['./link-list-visual.component.css']
+    selector: 'link-list-visual',
+    templateUrl: './link-list-visual.component.html',
+    styleUrls: ['./link-list-visual.component.css'],
+    standalone: false
 })
 export class LinkListVisualComponent implements OnInit , AfterViewInit {
   displayedColumns = ['source', 'linkType', 'target', 'details', 'reference', 'score', 'confidence'];

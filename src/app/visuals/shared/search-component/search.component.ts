@@ -6,10 +6,11 @@ import {Compound, Node, Pattern, Target} from '../../../d3/models/node';
 import {GraphDataService} from '../../../services/graph-data.service';
 
 @Component({
-  selector: 'search-component',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'search-component',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SearchComponent implements OnInit {
 @Output()

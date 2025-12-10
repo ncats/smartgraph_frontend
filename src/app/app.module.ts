@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from '../assets/material/material.module';
 import {D3Service} from './d3/d3.service';
@@ -45,11 +45,10 @@ import { DisclaimerModalComponent } from './smrtgraph-settings/disclaimer-modal/
 import {AboutModalComponent} from './smrtgraph-menu/about-modal/about-modal.component';
 import {HelpPanelComponent} from './help-panel/help-panel.component';
 import { ConfigService } from './services/config.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         GraphComponent,
         NodeDetailsVisualComponent,
@@ -81,23 +80,17 @@ import { HttpClientModule } from '@angular/common/http';
         AboutModalComponent,
         HelpPanelComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexLayoutModule,
-        HttpClientModule
-    ],
-    providers: [
+        FlexLayoutModule], providers: [
         ConfigService,
-        {
-          provide: APP_INITIALIZER,
-          useFactory: (config: ConfigService) => () => config.loadConfig(),
-          deps: [ConfigService],
-          multi: true
-        },
+        provideAppInitializer(() => {
+        const initializerFn = ((config: ConfigService) => () => config.loadConfig())(inject(ConfigService));
+        return initializerFn();
+      }),
         WebSocketService,
         DataConnectionService,
         D3Service,
@@ -108,8 +101,7 @@ import { HttpClientModule } from '@angular/common/http';
         NodeMenuControllerService,
         LoadingService,
         SettingsService,
-        NodeExpandService
-    ],
-    bootstrap: [AppComponent]
-})
+        NodeExpandService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

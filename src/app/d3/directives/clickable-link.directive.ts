@@ -5,7 +5,8 @@ import {Link} from '../models/link';
 
 
 @Directive({
-    selector: '[clickableLink]'
+    selector: '[clickableLink]',
+    standalone: false
 })
 export class ClickableLinkDirective {
     @Input('clickableLink') link: Link;

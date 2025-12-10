@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../../services/config.service';
 
 @Component({
-  selector: 'app-disclaimer-modal',
-  templateUrl: './about-modal.component.html',
-  styleUrls: ['./about-modal.component.scss']
+    selector: 'app-disclaimer-modal',
+    templateUrl: './about-modal.component.html',
+    styleUrls: ['./about-modal.component.scss'],
+    standalone: false
 })
 export class AboutModalComponent implements OnInit {
 

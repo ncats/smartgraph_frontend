@@ -4,7 +4,8 @@ import {Node} from '../models/node';
 import {ForceDirectedGraph} from '../models/force-directed-graph';
 
 @Directive({
-    selector: '[draggableNode]'
+    selector: '[draggableNode]',
+    standalone: false
 })
 export class DraggableDirective {
     @Input('draggableNode') node: Node;
