@@ -2,6 +2,60 @@
 
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+/* Ensure Material Icons font is loaded - using Google Fonts CDN */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Critical: Ensure Material Icons are rendered correctly with font ligatures */
+.mat-icon {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  
+  /* Enable font ligatures - THIS IS CRITICAL */
+  font-feature-settings: 'liga' 1;
+  -webkit-font-feature-settings: 'liga';
+  -moz-font-feature-settings: 'liga';
+  
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fallback for material-icons class */
+.material-icons {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  
+  /* Enable font ligatures */
+  font-feature-settings: 'liga' 1;
+  -webkit-font-feature-settings: 'liga';
+  -moz-font-feature-settings: 'liga';
+  
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body, html {
   margin: 0;

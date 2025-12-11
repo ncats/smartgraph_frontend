@@ -9,6 +9,7 @@ mat-sidenav {
 
 .upperSection {
   overflow: visible;
+  flex: 1 0 auto; // Allow it to grow and fill space
 }
 
 .info-panel {
@@ -23,6 +24,8 @@ mat-sidenav {
 
 .smartgraph {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .info-panel.sidenav-opened {
@@ -37,6 +40,10 @@ mat-sidenav {
 
 .sidenavToggle{
   position: absolute !important;
+}
+
+.link-list-row {
+  flex: 1 0 auto; // Allow it to grow
 }
 
 @media only screen and (max-width: 960px) {
@@ -63,9 +70,9 @@ mat-sidenav {
 }
 
 footer {
-  position: relative;
-  bottom: 0;
+  margin-top: auto; // Push footer to bottom in flexbox layout
   width: 100%;
+  flex-shrink: 0; // Prevent footer from shrinking
   
   .footer-toolbar {
     display: flex;
