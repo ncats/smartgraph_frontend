@@ -11,6 +11,9 @@ else
   DATA_URL="${DATA_URL:?Error: DATA_URL environment variable not set}"
   API_SWAGGER_URL="${API_SWAGGER_URL:?Error: API_SWAGGER_URL environment variable not set}"
 
+  # Ensure /usr/share/nginx/app/assets exists
+  mkdir -p /usr/share/nginx/app/assets
+
   # Write to config.json file
   cat > /usr/share/nginx/app/assets/config.json <<EOF
 {

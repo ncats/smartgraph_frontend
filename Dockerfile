@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular application
-FROM node:20 AS build
+FROM node:22 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build output from Stage 1 to the NGINX html directory
-COPY --from=build /app/dist /usr/share/nginx/app
+COPY --from=build /app/dist/browser /usr/share/nginx/app
 RUN chmod og+r -R /usr/share/nginx/app
 
 # Copy the entrypoint script
