@@ -46,6 +46,8 @@ import {AboutModalComponent} from './smrtgraph-menu/about-modal/about-modal.comp
 import {HelpPanelComponent} from './help-panel/help-panel.component';
 import { ConfigService } from './services/config.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @NgModule({ declarations: [
@@ -104,4 +106,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         NodeExpandService,
         provideHttpClient(withInterceptorsFromDi())
     ] })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
+    // Register the default Material Icons font
+    this.matIconRegistry.setDefaultFontSetClass('material-icons');
+  }
+}
